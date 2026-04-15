@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presupuesto | Blanco Grosso</title>
+    <link rel="icon" type="image/png" href="img/icons/logo blanco.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/brand-core.css">
+    <style>
+        :root {
+            --bg-dark: #080808;
+            --accent: #00ff88;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .accent-glow-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% -20%, rgba(0, 255, 136, 0.15) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 4rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand {
+            font-weight: 900;
+            letter-spacing: 0.3em;
+            font-size: 1.2rem;
+        }
+
+        .brand span { color: var(--accent); }
+
+        .budget-header {
+            margin-bottom: 4rem;
+        }
+
+        .label {
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.25em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            margin: 0.5rem 0;
+        }
+
+        .client-info {
+            font-size: 1rem;
+            opacity: 0.6;
+        }
+
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 4rem;
+        }
+
+        .items-table th {
+            text-align: left;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            opacity: 0.4;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .items-table td {
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .item-desc {
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .item-price {
+            text-align: right;
+            font-weight: 700;
+            font-family: monospace;
+        }
+
+        .summary-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 1rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            width: 250px;
+            font-size: 0.9rem;
+            opacity: 0.6;
+        }
+
+        .summary-row.total {
+            opacity: 1;
+            font-size: 1.8rem;
+            font-weight: 950;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--accent);
+        }
+
+        .notes-section {
+            margin-top: 6rem;
+            padding: 2rem;
+            background: var(--glass);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .notes-section h3 {
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .notes-content {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            opacity: 0.8;
+            white-space: pre-wrap;
+        }
+
+        .actions {
+            margin-top: 4rem;
+            display: flex;
+            justify-content: center;
+            padding-bottom: 8rem;
+        }
+
+        .btn-wa {
+            background: var(--accent);
+            color: #000;
+            text-decoration: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 900;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .btn-wa:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.3);
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .container { margin-top: 2rem; }
+            .summary-row { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="accent-glow-bg"></div>
+    <div class="container" id="budget-container" style="display: none;">
+        <header>
+            <div class="brand">BLANCO<span>GROSSO</span></div>
+            <div class="date" id="date-val">--/--/----</div>
+        </header>
+
+        <section class="budget-header">
+            <span class="label">Propuesta para</span>
+            <h1 id="client-val">Client Name</h1>
+            <p class="client-info" id="project-val">Project Description</p>
+        </section>
+
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th>CONCEPTO / SERVICIO</th>
+                    <th style="text-align: right;">INVERSIÓN</th>
+                </tr>
+            </thead>
+            <tbody id="items-body">
+                <!-- Rendered by JS -->
+            </tbody>
+        </table>
+
+        <section class="summary-section">
+            <div class="summary-row" id="subtotal-row">
+                <span>Subtotal</span>
+                <span id="subtotal-val">$ 0.00</span>
+            </div>
+            <div class="summary-row" id="iva-row" style="display: none;">
+                <span>IVA (22%)</span>
+                <span id="iva-val">$ 0.00</span>
+            </div>
+            <div class="summary-row total">
+                <span>Total</span>
+                <span id="total-val">$ 0.00</span>
+            </div>
+        </section>
+
+        <section class="notes-section" id="notes-container" style="display: none;">
+            <h3>OBSERVACIONES ADICIONALES</h3>
+            <div class="notes-content" id="notes-val"></div>
+        </section>
+
+        <div class="actions">
+            <a href="#" id="wa-link" class="btn-wa">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.539 2.016 2.126-.54c1.029.563 2.025.886 3.162.888 3.181 0 5.767-2.587 5.768-5.766 0-3.18-2.586-5.751-5.768-5.751zm3.29 8.141c-.184.51-.891.93-1.232.984-.34.053-.67.043-1.071-.027-.399-.07-1.127-.245-1.928-.76-.801-.514-1.428-1.246-1.942-2.047-.513-.8-.886-1.745-.886-2.545 0-.8.324-1.396.655-1.722.33-.326.654-.424.874-.424.221 0 .442.003.634.014.192.01.442-.07.69.528.248.598.847 2.064.921 2.212.074.148.123.321.025.518-.099.197-.148.32-.296.492-.148.172-.309.339-.444.48-.135.143-.275.299-.119.567.157.269.697 1.15 1.494 1.861.797.711 1.469.932 1.765 1.047.296.115.469.097.641-.1.173-.197.74-.86 1.012-1.229.27-.37.542-.311.913-.173.371.139 2.349 1.107 2.349 1.107s.416.208.416.892z"/></svg>
+                CONFIRMAR PROYECTO
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function decode(str) {
+            return JSON.parse(decodeURIComponent(escape(atob(str))));
+        }
+
+        window.onload = () => {
+            const params = new URLSearchParams(window.location.search);
+            const data = params.get('d');
+
+            if (!data) {
+                document.body.innerHTML = '<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; text-align:center;"><h1>404</h1><p>PRES_NOT_FOUND</p></div>';
+                return;
+            }
+
+            try {
+                const b = decode(data);
+                
+                document.getElementById('date-val').textContent = b.date;
+                document.getElementById('client-val').textContent = b.client.toUpperCase();
+                document.getElementById('project-val').textContent = b.project;
+                
+                const formatter = new Intl.NumberFormat('es-UY', { 
+                    style: 'currency', 
+                    currency: b.currency 
+                });
+
+                let subtotal = 0;
+                const tbody = document.getElementById('items-body');
+                b.items.forEach(item => {
+                    subtotal += item.price;
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="item-desc">${item.desc}</td>
+                        <td class="item-price">${formatter.format(item.price)}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                document.getElementById('subtotal-val').textContent = formatter.format(subtotal);
+                
+                if (b.hasIva) {
+                    const iva = subtotal * 0.22;
+                    document.getElementById('iva-val').textContent = formatter.format(iva);
+                    document.getElementById('iva-row').style.display = 'flex';
+                }
+
+                document.getElementById('total-val').textContent = formatter.format(b.total);
+
+                if (b.notes) {
+                    document.getElementById('notes-val').textContent = b.notes;
+                    document.getElementById('notes-container').style.display = 'block';
+                }
+
+                // WhatsApp Link
+                const waMsg = encodeURIComponent(`Hola Tomás! Recibí el presupuesto para "${b.project}" y me gustaría seguir adelante.`);
+                document.getElementById('wa-link').href = `https://wa.me/59899234543?text=${waMsg}`;
+
+                document.getElementById('budget-container').style.display = 'block';
+                document.title = `Presupuesto: ${b.client} | Blanco Grosso`;
+
+            } catch (e) {
+                console.error(e);
+                document.body.innerHTML = '<h1>Error</h1><p>FALLO_DE_CARGA_DATOS</p>';
+            }
+        };
+    </script>
+</body>
+</html>

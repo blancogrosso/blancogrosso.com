@@ -1,0 +1,186 @@
+:root {
+    --bg-color: #060606;
+    --accent-green: #00ff88;
+    --accent-cyan: #00ccff;
+    --accent-orange: #ff5e00;
+    --accent-violet: #8b00ff;
+    --text-primary: #f0f0f0;
+    --text-muted: #888;
+}
+
+.secret-gate {
+    opacity: 0.3;
+    text-decoration: none;
+    cursor: pointer;
+    margin-left: 2px;
+    color: inherit;
+    transition: opacity 0.3s;
+}
+
+.secret-gate:hover {
+    opacity: 1;
+    color: var(--accent-green);
+}
+
+/* ── Mesh Background ── */
+.accent-glow-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background: #040404;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.accent-glow-bg::before,
+.accent-glow-bg::after {
+    content: '';
+    position: absolute;
+    width: 140vmax;
+    height: 140vmax;
+    border-radius: 50%;
+    filter: blur(140px);
+    opacity: 0.12;
+    mix-blend-mode: screen;
+}
+
+.accent-glow-bg::before {
+    background: radial-gradient(circle, var(--accent-green) 0%, var(--accent-cyan) 100%);
+    top: -30%;
+    left: -30%;
+    animation: meshFloat1 20s ease-in-out infinite;
+}
+
+.accent-glow-bg::after {
+    background: radial-gradient(circle, var(--accent-violet) 0%, var(--accent-orange) 100%);
+    bottom: -30%;
+    right: -30%;
+    animation: meshFloat2 25s ease-in-out infinite;
+}
+
+@keyframes meshFloat1 {
+    0% { transform: translate(-5%, -5%) scale(1); }
+    33% { transform: translate(10%, 5%) scale(1.1); }
+    66% { transform: translate(-5%, 15%) scale(0.95); }
+    100% { transform: translate(-5%, -5%) scale(1); }
+}
+
+@keyframes meshFloat2 {
+    0% { transform: translate(5%, 5%) scale(1.1); }
+    33% { transform: translate(-10%, -5%) scale(0.9); }
+    66% { transform: translate(5%, -15%) scale(1.1); }
+    100% { transform: translate(5%, 5%) scale(1.1); }
+}
+
+/* ── Grid Overlay ── */
+.grid-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+}
+
+/* ── Multi-color Text Gradient (Accents) ── */
+.hero-title .accent, .pc-tag, .btn-primary {
+    background: linear-gradient(-45deg, var(--accent-cyan), var(--accent-green), var(--accent-orange), var(--accent-violet), var(--accent-cyan));
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textGradientFlow 8s ease infinite;
+}
+
+/* ── Green-only Logo Gradient ── */
+.brand-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 0.85;
+}
+
+.brand-logo span {
+    background: linear-gradient(-45deg, #00ff88, #00ffa2, #00ffcc, #00cc88, #00ff88);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textGradientFlow 8s ease infinite;
+}
+
+.card-checklist {
+    margin-top: 1rem;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.checklist-item.done {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+.checklist-item input {
+    accent-color: var(--accent-green);
+    width: 12px;
+    height: 12px;
+}
+
+@keyframes textGradientFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.btn-primary {
+    -webkit-text-fill-color: #000;
+    background-clip: border-box;
+    -webkit-background-clip: border-box;
+}
+/* =========================================
+   MULTILINGUAL SUPPORT
+   ========================================= */
+.lang-en { display: none; }
+
+/* When English is active */
+body.lang-en-active .lang-es { display: none; }
+body.lang-en-active .lang-en { display: inline; }
+
+/* If it's a block element */
+body.lang-en-active div.lang-en,
+body.lang-en-active section.lang-en,
+body.lang-en-active p.lang-en { display: block; }
+
+.lang-switcher {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.lang-toggle {
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: color 0.2s ease;
+    padding: 2px 4px;
+}
+
+.lang-toggle.active {
+    color: var(--accent-green);
+}
+
+.lang-toggle:hover:not(.active) {
+    color: var(--text-primary);
+}

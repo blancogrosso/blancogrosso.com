@@ -1,0 +1,609 @@
+/* =========================================
+   BLANCO GROSSO — Creative Studio
+   Premium Dark Theme
+   ========================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+
+:root {
+    --bg-color: #060606;
+    --bg-secondary: #0e0e0e;
+    --surface: #141414;
+    --surface-hover: #1c1c1c;
+    --text-color: #f0f0f0;
+    --text-muted: #888;
+    --text-dim: #555;
+    --border-color: rgba(255,255,255,0.06);
+    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --radius: 6px;
+    --transition-fast: 0.2s ease;
+    --transition-smooth: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    --transition-slow: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* ── Reset ── */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Animated Mesh Gradient (Pro Version) ── */
+@keyframes meshFloat1 {
+    0% { transform: translate(-5%, -5%) scale(1); }
+    33% { transform: translate(10%, 5%) scale(1.2); }
+    66% { transform: translate(-5% , 15%) scale(0.9); }
+    100% { transform: translate(-5%, -5%) scale(1); }
+}
+@keyframes meshFloat2 {
+    0% { transform: translate(5%, 5%) scale(1.1); }
+    33% { transform: translate(-10%, -5%) scale(0.8); }
+    66% { transform: translate(5% , -15%) scale(1.2); }
+    100% { transform: translate(5%, 5%) scale(1.1); }
+}
+
+/* Global styles handled by brand-core.css */
+
+@keyframes textGradientFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+/* =========================================
+   LANDING PAGE (index.html)
+   ========================================= */
+
+.landing-page {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Animated background grain */
+/* Animated background grain (Disabled to show mesh gradient) */
+.landing-page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Subtle grid lines */
+.landing-page::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 80px 80px;
+    z-index: 0;
+    opacity: 0.3;
+}
+
+.hero-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 2rem;
+    z-index: 2;
+}
+
+.update-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    border: 1px solid rgba(0,255,136,0.3);
+    border-radius: 100px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    color: var(--accent-color);
+    margin-bottom: 3.5rem; /* Space before logo */
+    animation: heroFadeUp 1s ease-out;
+}
+
+.brand-logo {
+    font-size: clamp(2.5rem, 12vw, 4.5rem);
+    font-weight: 950;
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--accent-color);
+    animation: heroFadeUp 1s ease-out 0.2s both;
+}
+
+.hero-tagline {
+    font-size: clamp(0.7rem, 2.5vw, 1rem);
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 3rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    animation: heroFadeUp 1s ease-out 0.4s both;
+    white-space: nowrap;
+}
+
+.hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0.9rem 2rem;
+    background: transparent;
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 100px;
+    color: var(--accent-color);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    text-decoration: none;
+    animation: heroFadeUp 1s ease-out 0.6s both;
+    backdrop-filter: blur(10px);
+}
+
+.hero-cta:hover {
+    background: rgba(0, 255, 136, 0.05);
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
+}
+
+/* Fix service button size and centering */
+.service-card .btn {
+    font-size: 0.65rem;
+    padding: 0.8rem 1rem;
+    white-space: nowrap;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero-cta .arrow {
+    transition: transform 0.3s ease;
+}
+
+.hero-cta:hover .arrow {
+    transform: translateX(6px);
+}
+
+/* ── Landing Footer ── */
+.landing-footer {
+    width: 100%;
+    padding: 2.5rem 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.03);
+    z-index: 2;
+    background: rgba(8,8,8,0.5);
+    backdrop-filter: blur(10px);
+}
+
+.footer-bottom {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.2);
+    text-transform: uppercase;
+    text-align: center;
+}
+
+/* ── Pulse Dot ── */
+.pulse-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #00ff88;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+    box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7);
+    animation: status-pulse 2s infinite;
+    vertical-align: middle;
+}
+
+@keyframes status-pulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(0, 255, 136, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); }
+}
+
+@media (max-width: 1024px) {
+    .landing-footer {
+        padding: 4rem 2rem;
+    }
+}
+
+/* =========================================
+   GALLERY PAGE (old-works.html)
+   ========================================= */
+
+/* ── Header ── */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 2.5rem;
+    background: rgba(6,6,6,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.header-brand {
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+.header-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: var(--transition-fast);
+}
+
+.header-back:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.2);
+}
+
+/* ── Page Title ── */
+.page-title-section {
+    padding: 3rem 2.5rem 1rem;
+}
+
+.page-title {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* ── Filter Bar ── */
+.filter-bar {
+    display: flex;
+    gap: 0.5rem;
+    padding: 1rem 2.5rem 2rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: 100px;
+    color: var(--text-muted);
+    padding: 0.45rem 1.1rem;
+    font-family: var(--font-main);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.filter-btn:hover {
+    color: var(--text-color);
+    border-color: rgba(255,255,255,0.15);
+    background: var(--surface-hover);
+}
+
+.filter-btn.active {
+    color: var(--bg-color);
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+/* ── Works Grid ── */
+.works-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 0 4rem 6rem;
+}
+
+.work-card {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    background-color: var(--surface);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.work-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 40%, transparent 70%);
+    opacity: 0;
+    transition: opacity var(--transition-smooth);
+}
+
+.work-card:hover::after {
+    opacity: 1;
+}
+
+.work-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.work-card:hover img {
+    transform: scale(1.08);
+}
+
+.work-card:hover {
+    z-index: 2;
+}
+
+.work-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.2rem;
+    z-index: 3;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all var(--transition-smooth);
+}
+
+.work-card:hover .work-overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.work-tag {
+    display: inline-block;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent-color);
+    margin-bottom: 0.4rem;
+}
+
+.work-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+}
+
+.work-tools {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.work-tool {
+    font-size: 0.6rem;
+    font-weight: 500;
+    padding: 0.2rem 0.5rem;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    color: var(--text-muted);
+}
+
+/* ── Empty State ── */
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    display: none;
+}
+
+/* =========================================
+   SOCIAL & CONTACT
+   ========================================= */
+
+.social-bar {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2.5rem;
+    animation: heroFadeUp 1s ease-out 0.8s both;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    transition: all 0.3s var(--transition-smooth);
+    opacity: 0.65;
+}
+
+.social-link:hover {
+    color: var(--accent-color);
+    transform: translateY(-2px);
+    opacity: 1;
+}
+
+.accent {
+    background: linear-gradient(-45deg, #00ff88, #00ccff, #00ffaa, #00ccff);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textGradientFlow 6s ease infinite;
+    font-weight: 700;
+}
+
+@keyframes textGradientFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Landing-specific bars removed in favor of integrated footer */
+
+/* ── Site Footer ── */
+.site-footer {
+    border-top: 1px solid var(--border-color);
+    padding: 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.footer-brand {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    position: relative;
+}
+
+.secret-gate {
+    opacity: 0.2;
+    padding: 0 5px;
+    cursor: default;
+    transition: opacity 0.3s;
+}
+
+.secret-gate:hover {
+    opacity: 1;
+}
+
+.footer-contact {
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+}
+
+.footer-contact .contact-link {
+    font-size: 0.7rem;
+}
+
+.footer-social {
+    display: flex;
+    gap: 0.6rem;
+}
+
+/* Duplicate social-link removed */
+
+/* =========================================
+   ANIMATIONS
+   ========================================= */
+@keyframes heroFadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+/* Card stagger animation */
+.work-card {
+    animation: cardFade 0.5s ease-out both;
+}
+
+@keyframes cardFade {
+    from { opacity: 0; transform: scale(0.97); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+@media (max-width: 1024px) {
+    .works-grid {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 0 1.5rem 3rem;
+    }
+    .site-header { padding: 1rem 1.5rem; }
+    .page-title-section { padding: 2rem 1.5rem 1rem; }
+    .filter-bar { padding: 1rem 1.5rem 1.5rem; }
+    .site-footer { padding: 2rem 1.5rem; }
+}
+
+@media (max-width: 600px) {
+    .works-grid {
+        grid-template-columns: 1fr;
+        gap: 3px;
+        padding: 0 1rem 2rem;
+    }
+    .site-header { padding: 1rem; }
+    .page-title-section { padding: 1.5rem 1rem 0.5rem; }
+    .filter-bar { padding: 0.75rem 1rem 1rem; }
+    .hero-cta { width: 100%; justify-content: center; }
+    .site-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.5rem 1rem;
+    }
+    .social-bar { gap: 0.75rem; }
+    .contact-bar { flex-direction: column; align-items: center; gap: 0.75rem; }
+}
+
+/* ── CTA Group ── */
+/* cta-group removed */
+
