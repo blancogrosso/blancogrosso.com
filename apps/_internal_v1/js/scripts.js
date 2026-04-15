@@ -14,8 +14,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const appViews = document.querySelectorAll('.app-view');
     const columns = document.querySelectorAll('.kanban-column');
 
-    // 2. Authentication Logic (SHA-256 Secure)
+    // 2. Authentication & Cloud Logic (Supabase)
     const AUTH_HASH = '1e4e8b049223c94c574465b3d3755ad6fbabb1d8a2898480ff90b44d07c34369';
+    const SUPABASE_URL = "https://hmaqdzkpjkxamggaiypo.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_Vu_F-McwcDK4g2k8fU6w7A_p_Mva8-Y";
+    const SP_HEADERS = { 
+        "apikey": SUPABASE_KEY, 
+        "Authorization": `Bearer ${SUPABASE_KEY}`,
+        "Content-Type": "application/json",
+        "Prefer": "return=representation"
+    };
+
+    async function spFetch(endpoint, method = 'GET', body = null) {
+        let url = `${SUPABASE_URL}/rest/v1/${endpoint}`;
+        const opts = { method, headers: SP_HEADERS };
+        if (body) opts.body = JSON.stringify(body);
+        try {
+            const res = await fetch(url, opts);
+            if (!res.ok) throw new Error(res.statusText);
+            const text = await res.text();
+            return text ? JSON.parse(text) : {};
+        } catch (e) {
+            console.error("Supabase Error:", e);
+            return null;
+        }
+    }
 
     async function hashPassword(str) {
         if (!window.crypto || !window.crypto.subtle) {
@@ -191,11 +214,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Initialize State
-    updateDashboard();
-    updateCounters();
-    renderRealCalendar2026();
-    renderActivityLog();
-    renderBudgets();
+    loadState().then(() => {
+        updateDashboard();
+        updateCounters();
+        renderRealCalendar2026();
+        renderActivityLog();
+        renderBudgets();
+    });
 });
 
 // --- DATE HELPERS ---
@@ -649,12 +674,52 @@ function saveState() {
     state['budgets'] = window.allBudgets || [];
 
     localStorage.setItem('bg_ecosystem_state_v3', JSON.stringify(state));
+    
+    // Cloud Sync
+    spFetch('bg_ecosystem?id=eq.main_state', 'PATCH', { data: state });
 }
 
-function loadState() {
+window.migrateToCloud = async () => {
     const raw = localStorage.getItem('bg_ecosystem_state_v3');
-    if (!raw) return;
+    if (!raw) {
+        alert("No hay datos locales para migrar.");
+        return;
+    }
     const state = JSON.parse(raw);
+    const res = await spFetch('bg_ecosystem?id=eq.main_state', 'PATCH', { data: state });
+    if (res) {
+        alert("¡Migración exitosa! Tus datos locales ahora están en la nube.");
+        location.reload();
+    } else {
+        alert("Error al migrar. Verificá la consola.");
+    }
+};
+
+async function loadState() {
+    // 1. Try Cloud Load first
+    const cloudData = await spFetch('bg_ecosystem?id=eq.main_state', 'GET');
+    let state = null;
+
+    if (cloudData && cloudData[0] && Object.keys(cloudData[0].data).length > 0) {
+        state = cloudData[0].data;
+        console.log("Loaded context from cloud.");
+    } else {
+        // 2. Fallback to Local Storage
+        const raw = localStorage.getItem('bg_ecosystem_state_v3');
+        if (raw) {
+            state = JSON.parse(raw);
+            console.log("Loaded context from local storage.");
+        }
+    }
+
+    if (!state) return;
+
+    // 3. Auto-Migrate: If cloud was empty but we found local data, sync it now
+    if (cloudData && cloudData[0] && Object.keys(cloudData[0].data).length === 0 && !localStorage.getItem('bg_migrated')) {
+        console.log("Empty cloud detected. Syncing local data to cloud...");
+        saveState();
+        localStorage.setItem('bg_migrated', 'true');
+    }
     
     // Load budgets
     window.allBudgets = state['budgets'] || [];
