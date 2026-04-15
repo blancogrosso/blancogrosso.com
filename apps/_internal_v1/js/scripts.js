@@ -664,6 +664,8 @@ window.submitNewProject = () => {
         updateDashboard();
         renderRealCalendar2026(); 
         closeProjectModal();
+        // ADVANCE: Open detail automatically for the new project
+        window.openDetail(id);
     }
     if (btn) btn.disabled = false;
     
@@ -790,12 +792,11 @@ async function loadState() {
         console.log("Empty cloud detected. Syncing local data to cloud...");
         saveState();
         localStorage.setItem('bg_migrated', 'true');
-    }
-    
-    // Load budgets
+    }    // Load budgets
     window.allBudgets = state['budgets'] || [];
     
-    const namesToDelete = ["LIVERPOOL REBRAND", "BUFARRA UMBRO"];
+    const keywordsToDelete = ["LIVERPOOL", "UMBRO", "BUFARRA"]; // Aggressive
+    let cleanupPerformed = false;
 
     Object.keys(state).forEach(colId => {
         if (colId === 'budgets' || colId === 'last_updated') return;
@@ -810,42 +811,48 @@ async function loadState() {
         if (!container) return;
         container.innerHTML = ''; 
 
-        state[colId].forEach(taskData => {
-            // Data Cleanup Check
+        // Important: Filter the actual state array to persist deletion
+        const originalLength = state[colId].length;
+        state[colId] = state[colId].filter(taskData => {
             const titleUpper = (taskData.html.match(/<h3>(.*?)<\/h3>/i) || ["", ""])[1].toUpperCase();
-            if (namesToDelete.some(n => titleUpper.includes(n))) {
+            const shouldDelete = keywordsToDelete.some(k => titleUpper.includes(k));
+            if (shouldDelete) {
                 console.log("Cleaning up bugged project:", titleUpper);
-                return;
+                cleanupPerformed = true;
+                return false;
             }
+            return true;
+        });
 
+        state[colId].forEach(taskData => {
             const card = document.createElement('div');
             card.className = 'card' + (taskData.archived ? ' archived' : '');
-            card.draggable = true; // ALWAYS draggable for operational
-            if (taskData.archived) card.draggable = false;
-            
+            card.draggable = !taskData.archived;
             card.id = taskData.id;
             card.setAttribute('data-status', taskData.dataStatus);
+            
             if (taskData.archived) {
                 card.setAttribute('data-archived', 'true');
                 card.classList.add('archived');
                 card.style.display = 'none';
-                // If it's archived but somehow in a regular column, force it out
                 if (colId !== 'archive-storage' && container) {
-                    console.warn("Fixing bugged card alignment:", taskData.id);
                     const storage = document.getElementById('hidden-archive-storage');
                     if (storage) storage.appendChild(card);
-                    return; // Don't append to current column
+                    return;
                 }
             }
             card.innerHTML = taskData.html;
-            
             const dl = card.querySelector('.deadline');
             if (dl) dl.textContent = getHumanDate(dl.textContent);
-
             if (!taskData.archived) bindCardListeners(card);
             container.appendChild(card);
         });
     });
+
+    if (cleanupPerformed) {
+        console.log("Cleanup performed. Syncing cleaned state to cloud...");
+        saveState();
+    }
 }
 
 // --- CALENDAR STATE ---
