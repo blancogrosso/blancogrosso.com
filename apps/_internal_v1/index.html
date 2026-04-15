@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BG Ecosystem | Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/brand-core.css">
+    <link rel="stylesheet" href="css/styles.css?v=1.3">
+    <!-- Phosphorus Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="accent-glow-bg"></div>
+    <div class="grid-overlay"></div>
+
+    <div id="login-overlay" class="login-overlay">
+        <div class="login-box">
+            <h2 class="brand-logo"><span>BG</span><span>SYSTEM</span></h2>
+            <p>INTERNAL ACCESS ONLY</p>
+            <input type="password" id="password-input" placeholder="ACCESS KEY">
+            <button id="login-btn">AUTH</button>
+        </div>
+    </div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header" id="logo-toggle" style="cursor: pointer;" title="Toggle Workspace">
+            <div class="logo">
+                <div class="logo-box">BG</div>
+                <div class="logo-text-group">
+                    <span class="logo-text-main">BLANCO</span>
+                    <span class="logo-text-sub">GROSSO</span>
+                </div>
+            </div>
+        </div>
+        <nav class="side-nav">
+            <a href="#" class="nav-item active" data-view="dashboard"><i class="ph ph-circles-four"></i> <span class="nav-text">DASHBOARD</span></a>
+            <a href="#" class="nav-item" data-view="projects"><i class="ph ph-kanban"></i> <span class="nav-text">PROJECT BOARD</span></a>
+            <a href="#" class="nav-item" data-view="calendar"><i class="ph ph-calendar-blank"></i> <span class="nav-text">CALENDAR</span></a>
+            <a href="#" class="nav-item" data-view="budgets"><i class="ph ph-receipt"></i> <span class="nav-text">PRESUPUESTOS</span></a>
+            <a href="#" class="nav-item" data-view="archive"><i class="ph ph-archive"></i> <span class="nav-text">ARCHIVE</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="status-indicator">
+                <span class="dot"></span> SYSTEM ONLINE
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <!-- DASHBOARD VIEW -->
+        <section id="dashboard-view" class="app-view">
+            <div class="view-header">
+                <h1 class="view-title">DASHBOARD</h1>
+                <div class="header-actions">
+                    <button class="btn-new-minimal" onclick="openNewProject()"><i class="ph ph-plus"></i></button>
+                </div>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card" id="metric-active">
+                    <span class="met-label">ACTIVE PROJECTS</span>
+                    <h2 class="met-value">00 <span class="met-sub">LIVE</span></h2>
+                </div>
+                <div class="metric-card" id="metric-completed">
+                    <span class="met-label">COMPLETED</span>
+                    <h2 class="met-value">00 <span class="met-sub">TOTAL</span></h2>
+                </div>
+                <div class="metric-card">
+                    <span class="met-label">SYSTEM HEALTH</span>
+                    <div class="status-bar-container">
+                        <div id="health-bar" class="status-bar" style="width: 100%;"></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <span class="met-label">WORKLOAD</span>
+                    <div class="workload-dots" id="workload-distribution">
+                        <!-- JS Generated -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-content">
+                <div class="dashboard-main">
+                    <div class="content-box">
+                        <h3>UPCOMING DEADLINES // PRIORITIES</h3>
+                        <div id="urgency-groups" class="urgency-groups">
+                            <!-- JS Generated: OVERDUE, TODAY, THIS WEEK, LATER -->
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-side">
+                    <div class="content-box">
+                        <h3>RECENT ACTIVITY</h3>
+                        <div id="recent-activity-list" class="activity-feed">
+                            <p class="empty-state">No recent activity recorded.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJECT BOARD VIEW -->
+        <section id="board-view" class="app-view hidden">
+            <div class="view-header">
+                <h1 class="view-title">PROJECT BOARD</h1>
+                <div class="header-actions">
+                    <button class="btn-new-minimal" onclick="openNewProject()"><i class="ph ph-plus"></i></button>
+                </div>
+            </div>
+            
+            <div class="kanban-board">
+                <div class="kanban-column" id="todo">
+                    <div class="column-header">
+                        TO DO <span class="card-count" id="count-todo">0</span>
+                    </div>
+                    <div class="column-tasks">
+                        <div class="card" draggable="true" id="task-liverpool" data-status="planning">
+                            <div class="card-header">
+                                <span class="card-category">SOCIAL MEDIA</span>
+                                <span class="card-status status-planning">TO DO</span>
+                            </div>
+                            <h3>Liverpool FC Rebrand</h3>
+                            <p>Social media rebrand para el club. Sin arrancar.</p>
+                            <div class="card-footer"><span class="deadline">Mar 27</span></div>
+                        </div>
+                        <div class="card" draggable="true" id="task-umbro" data-status="planning">
+                            <div class="card-header">
+                                <span class="card-category">SPORT DESIGN</span>
+                                <span class="card-status status-planning">TO DO</span>
+                            </div>
+                            <h3>Bufarra x Umbro</h3>
+                            <p>Cranear presentación de camiseta e imaginar línea gráfica nueva.</p>
+                            <div class="card-footer"><span class="deadline">April</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kanban-column" id="inprogress">
+                    <div class="column-header">
+                        IN PROGRESS <span class="card-count" id="count-inprogress">0</span>
+                    </div>
+                    <div class="column-tasks"></div>
+                </div>
+
+                <div class="kanban-column" id="review">
+                    <div class="column-header">
+                        UNDER REVIEW <span class="card-count" id="count-review">0</span>
+                    </div>
+                    <div class="column-tasks"></div>
+                </div>
+
+                <div class="kanban-column" id="done">
+                    <div class="column-header">
+                        DONE <span class="card-count" id="count-done">0</span>
+                        <button class="btn-clear-done" onclick="clearDoneColumn()" title="Clear Done Column"><i class="ph ph-x"></i></button>
+                    </div>
+                    <div class="column-tasks"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CALENDAR VIEW -->
+        <section id="calendar-view" class="app-view hidden">
+            <div class="view-header">
+                <h1 class="view-title">CALENDAR</h1>
+                <div class="calendar-nav">
+                    <button class="btn-cal-nav" onclick="changeMonth(-1)"><i class="ph ph-caret-left" style="color:white" style="color:white"></i></button>
+                    <span id="current-month-display" class="month-label">MARCH 2026</span>
+                    <button class="btn-cal-nav" onclick="changeMonth(1)"><i class="ph ph-caret-right" style="color:white" style="color:white"></i></button>
+                </div>
+            </div>
+            <div class="calendar-panel expandable">
+                <div id="calendar-grid" class="calendar-grid">
+                    <!-- JS Generated -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ARCHIVE VIEW -->
+        <section id="archive-view" class="app-view hidden">
+            <div class="view-header">
+                <h1 class="view-title">ARCHIVE</h1>
+            </div>
+            <div class="archive-list" id="archive-list">
+                <!-- Joined finished projects -->
+            </div>
+        </section>
+
+        </section>
+        
+        <!-- BUDGETS VIEW -->
+        <section id="budgets-view" class="app-view hidden">
+            <div class="view-header">
+                <h1 class="view-title">PRESUPUESTOS</h1>
+                <div class="header-actions">
+                    <button class="btn-new-minimal" onclick="openBudgetModal()"><i class="ph ph-plus"></i></button>
+                </div>
+            </div>
+            <div class="budgets-list" id="budgets-list">
+                <!-- JS Generated -->
+                <div class="empty-state">No hay presupuestos registrados.</div>
+            </div>
+        </section>
+
+        <!-- PROJECT DETAIL VIEW -->
+        <section id="detail-view" class="app-view hidden">
+            <div class="detail-header">
+                <div class="header-left">
+                    <span id="detail-category-tag" class="status-tag">CATEGORY</span>
+                    <h1 id="detail-title-val">PROJECT_TITLE</h1>
+                    <input type="text" id="edit-title" class="edit-input hidden" placeholder="PROJECT NAME">
+                </div>
+                <button class="close-detail-btn" onclick="closeDetail()" title="Close Details"><i class="ph ph-x"></i></button>
+            </div>
+            
+            <div class="detail-layout">
+                <aside class="detail-sidebar">
+                    <div class="meta-section">
+                        <label>STATUS</label>
+                        <div id="detail-status-pill" class="status-pill">PLANNING</div>
+                        
+                        <div id="edit-meta-status" class="edit-group hidden">
+                            <select id="edit-status" class="modal-select">
+                                <option value="planning">TO DO</option>
+                                <option value="active">IN PROGRESS</option>
+                                <option value="review">UNDER REVIEW</option>
+                                <option value="finished">FINISHED</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="meta-section">
+                        <label>CATEGORY</label>
+                        <p id="detail-category-val">SPORT DESIGN</p>
+                        <div id="edit-meta-cat" class="edit-group hidden">
+                            <select id="edit-category" class="modal-select">
+                                <option value="WEB">WEB DESIGN</option>
+                                <option value="SPORT">SPORT DESIGN</option>
+                                <option value="AI">AI / VIBE CODING</option>
+                                <option value="UI">UI / UX</option>
+                                <option value="SOCIAL">SOCIAL MEDIA</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="meta-section">
+                        <label>DEADLINE</label>
+                        <p id="detail-deadline-val">MAR 28, 2026</p>
+                        <input type="date" id="edit-deadline" class="edit-input hidden">
+                    </div>
+                </aside>
+
+                <main class="detail-main">
+                    <div class="specs-card">
+                        <div class="specs-header">
+                            <h3>TECHNICAL SPECIFICATION & NOTES</h3>
+                            <button id="btn-edit-project" class="btn-edit-icon" onclick="toggleEditMode(true)" title="Edit Specs"><i class="ph ph-note-pencil"></i></button>
+                        </div>
+                        <div id="detail-desc-container" class="specs-body" style="position: relative;">
+                            <p id="detail-desc">Loading specs...</p>
+                            <div id="edit-desc-group" class="hidden" style="position: relative;">
+                                <textarea id="edit-desc" class="edit-textarea"></textarea>
+                                <button class="btn-voice btn-voice-detail" onclick="startVoiceCaptureDetail()" title="Voice-to-Summary (AI)"><i class="ph ph-microphone"></i></button>
+                            </div>
+                        </div>
+                        <div id="edit-controls" class="edit-controls-bar hidden">
+                            <button class="btn-secondary-sm" onclick="toggleEditMode(false)">CANCEL</button>
+                            <button class="btn-primary-sm" onclick="saveProjectEdits()">SAVE CHANGES</button>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </section>
+    </main>
+
+    <div id="drop-trash" class="drop-trash hidden">
+        <i class="ph ph-trash"></i>
+        <span>DROP TO DELETE</span>
+    </div>
+
+    <!-- Project Modal -->
+    <div id="project-modal" class="modal hidden">
+        <div class="modal-box">
+            <h2>NEW_PROJECT</h2>
+            <div class="modal-body">
+                <input type="text" id="new-project-title" placeholder="PROJECT NAME">
+                <select id="new-project-category" class="modal-select">
+                    <option value="" disabled selected>CHOOSE CATEGORY</option>
+                    <option value="WEB">WEB DESIGN</option>
+                    <option value="SPORT">SPORT DESIGN</option>
+                    <option value="AI">AI / VIBE CODING</option>
+                    <option value="UI">UI / UX</option>
+                    <option value="SOCIAL">SOCIAL MEDIA</option>
+                </select>
+                <input type="date" id="new-project-deadline">
+                <div class="modal-input-group">
+                    <textarea id="new-project-desc" placeholder="PROJECT SPECS & OBSERVATIONS..."></textarea>
+                    <button class="btn-voice" onclick="startVoiceCapture()" title="Voice-to-Summary (AI)"><i class="ph ph-microphone"></i></button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeProjectModal()" class="btn-secondary">CANCEL</button>
+                <button onclick="submitNewProject()" class="btn-primary">CREATE</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Budget Modal -->
+    <div id="budget-modal" class="modal hidden">
+        <div class="modal-box budget-modal-box">
+            <h2>NUEVO_PRESUPUESTO</h2>
+            <div class="modal-body">
+                <div class="input-row">
+                    <input type="text" id="budget-client" placeholder="NOMBRE DEL CLIENTE">
+                    <input type="text" id="budget-project" placeholder="PROYECTO">
+                </div>
+                <div class="input-row">
+                    <select id="budget-currency" class="modal-select">
+                        <option value="USD">USD ($)</option>
+                        <option value="UYU">UYU ($U)</option>
+                    </select>
+                    <div class="iva-toggle">
+                        <label>IVA (22%)</label>
+                        <input type="checkbox" id="budget-iva">
+                    </div>
+                </div>
+                
+                <div class="budget-items-container">
+                    <div class="items-header">
+                        <h3>ITEMS / SERVICIOS</h3>
+                        <button class="btn-secondary-sm" onclick="addBudgetItem()"><i class="ph ph-plus"></i></button>
+                    </div>
+                    <div id="budget-items-list" class="budget-items-scroll">
+                        <!-- Items will be added here -->
+                    </div>
+                </div>
+
+                <div class="budget-total-preview">
+                    <span>TOTAL: </span>
+                    <span id="budget-total-val" class="accent-green">$ 0.00</span>
+                </div>
+
+                <textarea id="budget-notes" placeholder="NOTAS / OBSERVACIONES..." style="margin-top: 1rem;"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeBudgetModal()" class="btn-secondary">CANCELAR</button>
+                <button onclick="submitBudget()" class="btn-primary">GUARDAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Confirmation Modal -->
+    <div id="confirm-modal" class="modal hidden" style="z-index: 9000;">
+        <div class="modal-box confirm-box">
+            <h2 id="confirm-title" style="color: var(--accent-green); font-size: 1rem; letter-spacing: 0.2em;">CONFIRM_ACTION</h2>
+            <p id="confirm-msg" style="margin: 1.5rem 0; opacity: 0.7; font-size: 0.75rem;"></p>
+            <div class="modal-footer">
+                <button id="confirm-cancel" class="btn-secondary">CANCEL</button>
+                <button id="confirm-proceed" class="btn-primary" style="background: #ff3333; border-color: #ff3333; color: #fff;">DELETE</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Archive Storage -->
+    <div id="hidden-archive-storage" class="hidden"></div>
+
+    <script src="js/scripts.js"></script>
+</body>
+</html>
