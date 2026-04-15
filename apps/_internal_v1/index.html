@@ -275,9 +275,9 @@
                         </div>
                         <div id="detail-desc-container" class="specs-body" style="position: relative;">
                             <p id="detail-desc">Loading specs...</p>
-                            <div id="edit-desc-group" class="hidden" style="position: relative;">
-                                <textarea id="edit-desc" class="edit-textarea"></textarea>
-                                <button class="btn-voice btn-voice-detail" onclick="startVoiceCaptureDetail()" title="Voice-to-Summary (AI)"><i class="ph ph-microphone"></i></button>
+                            <div id="edit-desc-group" class="hidden" style="position: relative; display: flex; gap: 10px;">
+                                <button class="btn-voice btn-voice-detail" onclick="startVoiceCaptureDetail()" title="Voice-to-Summary (AI)" style="position: static;"><i class="ph ph-microphone"></i></button>
+                                <textarea id="edit-desc" class="edit-textarea" style="flex: 1;"></textarea>
                             </div>
                         </div>
                         <div id="edit-controls" class="edit-controls-bar hidden">
@@ -310,9 +310,9 @@
                     <option value="SOCIAL">SOCIAL MEDIA</option>
                 </select>
                 <input type="date" id="new-project-deadline">
-                <div class="modal-input-group">
-                    <textarea id="new-project-desc" placeholder="PROJECT SPECS & OBSERVATIONS..."></textarea>
-                    <button class="btn-voice" onclick="startVoiceCapture()" title="Voice-to-Summary (AI)"><i class="ph ph-microphone"></i></button>
+                <div class="modal-input-group" style="display: flex; gap: 10px; align-items: flex-start;">
+                    <button class="btn-voice" onclick="startVoiceCapture()" title="Voice-to-Summary (AI)" style="position: static;"><i class="ph ph-microphone"></i></button>
+                    <textarea id="new-project-desc" placeholder="PROJECT SPECS & OBSERVATIONS..." style="flex: 1;"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -361,7 +361,10 @@
                     <span id="budget-total-val" class="accent-green">$ 0.00</span>
                 </div>
 
-                <textarea id="budget-notes" placeholder="NOTAS / OBSERVACIONES..." style="margin-top: 1rem;"></textarea>
+                <div class="modal-input-group" style="display: flex; gap: 10px; align-items: flex-start; margin-top: 1rem;">
+                    <button class="btn-voice" onclick="startVoiceCaptureBudget()" title="Voice-to-Summary (AI)" style="position: static;"><i class="ph ph-microphone"></i></button>
+                    <textarea id="budget-notes" placeholder="NOTAS / OBSERVACIONES..." style="flex: 1;"></textarea>
+                </div>
             </div>
             <div class="modal-footer">
                 <button onclick="closeBudgetModal()" class="btn-secondary">CANCELAR</button>

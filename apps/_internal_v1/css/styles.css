@@ -886,9 +886,22 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
+    max-height: 65vh;
+    overflow-y: auto;
+    padding-right: 10px;
 }
-.modal-body input {
+
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.modal-body input, .modal-body textarea {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 1rem;
@@ -898,6 +911,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     font-size: 0.8rem;
     outline: none;
     transition: all 0.3s ease;
+}
+
+.modal-body textarea {
+    min-height: 120px;
+    resize: vertical;
 }
 .modal-body input:focus, .modal-select:focus, .edit-input:focus, .edit-textarea:focus {
     border-color: var(--accent-green) !important;
@@ -1726,17 +1744,21 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     }
 
     /* Modal adjustments */
-    .modal-content {
+    .modal-box {
         width: 95% !important;
         margin: 10px auto;
         padding: 1.5rem !important;
     }
 
+    .modal-body {
+        max-height: 70vh;
+    }
+
     .input-row {
-        flex-direction: column;
+        grid-template-columns: 1fr;
     }
     
-    .modal-header h2 {
+    .modal-box h2 {
         font-size: 1.2rem;
     }
 }
