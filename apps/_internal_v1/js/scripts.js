@@ -953,6 +953,7 @@ function renderActivityLog() {
 
 // --- BUDGET SYSTEM LOGIC ---
 window.allBudgets = [];
+window.editingBudgetId = null;
 
 window.renderBudgets = () => {
     const container = document.getElementById('budgets-list');
@@ -978,6 +979,7 @@ window.renderBudgets = () => {
                 <h3 class="budget-title">${b.project}</h3>
                 <div class="budget-total">${totalFormatted}</div>
                 <div class="budget-actions">
+                    <button class="btn-action-sm" onclick="editBudget('${b.id}')"><i class="ph ph-pencil"></i> EDIT</button>
                     <button class="btn-action-sm" onclick="shareBudget('${b.id}')"><i class="ph ph-share-network"></i> SHARE</button>
                     <button class="btn-action-sm" style="color: #ff5555" onclick="deleteBudget('${b.id}')"><i class="ph ph-trash"></i></button>
                 </div>
@@ -986,28 +988,47 @@ window.renderBudgets = () => {
     }).join('');
 };
 
-window.openBudgetModal = () => {
-    document.getElementById('budget-client').value = '';
-    document.getElementById('budget-project').value = '';
-    document.getElementById('budget-notes').value = '';
-    document.getElementById('budget-items-list').innerHTML = '';
-    document.getElementById('budget-iva').checked = false;
-    document.getElementById('budget-total-val').textContent = '$ 0.00';
-    addBudgetItem(); // Start with one empty item
+window.openBudgetModal = (budgetData = null) => {
+    window.editingBudgetId = budgetData ? budgetData.id : null;
+    const title = document.querySelector('#budget-modal .modal-title');
+    if (title) title.textContent = budgetData ? 'EDITAR PRESUPUESTO' : 'NUEVO PRESUPUESTO';
+
+    document.getElementById('budget-client').value = budgetData ? budgetData.client : '';
+    document.getElementById('budget-project').value = budgetData ? budgetData.project : '';
+    document.getElementById('budget-proposal-url').value = (budgetData && budgetData.proposalUrl) ? budgetData.proposalUrl : '';
+    document.getElementById('budget-notes').value = budgetData ? budgetData.notes : '';
+    document.getElementById('budget-iva').checked = budgetData ? budgetData.hasIva : false;
+    document.getElementById('budget-currency').value = budgetData ? budgetData.currency : 'USD';
+    
+    const list = document.getElementById('budget-items-list');
+    list.innerHTML = '';
+    
+    if (budgetData && budgetData.items) {
+        budgetData.items.forEach(item => addBudgetItem(item.desc, item.price));
+    } else {
+        addBudgetItem(); 
+    }
+    
+    calculateBudgetTotal();
     document.getElementById('budget-modal').classList.remove('hidden');
+};
+
+window.editBudget = (id) => {
+    const budget = window.allBudgets.find(b => b.id === id);
+    if (budget) openBudgetModal(budget);
 };
 
 window.closeBudgetModal = () => {
     document.getElementById('budget-modal').classList.add('hidden');
 };
 
-window.addBudgetItem = () => {
+window.addBudgetItem = (desc = '', price = '') => {
     const list = document.getElementById('budget-items-list');
     const row = document.createElement('div');
     row.className = 'budget-item-row';
     row.innerHTML = `
-        <input type="text" placeholder="Concepto/Servicio" class="item-desc" oninput="calculateBudgetTotal()">
-        <input type="number" placeholder="0" class="item-price" oninput="calculateBudgetTotal()">
+        <input type="text" placeholder="Concepto/Servicio" class="item-desc" value="${desc}" oninput="calculateBudgetTotal()">
+        <input type="number" placeholder="0" class="item-price" value="${price}" oninput="calculateBudgetTotal()">
         <button class="btn-remove-item" onclick="this.parentElement.remove(); calculateBudgetTotal();"><i class="ph ph-x"></i></button>
     `;
     list.appendChild(row);
@@ -1040,6 +1061,7 @@ document.addEventListener('change', (e) => {
 window.submitBudget = () => {
     const client = document.getElementById('budget-client').value;
     const project = document.getElementById('budget-project').value;
+    const proposalUrl = document.getElementById('budget-proposal-url').value;
     const currency = document.getElementById('budget-currency').value;
     const hasIva = document.getElementById('budget-iva').checked;
     const notes = document.getElementById('budget-notes').value;
@@ -1055,16 +1077,27 @@ window.submitBudget = () => {
     }
 
     const total = calculateBudgetTotal();
-    const id = 'bg-bdt-' + Date.now();
     const date = new Date().toLocaleDateString('es-UY');
 
-    const newBudget = { id, client, project, currency, hasIva, items, notes, total, date };
-    window.allBudgets.unshift(newBudget);
+    if (window.editingBudgetId) {
+        const idx = window.allBudgets.findIndex(b => b.id === window.editingBudgetId);
+        if (idx !== -1) {
+            window.allBudgets[idx] = { 
+                ...window.allBudgets[idx], 
+                client, project, proposalUrl, currency, hasIva, items, notes, total 
+            };
+            logActivity(`Presupuesto actualizado: ${client}`);
+        }
+    } else {
+        const id = 'bg-bdt-' + Date.now();
+        const newBudget = { id, client, project, proposalUrl, currency, hasIva, items, notes, total, date };
+        window.allBudgets.unshift(newBudget);
+        logActivity(`Nuevo presupuesto para ${client}`);
+    }
 
     saveState();
     renderBudgets();
     closeBudgetModal();
-    logActivity(`Nuevo presupuesto para ${client}`);
 };
 
 window.deleteBudget = (id) => {

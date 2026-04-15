@@ -193,6 +193,34 @@
             box-shadow: 0 10px 40px rgba(0, 255, 136, 0.3);
         }
 
+        .proposal-section {
+            margin-top: 4rem;
+            text-align: center;
+            border: 1px dashed var(--accent);
+            padding: 3rem;
+            border-radius: 12px;
+            background: rgba(0, 255, 136, 0.02);
+        }
+
+        .btn-proposal {
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .btn-proposal:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
         @media (max-width: 600px) {
             h1 { font-size: 2rem; }
             .container { margin-top: 2rem; }
@@ -244,6 +272,12 @@
         <section class="notes-section" id="notes-container" style="display: none;">
             <h3>OBSERVACIONES ADICIONALES</h3>
             <div class="notes-content" id="notes-val"></div>
+        </section>
+
+        <section class="proposal-section" id="proposal-container" style="display: none;">
+            <span class="label">Documentación Adjunta</span>
+            <p style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 2rem;">He preparado una propuesta detallada con referencias visuales y alcances técnicos.</p>
+            <a href="#" id="proposal-link" target="_blank" class="btn-proposal">VER PROPUESTA DETALLADA</a>
         </section>
 
         <div class="actions">
@@ -305,6 +339,11 @@
                 if (b.notes) {
                     document.getElementById('notes-val').textContent = b.notes;
                     document.getElementById('notes-container').style.display = 'block';
+                }
+
+                if (b.proposalUrl) {
+                    document.getElementById('proposal-link').href = b.proposalUrl;
+                    document.getElementById('proposal-container').style.display = 'block';
                 }
 
                 // WhatsApp Link
