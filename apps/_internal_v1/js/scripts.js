@@ -82,9 +82,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         body.classList.remove('locked');
         sessionStorage.setItem('bg_auth', 'true');
+        
+        // Remember Session
+        const rememberMe = document.getElementById('remember-me');
+        if (rememberMe && rememberMe.checked) {
+            localStorage.setItem('bg_auth_persistent', 'true');
+        }
     }
 
-    if (sessionStorage.getItem('bg_auth') === 'true') {
+    const isAuthed = sessionStorage.getItem('bg_auth') === 'true' || localStorage.getItem('bg_auth_persistent') === 'true';
+
+    if (isAuthed) {
         if (loginOverlay) loginOverlay.style.display = 'none';
         body.classList.remove('locked');
     } else {
@@ -94,9 +102,33 @@ document.addEventListener('DOMContentLoaded', () => {
     if (loginBtn) loginBtn.addEventListener('click', checkAuth);
     if (pwdInput) pwdInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkAuth(); });
 
+    // Password Visibility Toggle
+    const togglePwd = document.getElementById('toggle-pwd');
+    if (togglePwd && pwdInput) {
+        togglePwd.addEventListener('click', () => {
+            const isPwd = pwdInput.type === 'password';
+            pwdInput.type = isPwd ? 'text' : 'password';
+            togglePwd.classList.toggle('ph-eye', !isPwd);
+            togglePwd.classList.toggle('ph-eye-closed', isPwd);
+            togglePwd.style.opacity = isPwd ? '1' : '0.6';
+        });
+    }
+
     // 3. Navigation / View Switching
     const sidebar = document.getElementById('sidebar');
     const logoToggle = document.getElementById('logo-toggle');
+    const mobileMenuBtn = document.getElementById('mobile-menu-toggle');
+
+    if (mobileMenuBtn && sidebar) {
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('mobile-active');
+            const icon = mobileMenuBtn.querySelector('i');
+            if (icon) {
+                icon.classList.toggle('ph-list');
+                icon.classList.toggle('ph-x');
+            }
+        });
+    }
     
     if (logoToggle && sidebar) {
         logoToggle.addEventListener('click', () => {
@@ -112,6 +144,18 @@ document.addEventListener('DOMContentLoaded', () => {
     navItems.forEach(item => {
         item.addEventListener('click', (e) => {
             e.preventDefault();
+
+            // Auto-close sidebar on mobile
+            if (window.innerWidth <= 768 && sidebar) {
+                sidebar.classList.remove('mobile-active');
+                if (mobileMenuBtn) {
+                    const icon = mobileMenuBtn.querySelector('i');
+                    if (icon) {
+                        icon.classList.add('ph-list');
+                        icon.classList.remove('ph-x');
+                    }
+                }
+            }
             const viewKey = item.getAttribute('data-view');
             if (!viewKey) return;
 
