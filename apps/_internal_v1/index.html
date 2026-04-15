@@ -20,10 +20,24 @@
         <div class="login-box">
             <h2 class="brand-logo"><span>BG</span><span>SYSTEM</span></h2>
             <p>INTERNAL ACCESS ONLY</p>
-            <input type="password" id="password-input" placeholder="ACCESS KEY">
+            <div class="password-wrapper" style="position: relative; width: 100%; margin-bottom: 2rem;">
+                <input type="password" id="password-input" placeholder="ACCESS KEY">
+                <i class="ph ph-eye" id="toggle-pwd" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--accent-green); transition: 0.3s; opacity: 0.6;"></i>
+            </div>
+            
+            <div class="remember-session" style="display: flex; align-items: center; justify-content: center; gap: 0.8rem; margin-bottom: 2rem; width: 100%;">
+                <input type="checkbox" id="remember-me" style="accent-color: var(--accent-green); cursor: pointer; width: 16px; height: 16px;">
+                <label for="remember-me" style="font-size: 0.65rem; color: var(--text-secondary); letter-spacing: 0.1em; cursor: pointer;">MANTENER SESIÓN INICIADA</label>
+            </div>
+
             <button id="login-btn">AUTH</button>
         </div>
     </div>
+
+    <!-- Mobile Menu Toggle -->
+    <button id="mobile-menu-toggle" class="mobile-only-btn">
+        <i class="ph ph-list"></i>
+    </button>
 
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header" id="logo-toggle" style="cursor: pointer;" title="Toggle Workspace">

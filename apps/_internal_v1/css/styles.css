@@ -1597,3 +1597,146 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     font-weight: 950;
     margin-left: 1rem;
 }
+
+/* --- LOGIN UI REFINEMENTS --- */
+.login-box {
+    width: 100%;
+    max-width: 400px;
+    padding: 3rem !important;
+}
+
+.login-box input {
+    font-size: 1rem !important;
+    text-align: center;
+    letter-spacing: 0.1em;
+}
+
+.login-box input::placeholder {
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    opacity: 0.5;
+}
+
+#toggle-pwd:hover {
+    opacity: 1 !important;
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* --- RESPONSIVENESS (MOBILE-FIRST) --- */
+
+.mobile-only-btn {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    background: var(--accent-green);
+    color: #000;
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar.mobile-active {
+    transform: translateX(0) !important;
+    box-shadow: 20px 0 50px rgba(0,0,0,0.8);
+}
+
+@media (max-width: 1024px) {
+    .metrics-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .giant-title {
+        font-size: 5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        overflow-y: auto;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        transform: translateX(-100%);
+        transition: transform 0.4s var(--transition-smooth);
+        width: 280px;
+    }
+
+    .main-content {
+        padding: 1.5rem !important;
+    }
+
+    .app-header-v1 {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .metrics-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-bottom: 3rem;
+    }
+
+    .giant-title {
+        font-size: 3.5rem;
+        line-height: 1;
+        margin-bottom: 2rem;
+    }
+
+    .mobile-only-btn {
+        display: flex;
+    }
+
+    /* Kanban Mobile Transformation */
+    .board-container {
+        padding: 0 !important;
+    }
+
+    .kanban-board {
+        flex-direction: column;
+        gap: 2rem;
+        padding-bottom: 4rem;
+    }
+
+    .kanban-column {
+        min-width: 100% !important;
+        width: 100% !important;
+        max-height: none;
+    }
+
+    .column-header {
+        position: sticky;
+        top: 0;
+        background: var(--bg-color);
+        z-index: 5;
+        padding: 1rem 0;
+    }
+
+    /* Modal adjustments */
+    .modal-content {
+        width: 95% !important;
+        margin: 10px auto;
+        padding: 1.5rem !important;
+    }
+
+    .input-row {
+        flex-direction: column;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.2rem;
+    }
+}
