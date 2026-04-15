@@ -576,7 +576,12 @@ window.showCustomConfirm = (title, msg, onProceed) => {
     const proceedBtn = document.getElementById('confirm-proceed');
     const cancelBtn = document.getElementById('confirm-cancel');
 
-    const close = () => modal.classList.add('hidden');
+    const close = () => {
+        modal.classList.add('hidden');
+        // Clean up listeners to avoid multiple attachments
+        proceedBtn.onclick = null;
+        cancelBtn.onclick = null;
+    };
     
     proceedBtn.onclick = () => {
         onProceed();
@@ -588,11 +593,28 @@ window.showCustomConfirm = (title, msg, onProceed) => {
 // --- MODAL LOGIC ---
 window.openNewProject = () => {
     document.getElementById('new-project-title').value = '';
+    const titleH2 = document.querySelector('#project-modal h2');
+    if (titleH2) titleH2.textContent = 'NEW_PROJECT';
+    
     document.getElementById('new-project-category').value = '';
     document.getElementById('new-project-deadline').value = '';
+    document.getElementById('new-project-desc').value = '';
+    
     const modal = document.getElementById('project-modal');
     if (modal) modal.classList.remove('hidden');
 };
+
+// --- DYNAMIC TITLE UPDATE ---
+document.addEventListener('DOMContentLoaded', () => {
+    const projectTitleInput = document.getElementById('new-project-title');
+    const projectModalH2 = document.querySelector('#project-modal h2');
+    if (projectTitleInput && projectModalH2) {
+        projectTitleInput.addEventListener('input', (e) => {
+            const val = e.target.value.trim().toUpperCase();
+            projectModalH2.textContent = val ? val : 'NEW_PROJECT';
+        });
+    }
+});
 
 window.closeProjectModal = () => {
     const modal = document.getElementById('project-modal');
@@ -600,6 +622,9 @@ window.closeProjectModal = () => {
 };
 
 window.submitNewProject = () => {
+    const btn = document.querySelector('#project-modal .btn-primary');
+    if (btn) btn.disabled = true; // Prevent double submit
+
     const title = document.getElementById('new-project-title').value;
     const category = document.getElementById('new-project-category').value || 'WEB';
     const deadline = document.getElementById('new-project-deadline').value || 'TBD';
@@ -607,6 +632,7 @@ window.submitNewProject = () => {
     
     if (!title) {
         alert('Enter title');
+        if (btn) btn.disabled = false;
         return;
     }
 
@@ -637,11 +663,12 @@ window.submitNewProject = () => {
         updateCounters();
         updateDashboard();
         renderRealCalendar2026(); 
+        closeProjectModal();
     }
+    if (btn) btn.disabled = false;
     
     document.getElementById('new-project-title').value = '';
     document.getElementById('new-project-desc').value = '';
-    window.closeProjectModal();
 };
 
 // --- VOICE CAPTURE ENGINE ---
@@ -767,9 +794,13 @@ async function loadState() {
     
     // Load budgets
     window.allBudgets = state['budgets'] || [];
+    
+    const namesToDelete = ["LIVERPOOL REBRAND", "BUFARRA UMBRO"];
+
     Object.keys(state).forEach(colId => {
+        if (colId === 'budgets' || colId === 'last_updated') return;
         let container;
-        if (colId === 'archive-storage') {
+        if (colId === 'archive-storage' || colId === 'hidden-archive-storage') {
             container = document.getElementById('hidden-archive-storage');
         } else {
             const column = document.getElementById(colId);
@@ -780,9 +811,18 @@ async function loadState() {
         container.innerHTML = ''; 
 
         state[colId].forEach(taskData => {
+            // Data Cleanup Check
+            const titleUpper = (taskData.html.match(/<h3>(.*?)<\/h3>/i) || ["", ""])[1].toUpperCase();
+            if (namesToDelete.some(n => titleUpper.includes(n))) {
+                console.log("Cleaning up bugged project:", titleUpper);
+                return;
+            }
+
             const card = document.createElement('div');
             card.className = 'card' + (taskData.archived ? ' archived' : '');
-            card.draggable = taskData.archived ? false : true;
+            card.draggable = true; // ALWAYS draggable for operational
+            if (taskData.archived) card.draggable = false;
+            
             card.id = taskData.id;
             card.setAttribute('data-status', taskData.dataStatus);
             if (taskData.archived) {
