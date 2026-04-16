@@ -869,11 +869,22 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .modal-box {
     background: #0a0a0a;
     border: 1px solid var(--border-color);
-    padding: 3rem;
-    border-radius: 12px;
+    padding: 3.5rem;
+    border-radius: 20px;
     width: 100%;
     max-width: 500px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+    transition: all 0.4s var(--transition-smooth);
+}
+.budget-modal-box {
+    width: 90vw;
+    max-width: 1200px;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 4rem;
+    overflow: hidden;
 }
 .modal-box h2 {
     font-size: 1.5rem;
@@ -886,36 +897,69 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    margin-bottom: 2rem;
-    max-height: 65vh;
-    overflow-y: auto;
-    padding-right: 10px;
+    margin-bottom: 3rem;
 }
-
-.modal-body::-webkit-scrollbar {
-    width: 6px;
-}
-
-.modal-body::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-}
-
-.modal-body input, .modal-body textarea {
+.modal-body input, .modal-body select {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 1rem;
+    padding: 1.2rem;
     color: #fff;
-    border-radius: 4px;
+    border-radius: 12px;
     font-family: var(--font-main);
     font-size: 0.8rem;
     outline: none;
     transition: all 0.3s ease;
+    width: 100%;
 }
-
-.modal-body textarea {
+#new-project-desc {
+    width: 100%;
     min-height: 120px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.2rem;
+    color: #fff;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 0.8rem;
     resize: vertical;
+    outline: none;
+    transition: all 0.3s ease;
+}
+.modal-input-group {
+    position: relative;
+    width: 100%;
+}
+.modal-input-group .btn-voice {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--accent-green);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 5;
+}
+input[type="date"] {
+    position: relative;
+    cursor: pointer;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    cursor: pointer;
 }
 .modal-body input:focus, .modal-select:focus, .edit-input:focus, .edit-textarea:focus {
     border-color: var(--accent-green) !important;
@@ -924,8 +968,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 .modal-footer {
     display: flex;
-    gap: 1rem;
-    justify-content: flex-end;
+    gap: 1.5rem;
+    justify-content: center;
 }
 .modal-footer button {
     padding: 1rem 2rem;
@@ -1527,35 +1571,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 /* --- Budget Modal Specifics --- */
 .budget-modal-box {
-    max-width: 1000px;
-    width: 90vw;
-}
-
-.budget-modal-body {
-    display: grid;
-    grid-template-columns: 380px 1fr;
-    gap: 2.5rem;
-    align-items: flex-start;
-}
-
-.budget-col-left {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    padding-right: 1.5rem;
-    border-right: 1px solid rgba(255,255,255,0.05);
-}
-
-.budget-col-right {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.budget-items-scroll {
-    max-height: 400px;
-    overflow-y: auto;
-    padding-right: 15px;
+    max-width: 600px;
 }
 
 .input-row {
@@ -1593,56 +1609,325 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     opacity: 0.6;
 }
 
-.budget-items-scroll {
-    max-height: 200px;
-    overflow-y: auto;
+.budget-modal-box {
+    width: 90vw;
+    max-width: 1250px;
+    height: 720px;
+    max-height: 95vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    background: #080808;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 255, 136, 0.1);
+    box-shadow: 0 50px 100px rgba(0,0,0,0.9);
+}
+
+.budget-header {
+    padding: 1rem 2rem 0.2rem 2rem;
+    text-align: center;
+}
+
+.budget-header h2 {
+    font-size: 1.5rem;
+    color: var(--accent-green);
+    letter-spacing: 0.2em;
+    font-weight: 950;
+    margin: 0.2rem 0;
+}
+
+.budget-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 2rem;
+    padding: 0.5rem 4rem;
+    overflow: hidden;
+}
+
+/* Columna Izquierda: Datos */
+.budget-col-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: flex-start;
+}
+
+/* Columna Derecha: Items */
+.budget-col-right {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    overflow: hidden;
+}
+
+.budget-section-label {
+    font-size: 0.6rem;
+    color: var(--accent-green);
+    letter-spacing: 1.5px;
+    font-weight: 950;
+    margin-bottom: 0.4rem;
+    display: block;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+.budget-input-pill {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding: 0.95rem 1.2rem !important;
+    color: #fff !important;
+    border-radius: 12px !important;
+    font-size: 0.85rem !important;
+    width: 100%;
+}
+
+.budget-input-pill:focus {
+    border-color: var(--accent-green) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
+}
+
+.currency-tax-row {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 1rem;
+}
+
+.iva-toggle-pill {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.2rem;
+    color: #fff;
+    height: 44px;
+}
+
+/* Total Box Pro */
+.budget-total-card {
+    margin-top: auto;
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.05), rgba(0, 0, 0, 0.4));
+    border: 1px solid rgba(0, 255, 136, 0.1);
+    padding: 1.2rem 1.8rem;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    border-right: 4px solid var(--accent-green);
+}
+
+.budget-total-card .label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    opacity: 0.5;
+    margin-bottom: 0.5rem;
+}
+
+.budget-total-card .value {
+    font-size: 2.2rem;
+    font-weight: 950;
+    color: #fff;
+    text-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+    line-height: 1;
+}
+
+/* Items List */
+.items-list-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.items-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 1rem;
+}
+
+.items-list-header h3 {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    margin: 0;
+    opacity: 0.8;
+}
+
+.budget-items-scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.budget-items-scroll-area::-webkit-scrollbar {
+    width: 6px;
+}
+.budget-items-scroll-area::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 136, 0.2);
+    border-radius: 10px;
 }
 
 .budget-item-row {
     display: grid;
-    grid-template-columns: 1fr 100px 40px;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
+    grid-template-columns: 1fr 110px 40px;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+    align-items: center;
 }
 
 .budget-item-row input {
-    background: rgba(0,0,0,0.3);
-    border: 1px solid rgba(255,255,255,0.1);
-    padding: 0.6rem;
-    color: #fff;
-    border-radius: 4px;
-    font-size: 0.8rem;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding: 1.2rem !important;
+    color: #fff !important;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: 0.3s;
 }
 
-.btn-remove-item {
-    background: rgba(255,50,50,0.1);
-    color: #ff5555;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.budget-item-row input:focus {
+    border-color: var(--accent-green) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
 }
 
-.budget-total-preview {
-    text-align: right;
-    padding: 1.5rem;
-    background: rgba(0,255,136,0.05);
+.btn-remove-item-pro {
+    background: rgba(255, 50, 50, 0.05) !important;
+    border: 1px solid rgba(255, 50, 50, 0.15) !important;
+    color: #ff4444 !important;
+    width: 38px;
+    height: 38px;
     border-radius: 8px;
-    border-right: 4px solid var(--accent-green);
-    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.budget-total-preview span:first-child {
-    font-size: 0.7rem;
-    font-weight: 800;
-    opacity: 0.6;
+.btn-remove-item-pro:hover {
+    background: #ff4444 !important;
+    color: #fff !important;
+    transform: scale(1.05);
 }
 
-.budget-total-preview .accent-green {
-    font-size: 1.4rem;
-    font-weight: 950;
-    margin-left: 1rem;
+#budget-notes-pro {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    color: #fff;
+    padding: 1.2rem;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    outline: none;
+    height: 100px;
+    width: 100%;
+    resize: none;
 }
+
+#budget-notes {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    color: #fff;
+    padding: 1rem;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    outline: none;
+    transition: 0.3s;
+    height: 70px;
+    width: 100%;
+    resize: none;
+}
+
+#budget-notes:focus {
+    border-color: var(--accent-green) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Share/Link Action in Table */
+.btn-share-budget {
+    background: rgba(0, 255, 136, 0.05);
+    color: var(--accent-green);
+    border: 1px solid rgba(0, 255, 136, 0.1);
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-share-budget:hover {
+    background: var(--accent-green);
+    color: #000;
+}
+
+/* Footer */
+.budget-footer-pro {
+    padding: 1rem 5rem 1.5rem 5rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.budget-footer-pro .btn-pro {
+    padding: 1.2rem 4rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-cancel-pro {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.btn-cancel-pro:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.btn-save-pro {
+    background: var(--accent-green);
+    border: none;
+    color: #000;
+}
+
+.btn-save-pro:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 255, 136, 0.2);
+}
+
+@media (max-width: 900px) {
+    .budget-modal-box {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        overflow-y: auto;
+    }
+    .budget-body {
+        display: flex;
+        flex-direction: column;
+        padding: 2rem;
+        overflow: visible;
+    }
+    .budget-col-right {
+        overflow: visible;
+    }
+}
+
 
 /* --- LOGIN UI REFINEMENTS --- */
 .login-box {
@@ -1772,21 +2057,81 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     }
 
     /* Modal adjustments */
-    .modal-box {
+    .modal-content {
         width: 95% !important;
         margin: 10px auto;
         padding: 1.5rem !important;
     }
 
-    .modal-body {
-        max-height: 70vh;
-    }
-
     .input-row {
-        grid-template-columns: 1fr;
+        flex-direction: column;
     }
     
-    .modal-box h2 {
+    .modal-header h2 {
         font-size: 1.2rem;
     }
+
+    /* Full Screen Modals for Mobile UX */
+    .modal-box {
+        max-width: none !important;
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 0 !important;
+        padding: 4rem 1.5rem 2rem 1.5rem !important;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+    }
+
+    .modal-body {
+        flex: 1;
+        margin-bottom: 2rem !important;
+    }
+
+    .budget-items-scroll {
+        max-height: none !important;
+        overflow: visible;
+    }
+
+    .budget-modal-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .budget-meta {
+        width: 100%;
+    }
+
+    .desktop-total {
+        display: none;
+    }
+
+    .mobile-total {
+        display: block;
+        margin-top: 2rem;
+    }
+
+    .modal-footer {
+        padding-bottom: 2rem;
+        flex-shrink: 0;
+    }
+}
+.today-cell {
+    border: 1px solid var(--accent-green) !important;
+    background: rgba(0, 255, 136, 0.05) !important;
+}
+
+.today-cell .day-number {
+    background: var(--accent-green);
+    color: #000;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 950;
+    margin-bottom: 5px;
 }
