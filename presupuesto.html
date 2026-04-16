@@ -277,7 +277,10 @@
         <section class="proposal-section" id="proposal-container" style="display: none;">
             <span class="label">Documentación Adjunta</span>
             <p style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 2rem;">He preparado una propuesta detallada con referencias visuales y alcances técnicos.</p>
-            <a href="#" id="proposal-link" target="_blank" class="btn-proposal">VER PROPUESTA DETALLADA</a>
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <a href="#" id="proposal-link" target="_blank" class="btn-proposal">VER PROPUESTA</a>
+                <a href="#" id="identity-link" target="_blank" class="btn-proposal" style="border-color: #fff; color: #fff; display: none;">VER IDENTIDAD</a>
+            </div>
         </section>
 
         <div class="actions">
@@ -343,6 +346,13 @@
 
                 if (b.proposalUrl) {
                     document.getElementById('proposal-link').href = b.proposalUrl;
+                    document.getElementById('proposal-container').style.display = 'block';
+                }
+
+                if (b.identityUrl) {
+                    const iLink = document.getElementById('identity-link');
+                    iLink.href = b.identityUrl;
+                    iLink.style.display = 'inline-block';
                     document.getElementById('proposal-container').style.display = 'block';
                 }
 

@@ -3,6 +3,72 @@
    Core logic for Kanban board, auth, and state.
    ========================================= */
 
+// --- GLOBAL UTILITIES (SUPABASE & AUTH) ---
+window.AUTH_HASH = '1e4e8b049223c94c574465b3d3755ad6fbabb1d8a2898480ff90b44d07c34369';
+window.SUPABASE_URL = "https://hmaqdzkpjkxamggaiypo.supabase.co";
+window.SUPABASE_KEY = "sb_publishable_Vu_F-McwcDK4g2k8fU6w7A_p_Mva8-Y";
+window.SP_HEADERS = { 
+    "apikey": window.SUPABASE_KEY, 
+    "Authorization": `Bearer ${window.SUPABASE_KEY}`,
+    "Content-Type": "application/json",
+    "Prefer": "return=representation"
+};
+
+window.spUpload = async function(bucket, path, file) {
+    let url = `${window.SUPABASE_URL}/storage/v1/object/${bucket}/${path}`;
+    try {
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: {
+                "apikey": window.SUPABASE_KEY,
+                "Authorization": `Bearer ${window.SUPABASE_KEY}`,
+                "Content-Type": file.type
+            },
+            body: file
+        });
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.message || "Upload failed");
+        }
+        return `${window.SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
+    } catch (e) {
+        console.error("Storage Error:", e);
+        alert(`Storage Error: ${e.message}. Asegurate de tener una política de INSERT activa en el Bucket 'proposals' en Supabase.`);
+        return null;
+    }
+};
+
+window.spFetch = async function(endpoint, method = 'GET', body = null) {
+    let url = `${window.SUPABASE_URL}/rest/v1/${endpoint}`;
+    const opts = { method, headers: window.SP_HEADERS };
+    if (body) opts.body = JSON.stringify(body);
+    try {
+        const res = await fetch(url, opts);
+        if (!res.ok) throw new Error(res.statusText);
+        const text = await res.text();
+        return text ? JSON.parse(text) : {};
+    } catch (e) {
+        console.error("Supabase Error:", e);
+        return null;
+    }
+}
+
+window.hashPassword = async function(str) {
+    if (!window.crypto || !window.crypto.subtle) {
+        console.warn("Insecure context: crypto.subtle not available.");
+        return null;
+    }
+    try {
+        const msgUint8 = new TextEncoder().encode(str);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    } catch (e) {
+        console.error("Hashing failed:", e);
+        return null;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Core Element Selection
     const loginOverlay = document.getElementById('login-overlay');
@@ -14,47 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const appViews = document.querySelectorAll('.app-view');
     const columns = document.querySelectorAll('.kanban-column');
 
-    // 2. Authentication & Cloud Logic (Supabase)
-    const AUTH_HASH = '1e4e8b049223c94c574465b3d3755ad6fbabb1d8a2898480ff90b44d07c34369';
-    const SUPABASE_URL = "https://hmaqdzkpjkxamggaiypo.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_Vu_F-McwcDK4g2k8fU6w7A_p_Mva8-Y";
-    const SP_HEADERS = { 
-        "apikey": SUPABASE_KEY, 
-        "Authorization": `Bearer ${SUPABASE_KEY}`,
-        "Content-Type": "application/json",
-        "Prefer": "return=representation"
-    };
-
-    async function spFetch(endpoint, method = 'GET', body = null) {
-        let url = `${SUPABASE_URL}/rest/v1/${endpoint}`;
-        const opts = { method, headers: SP_HEADERS };
-        if (body) opts.body = JSON.stringify(body);
-        try {
-            const res = await fetch(url, opts);
-            if (!res.ok) throw new Error(res.statusText);
-            const text = await res.text();
-            return text ? JSON.parse(text) : {};
-        } catch (e) {
-            console.error("Supabase Error:", e);
-            return null;
-        }
-    }
-
-    async function hashPassword(str) {
-        if (!window.crypto || !window.crypto.subtle) {
-            console.warn("Insecure context: crypto.subtle not available.");
-            return null;
-        }
-        try {
-            const msgUint8 = new TextEncoder().encode(str);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        } catch (e) {
-            console.error("Hashing failed:", e);
-            return null;
-        }
-    }
+    // 2. Authentication logic (Constants now global)
 
     const checkAuth = async () => {
         const val = pwdInput.value.trim();
@@ -101,6 +127,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (loginBtn) loginBtn.addEventListener('click', checkAuth);
     if (pwdInput) pwdInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkAuth(); });
+
+    // --- Modal Enhancement Listeners ---
+    const projectTitleInput = document.getElementById('new-project-title');
+    const projectModalH2 = document.querySelector('#project-modal h2');
+    const projectDateInput = document.getElementById('new-project-deadline');
+
+    if (projectTitleInput && projectModalH2) {
+        projectTitleInput.addEventListener('input', (e) => {
+            const val = e.target.value.trim().toUpperCase();
+            projectModalH2.textContent = val ? val : 'NEW_PROJECT';
+        });
+    }
+
+    if (projectDateInput) {
+        // Trigger date picker when clicking anywhere on the field
+        projectDateInput.addEventListener('click', () => {
+            if (typeof projectDateInput.showPicker === 'function') {
+                projectDateInput.showPicker();
+            }
+        });
+    }
 
     // Password Visibility Toggle
     const togglePwd = document.getElementById('toggle-pwd');
@@ -178,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (viewKey === 'archive') updateArchive();
             if (viewKey === 'dashboard') updateDashboard();
-            if (viewKey === 'calendar') renderRealCalendar2026();
+            if (viewKey === 'calendar') renderRealCalendar();
             if (viewKey === 'budgets') renderBudgets();
             if (viewKey === 'projects') {
                 sortAllColumns();
@@ -201,15 +248,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const cardId = e.dataTransfer.getData('text');
             const card = document.getElementById(cardId);
             if (card) {
-                showCustomConfirm(
+                const title = card.querySelector('h3')?.textContent || "Unknown Project";
+                window.showCustomConfirm(
                     "DELETE PROJECT", 
-                    `Are you sure you want to permanently delete "${card.querySelector('h3').textContent}"? This action cannot be undone.`,
+                    `Are you sure you want to permanently delete "${title}"? This action cannot be undone.`,
                     () => {
-                        logActivity(`Deleted project: ${card.querySelector('h3').textContent}`);
-                        card.remove();
-                        saveState();
-                        updateCounters();
-                        updateDashboard();
+                        try {
+                            console.log("Deleting card:", cardId);
+                            card.remove();
+                            window.saveState();
+                            window.updateCounters();
+                            window.updateDashboard();
+                        } catch (err) {
+                            console.error("Delete failed:", err);
+                        }
                     }
                 );
             }
@@ -261,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadState().then(() => {
         updateDashboard();
         updateCounters();
-        renderRealCalendar2026();
+        renderRealCalendar();
         renderActivityLog();
         renderBudgets();
     });
@@ -302,18 +354,24 @@ function parseDeadline(str) {
     if (!str || str.toLowerCase() === 'tbd' || str.toLowerCase() === 'waiting' || str.toLowerCase() === 'published') return new Date(2099, 11, 31);
     
     if (str.match(/^\d{4}-\d{2}-\d{2}$/)) {
-        const d = new Date(str);
-        d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
-        return d;
+        const parts = str.split('-');
+        return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]), 12, 0, 0); // Noon to avoid day shift
     }
 
     const months = { 
         'jan': 0, 'feb': 1, 'mar': 2, 'apr': 3, 'may': 4, 'jun': 5, 'jul': 6, 'aug': 7, 'sep': 8, 'oct': 9, 'nov': 10, 'dec': 11,
         'ene': 0, 'feb': 1, 'mar': 2, 'abr': 3, 'may': 4, 'jun': 5, 'jul': 6, 'ago': 7, 'sep': 8, 'oct': 9, 'nov': 10, 'dic': 11
     };
+
+    if (str.toLowerCase() === 'today') return new Date();
+    if (str.toLowerCase() === 'tomorrow') {
+        const d = new Date();
+        d.setDate(d.getDate() + 1);
+        return d;
+    }
     
     const parts = str.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/);
-    let month = 2; // Default Mar
+    let month = new Date().getMonth(); 
     let day = 1;
 
     parts.forEach(p => {
@@ -322,7 +380,7 @@ function parseDeadline(str) {
         if (!isNaN(parseInt(p)) && parseInt(p) < 32) day = parseInt(p);
     });
 
-    return new Date(2026, month, day);
+    return new Date(new Date().getFullYear(), month, day, 12, 0, 0);
 }
 
 window.showView = (viewId) => {
@@ -355,8 +413,10 @@ function sortColumn(colId) {
     const cards = Array.from(container.querySelectorAll('.card'));
     
     cards.sort((a, b) => {
-        const deadA = parseDeadline(a.querySelector('.deadline').textContent);
-        const deadB = parseDeadline(b.querySelector('.deadline').textContent);
+        const dlA = a.querySelector('.deadline')?.textContent || 'WAITING';
+        const dlB = b.querySelector('.deadline')?.textContent || 'WAITING';
+        const deadA = parseDeadline(dlA);
+        const deadB = parseDeadline(dlB);
         return deadA - deadB;
     });
 
@@ -500,37 +560,51 @@ window.saveProjectEdits = () => {
     const card = document.getElementById(currentEditingId);
     if (!card) return;
 
-    const newTitle = document.getElementById('edit-title').value;
-    const newStatus = document.getElementById('edit-status').value;
-    const newCat = document.getElementById('edit-category').value;
-    const newDesc = document.getElementById('edit-desc').value;
-    const newDL = document.getElementById('edit-deadline').value;
+    try {
+        const newTitle = document.getElementById('edit-title').value;
+        const newStatus = document.getElementById('edit-status').value;
+        const newCat = document.getElementById('edit-category').value;
+        const newDesc = document.getElementById('edit-desc').value;
+        const newDL = document.getElementById('edit-deadline').value;
 
-    // Update Project Card Data
-    card.querySelector('h3').textContent = newTitle;
-    card.querySelector('.card-category').textContent = newCat;
-    card.querySelector('p').textContent = newDesc;
-    if (newDL) card.querySelector('.deadline').textContent = getHumanDate(newDL);
-    
-    // Status Logic
-    const oldStatus = card.getAttribute('data-status');
-    if (oldStatus !== newStatus) {
-        card.setAttribute('data-status', newStatus);
+        // Update Project Card Data
+        const h3 = card.querySelector('h3');
+        const cat = card.querySelector('.card-category');
+        const p = card.querySelector('p');
+        const dl = card.querySelector('.deadline');
+
+        if (h3) h3.textContent = newTitle;
+        if (cat) cat.textContent = newCat;
+        if (p) p.textContent = newDesc;
+        if (newDL && dl) dl.textContent = getHumanDate(newDL);
         
-        // Use existing col logic
-        const colMap = { 'planning': 'todo', 'active': 'inprogress', 'review': 'review', 'finished': 'done' };
-        const colId = colMap[newStatus];
-        updateCardStatus(card, colId);
-        
-        const targetCol = document.getElementById(colId);
-        if (targetCol) targetCol.querySelector('.column-tasks').appendChild(card);
+        // Status Logic
+        const oldStatus = card.getAttribute('data-status');
+        if (oldStatus !== newStatus) {
+            card.setAttribute('data-status', newStatus);
+            const colMap = { 'planning': 'todo', 'active': 'inprogress', 'review': 'review', 'finished': 'done' };
+            const colId = colMap[newStatus];
+            updateCardStatus(card, colId);
+            const targetCol = document.getElementById(colId);
+            if (targetCol) targetCol.querySelector('.column-tasks').appendChild(card);
+        }
+
+        // --- Instant UX Feedback ---
+        window.toggleEditMode(false);
+        window.openDetail(currentEditingId); // Refresh Current Detail View
+
+        // --- Background Save ---
+        setTimeout(() => {
+            window.saveState();
+            window.sortAllColumns();
+            window.updateDashboard();
+            window.renderRealCalendar(); // Sync Calendar
+        }, 50);
+
+    } catch (err) {
+        console.error("Save edits failed:", err);
+        alert("Error saving edits. Check console.");
     }
-
-    logActivity(`Refinement: ${newTitle} updated.`);
-    saveState();
-    sortAllColumns();
-    updateDashboard();
-    window.openDetail(currentEditingId); // Refresh Current Detail View
 };
 
 window.closeDetail = () => {
@@ -562,7 +636,7 @@ window.clearDoneColumn = () => {
     saveState();
     updateCounters();
     updateDashboard();
-    renderRealCalendar2026();
+    renderRealCalendar();
 };
 
 // --- CUSTOM CONFIRMATION ---
@@ -575,17 +649,17 @@ window.showCustomConfirm = (title, msg, onProceed) => {
 
     const proceedBtn = document.getElementById('confirm-proceed');
     const cancelBtn = document.getElementById('confirm-cancel');
-
-    const close = () => {
-        modal.classList.add('hidden');
-        // Clean up listeners to avoid multiple attachments
-        proceedBtn.onclick = null;
-        cancelBtn.onclick = null;
-    };
+    const close = () => modal.classList.add('hidden');
     
     proceedBtn.onclick = () => {
-        onProceed();
-        close();
+        close(); // Close first for instant feedback
+        setTimeout(() => {
+            try {
+                onProceed();
+            } catch (err) {
+                console.error("Confirm action failed:", err);
+            }
+        }, 50);
     };
     cancelBtn.onclick = close;
 };
@@ -593,28 +667,16 @@ window.showCustomConfirm = (title, msg, onProceed) => {
 // --- MODAL LOGIC ---
 window.openNewProject = () => {
     document.getElementById('new-project-title').value = '';
-    const titleH2 = document.querySelector('#project-modal h2');
-    if (titleH2) titleH2.textContent = 'NEW_PROJECT';
-    
     document.getElementById('new-project-category').value = '';
     document.getElementById('new-project-deadline').value = '';
     document.getElementById('new-project-desc').value = '';
     
+    const h2 = document.querySelector('#project-modal h2');
+    if (h2) h2.textContent = 'NEW_PROJECT';
+
     const modal = document.getElementById('project-modal');
     if (modal) modal.classList.remove('hidden');
 };
-
-// --- DYNAMIC TITLE UPDATE ---
-document.addEventListener('DOMContentLoaded', () => {
-    const projectTitleInput = document.getElementById('new-project-title');
-    const projectModalH2 = document.querySelector('#project-modal h2');
-    if (projectTitleInput && projectModalH2) {
-        projectTitleInput.addEventListener('input', (e) => {
-            const val = e.target.value.trim().toUpperCase();
-            projectModalH2.textContent = val ? val : 'NEW_PROJECT';
-        });
-    }
-});
 
 window.closeProjectModal = () => {
     const modal = document.getElementById('project-modal');
@@ -622,17 +684,16 @@ window.closeProjectModal = () => {
 };
 
 window.submitNewProject = () => {
-    const btn = document.querySelector('#project-modal .btn-primary');
-    if (btn) btn.disabled = true; // Prevent double submit
-
-    const title = document.getElementById('new-project-title').value;
+    const titleInput = document.getElementById('new-project-title');
+    const title = titleInput ? titleInput.value.trim() : "";
     const category = document.getElementById('new-project-category').value || 'WEB';
     const deadline = document.getElementById('new-project-deadline').value || 'TBD';
     const desc = document.getElementById('new-project-desc').value || 'Project specs pending...';
     
+    console.log("Submit Action - Title Captured:", title);
+
     if (!title) {
         alert('Enter title');
-        if (btn) btn.disabled = false;
         return;
     }
 
@@ -658,19 +719,25 @@ window.submitNewProject = () => {
     const todoContainer = document.querySelector('#todo .column-tasks');
     if (todoContainer) {
         todoContainer.appendChild(card);
-        sortAllColumns();
-        saveState();
-        updateCounters();
-        updateDashboard();
-        renderRealCalendar2026(); 
-        closeProjectModal();
-        // ADVANCE: Open detail automatically for the new project
-        window.openDetail(id);
+        
+        // --- 1. Immediate UI Feedback (Close & Clear) ---
+        document.getElementById('new-project-title').value = '';
+        document.getElementById('new-project-desc').value = '';
+        window.closeProjectModal();
+
+        // --- 2. Background Persistence & Updates ---
+        setTimeout(() => {
+            try {
+                saveState();
+                sortAllColumns();
+                updateCounters();
+                updateDashboard();
+                renderRealCalendar(); 
+            } catch (err) {
+                console.error("Post-creation tasks failed:", err);
+            }
+        }, 50);
     }
-    if (btn) btn.disabled = false;
-    
-    document.getElementById('new-project-title').value = '';
-    document.getElementById('new-project-desc').value = '';
 };
 
 // --- VOICE CAPTURE ENGINE ---
@@ -721,35 +788,53 @@ window.startVoiceToText = (textareaId, btnSelector) => {
 window.startVoiceCapture = () => window.startVoiceToText('new-project-desc', '.modal-body .btn-voice');
 window.startVoiceCaptureDetail = () => window.startVoiceToText('edit-desc', '.btn-voice-detail');
 
-function saveState() {
-    const state = {};
-    // Operational Columns
-    const columns = document.querySelectorAll('.kanban-column');
-    columns.forEach(col => {
-        state[col.id] = Array.from(col.querySelectorAll('.card')).map(c => ({
-            id: c.id,
-            html: c.innerHTML,
-            dataStatus: c.getAttribute('data-status'),
-            archived: c.getAttribute('data-archived') === 'true'
-        }));
-    });
-    // Archive Storage
-    const storage = document.getElementById('hidden-archive-storage');
-    if (storage) {
-        state['archive-storage'] = Array.from(storage.querySelectorAll('.card')).map(c => ({
-            id: c.id,
-            html: c.innerHTML,
-            dataStatus: 'archived',
-            archived: true
-        }));
-    }
-    // budgets
-    state['budgets'] = window.allBudgets || [];
+window.saveState = function() {
+    try {
+        console.log("Global saveState initiated...");
+        const state = {};
+        // Operational Columns
+        const columns = document.querySelectorAll('.kanban-column');
+        if (columns.length === 0) return;
 
-    localStorage.setItem('bg_ecosystem_state_v3', JSON.stringify(state));
-    
-    // Cloud Sync
-    spFetch('bg_ecosystem?id=eq.main_state', 'PATCH', { data: state });
+        columns.forEach(col => {
+            if (!col.id) return;
+            state[col.id] = Array.from(col.querySelectorAll('.card')).map(c => ({
+                id: c.id,
+                html: c.innerHTML,
+                dataStatus: c.getAttribute('data-status'),
+                archived: c.getAttribute('data-archived') === 'true'
+            }));
+        });
+
+        // Archive Storage
+        const storage = document.getElementById('hidden-archive-storage');
+        if (storage) {
+            state['archive-storage'] = Array.from(storage.querySelectorAll('.card')).map(c => ({
+                id: c.id,
+                html: c.innerHTML,
+                dataStatus: 'archived',
+                archived: true
+            }));
+        }
+
+        // budgets
+        state['budgets'] = window.allBudgets || [];
+
+        // --- Save Local ---
+        localStorage.setItem('bg_ecosystem_state_v3', JSON.stringify(state));
+        console.log("State saved locally.");
+
+        // --- Save Cloud (Async) ---
+        window.spFetch('bg_ecosystem?id=eq.main_state', 'PATCH', { data: state })
+            .then(res => {
+                if (res) console.log("State synced to Supabase.");
+                else console.warn("Cloud sync returned null/error.");
+            })
+            .catch(err => console.error("Cloud sync crash:", err));
+
+    } catch (e) {
+        console.error("CRITICAL ERROR in saveState:", e);
+    }
 }
 
 window.migrateToCloud = async () => {
@@ -768,12 +853,13 @@ window.migrateToCloud = async () => {
     }
 };
 
-async function loadState() {
+window.loadState = async function() {
+    console.log("Global loadState initiated...");
     // 1. Try Cloud Load first
-    const cloudData = await spFetch('bg_ecosystem?id=eq.main_state', 'GET');
+    const cloudData = await window.spFetch('bg_ecosystem?id=eq.main_state', 'GET');
     let state = null;
 
-    if (cloudData && cloudData[0] && Object.keys(cloudData[0].data).length > 0) {
+    if (cloudData && cloudData[0] && cloudData[0].data && Object.keys(cloudData[0].data).length > 0) {
         state = cloudData[0].data;
         console.log("Loaded context from cloud.");
     } else {
@@ -788,20 +874,21 @@ async function loadState() {
     if (!state) return;
 
     // 3. Auto-Migrate: If cloud was empty but we found local data, sync it now
-    if (cloudData && cloudData[0] && Object.keys(cloudData[0].data).length === 0 && !localStorage.getItem('bg_migrated')) {
+    if (cloudData && cloudData[0] && cloudData[0].data && Object.keys(cloudData[0].data).length === 0 && !localStorage.getItem('bg_migrated')) {
         console.log("Empty cloud detected. Syncing local data to cloud...");
-        saveState();
+        window.saveState();
         localStorage.setItem('bg_migrated', 'true');
-    }    // Load budgets
+    }
+    
+    // Load budgets
     window.allBudgets = state['budgets'] || [];
     
-    const keywordsToDelete = ["LIVERPOOL", "UMBRO", "BUFARRA"]; // Aggressive
-    let cleanupPerformed = false;
+    // ID Deduplication tracker
+    const processedIds = new Set();
 
     Object.keys(state).forEach(colId => {
-        if (colId === 'budgets' || colId === 'last_updated') return;
         let container;
-        if (colId === 'archive-storage' || colId === 'hidden-archive-storage') {
+        if (colId === 'archive-storage') {
             container = document.getElementById('hidden-archive-storage');
         } else {
             const column = document.getElementById(colId);
@@ -811,53 +898,50 @@ async function loadState() {
         if (!container) return;
         container.innerHTML = ''; 
 
-        // Important: Filter the actual state array to persist deletion
-        const originalLength = state[colId].length;
-        state[colId] = state[colId].filter(taskData => {
-            const titleUpper = (taskData.html.match(/<h3>(.*?)<\/h3>/i) || ["", ""])[1].toUpperCase();
-            const shouldDelete = keywordsToDelete.some(k => titleUpper.includes(k));
-            if (shouldDelete) {
-                console.log("Cleaning up bugged project:", titleUpper);
-                cleanupPerformed = true;
-                return false;
-            }
-            return true;
-        });
-
         state[colId].forEach(taskData => {
+            // Zombie / Corrupted Cleanup
+            if (!taskData || !taskData.id || taskData.id.includes('undefined') || (taskData.html && taskData.html.includes('>undefined<'))) {
+                console.warn("Purging zombie card detected:", taskData?.id);
+                return;
+            }
+            // Deduplication
+            if (processedIds.has(taskData.id)) {
+                console.warn("Skipping duplicate ID:", taskData.id);
+                return;
+            }
+            processedIds.add(taskData.id);
+
             const card = document.createElement('div');
             card.className = 'card' + (taskData.archived ? ' archived' : '');
-            card.draggable = !taskData.archived;
+            card.draggable = taskData.archived ? false : true;
             card.id = taskData.id;
             card.setAttribute('data-status', taskData.dataStatus);
-            
             if (taskData.archived) {
                 card.setAttribute('data-archived', 'true');
                 card.classList.add('archived');
                 card.style.display = 'none';
+                // If it's archived but somehow in a regular column, force it out
                 if (colId !== 'archive-storage' && container) {
+                    console.warn("Fixing bugged card alignment:", taskData.id);
                     const storage = document.getElementById('hidden-archive-storage');
                     if (storage) storage.appendChild(card);
-                    return;
+                    return; // Don't append to current column
                 }
             }
             card.innerHTML = taskData.html;
+            
             const dl = card.querySelector('.deadline');
             if (dl) dl.textContent = getHumanDate(dl.textContent);
+
             if (!taskData.archived) bindCardListeners(card);
             container.appendChild(card);
         });
     });
-
-    if (cleanupPerformed) {
-        console.log("Cleanup performed. Syncing cleaned state to cloud...");
-        saveState();
-    }
 }
 
 // --- CALENDAR STATE ---
 let currentMonth = new Date().getMonth();
-let currentYear = 2026;
+let currentYear = new Date().getFullYear();
 
 window.changeMonth = (delta) => {
     currentMonth += delta;
@@ -868,10 +952,10 @@ window.changeMonth = (delta) => {
         currentMonth = 11;
         currentYear--;
     }
-    renderRealCalendar2026();
+    renderRealCalendar();
 };
 
-function renderRealCalendar2026() {
+function renderRealCalendar() {
     const grid = document.getElementById('calendar-grid');
     const display = document.getElementById('current-month-display');
     if (!grid || !display) return;
@@ -888,8 +972,11 @@ function renderRealCalendar2026() {
         grid.appendChild(label);
     });
 
-    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+    const firstDay = new Date(currentYear, currentMonth, 1, 12, 0, 0).getDay();
     const lastDate = new Date(currentYear, currentMonth + 1, 0).getDate();
+    
+    const today = new Date();
+    const isThisMonth = today.getMonth() === currentMonth && today.getFullYear() === currentYear;
 
     for (let i = 0; i < firstDay; i++) {
         const empty = document.createElement('div');
@@ -903,15 +990,21 @@ function renderRealCalendar2026() {
     for (let i = 1; i <= lastDate; i++) {
         const day = document.createElement('div');
         day.className = 'calendar-day';
+        if (isThisMonth && today.getDate() === i) {
+            day.classList.add('today-cell');
+        }
         day.innerHTML = `<span class="day-number">${i}</span>`;
         
         const currentCalDate = new Date(currentYear, currentMonth, i);
         
         cards.forEach(c => {
-            const dl = c.querySelector('.deadline').textContent;
-            const projectDate = parseDeadline(dl);
+            const dlEl = c.querySelector('.deadline');
+            if (!dlEl) return;
+            const dl = dlEl.textContent;
+            const projectDate = window.parseDeadline(dl);
             
-            if (projectDate.getFullYear() === currentYear && 
+            if (projectDate && 
+                projectDate.getFullYear() === currentYear && 
                 projectDate.getMonth() === currentMonth && 
                 projectDate.getDate() === i) {
                 
@@ -994,7 +1087,7 @@ window.deleteProjectPermanently = (id) => {
         saveState();
         updateArchive();
         updateDashboard();
-        renderRealCalendar2026();
+        renderRealCalendar();
         logActivity(`System Purge: ${id} erased.`);
     });
 };
@@ -1036,8 +1129,8 @@ function updateDashboard() {
     // SEMAPHORE LOGIC
     const urgContainer = document.getElementById('urgency-groups');
     if (urgContainer) {
-        // FILTER: Excluding finished and archived
-        const liveCards = Array.from(document.querySelectorAll('.card:not(.archived):not([data-status="finished"])'));
+        // FILTER: Excluding finished and archived (Checking only active columns)
+        const liveCards = Array.from(document.querySelectorAll('.kanban-column:not(#done) .card:not(.archived)'));
         const groups = {
             'OVERDUE': [],
             'TODAY / TOMORROW': [],
@@ -1136,7 +1229,7 @@ window.renderBudgets = () => {
                 <div class="budget-total">${totalFormatted}</div>
                 <div class="budget-actions">
                     <button class="btn-action-sm" onclick="editBudget('${b.id}')"><i class="ph ph-pencil"></i> EDIT</button>
-                    <button class="btn-action-sm" onclick="shareBudget('${b.id}')"><i class="ph ph-share-network"></i> SHARE</button>
+                    <button class="btn-action-sm" onclick="shareBudget('${b.id}')" title="Copiar Link Cliente"><i class="ph ph-link"></i> LINK</button>
                     <button class="btn-action-sm" style="color: #ff5555" onclick="deleteBudget('${b.id}')"><i class="ph ph-trash"></i></button>
                 </div>
             </div>
@@ -1152,6 +1245,7 @@ window.openBudgetModal = (budgetData = null) => {
     document.getElementById('budget-client').value = budgetData ? budgetData.client : '';
     document.getElementById('budget-project').value = budgetData ? budgetData.project : '';
     document.getElementById('budget-proposal-url').value = (budgetData && budgetData.proposalUrl) ? budgetData.proposalUrl : '';
+    document.getElementById('budget-identity-url').value = (budgetData && budgetData.identityUrl) ? budgetData.identityUrl : '';
     document.getElementById('budget-notes').value = budgetData ? budgetData.notes : '';
     document.getElementById('budget-iva').checked = budgetData ? budgetData.hasIva : false;
     document.getElementById('budget-currency').value = budgetData ? budgetData.currency : 'USD';
@@ -1185,7 +1279,7 @@ window.addBudgetItem = (desc = '', price = '') => {
     row.innerHTML = `
         <input type="text" placeholder="Concepto/Servicio" class="item-desc" value="${desc}" oninput="calculateBudgetTotal()">
         <input type="number" placeholder="0" class="item-price" value="${price}" oninput="calculateBudgetTotal()">
-        <button class="btn-remove-item" onclick="this.parentElement.remove(); calculateBudgetTotal();"><i class="ph ph-x"></i></button>
+        <button class="btn-remove-item-pro" onclick="this.parentElement.remove(); calculateBudgetTotal();"><i class="ph ph-trash"></i></button>
     `;
     list.appendChild(row);
 };
@@ -1203,7 +1297,11 @@ window.calculateBudgetTotal = () => {
         currency: currency 
     }).format(total);
 
-    document.getElementById('budget-total-val').textContent = totalFormatted;
+    const t1 = document.getElementById('budget-total-val');
+    const t2 = document.getElementById('budget-total-val-mob');
+    if (t1) t1.textContent = totalFormatted;
+    if (t2) t2.textContent = totalFormatted;
+    
     return total;
 };
 
@@ -1221,6 +1319,7 @@ window.submitBudget = () => {
     const currency = document.getElementById('budget-currency').value;
     const hasIva = document.getElementById('budget-iva').checked;
     const notes = document.getElementById('budget-notes').value;
+    const identityUrl = document.getElementById('budget-identity-url').value;
     
     const items = Array.from(document.querySelectorAll('.budget-item-row')).map(row => ({
         desc: row.querySelector('.item-desc').value,
@@ -1240,13 +1339,13 @@ window.submitBudget = () => {
         if (idx !== -1) {
             window.allBudgets[idx] = { 
                 ...window.allBudgets[idx], 
-                client, project, proposalUrl, currency, hasIva, items, notes, total 
+                client, project, proposalUrl, identityUrl, currency, hasIva, items, notes, total 
             };
             logActivity(`Presupuesto actualizado: ${client}`);
         }
     } else {
         const id = 'bg-bdt-' + Date.now();
-        const newBudget = { id, client, project, proposalUrl, currency, hasIva, items, notes, total, date };
+        const newBudget = { id, client, project, proposalUrl, identityUrl, currency, hasIva, items, notes, total, date };
         window.allBudgets.unshift(newBudget);
         logActivity(`Nuevo presupuesto para ${client}`);
     }
@@ -1254,14 +1353,20 @@ window.submitBudget = () => {
     saveState();
     renderBudgets();
     closeBudgetModal();
+    
+    // Suggest sharing the new link
+    setTimeout(() => {
+        if (!window.editingBudgetId) {
+            shareBudget(window.allBudgets[0].id);
+        }
+    }, 500);
 };
 
 window.deleteBudget = (id) => {
-    showCustomConfirm("BORRAR PRESUPUESTO", "¿Seguro que querés eliminar este presupuesto?", () => {
+    window.showCustomConfirm("BORRAR PRESUPUESTO", "¿Seguro que querés eliminar este presupuesto?", () => {
         window.allBudgets = window.allBudgets.filter(b => b.id !== id);
-        saveState();
+        window.saveState();
         renderBudgets();
-        logActivity(`Presupuesto eliminado.`);
     });
 };
 
@@ -1269,16 +1374,54 @@ window.shareBudget = (id) => {
     const budget = window.allBudgets.find(b => b.id === id);
     if (!budget) return;
 
-    // Remove ID for shorter link if needed, or keep it
     const dataString = JSON.stringify(budget);
     const encoded = btoa(unescape(encodeURIComponent(dataString)));
     
-    // Determine base URL (root of the domain)
-    // For local development it might be just budget.html, but let's assume root
-    const shareUrl = window.location.origin + '/presupuesto.html?d=' + encoded;
+    let baseUrl = window.location.origin;
+    if (!baseUrl || baseUrl === 'null') {
+        // Fallback for local files
+        const path = window.location.pathname.split('/');
+        path.pop(); path.pop(); path.pop(); // Go up from apps/_internal_v1/ to root
+        baseUrl = path.join('/') || '';
+    }
+    const shareUrl = baseUrl + '/presupuesto.html?d=' + encoded;
 
     navigator.clipboard.writeText(shareUrl).then(() => {
         alert("Link de presupuesto copiado al portapapeles.");
         logActivity(`Link compartido: ${budget.client}`);
     });
+};
+
+// --- FILE UPLOAD LOGIC ---
+let currentTargetInputId = null;
+
+window.triggerFileUpload = (inputId) => {
+    currentTargetInputId = inputId;
+    document.getElementById('budget-hidden-uploader').click();
+};
+
+window.handleBudgetFileSelect = async (input) => {
+    const file = input.files[0];
+    if (!file || !currentTargetInputId) return;
+
+    const btn = document.querySelector(`button[onclick="triggerFileUpload('${currentTargetInputId}')"]`);
+    const originalIcon = btn.innerHTML;
+    btn.innerHTML = '<i class="ph ph-circle-notch animate-spin"></i>';
+    btn.disabled = true;
+
+    try {
+        const fileName = `${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
+        const publicUrl = await window.spUpload('proposals', fileName, file);
+        
+        if (publicUrl) {
+            document.getElementById(currentTargetInputId).value = publicUrl;
+            logActivity(`Archivo cargado: ${file.name}`);
+        } else {
+            alert("Error al subir archivo. Verificá que el bucket 'proposals' sea público.");
+        }
+    } finally {
+        btn.innerHTML = originalIcon;
+        btn.disabled = false;
+        input.value = ''; // Reset input
+    }
 };

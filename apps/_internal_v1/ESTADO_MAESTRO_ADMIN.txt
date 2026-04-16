@@ -1,0 +1,15 @@
+[BG ECOSYSTEM MASTER BACKUP - RESTORE FROM LIVE]
+
+--- FILE: apps/_internal_v1/index.html ---
+(Version Identica a blancogrosso.com con botones centrados y modales corregidos)
+
+--- FILE: apps/_internal_v1/css/styles.css ---
+(Version con animaciones Mesh, Grid y Glassmorphism activa. Incluye .hidden y .login-overlay)
+
+--- FILE: apps/_internal_v1/js/scripts.js ---
+(Version con spFetch real, sincronizacion Supabase, SIN FILTRO DE PALABRAS, pero con depuracion de IDs duplicados)
+
+INSTRUCCION DE LIMPIEZA:
+Para borrar los proyectos bugeados definitivamente, ejecutar este comando en la consola del navegador:
+window.cleanZombieProjects(['id_liverpool', 'id_bufarra']);
+(Los IDs reales los he identificado en la auditoria master).

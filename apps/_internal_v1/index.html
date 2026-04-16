@@ -131,26 +131,7 @@
                     <div class="column-header">
                         TO DO <span class="card-count" id="count-todo">0</span>
                     </div>
-                    <div class="column-tasks">
-                        <div class="card" draggable="true" id="task-liverpool" data-status="planning">
-                            <div class="card-header">
-                                <span class="card-category">SOCIAL MEDIA</span>
-                                <span class="card-status status-planning">TO DO</span>
-                            </div>
-                            <h3>Liverpool FC Rebrand</h3>
-                            <p>Social media rebrand para el club. Sin arrancar.</p>
-                            <div class="card-footer"><span class="deadline">Mar 27</span></div>
-                        </div>
-                        <div class="card" draggable="true" id="task-umbro" data-status="planning">
-                            <div class="card-header">
-                                <span class="card-category">SPORT DESIGN</span>
-                                <span class="card-status status-planning">TO DO</span>
-                            </div>
-                            <h3>Bufarra x Umbro</h3>
-                            <p>Cranear presentación de camiseta e imaginar línea gráfica nueva.</p>
-                            <div class="card-footer"><span class="deadline">April</span></div>
-                        </div>
-                    </div>
+                    <div class="column-tasks"></div>
                 </div>
 
                 <div class="kanban-column" id="inprogress">
@@ -276,9 +257,9 @@
                         </div>
                         <div id="detail-desc-container" class="specs-body" style="position: relative;">
                             <p id="detail-desc">Loading specs...</p>
-                            <div id="edit-desc-group" class="hidden" style="position: relative; display: flex; gap: 10px;">
-                                <button class="btn-voice btn-voice-detail" onclick="startVoiceCaptureDetail()" title="Voice-to-Summary (AI)" style="position: static;"><i class="ph ph-microphone"></i></button>
-                                <textarea id="edit-desc" class="edit-textarea" style="flex: 1;"></textarea>
+                            <div id="edit-desc-group" class="hidden" style="position: relative;">
+                                <textarea id="edit-desc" class="edit-textarea"></textarea>
+                                <button class="btn-voice btn-voice-detail" onclick="startVoiceCaptureDetail()" title="Voice-to-Summary (AI)"><i class="ph ph-microphone"></i></button>
                             </div>
                         </div>
                         <div id="edit-controls" class="edit-controls-bar hidden">
@@ -311,9 +292,9 @@
                     <option value="SOCIAL">SOCIAL MEDIA</option>
                 </select>
                 <input type="date" id="new-project-deadline">
-                <div class="modal-input-group" style="display: flex; gap: 10px; align-items: flex-start;">
-                    <button class="btn-voice" onclick="startVoiceCapture()" title="Voice-to-Summary (AI)" style="position: static;"><i class="ph ph-microphone"></i></button>
-                    <textarea id="new-project-desc" placeholder="PROJECT SPECS & OBSERVATIONS..." style="flex: 1;"></textarea>
+                <div class="modal-input-group">
+                    <textarea id="new-project-desc" placeholder="PROJECT SPECS & OBSERVATIONS..."></textarea>
+                    <button class="btn-voice" onclick="startVoiceCapture()" title="Voice-to-Summary (AI)"><i class="ph ph-microphone"></i></button>
                 </div>
             </div>
             <div class="modal-footer">
@@ -322,61 +303,79 @@
             </div>
         </div>
     </div>
-
-    <!-- Budget Modal -->
+    <!-- Budget Modal: REWRITTEN FROM SCRATCH -->
     <div id="budget-modal" class="modal hidden">
         <div class="modal-box budget-modal-box">
-            <h2>NUEVO_PRESUPUESTO</h2>
-            <div class="modal-body budget-modal-body">
+            <div class="budget-header">
+                <h2 class="modal-title" style="margin-bottom: 0.5rem;">NUEVO PRESUPUESTO</h2>
+            </div>
+
+            <div class="budget-body">
+                <!-- Columna Izquierda: Identidad y Valores -->
                 <div class="budget-col-left">
-                    <div class="input-row">
-                        <input type="text" id="budget-client" placeholder="NOMBRE DEL CLIENTE">
-                        <input type="text" id="budget-project" placeholder="PROYECTO">
+                    <div class="form-group">
+                        <span class="budget-section-label">IDENTIDAD DEL PROYECTO</span>
+                        <input type="text" id="budget-client" class="budget-input-pill" placeholder="NOMBRE DEL CLIENTE">
+                        <input type="text" id="budget-project" class="budget-input-pill" placeholder="NOMBRE DEL PROYECTO" style="margin-top: 1rem;">
                     </div>
-                    <div class="form-group" style="margin-bottom: 1.5rem;">
-                        <label style="font-size: 0.65rem; color: var(--accent-green); letter-spacing: 1px; display: block; margin-bottom: 0.5rem;">LINK A PROPUESTA (PDF / DRIVE)</label>
-                        <input type="url" id="budget-proposal-url" placeholder="https://drive.google.com/..." style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 0.8rem; border-radius: 4px; font-size: 0.75rem;">
-                    </div>
-                    <div class="input-row">
-                        <select id="budget-currency" class="modal-select">
-                            <option value="USD">USD ($)</option>
-                            <option value="UYU">UYU ($U)</option>
-                        </select>
-                        <div class="iva-toggle">
-                            <label>IVA (22%)</label>
-                            <input type="checkbox" id="budget-iva">
+
+                    <div class="form-group">
+                        <div style="display: flex; gap: 1rem;">
+                            <div style="flex: 1; display: flex; gap: 0.5rem; align-items: center;">
+                                <input type="url" id="budget-proposal-url" class="budget-input-pill" placeholder="LINK PROPUESTA" style="flex: 1;">
+                                <button class="btn-new-minimal" onclick="triggerFileUpload('budget-proposal-url')" title="Subir Archivo"><i class="ph ph-cloud-arrow-up"></i></button>
+                            </div>
+                            <div style="flex: 1; display: flex; gap: 0.5rem; align-items: center;">
+                                <input type="url" id="budget-identity-url" class="budget-input-pill" placeholder="LINK IDENTIDAD" style="flex: 1;">
+                                <button class="btn-new-minimal" onclick="triggerFileUpload('budget-identity-url')" title="Subir Archivo"><i class="ph ph-cloud-arrow-up"></i></button>
+                            </div>
+                        </div>
+                        <input type="file" id="budget-hidden-uploader" class="hidden" onchange="handleBudgetFileSelect(this)">
+                        
+                        <div class="currency-tax-row" style="margin-top: 1rem;">
+                            <select id="budget-currency" class="budget-input-pill">
+                                <option value="USD">USD ($)</option>
+                                <option value="UYU">UYU ($U)</option>
+                            </select>
+                            <div class="iva-toggle-pill">
+                                <span style="font-size: 0.65rem; font-weight: 800; opacity: 0.8;">IVA (22%)</span>
+                                <input type="checkbox" id="budget-iva">
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="modal-input-group" style="display: flex; gap: 10px; align-items: flex-start; margin-top: 1rem;">
-                        <button class="btn-voice" onclick="startVoiceCaptureBudget()" title="Voice-to-Summary (AI)" style="position: static;"><i class="ph ph-microphone"></i></button>
-                        <textarea id="budget-notes" placeholder="NOTAS / OBSERVACIONES..." style="flex: 1; min-height: 154px;"></textarea>
+
+                    <div class="budget-total-card">
+                        <span class="label">MONTO TOTAL</span>
+                        <span id="budget-total-val" class="value">US$ 0,00</span>
                     </div>
                 </div>
 
+                <!-- Columna Derecha: Detalle de Servicios -->
                 <div class="budget-col-right">
-                    <div class="budget-items-container" style="margin-top: 0;">
-                        <div class="items-header">
-                            <h3>ITEMS / SERVICIOS</h3>
-                            <button class="btn-secondary-sm" onclick="addBudgetItem()"><i class="ph ph-plus"></i></button>
+                    <div class="items-list-container">
+                        <div class="items-list-header">
+                            <span class="budget-section-label">ITEMS / SERVICIOS</span>
+                            <button class="btn-secondary-sm" onclick="addBudgetItem()" style="padding: 0.5rem 1rem;"><i class="ph ph-plus"></i></button>
                         </div>
-                        <div id="budget-items-list" class="budget-items-scroll">
-                            <!-- Items will be added here -->
+                        <div id="budget-items-list" class="budget-items-scroll-area">
+                            <!-- Items dinámicos -->
                         </div>
                     </div>
 
-                    <div class="budget-total-preview">
-                        <span>TOTAL: </span>
-                        <span id="budget-total-val" class="accent-green">$ 0.00</span>
+                    <div class="notes-container">
+                        <span class="budget-section-label">NOTAS Y OBSERVACIONES</span>
+                        <textarea id="budget-notes" placeholder="Escribe aquí aclaraciones o condiciones especiales..." class="budget-input-pill" style="height: 100px; resize: none;"></textarea>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button onclick="closeBudgetModal()" class="btn-secondary">CANCELAR</button>
-                <button onclick="submitBudget()" class="btn-primary">GUARDAR</button>
+
+            <div class="budget-footer-pro">
+                <button onclick="closeBudgetModal()" class="btn-pro btn-cancel-pro">CANCELAR</button>
+                <button onclick="submitBudget()" class="btn-pro btn-save-pro">GUARDAR CAMBIOS</button>
             </div>
         </div>
     </div>
+
 
     <!-- Custom Confirmation Modal -->
     <div id="confirm-modal" class="modal hidden" style="z-index: 9000;">
