@@ -3,7 +3,7 @@
    Core logic for Kanban board, auth, and state.
    ========================================= */
 
-// --- GLOBAL UTILITIES (SUPABASE & AUTH) ---
+// --- GLOBAL CONSTANTS ---
 window.AUTH_HASH = '1e4e8b049223c94c574465b3d3755ad6fbabb1d8a2898480ff90b44d07c34369';
 window.SUPABASE_URL = "https://hmaqdzkpjkxamggaiypo.supabase.co";
 window.SUPABASE_KEY = "sb_publishable_Vu_F-McwcDK4g2k8fU6w7A_p_Mva8-Y";
@@ -14,7 +14,9 @@ window.SP_HEADERS = {
     "Prefer": "return=representation"
 };
 
-window.spUpload = async function(bucket, path, file) {
+// --- CORE UTILITIES ---
+
+async function spUpload(bucket, path, file) {
     let url = `${window.SUPABASE_URL}/storage/v1/object/${bucket}/${path}`;
     try {
         const res = await fetch(url, {
@@ -33,12 +35,12 @@ window.spUpload = async function(bucket, path, file) {
         return `${window.SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}`;
     } catch (e) {
         console.error("Storage Error:", e);
-        alert(`Storage Error: ${e.message}. Asegurate de tener una política de INSERT activa en el Bucket 'proposals' en Supabase.`);
         return null;
     }
-};
+}
+window.spUpload = spUpload;
 
-window.spFetch = async function(endpoint, method = 'GET', body = null) {
+async function spFetch(endpoint, method = 'GET', body = null) {
     let url = `${window.SUPABASE_URL}/rest/v1/${endpoint}`;
     const opts = { method, headers: window.SP_HEADERS };
     if (body) opts.body = JSON.stringify(body);
@@ -52,272 +54,75 @@ window.spFetch = async function(endpoint, method = 'GET', body = null) {
         return null;
     }
 }
+window.spFetch = spFetch;
 
-window.hashPassword = async function(str) {
-    if (!window.crypto || !window.crypto.subtle) {
-        console.warn("Insecure context: crypto.subtle not available.");
-        return null;
-    }
+async function hashPassword(str) {
+    if (!window.crypto || !window.crypto.subtle) return null;
     try {
         const msgUint8 = new TextEncoder().encode(str);
         const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
         const hashArray = Array.from(new Uint8Array(hashBuffer));
         return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     } catch (e) {
-        console.error("Hashing failed:", e);
         return null;
     }
 }
+window.hashPassword = hashPassword;
 
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Core Element Selection
-    const loginOverlay = document.getElementById('login-overlay');
-    const pwdInput = document.getElementById('password-input');
-    const loginBtn = document.getElementById('login-btn');
-    const body = document.body;
-    
-    const navItems = document.querySelectorAll('.nav-item');
-    const appViews = document.querySelectorAll('.app-view');
-    const columns = document.querySelectorAll('.kanban-column');
+// --- INITIALIZATION & AUTH ---
 
-    // 2. Authentication logic (Constants now global)
-
-    const checkAuth = async () => {
-        const val = pwdInput.value.trim();
-        
-        // Debug/Fallback for local development or non-secure contexts
-        if (val === 'bg2026') {
-            unlock();
-            return;
-        }
-
-        const inputHash = await hashPassword(val);
-        
-        if (inputHash === AUTH_HASH) {
-            unlock();
-        } else {
-            alert('ACCESS DENIED');
-            pwdInput.value = '';
-        }
-    };
-
-    function unlock() {
-        if (loginOverlay) {
-            loginOverlay.style.opacity = '0';
-            setTimeout(() => loginOverlay.style.display = 'none', 300);
-        }
-        body.classList.remove('locked');
-        sessionStorage.setItem('bg_auth', 'true');
-        
-        // Remember Session
-        const rememberMe = document.getElementById('remember-me');
-        if (rememberMe && rememberMe.checked) {
-            localStorage.setItem('bg_auth_persistent', 'true');
-        }
-    }
-
-    const isAuthed = sessionStorage.getItem('bg_auth') === 'true' || localStorage.getItem('bg_auth_persistent') === 'true';
-
-    if (isAuthed) {
-        if (loginOverlay) loginOverlay.style.display = 'none';
-        body.classList.remove('locked');
-    } else {
-        body.classList.add('locked');
-    }
-
-    if (loginBtn) loginBtn.addEventListener('click', checkAuth);
-    if (pwdInput) pwdInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkAuth(); });
-
-    // --- Modal Enhancement Listeners ---
-    const projectTitleInput = document.getElementById('new-project-title');
-    const projectModalH2 = document.querySelector('#project-modal h2');
-    const projectDateInput = document.getElementById('new-project-deadline');
-
-    if (projectTitleInput && projectModalH2) {
-        projectTitleInput.addEventListener('input', (e) => {
-            const val = e.target.value.trim().toUpperCase();
-            projectModalH2.textContent = val ? val : 'NEW_PROJECT';
-        });
-    }
-
-    if (projectDateInput) {
-        // Trigger date picker when clicking anywhere on the field
-        projectDateInput.addEventListener('click', () => {
-            if (typeof projectDateInput.showPicker === 'function') {
-                projectDateInput.showPicker();
-            }
-        });
-    }
-
-    // Password Visibility Toggle
-    const togglePwd = document.getElementById('toggle-pwd');
-    if (togglePwd && pwdInput) {
-        togglePwd.addEventListener('click', () => {
-            const isPwd = pwdInput.type === 'password';
-            pwdInput.type = isPwd ? 'text' : 'password';
-            togglePwd.classList.toggle('ph-eye', !isPwd);
-            togglePwd.classList.toggle('ph-eye-closed', isPwd);
-            togglePwd.style.opacity = isPwd ? '1' : '0.6';
-        });
-    }
-
-    // 3. Navigation / View Switching
-    const sidebar = document.getElementById('sidebar');
-    const logoToggle = document.getElementById('logo-toggle');
-    const mobileMenuBtn = document.getElementById('mobile-menu-toggle');
-
-    if (mobileMenuBtn && sidebar) {
-        mobileMenuBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('mobile-active');
-            const icon = mobileMenuBtn.querySelector('i');
-            if (icon) {
-                icon.classList.toggle('ph-list');
-                icon.classList.toggle('ph-x');
-            }
-        });
-    }
-    
-    if (logoToggle && sidebar) {
-        logoToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('collapsed');
-            const box = logoToggle.querySelector('.logo-box');
-            if (box) {
-                box.style.transform = 'scale(0.9)';
-                setTimeout(() => box.style.transform = '', 150);
-            }
-        });
-    }
-
-    navItems.forEach(item => {
-        item.addEventListener('click', (e) => {
-            e.preventDefault();
-
-            // Auto-close sidebar on mobile
-            if (window.innerWidth <= 768 && sidebar) {
-                sidebar.classList.remove('mobile-active');
-                if (mobileMenuBtn) {
-                    const icon = mobileMenuBtn.querySelector('i');
-                    if (icon) {
-                        icon.classList.add('ph-list');
-                        icon.classList.remove('ph-x');
-                    }
-                }
-            }
-            const viewKey = item.getAttribute('data-view');
-            if (!viewKey) return;
-
-            navItems.forEach(ni => ni.classList.remove('active'));
-            item.classList.add('active');
-
-            const viewMap = {
-                'dashboard': 'dashboard-view',
-                'projects': 'board-view',
-                'calendar': 'calendar-view',
-                'budgets': 'budgets-view',
-                'archive': 'archive-view'
-            };
-            const targetId = viewMap[viewKey] || 'board-view';
-
-            appViews.forEach(v => {
-                if (v.id === targetId) v.classList.remove('hidden');
-                else v.classList.add('hidden');
-            });
-
-            if (viewKey === 'archive') updateArchive();
-            if (viewKey === 'dashboard') updateDashboard();
-            if (viewKey === 'calendar') renderRealCalendar();
-            if (viewKey === 'budgets') renderBudgets();
-            if (viewKey === 'projects') {
-                sortAllColumns();
-                updateCounters();
-            }
-        });
-    });
-
-    // 4. Trash Logic
-    const trash = document.getElementById('drop-trash');
-    if (trash) {
-        trash.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            trash.classList.add('drag-over');
-        });
-        trash.addEventListener('dragleave', () => trash.classList.remove('drag-over'));
-        trash.addEventListener('drop', (e) => {
-            e.preventDefault();
-            trash.classList.remove('drag-over');
-            const cardId = e.dataTransfer.getData('text');
-            const card = document.getElementById(cardId);
-            if (card) {
-                const title = card.querySelector('h3')?.textContent || "Unknown Project";
-                window.showCustomConfirm(
-                    "DELETE PROJECT", 
-                    `Are you sure you want to permanently delete "${title}"? This action cannot be undone.`,
-                    () => {
-                        try {
-                            console.log("Deleting card:", cardId);
-                            card.remove();
-                            window.saveState();
-                            window.updateCounters();
-                            window.updateDashboard();
-                        } catch (err) {
-                            console.error("Delete failed:", err);
-                        }
-                    }
-                );
-            }
-        });
-    }
-
-    // 5. Drag & Drop Engine
-    columns.forEach(column => {
-        column.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-            column.classList.add('drag-over');
-        });
-
-        column.addEventListener('dragleave', () => {
-            column.classList.remove('drag-over');
-        });
-
-        column.addEventListener('drop', (e) => {
-            e.preventDefault();
-            column.classList.remove('drag-over');
-            
-            const cardId = e.dataTransfer.getData('text') || e.dataTransfer.getData('text/plain');
-            const card = document.getElementById(cardId);
-
-            if (column && card) {
-                // If moving a previously archived card, restore it
-                card.classList.remove('archived');
-                card.style.display = 'block';
-                card.setAttribute('data-archived', 'false');
-                card.setAttribute('data-status', column.id);
-
-                const container = column.querySelector('.column-tasks');
-                if (container) {
-                    const oldCol = card.closest('.kanban-column').id;
-                    container.appendChild(card);
-                    updateCardStatus(card, column.id);
-                    if (oldCol !== column.id) logActivity(`Moved ${card.querySelector('h3').textContent} to ${column.id.toUpperCase()}`);
-                    sortColumn(column.id);
-                    saveState();
-                    updateCounters();
-                    updateDashboard();
-                }
-            }
-        });
-    });
-
-    // Initialize State
+function startEcosystem() {
+    console.log("Global startEcosystem initiated...");
     loadState().then(() => {
         updateDashboard();
         updateCounters();
         renderRealCalendar();
         renderActivityLog();
         renderBudgets();
+        console.log("Ecosystem Ready.");
     });
-});
+}
+window.startEcosystem = startEcosystem;
+
+function unlockSystem() {
+    console.log("unlockSystem called.");
+    const overlay = document.getElementById('login-overlay');
+    const body = document.body;
+    if (overlay) {
+        overlay.style.opacity = '0';
+        setTimeout(() => overlay.style.display = 'none', 300);
+    }
+    if (body) body.classList.remove('locked');
+    sessionStorage.setItem('bg_auth', 'true');
+    
+    const rem = document.getElementById('remember-me');
+    if (rem && rem.checked) localStorage.setItem('bg_auth_persistent', 'true');
+    
+    startEcosystem();
+}
+window.unlockSystem = unlockSystem;
+
+async function checkAuth() {
+    const input = document.getElementById('password-input');
+    if (!input) return;
+    const val = input.value.trim();
+    if (!val) return;
+
+    if (val === 'bg2026') {
+        unlockSystem();
+        return;
+    }
+
+    const inputHash = await hashPassword(val);
+    if (inputHash === window.AUTH_HASH) {
+        unlockSystem();
+    } else {
+        alert('ACCESS DENIED');
+        input.value = '';
+    }
+}
+window.checkAuth = checkAuth;
+
 
 // --- DATE HELPERS ---
 
@@ -788,11 +593,10 @@ window.startVoiceToText = (textareaId, btnSelector) => {
 window.startVoiceCapture = () => window.startVoiceToText('new-project-desc', '.modal-body .btn-voice');
 window.startVoiceCaptureDetail = () => window.startVoiceToText('edit-desc', '.btn-voice-detail');
 
-window.saveState = function() {
+function saveState() {
     try {
         console.log("Global saveState initiated...");
         const state = {};
-        // Operational Columns
         const columns = document.querySelectorAll('.kanban-column');
         if (columns.length === 0) return;
 
@@ -806,7 +610,6 @@ window.saveState = function() {
             }));
         });
 
-        // Archive Storage
         const storage = document.getElementById('hidden-archive-storage');
         if (storage) {
             state['archive-storage'] = Array.from(storage.querySelectorAll('.card')).map(c => ({
@@ -817,25 +620,19 @@ window.saveState = function() {
             }));
         }
 
-        // budgets
         state['budgets'] = window.allBudgets || [];
-
-        // --- Save Local ---
         localStorage.setItem('bg_ecosystem_state_v3', JSON.stringify(state));
         console.log("State saved locally.");
 
-        // --- Save Cloud (Async) ---
-        window.spFetch('bg_ecosystem?id=eq.main_state', 'PATCH', { data: state })
-            .then(res => {
-                if (res) console.log("State synced to Supabase.");
-                else console.warn("Cloud sync returned null/error.");
-            })
+        spFetch('bg_ecosystem?id=eq.main_state', 'PATCH', { data: state })
+            .then(res => { if (res) console.log("State synced to Supabase."); })
             .catch(err => console.error("Cloud sync crash:", err));
 
     } catch (e) {
         console.error("CRITICAL ERROR in saveState:", e);
     }
 }
+window.saveState = saveState;
 
 window.migrateToCloud = async () => {
     const raw = localStorage.getItem('bg_ecosystem_state_v3');
@@ -853,7 +650,7 @@ window.migrateToCloud = async () => {
     }
 };
 
-window.loadState = async function() {
+async function loadState() {
     console.log("Global loadState initiated...");
     // 1. Try Cloud Load first
     const cloudData = await window.spFetch('bg_ecosystem?id=eq.main_state', 'GET');
@@ -1221,6 +1018,7 @@ window.renderBudgets = () => {
 
         return `
             <div class="budget-card">
+                <button class="btn-delete-permanent" onclick="deleteBudget('${b.id}')"><i class="ph ph-x"></i></button>
                 <div class="budget-card-header">
                     <span class="budget-client">${b.client.toUpperCase()}</span>
                     <span class="budget-date">${b.date}</span>
@@ -1229,8 +1027,8 @@ window.renderBudgets = () => {
                 <div class="budget-total">${totalFormatted}</div>
                 <div class="budget-actions">
                     <button class="btn-action-sm" onclick="editBudget('${b.id}')"><i class="ph ph-pencil"></i> EDIT</button>
+                    <button class="btn-action-sm" onclick="shareBudget('${b.id}', true)" title="Ver Presupuesto"><i class="ph ph-arrow-square-out"></i> VER</button>
                     <button class="btn-action-sm" onclick="shareBudget('${b.id}')" title="Copiar Link Cliente"><i class="ph ph-link"></i> LINK</button>
-                    <button class="btn-action-sm" style="color: #ff5555" onclick="deleteBudget('${b.id}')"><i class="ph ph-trash"></i></button>
                 </div>
             </div>
         `;
@@ -1246,10 +1044,18 @@ window.openBudgetModal = (budgetData = null) => {
     document.getElementById('budget-project').value = budgetData ? budgetData.project : '';
     document.getElementById('budget-proposal-url').value = (budgetData && budgetData.proposalUrl) ? budgetData.proposalUrl : '';
     document.getElementById('budget-identity-url').value = (budgetData && budgetData.identityUrl) ? budgetData.identityUrl : '';
-    document.getElementById('budget-notes').value = budgetData ? budgetData.notes : '';
     document.getElementById('budget-iva').checked = budgetData ? budgetData.hasIva : false;
     document.getElementById('budget-currency').value = budgetData ? budgetData.currency : 'USD';
     
+    // Clear and fill extra links
+    const linksContainer = document.getElementById('extra-links-container');
+    if (linksContainer) {
+        linksContainer.innerHTML = '';
+        if (budgetData && budgetData.extraLinks) {
+            budgetData.extraLinks.forEach(link => addExtraLinkRow(link));
+        }
+    }
+
     const list = document.getElementById('budget-items-list');
     list.innerHTML = '';
     
@@ -1261,6 +1067,18 @@ window.openBudgetModal = (budgetData = null) => {
     
     calculateBudgetTotal();
     document.getElementById('budget-modal').classList.remove('hidden');
+};
+
+window.addExtraLinkRow = (val = '') => {
+    const container = document.getElementById('extra-links-container');
+    if (!container) return;
+    const row = document.createElement('div');
+    row.style = "display: flex; gap: 0.5rem; align-items: center;";
+    row.innerHTML = `
+        <input type="url" class="budget-input-pill extra-link-input" placeholder="LINK COMPLEMENTARIO" value="${val}" style="flex: 1;">
+        <button class="btn-new-minimal" onclick="this.parentElement.remove()" style="color: #ff5555; width: 40px; border-color: rgba(255,85,85,0.2);"><i class="ph ph-trash"></i></button>
+    `;
+    container.appendChild(row);
 };
 
 window.editBudget = (id) => {
@@ -1334,18 +1152,22 @@ window.submitBudget = () => {
     const total = calculateBudgetTotal();
     const date = new Date().toLocaleDateString('es-UY');
 
+    const extraLinks = Array.from(document.querySelectorAll('.extra-link-input'))
+        .map(i => i.value.trim())
+        .filter(i => i !== '');
+
     if (window.editingBudgetId) {
         const idx = window.allBudgets.findIndex(b => b.id === window.editingBudgetId);
         if (idx !== -1) {
             window.allBudgets[idx] = { 
                 ...window.allBudgets[idx], 
-                client, project, proposalUrl, identityUrl, currency, hasIva, items, notes, total 
+                client, project, proposalUrl, identityUrl, currency, hasIva, items, notes, total, extraLinks
             };
             logActivity(`Presupuesto actualizado: ${client}`);
         }
     } else {
         const id = 'bg-bdt-' + Date.now();
-        const newBudget = { id, client, project, proposalUrl, identityUrl, currency, hasIva, items, notes, total, date };
+        const newBudget = { id, client, project, proposalUrl, identityUrl, currency, hasIva, items, notes, total, date, extraLinks };
         window.allBudgets.unshift(newBudget);
         logActivity(`Nuevo presupuesto para ${client}`);
     }
@@ -1370,7 +1192,7 @@ window.deleteBudget = (id) => {
     });
 };
 
-window.shareBudget = (id) => {
+window.shareBudget = (id, openOnly = false) => {
     const budget = window.allBudgets.find(b => b.id === id);
     if (!budget) return;
 
@@ -1379,18 +1201,23 @@ window.shareBudget = (id) => {
     
     let baseUrl = window.location.origin;
     if (!baseUrl || baseUrl === 'null') {
-        // Fallback for local files
         const path = window.location.pathname.split('/');
-        path.pop(); path.pop(); path.pop(); // Go up from apps/_internal_v1/ to root
+        path.pop(); path.pop(); path.pop();
         baseUrl = path.join('/') || '';
     }
     const shareUrl = baseUrl + '/presupuesto.html?d=' + encoded;
+
+    if (openOnly) {
+        window.open(shareUrl, '_blank');
+        return;
+    }
 
     navigator.clipboard.writeText(shareUrl).then(() => {
         alert("Link de presupuesto copiado al portapapeles.");
         logActivity(`Link compartido: ${budget.client}`);
     });
 };
+// Simon: Added the openOnly parameter to handle the direct view button.
 
 // --- FILE UPLOAD LOGIC ---
 let currentTargetInputId = null;
@@ -1425,3 +1252,188 @@ window.handleBudgetFileSelect = async (input) => {
         input.value = ''; // Reset input
     }
 };
+
+// --- MAIN EXECUTION ---
+document.addEventListener('DOMContentLoaded', () => {
+    const pwdInput = document.getElementById('password-input');
+    const loginBtn = document.getElementById('login-btn');
+    const body = document.body;
+    
+    console.log("DOM fully loaded. Binding listeners...");
+
+    const navItems = document.querySelectorAll('.nav-item, .mob-nav-item');
+    const appViews = document.querySelectorAll('.app-view');
+    const columns = document.querySelectorAll('.kanban-column');
+
+    // Auto-login check
+    const isAuthed = sessionStorage.getItem('bg_auth') === 'true' || localStorage.getItem('bg_auth_persistent') === 'true';
+    if (isAuthed) {
+        unlockSystem();
+    } else {
+        if (body) body.classList.add('locked');
+    }
+
+    if (loginBtn) loginBtn.addEventListener('click', window.handleAuthTrigger || checkAuth);
+    if (pwdInput) pwdInput.addEventListener('keypress', (e) => { 
+        if (e.key === 'Enter') (window.handleAuthTrigger ? window.handleAuthTrigger() : checkAuth()); 
+    });
+
+    // --- Modal Enhancement Listeners ---
+    const projectTitleInput = document.getElementById('new-project-title');
+    const projectModalH2 = document.querySelector('#project-modal h2');
+    const projectDateInput = document.getElementById('new-project-deadline');
+
+    if (projectTitleInput && projectModalH2) {
+        projectTitleInput.addEventListener('input', (e) => {
+            const val = e.target.value.trim().toUpperCase();
+            projectModalH2.textContent = val ? val : 'NEW_PROJECT';
+        });
+    }
+
+    if (projectDateInput) {
+        projectDateInput.addEventListener('click', () => {
+            if (typeof projectDateInput.showPicker === 'function') projectDateInput.showPicker();
+        });
+    }
+
+    // Password Visibility Toggle
+    const togglePwd = document.getElementById('toggle-pwd');
+    if (togglePwd && pwdInput) {
+        togglePwd.addEventListener('click', () => {
+            const isPwd = pwdInput.type === 'password';
+            pwdInput.type = isPwd ? 'text' : 'password';
+            togglePwd.classList.toggle('ph-eye', !isPwd);
+            togglePwd.classList.toggle('ph-eye-closed', isPwd);
+            togglePwd.style.opacity = isPwd ? '1' : '0.6';
+        });
+    }
+
+    // Navigation / View Switching
+    const sidebar = document.getElementById('sidebar');
+    const logoToggle = document.getElementById('logo-toggle');
+    const mobileMenuBtn = document.getElementById('mobile-menu-toggle');
+
+    if (mobileMenuBtn && sidebar) {
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('mobile-active');
+            const icon = mobileMenuBtn.querySelector('i');
+            if (icon) {
+                icon.classList.toggle('ph-list');
+                icon.classList.toggle('ph-x');
+            }
+        });
+    }
+    
+    if (logoToggle && sidebar) {
+        logoToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            const box = logoToggle.querySelector('.logo-box');
+            if (box) {
+                box.style.transform = 'scale(0.9)';
+                setTimeout(() => box.style.transform = '', 150);
+            }
+        });
+    }
+
+    navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (window.innerWidth <= 768 && sidebar) {
+                sidebar.classList.remove('mobile-active');
+                if (mobileMenuBtn) {
+                    const icon = mobileMenuBtn.querySelector('i');
+                    if (icon) { icon.classList.add('ph-list'); icon.classList.remove('ph-x'); }
+                }
+            }
+            const viewKey = item.getAttribute('data-view');
+            if (!viewKey) return;
+
+            navItems.forEach(ni => {
+                if (ni.getAttribute('data-view') === viewKey) ni.classList.add('active');
+                else ni.classList.remove('active');
+            });
+
+            const viewMap = {
+                'dashboard': 'dashboard-view',
+                'projects': 'board-view',
+                'calendar': 'calendar-view',
+                'budgets': 'budgets-view',
+                'archive': 'archive-view'
+            };
+            const targetId = viewMap[viewKey] || 'board-view';
+
+            appViews.forEach(v => {
+                if (v.id === targetId) v.classList.remove('hidden');
+                else v.classList.add('hidden');
+            });
+
+            if (viewKey === 'archive') updateArchive();
+            if (viewKey === 'dashboard') updateDashboard();
+            if (viewKey === 'calendar') renderRealCalendar();
+            if (viewKey === 'budgets') renderBudgets();
+            if (viewKey === 'projects') {
+                sortAllColumns();
+                updateCounters();
+            }
+        });
+    });
+
+    // Trash Logic
+    const trash = document.getElementById('drop-trash');
+    if (trash) {
+        trash.addEventListener('dragover', (e) => { e.preventDefault(); trash.classList.add('drag-over'); });
+        trash.addEventListener('dragleave', () => trash.classList.remove('drag-over'));
+        trash.addEventListener('drop', (e) => {
+            e.preventDefault();
+            trash.classList.remove('drag-over');
+            const cardId = e.dataTransfer.getData('text');
+            const card = document.getElementById(cardId);
+            if (card) {
+                const title = card.querySelector('h3')?.textContent || "Unknown Project";
+                showCustomConfirm(
+                    "DELETE PROJECT", 
+                    `Are you sure you want to permanently delete "${title}"? This action cannot be undone.`,
+                    () => {
+                        card.remove();
+                        saveState();
+                        updateCounters();
+                        updateDashboard();
+                    }
+                );
+            }
+        });
+    }
+
+    // Drag & Drop Engine
+    columns.forEach(column => {
+        column.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            column.classList.add('drag-over');
+        });
+        column.addEventListener('dragleave', () => column.classList.remove('drag-over'));
+        column.addEventListener('drop', (e) => {
+            e.preventDefault();
+            column.classList.remove('drag-over');
+            const cardId = e.dataTransfer.getData('text') || e.dataTransfer.getData('text/plain');
+            const card = document.getElementById(cardId);
+            if (column && card) {
+                card.classList.remove('archived');
+                card.style.display = 'block';
+                card.setAttribute('data-archived', 'false');
+                card.setAttribute('data-status', column.id);
+                const container = column.querySelector('.column-tasks');
+                if (container) {
+                    const oldCol = card.closest('.kanban-column').id;
+                    container.appendChild(card);
+                    updateCardStatus(card, column.id);
+                    if (oldCol !== column.id) logActivity(`Moved ${card.querySelector('h3').textContent} to ${column.id.toUpperCase()}`);
+                    sortColumn(column.id);
+                    saveState();
+                    updateCounters();
+                    updateDashboard();
+                }
+            }
+        });
+    });
+});

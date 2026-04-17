@@ -1504,7 +1504,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     gap: 1rem;
     transition: 0.3s var(--transition-smooth);
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .budget-card:hover {
@@ -1544,29 +1544,42 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .budget-actions {
-    display: flex;
-    gap: 0.8rem;
-    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+    margin-top: 1.2rem;
+    width: 100%;
 }
 
 .btn-action-sm {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
     color: #fff;
-    padding: 0.6rem 1rem;
-    border-radius: 6px;
-    font-size: 0.7rem;
-    font-weight: 700;
+    padding: 0.65rem 0.4rem; /* Adjusted for grid fitting */
+    border-radius: 50px;
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    transition: 0.3s;
+    justify-content: center; /* Centered content */
+    gap: 0.4rem;
+    transition: all 0.3s var(--transition-smooth);
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.btn-action-sm i {
+    font-size: 1rem;
+    opacity: 0.7;
 }
 
 .btn-action-sm:hover {
-    background: var(--accent-green);
-    color: #000;
+    background: rgba(255,255,255,0.08);
+    border-color: var(--accent-green);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* --- Budget Modal Specifics --- */
@@ -1940,6 +1953,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     font-size: 1rem !important;
     text-align: center;
     letter-spacing: 0.1em;
+    padding-right: 45px !important;
 }
 
 .login-box input::placeholder {
@@ -1988,135 +2002,190 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         font-size: 5rem;
     }
 }
+.mobile-bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    height: 70px;
+    z-index: 1000;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 1rem;
+}
 
 @media (max-width: 768px) {
     body {
-        overflow-y: auto;
+        flex-direction: column;
+        overflow: hidden; /* Body doesn't scroll, views do */
     }
 
     .sidebar {
-        position: fixed;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        transform: translateX(-100%);
-        transition: transform 0.4s var(--transition-smooth);
-        width: 280px;
+        display: none !important;
     }
 
-    .main-content {
-        padding: 1.5rem !important;
-    }
-
-    .app-header-v1 {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-    }
-
-    .metrics-row {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-        margin-bottom: 3rem;
-    }
-
-    .giant-title {
-        font-size: 3.5rem;
-        line-height: 1;
-        margin-bottom: 2rem;
-    }
-
-    .mobile-only-btn {
+    .mobile-bottom-nav {
         display: flex;
     }
 
-    /* Kanban Mobile Transformation */
-    .board-container {
-        padding: 0 !important;
+    .main-content {
+        margin: 0 !important;
+        padding: 1.5rem 1.2rem 80px 1.2rem !important;
+        width: 100%;
+        overflow-y: auto;
+        flex: 1;
     }
 
+    .view-title {
+        font-size: 1.6rem !important;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Dashboard Metrics Mobile */
+    .metrics-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        margin-bottom: 2rem;
+    }
+
+    .metric-card {
+        padding: 1.2rem !important;
+    }
+
+    .met-value {
+        font-size: 2.2rem !important;
+    }
+
+    /* Kanban Board Mobile Stacking */
     .kanban-board {
+        display: flex;
         flex-direction: column;
         gap: 2rem;
-        padding-bottom: 4rem;
+        padding-bottom: 2rem;
     }
 
     .kanban-column {
         min-width: 100% !important;
         width: 100% !important;
-        max-height: none;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 16px;
+        padding-bottom: 1rem;
+        overflow: visible;
     }
 
     .column-header {
         position: sticky;
-        top: 0;
+        top: -1.5rem; /* Match main-content padding */
         background: var(--bg-color);
-        z-index: 5;
-        padding: 1rem 0;
+        z-index: 10;
+        padding: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        font-size: 0.65rem;
     }
 
-    /* Modal adjustments */
-    .modal-content {
-        width: 95% !important;
-        margin: 10px auto;
-        padding: 1.5rem !important;
+    /* Calendar Mobile Grid */
+    .calendar-grid {
+        gap: 1px !important;
     }
 
-    .input-row {
-        flex-direction: column;
-    }
-    
-    .modal-header h2 {
-        font-size: 1.2rem;
+    .calendar-day-header {
+        font-size: 0.5rem !important;
+        padding: 0.4rem 0 !important;
     }
 
-    /* Full Screen Modals for Mobile UX */
-    .modal-box {
+    .calendar-day {
+        min-height: 55px !important;
+        padding: 0.1rem !important;
+    }
+
+    .day-number {
+        font-size: 0.6rem !important;
+        margin-bottom: 2px !important;
+    }
+
+    .cal-event {
+        font-size: 0.45rem !important;
+        padding: 1px 3px !important;
+        border-radius: 2px !important;
+    }
+
+    /* Budget Modal Mobile Overlay */
+    .budget-modal-box {
+        width: 100vw !important;
+        height: 100vh !important;
         max-width: none !important;
-        width: 100% !important;
-        height: 100% !important;
         border-radius: 0 !important;
-        padding: 4rem 1.5rem 2rem 1.5rem !important;
+        padding: 1.5rem !important;
         display: flex;
         flex-direction: column;
-        overflow-y: auto;
+        overflow-y: auto !important;
     }
 
-    .modal-body {
-        flex: 1;
-        margin-bottom: 2rem !important;
+    .budget-header {
+        padding: 1rem 0 0.5rem 0 !important;
     }
 
-    .budget-items-scroll {
+    .budget-header h2 {
+        font-size: 1.2rem !important;
+    }
+
+    .budget-body {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1.5rem !important;
+        padding: 0 !important;
+        overflow: visible !important;
+    }
+
+    .budget-items-list {
         max-height: none !important;
-        overflow: visible;
     }
 
-    .budget-modal-grid {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
+    .budget-item-row {
+        grid-template-columns: 1fr 80px 35px !important;
+        gap: 0.5rem !important;
     }
 
-    .budget-meta {
+    .budget-total-card {
+        margin-top: 1.5rem;
         width: 100%;
+        align-items: center;
+        padding: 1rem !important;
     }
 
-    .desktop-total {
-        display: none;
+    .budget-total-card .value {
+        font-size: 1.8rem !important;
     }
 
-    .mobile-total {
-        display: block;
-        margin-top: 2rem;
+    .budget-footer-pro {
+        padding: 1.5rem 0 2.5rem 0 !important;
+        flex-direction: column-reverse;
+        gap: 0.8rem !important;
     }
 
-    .modal-footer {
-        padding-bottom: 2rem;
-        flex-shrink: 0;
+    .btn-save-pro, .btn-cancel-pro {
+        width: 100% !important;
+    }
+
+    /* Detail View Mobile */
+    .detail-layout {
+        flex-direction: column !important;
+    }
+
+    .detail-sidebar {
+        width: 100% !important;
+        border-right: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding-bottom: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
     }
 }
+
 .today-cell {
     border: 1px solid var(--accent-green) !important;
     background: rgba(0, 255, 136, 0.05) !important;

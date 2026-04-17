@@ -277,9 +277,10 @@
         <section class="proposal-section" id="proposal-container" style="display: none;">
             <span class="label">Documentación Adjunta</span>
             <p style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 2rem;">He preparado una propuesta detallada con referencias visuales y alcances técnicos.</p>
-            <div style="display: flex; gap: 1rem; justify-content: center;">
-                <a href="#" id="proposal-link" target="_blank" class="btn-proposal">VER PROPUESTA</a>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;" id="proposal-links-container">
+                <a href="#" id="proposal-link" target="_blank" class="btn-proposal">DESCARGAR PROPUESTA</a>
                 <a href="#" id="identity-link" target="_blank" class="btn-proposal" style="border-color: #fff; color: #fff; display: none;">VER IDENTIDAD</a>
+                <!-- Future extra links injected here -->
             </div>
         </section>
 
@@ -353,6 +354,27 @@
                     const iLink = document.getElementById('identity-link');
                     iLink.href = b.identityUrl;
                     iLink.style.display = 'inline-block';
+                    document.getElementById('proposal-container').style.display = 'block';
+                }
+
+                if (b.extraLinks && b.extraLinks.length > 0) {
+                    const container = document.getElementById('proposal-links-container');
+                    b.extraLinks.forEach(url => {
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.target = "_blank";
+                        a.className = "btn-proposal";
+                        a.style.borderColor = "var(--accent-green)";
+                        a.style.opacity = "0.8";
+                        a.textContent = "VER RECURSO";
+                        
+                        // Small icon or text if we want more detail
+                        if (url.includes('drive.google')) a.textContent = "ABRIR DRIVE";
+                        else if (url.includes('figma')) a.textContent = "VER DISEÑO";
+                        else if (url.includes('moodboard')) a.textContent = "VER MOODBOARD";
+
+                        container.appendChild(a);
+                    });
                     document.getElementById('proposal-container').style.display = 'block';
                 }
 
