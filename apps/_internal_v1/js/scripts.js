@@ -1008,6 +1008,17 @@ window.toggleCurrency = () => {
     logActivity(`Moneda cambiada a ${currentBudgetCurrency}`);
 };
 
+window.toggleIva = () => {
+    const btn = document.getElementById('iva-pill-btn');
+    const check = document.getElementById('budget-iva');
+    if (!btn || !check) return;
+    
+    check.checked = !check.checked;
+    btn.classList.toggle('active', check.checked);
+    calculateBudgetTotal();
+    logActivity(`IVA ${check.checked ? 'activado' : 'desactivado'}`);
+};
+
 window.renderBudgets = () => {
     const container = document.getElementById('budgets-list');
     if (!container) return;
@@ -1050,7 +1061,11 @@ window.openBudgetModal = (budgetData = null) => {
     document.getElementById('budget-client').value = budgetData ? budgetData.client : '';
     document.getElementById('budget-project').value = budgetData ? budgetData.project : '';
     document.getElementById('budget-proposal-url').value = (budgetData && budgetData.proposalUrl) ? budgetData.proposalUrl : '';
-    document.getElementById('budget-iva').checked = budgetData ? budgetData.hasIva : false;
+    const ivaCheck = document.getElementById('budget-iva');
+    ivaCheck.checked = budgetData ? budgetData.hasIva : false;
+    const ivaBtn = document.getElementById('iva-pill-btn');
+    if (ivaBtn) ivaBtn.classList.toggle('active', ivaCheck.checked);
+
     currentBudgetCurrency = budgetData ? (budgetData.currency || 'USD') : 'USD';
     
     // Clear and fill extra links
@@ -1079,10 +1094,10 @@ window.addExtraLinkRow = (val = '') => {
     const container = document.getElementById('extra-links-container');
     if (!container) return;
     const row = document.createElement('div');
-    row.style = "display: flex; gap: 0.5rem; align-items: center;";
+    row.style = "display: flex; gap: 0.8rem; align-items: center;";
     row.innerHTML = `
         <input type="url" class="budget-input-pill extra-link-input" placeholder="LINK COMPLEMENTARIO" value="${val}" style="flex: 1;">
-        <button class="btn-new-minimal" onclick="this.parentElement.remove()" style="color: #ff5555; width: 40px; border-color: rgba(255,85,85,0.2);"><i class="ph ph-trash"></i></button>
+        <button class="btn-new-minimal" onclick="this.parentElement.remove()" style="color: #ff5555; width: 48px; height: 46px; border-color: rgba(255,85,85,0.2);"><i class="ph ph-trash"></i></button>
     `;
     container.appendChild(row);
 };
@@ -1101,9 +1116,9 @@ window.addBudgetItem = (desc = '', price = '') => {
     const row = document.createElement('div');
     row.className = 'budget-item-row';
     row.innerHTML = `
-        <input type="text" placeholder="Concepto/Servicio" class="item-desc" value="${desc}" oninput="calculateBudgetTotal()">
-        <input type="number" placeholder="0" class="item-price" value="${price}" oninput="calculateBudgetTotal()">
-        <button class="btn-remove-item-pro" onclick="this.parentElement.remove(); calculateBudgetTotal();"><i class="ph ph-trash"></i></button>
+        <input type="text" placeholder="Concepto/Servicio" class="budget-input-pill item-desc" value="${desc}" oninput="calculateBudgetTotal()">
+        <input type="number" placeholder="0" class="budget-input-pill item-price" value="${price}" oninput="calculateBudgetTotal()" style="font-weight: 800; text-align: right;">
+        <button class="btn-new-minimal" onclick="this.parentElement.remove(); calculateBudgetTotal();" style="color: #ff5555; width: 48px; height: 46px; border-color: rgba(255,85,85,0.2);"><i class="ph ph-trash"></i></button>
     `;
     list.appendChild(row);
 };
