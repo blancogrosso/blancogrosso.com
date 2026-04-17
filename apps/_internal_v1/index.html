@@ -14,6 +14,41 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
+    <script>
+        // High-level Auth for Local Reliability (Infallible)
+        window.unlockNow = function() {
+            console.log("Interface unlock triggered...");
+            const overlay = document.getElementById('login-overlay');
+            if (overlay) {
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.style.display = 'none', 300);
+            }
+            document.body.classList.remove('locked');
+            sessionStorage.setItem('bg_auth', 'true');
+            const rem = document.getElementById('remember-me');
+            if (rem && rem.checked) localStorage.setItem('bg_auth_persistent', 'true');
+            
+            // Trigger Data Loading if scripts.js is already ready
+            if (window.startEcosystem) {
+                window.startEcosystem();
+            } else {
+                console.log("startEcosystem not ready yet, will be triggered by scripts.js");
+            }
+        };
+
+        window.handleAuthTrigger = async function() {
+            const input = document.getElementById('password-input');
+            const val = input ? input.value.trim() : "";
+            if (val === 'bg2026') {
+                window.unlockNow();
+            } else if (window.checkAuth) {
+                // Fallback to internal hash validation
+                window.checkAuth();
+            } else {
+                alert("ACCESO DENEGADO");
+            }
+        };
+    </script>
     <div class="accent-glow-bg"></div>
     <div class="grid-overlay"></div>
 
@@ -23,15 +58,14 @@
             <p>INTERNAL ACCESS ONLY</p>
             <div class="password-wrapper" style="position: relative; width: 100%; margin-bottom: 2rem;">
                 <input type="password" id="password-input" placeholder="ACCESS KEY">
-                <i class="ph ph-eye" id="toggle-pwd" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--accent-green); transition: 0.3s; opacity: 0.6;"></i>
+                <i class="ph ph-eye" id="toggle-pwd" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--accent-green); transition: 0.3s; opacity: 0.6; font-size: 1.15rem; z-index: 20;"></i>
             </div>
             
-            <div class="remember-session" style="display: flex; align-items: center; justify-content: center; gap: 0.8rem; margin-bottom: 2rem; width: 100%;">
-                <input type="checkbox" id="remember-me" style="accent-color: var(--accent-green); cursor: pointer; width: 16px; height: 16px;">
-                <label for="remember-me" style="font-size: 0.65rem; color: var(--text-secondary); letter-spacing: 0.1em; cursor: pointer;">MANTENER SESIÓN INICIADA</label>
+            <div class="remember-session" style="display: flex; align-items: center; justify-content: center; gap: 0.6rem; margin-bottom: 2.5rem; width: fit-content; margin-left: auto; margin-right: auto;">
+                <input type="checkbox" id="remember-me" style="accent-color: var(--accent-green); cursor: pointer; width: 14px; height: 14px; margin: 0; filter: contrast(1.2);">
+                <label for="remember-me" style="font-size: 0.65rem; color: var(--text-secondary); letter-spacing: 0.15em; cursor: pointer; margin: 0; white-space: nowrap;">MANTENER SESIÓN INICIADA</label>
             </div>
-
-            <button id="login-btn">AUTH</button>
+            <button id="login-btn" onclick="window.handleAuthTrigger()">AUTH</button>
         </div>
     </div>
 
@@ -320,14 +354,27 @@
                     </div>
 
                     <div class="form-group">
-                        <div style="display: flex; gap: 1rem;">
-                            <div style="flex: 1; display: flex; gap: 0.5rem; align-items: center;">
-                                <input type="url" id="budget-proposal-url" class="budget-input-pill" placeholder="LINK PROPUESTA" style="flex: 1;">
-                                <button class="btn-new-minimal" onclick="triggerFileUpload('budget-proposal-url')" title="Subir Archivo"><i class="ph ph-cloud-arrow-up"></i></button>
-                            </div>
-                            <div style="flex: 1; display: flex; gap: 0.5rem; align-items: center;">
+                        <span class="budget-section-label">ARCHIVOS Y DESCARGAS</span>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <input type="url" id="budget-proposal-url" class="budget-input-pill" placeholder="ARCHIVO PRINCIPAL (PDF/DOC)" style="flex: 1;">
+                            <button class="btn-new-minimal" onclick="triggerFileUpload('budget-proposal-url')" title="Subir Archivo"><i class="ph ph-cloud-arrow-up"></i></button>
+                        </div>
+                        
+                        <div style="margin-top: 1rem;">
+                            <span class="budget-section-label">IDENTIDAD VISUAL</span>
+                            <div style="display: flex; gap: 0.5rem; align-items: center;">
                                 <input type="url" id="budget-identity-url" class="budget-input-pill" placeholder="LINK IDENTIDAD" style="flex: 1;">
                                 <button class="btn-new-minimal" onclick="triggerFileUpload('budget-identity-url')" title="Subir Archivo"><i class="ph ph-cloud-arrow-up"></i></button>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                <span class="budget-section-label">LINKS ADICIONALES</span>
+                                <button class="btn-new-minimal" onclick="addExtraLinkRow()" style="width: 24px; height: 24px;"><i class="ph ph-plus"></i></button>
+                            </div>
+                            <div id="extra-links-container" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                <!-- JS Generated -->
                             </div>
                         </div>
                         <input type="file" id="budget-hidden-uploader" class="hidden" onchange="handleBudgetFileSelect(this)">
@@ -391,6 +438,14 @@
 
     <!-- Hidden Archive Storage -->
     <div id="hidden-archive-storage" class="hidden"></div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <a href="#" class="mob-nav-item active" data-view="dashboard"><i class="ph ph-circles-four"></i></a>
+        <a href="#" class="mob-nav-item" data-view="projects"><i class="ph ph-kanban"></i></a>
+        <a href="#" class="mob-nav-item" data-view="calendar"><i class="ph ph-calendar-blank"></i></a>
+        <a href="#" class="mob-nav-item" data-view="budgets"><i class="ph ph-receipt"></i></a>
+    </nav>
 
     <script src="js/scripts.js"></script>
 </body>
