@@ -1464,6 +1464,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 2rem;
     margin-top: 2rem;
+    padding: 10px 15px; /* Added clearance for absolute buttons */
 }
 .archive-card-wrapper {
     position: relative;
@@ -1494,6 +1495,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 1.5rem;
     margin-top: 2rem;
+    padding: 10px 15px; /* Added clearance for absolute buttons */
+    overflow-y: auto;   /* Ensure it scrolls if tall */
+    max-height: calc(100vh - 200px);
 }
 
 .budget-card {

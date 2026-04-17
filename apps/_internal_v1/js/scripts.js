@@ -1194,6 +1194,19 @@ window.submitBudget = () => {
     saveState();
     renderBudgets();
     closeBudgetModal();
+
+    // 2. ALSO sync individual budget to Supabase for the live link
+    const finalBudget = window.editingBudgetId 
+        ? window.allBudgets.find(b => b.id === window.editingBudgetId)
+        : window.allBudgets[0];
+
+    if (finalBudget) {
+        window.spFetch(`bg_ecosystem?id=eq.${finalBudget.id}`, 'PATCH', { id: finalBudget.id, data: finalBudget })
+        .then(res => {
+            if (!res) window.spFetch('bg_ecosystem', 'POST', { id: finalBudget.id, data: finalBudget });
+        })
+        .catch(() => {});
+    }
     
     // Suggest sharing the new link
     setTimeout(() => {
