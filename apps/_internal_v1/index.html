@@ -361,14 +361,6 @@
                         </div>
                         
                         <div style="margin-top: 1rem;">
-                            <span class="budget-section-label">IDENTIDAD VISUAL</span>
-                            <div style="display: flex; gap: 0.5rem; align-items: center;">
-                                <input type="url" id="budget-identity-url" class="budget-input-pill" placeholder="LINK IDENTIDAD" style="flex: 1;">
-                                <button class="btn-new-minimal" onclick="triggerFileUpload('budget-identity-url')" title="Subir Archivo"><i class="ph ph-cloud-arrow-up"></i></button>
-                            </div>
-                        </div>
-
-                        <div style="margin-top: 1rem;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                                 <span class="budget-section-label">LINKS ADICIONALES</span>
                                 <button class="btn-new-minimal" onclick="addExtraLinkRow()" style="width: 24px; height: 24px;"><i class="ph ph-plus"></i></button>
@@ -379,21 +371,10 @@
                         </div>
                         <input type="file" id="budget-hidden-uploader" class="hidden" onchange="handleBudgetFileSelect(this)">
                         
-                        <div class="currency-tax-row" style="margin-top: 1rem;">
-                            <select id="budget-currency" class="budget-input-pill">
-                                <option value="USD">USD ($)</option>
-                                <option value="UYU">UYU ($U)</option>
-                            </select>
-                            <div class="iva-toggle-pill">
-                                <span style="font-size: 0.65rem; font-weight: 800; opacity: 0.8;">IVA (22%)</span>
-                                <input type="checkbox" id="budget-iva">
-                            </div>
+                        <div class="iva-toggle-pill" style="margin-top: 1.5rem;">
+                            <span style="font-size: 0.65rem; font-weight: 800; opacity: 0.8;">IVA (22%)</span>
+                            <input type="checkbox" id="budget-iva" onchange="calculateBudgetTotal()">
                         </div>
-                    </div>
-
-                    <div class="budget-total-card">
-                        <span class="label">MONTO TOTAL</span>
-                        <span id="budget-total-val" class="value">US$ 0,00</span>
                     </div>
                 </div>
 
@@ -412,6 +393,11 @@
                     <div class="notes-container">
                         <span class="budget-section-label">NOTAS Y OBSERVACIONES</span>
                         <textarea id="budget-notes" placeholder="Escribe aquí aclaraciones o condiciones especiales..." class="budget-input-pill" style="height: 100px; resize: none;"></textarea>
+                    </div>
+
+                    <div class="budget-total-card" onclick="toggleCurrency()" style="cursor: pointer; margin-top: 2rem;">
+                        <span class="label">MONTO TOTAL (CLICK PARA CAMBIAR MONEDA)</span>
+                        <span id="budget-total-val" class="value">US$ 0,00</span>
                     </div>
                 </div>
             </div>
