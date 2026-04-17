@@ -1211,23 +1211,30 @@ window.deleteBudget = (id) => {
     });
 };
 
-window.shareBudget = (id, openOnly = false) => {
+window.shareBudget = async (id, openOnly = false) => {
     const budget = window.allBudgets.find(b => b.id === id);
     if (!budget) return;
 
-    const dataString = JSON.stringify(budget);
-    const encoded = btoa(unescape(encodeURIComponent(dataString)));
-    
-    // Slugify project name for the URL
+    // 1. Sync individual budget to Supabase for the public link
+    // We use the same bg_ecosystem table but with the budget's unique ID
+    try {
+        await window.spFetch(`bg_ecosystem?id=eq.${id}`, 'PATCH', { id: id, data: budget });
+        // If PATCH fails because it doesn't exist, we POST (standard Upsert logic)
+        // PostgREST upsert is usually POST with resolution=merge-duplicates, but here we can just ensure it's there
+        await window.spFetch('bg_ecosystem', 'POST', { id: id, data: budget }); 
+    } catch (e) {
+        console.warn("Cloud single-sync attempt (safe ignore if exists):", e);
+    }
+
     const slug = budget.project.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
 
     let baseUrl = window.location.origin;
-    if (!baseUrl || baseUrl === 'null') {
-        const path = window.location.pathname.split('/');
-        path.pop(); path.pop(); path.pop();
-        baseUrl = path.join('/') || '';
+    if (!baseUrl || baseUrl === 'null' || baseUrl.includes('file://')) {
+        baseUrl = 'https://blancogrosso.com'; // Fallback to production domain
     }
-    const shareUrl = `${baseUrl}/presupuesto.html?d=${encoded}&p=${slug}`;
+    
+    // The new abbreviated link
+    const shareUrl = `${baseUrl}/presupuesto.html?id=${id}&p=${slug}`;
 
     if (openOnly) {
         window.open(shareUrl, '_blank');
@@ -1235,8 +1242,8 @@ window.shareBudget = (id, openOnly = false) => {
     }
 
     navigator.clipboard.writeText(shareUrl).then(() => {
-        alert("Link de presupuesto copiado al portapapeles.");
-        logActivity(`Link compartido: ${budget.client}`);
+        alert("Link PROFESIONAL copiado al portapapeles.");
+        logActivity(`Link compartido (Nube): ${budget.client}`);
     });
 };
 // Simon: Added the openOnly parameter to handle the direct view button.
