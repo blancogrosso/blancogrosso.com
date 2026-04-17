@@ -1000,6 +1000,13 @@ function renderActivityLog() {
 // --- BUDGET SYSTEM LOGIC ---
 window.allBudgets = [];
 window.editingBudgetId = null;
+let currentBudgetCurrency = 'USD'; // Global state for the modal
+
+window.toggleCurrency = () => {
+    currentBudgetCurrency = (currentBudgetCurrency === 'USD') ? 'UYU' : 'USD';
+    calculateBudgetTotal();
+    logActivity(`Moneda cambiada a ${currentBudgetCurrency}`);
+};
 
 window.renderBudgets = () => {
     const container = document.getElementById('budgets-list');
@@ -1043,9 +1050,8 @@ window.openBudgetModal = (budgetData = null) => {
     document.getElementById('budget-client').value = budgetData ? budgetData.client : '';
     document.getElementById('budget-project').value = budgetData ? budgetData.project : '';
     document.getElementById('budget-proposal-url').value = (budgetData && budgetData.proposalUrl) ? budgetData.proposalUrl : '';
-    document.getElementById('budget-identity-url').value = (budgetData && budgetData.identityUrl) ? budgetData.identityUrl : '';
     document.getElementById('budget-iva').checked = budgetData ? budgetData.hasIva : false;
-    document.getElementById('budget-currency').value = budgetData ? budgetData.currency : 'USD';
+    currentBudgetCurrency = budgetData ? (budgetData.currency || 'USD') : 'USD';
     
     // Clear and fill extra links
     const linksContainer = document.getElementById('extra-links-container');
@@ -1109,10 +1115,9 @@ window.calculateBudgetTotal = () => {
     const hasIva = document.getElementById('budget-iva').checked;
     const total = hasIva ? subtotal * 1.22 : subtotal;
     
-    const currency = document.getElementById('budget-currency').value;
     const totalFormatted = new Intl.NumberFormat('es-UY', { 
         style: 'currency', 
-        currency: currency 
+        currency: currentBudgetCurrency 
     }).format(total);
 
     const t1 = document.getElementById('budget-total-val');
@@ -1125,7 +1130,7 @@ window.calculateBudgetTotal = () => {
 
 // Listen for direct change on checkbox
 document.addEventListener('change', (e) => {
-    if (e.target.id === 'budget-iva' || e.target.id === 'budget-currency') {
+    if (e.target.id === 'budget-iva') {
         calculateBudgetTotal();
     }
 });
@@ -1134,10 +1139,9 @@ window.submitBudget = () => {
     const client = document.getElementById('budget-client').value;
     const project = document.getElementById('budget-project').value;
     const proposalUrl = document.getElementById('budget-proposal-url').value;
-    const currency = document.getElementById('budget-currency').value;
+    const currency = currentBudgetCurrency;
     const hasIva = document.getElementById('budget-iva').checked;
     const notes = document.getElementById('budget-notes').value;
-    const identityUrl = document.getElementById('budget-identity-url').value;
     
     const items = Array.from(document.querySelectorAll('.budget-item-row')).map(row => ({
         desc: row.querySelector('.item-desc').value,
@@ -1161,13 +1165,13 @@ window.submitBudget = () => {
         if (idx !== -1) {
             window.allBudgets[idx] = { 
                 ...window.allBudgets[idx], 
-                client, project, proposalUrl, identityUrl, currency, hasIva, items, notes, total, extraLinks
+                client, project, proposalUrl, currency, hasIva, items, notes, total, extraLinks
             };
             logActivity(`Presupuesto actualizado: ${client}`);
         }
     } else {
         const id = 'bg-bdt-' + Date.now();
-        const newBudget = { id, client, project, proposalUrl, identityUrl, currency, hasIva, items, notes, total, date, extraLinks };
+        const newBudget = { id, client, project, proposalUrl, currency, hasIva, items, notes, total, date, extraLinks };
         window.allBudgets.unshift(newBudget);
         logActivity(`Nuevo presupuesto para ${client}`);
     }
@@ -1199,13 +1203,16 @@ window.shareBudget = (id, openOnly = false) => {
     const dataString = JSON.stringify(budget);
     const encoded = btoa(unescape(encodeURIComponent(dataString)));
     
+    // Slugify project name for the URL
+    const slug = budget.project.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
+
     let baseUrl = window.location.origin;
     if (!baseUrl || baseUrl === 'null') {
         const path = window.location.pathname.split('/');
         path.pop(); path.pop(); path.pop();
         baseUrl = path.join('/') || '';
     }
-    const shareUrl = baseUrl + '/presupuesto.html?d=' + encoded;
+    const shareUrl = `${baseUrl}/presupuesto.html?d=${encoded}&p=${slug}`;
 
     if (openOnly) {
         window.open(shareUrl, '_blank');
