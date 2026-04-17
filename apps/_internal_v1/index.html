@@ -355,49 +355,55 @@
 
                     <div class="form-group">
                         <span class="budget-section-label">ARCHIVOS Y DESCARGAS</span>
-                        <div style="display: flex; gap: 1rem; align-items: center;">
+                        <div style="display: flex; gap: 0.8rem; align-items: center;">
                             <input type="url" id="budget-proposal-url" class="budget-input-pill" placeholder="ARCHIVO PRINCIPAL (PDF/DOC)" style="flex: 1;">
-                            <button class="btn-new-minimal" onclick="triggerFileUpload('budget-proposal-url')" title="Subir Archivo"><i class="ph ph-cloud-arrow-up"></i></button>
+                            <button class="btn-new-minimal" onclick="triggerFileUpload('budget-proposal-url')" title="Subir Archivo" style="width: 48px; height: 46px;"><i class="ph ph-cloud-arrow-up"></i></button>
                         </div>
                         
-                        <div style="margin-top: 1rem;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                                <span class="budget-section-label">LINKS ADICIONALES</span>
-                                <button class="btn-new-minimal" onclick="addExtraLinkRow()" style="width: 24px; height: 24px;"><i class="ph ph-plus"></i></button>
-                            </div>
-                            <div id="extra-links-container" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <div style="margin-top: 1.5rem;">
+                            <span class="budget-section-label">LINKS ADICIONALES</span>
+                            <div id="extra-links-container" style="display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.5rem;">
                                 <!-- JS Generated -->
                             </div>
+                            <button class="btn-add-service-pill" onclick="addExtraLinkRow()" style="margin-top: 0.8rem; border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.5);">
+                                <i class="ph ph-plus-circle"></i> AGREGAR LINK
+                            </button>
                         </div>
                         <input type="file" id="budget-hidden-uploader" class="hidden" onchange="handleBudgetFileSelect(this)">
                         
-                        <div class="iva-toggle-pill" style="margin-top: 1.5rem;">
-                            <span style="font-size: 0.65rem; font-weight: 800; opacity: 0.8;">IVA (22%)</span>
-                            <input type="checkbox" id="budget-iva" onchange="calculateBudgetTotal()">
+                        <div class="iva-toggle-container hidden">
+                            <!-- Hidden checkbox for legacy compatibility -->
+                            <input type="checkbox" id="budget-iva">
+                        </div>
+
+                        <div class="notes-container" style="margin-top: 1.5rem;">
+                            <span class="budget-section-label">NOTAS Y OBSERVACIONES</span>
+                            <textarea id="budget-notes" placeholder="Escribe aquí aclaraciones o condiciones especiales..." class="budget-input-pill" style="height: 120px; resize: none;"></textarea>
                         </div>
                     </div>
                 </div>
 
                 <!-- Columna Derecha: Detalle de Servicios -->
                 <div class="budget-col-right">
-                    <div class="items-list-container">
-                        <div class="items-list-header">
-                            <span class="budget-section-label">ITEMS / SERVICIOS</span>
-                            <button class="btn-secondary-sm" onclick="addBudgetItem()" style="padding: 0.5rem 1rem;"><i class="ph ph-plus"></i></button>
+                    <div class="budget-section-group">
+                        <span class="budget-section-label">ITEMS / SERVICIOS</span>
+                        <div id="budget-items-list" style="display: flex; flex-direction: column; gap: 0.8rem;">
+                            <!-- Items dinámicos tipo pastilla -->
                         </div>
-                        <div id="budget-items-list" class="budget-items-scroll-area">
-                            <!-- Items dinámicos -->
-                        </div>
+                        
+                        <button class="btn-add-service-pill" onclick="addBudgetItem()" style="margin-top: 0.8rem;">
+                            <i class="ph ph-plus-circle"></i> AGREGAR SERVICIO
+                        </button>
                     </div>
 
-                    <div class="notes-container">
-                        <span class="budget-section-label">NOTAS Y OBSERVACIONES</span>
-                        <textarea id="budget-notes" placeholder="Escribe aquí aclaraciones o condiciones especiales..." class="budget-input-pill" style="height: 100px; resize: none;"></textarea>
-                    </div>
-
-                    <div class="budget-total-card" onclick="toggleCurrency()" style="cursor: pointer; margin-top: 2rem;">
-                        <span class="label">MONTO TOTAL (CLICK PARA CAMBIAR MONEDA)</span>
-                        <span id="budget-total-val" class="value">US$ 0,00</span>
+                    <div class="budget-total-card" style="margin-top: 2rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%;">
+                            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 0.8rem;">
+                                <button id="iva-pill-btn" class="iva-pill-btn" onclick="toggleIva()">IVA 22%</button>
+                                <span class="label" onclick="toggleCurrency()" style="cursor: pointer; margin-bottom: 0;">MONTO TOTAL</span>
+                            </div>
+                            <span id="budget-total-val" class="value" onclick="toggleCurrency()" style="cursor: pointer;">US$ 0,00</span>
+                        </div>
                     </div>
                 </div>
             </div>
