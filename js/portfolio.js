@@ -3,6 +3,7 @@
    ========================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
+    initPortfolioIcons();
 
     /* ── Nav: scroll effect ── */
     const nav = document.getElementById('nav');
@@ -108,3 +109,113 @@ style.textContent = `
 .nav-link.active { color: var(--accent) !important; }
 `;
 document.head.appendChild(style);
+
+/**
+ * Enhanced Tool Icons with SVG injection and hover labels
+ */
+const iconMap = {
+    'ps': 'adobe photoshop.png',
+    'photoshop': 'adobe photoshop.png',
+    'ai': 'adobe illustrator.png',
+    'illustrator': 'adobe illustrator.png',
+    'pr': 'adobe premiere.png',
+    'premiere': 'adobe premiere.png',
+    'lr': 'adobe lightroom.png',
+    'lightroom': 'adobe lightroom.png',
+    'cc': 'capcut.png',
+    'capcut': 'capcut.png',
+    'gpt': 'chatGPT.png',
+    'chatgpt': 'chatGPT.png',
+    'gemini': 'gemini.png',
+    'claude': 'claude.png',
+    'flow': 'flow.png',
+    'freepik': 'freepik.png',
+    'suno': 'suno.png',
+    'heygen': 'heygen.png',
+    'lovable': 'lovable.webp',
+    'antigravity': 'antigravity.webp'
+};
+
+function initPortfolioIcons() {
+    const tags = document.querySelectorAll('.pc-tools span');
+    
+    tags.forEach(tag => {
+        const name = tag.textContent.trim().toLowerCase();
+        const originalText = tag.textContent.trim();
+        
+        const img = new Image();
+        if (iconMap[name]) {
+            img.src = `img/icons/${iconMap[name]}`;
+        } else {
+            img.src = `img/icons/${name}.svg`;
+        }
+        img.className = 'tool-icon';
+        
+        img.onload = () => {
+            tag.innerHTML = '';
+            tag.appendChild(img);
+            const span = document.createElement('span');
+            span.className = 'tool-name';
+            span.textContent = originalText;
+            tag.appendChild(span);
+        };
+
+        img.onerror = () => {
+            if (img.src.endsWith('.svg')) {
+                img.src = `img/icons/${name}.png`;
+            }
+        };
+    });
+}
+
+function initToolsTicker() {
+    const tickerTools = [
+        { name: 'Photoshop', file: 'adobe photoshop.png' },
+        { name: 'Illustrator', file: 'adobe illustrator.png' },
+        { name: 'Premiere', file: 'adobe premiere.png' },
+        { name: 'Lightroom', file: 'adobe lightroom.png' },
+        { name: 'CapCut', file: 'capcut.png' },
+        { name: 'ChatGPT', file: 'chatGPT.png' },
+        { name: 'Gemini', file: 'gemini.png' },
+        { name: 'Claude', file: 'claude.png' },
+        { name: 'Flow', file: 'flow.png' },
+        { name: 'Freepik', file: 'freepik.png' },
+        { name: 'Suno', file: 'suno.png' },
+        { name: 'HeyGen', file: 'heygen.png' },
+        { name: 'Lovable', file: 'lovable.webp' },
+        { name: 'Antigravity', file: 'antigravity.webp' }
+    ];
+    
+    const ticker = document.getElementById('tools-ticker');
+    const tickerDup = document.getElementById('tools-ticker-dup');
+    
+    if (!ticker) return;
+
+    const createTickerItem = (tool) => {
+        const item = document.createElement('div');
+        item.className = 'ticker-item';
+        // Always display since we know the files exist
+        item.style.display = 'flex';
+
+        const img = new Image();
+        img.src = `img/icons/${tool.file}`;
+        img.className = 'tool-icon';
+
+        const span = document.createElement('span');
+        span.textContent = tool.name;
+
+        item.appendChild(img);
+        item.appendChild(span);
+        return item;
+    };
+
+    tickerTools.forEach(tool => {
+        ticker.appendChild(createTickerItem(tool));
+        tickerDup.appendChild(createTickerItem(tool));
+    });
+}
+
+// Update initialization to include the ticker
+document.addEventListener('DOMContentLoaded', () => {
+    initToolsTicker();
+});

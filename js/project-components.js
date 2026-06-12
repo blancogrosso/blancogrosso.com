@@ -6,7 +6,107 @@
 document.addEventListener('DOMContentLoaded', () => {
     initComparisonSliders();
     initLightbox();
+    initToolIcons();
+    initIphoneRotation();
 });
+
+/**
+ * iPhone Rotation logic
+ */
+function initIphoneRotation() {
+    const frame = document.getElementById('auto-rotate-phone');
+    const video = document.getElementById('reel-video');
+    const muteBtn = document.getElementById('mute-toggle');
+    
+    if (frame) {
+        // Auto rotate after 2.5 seconds
+        setTimeout(() => {
+            frame.classList.add('rotated');
+        }, 2500);
+    }
+    
+    if (video && muteBtn) {
+        muteBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // prevent video play/pause
+            video.muted = !video.muted;
+            if (video.muted) {
+                muteBtn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon-muted"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>';
+            } else {
+                muteBtn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon-unmuted"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>';
+            }
+        });
+        
+        // Add click to pause/play
+        video.addEventListener('click', () => {
+            if (video.paused) {
+                video.play();
+            } else {
+                video.pause();
+            }
+        });
+    }
+}
+
+/**
+ * Enhanced Tool Icons with SVG injection and hover labels
+ */
+/**
+ * Optimized Tool Icons - Silent Loading to prevent browser spinner
+ */
+const iconMap = {
+    'ps': 'adobe photoshop.png',
+    'photoshop': 'adobe photoshop.png',
+    'ai': 'adobe illustrator.png',
+    'illustrator': 'adobe illustrator.png',
+    'pr': 'adobe premiere.png',
+    'premiere': 'adobe premiere.png',
+    'lr': 'adobe lightroom.png',
+    'lightroom': 'adobe lightroom.png',
+    'cc': 'capcut.png',
+    'capcut': 'capcut.png',
+    'gpt': 'chatGPT.png',
+    'chatgpt': 'chatGPT.png',
+    'gemini': 'gemini.png',
+    'claude': 'claude.png',
+    'flow': 'flow.png',
+    'freepik': 'freepik.png',
+    'suno': 'suno.png',
+    'heygen': 'heygen.png',
+    'lovable': 'lovable.webp',
+    'antigravity': 'antigravity.webp'
+};
+
+function initToolIcons() {
+    const tags = document.querySelectorAll('.stack-tag');
+    
+    tags.forEach(tag => {
+        const name = tag.textContent.trim().toLowerCase();
+        const originalText = tag.textContent.trim();
+        
+        const img = new Image();
+        if (iconMap[name]) {
+            img.src = `img/icons/${iconMap[name]}`;
+        } else {
+            img.src = `img/icons/${name}.svg`;
+        }
+        img.className = 'tool-icon';
+        
+        img.onload = () => {
+            tag.innerHTML = '';
+            tag.appendChild(img);
+            const span = document.createElement('span');
+            span.className = 'tool-name';
+            span.textContent = originalText;
+            tag.appendChild(span);
+        };
+
+        img.onerror = () => {
+            if (img.src.endsWith('.svg')) {
+                img.src = `img/icons/${name}.png`;
+            }
+        };
+    });
+}
 
 /**
  * Lightbox for zooming images
