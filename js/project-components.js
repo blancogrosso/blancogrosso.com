@@ -76,12 +76,26 @@ const iconMap = {
     'antigravity': 'antigravity.webp'
 };
 
+/* Full display names for abbreviated tool tags */
+const displayNames = {
+    'ps': 'PHOTOSHOP',
+    'photoshop': 'PHOTOSHOP',
+    'ai': 'ILLUSTRATOR',
+    'illustrator': 'ILLUSTRATOR',
+    'pr': 'PREMIERE',
+    'premiere': 'PREMIERE',
+    'lr': 'LIGHTROOM',
+    'lightroom': 'LIGHTROOM',
+    'cc': 'CAPCUT',
+    'capcut': 'CAPCUT',
+};
+
 function initToolIcons() {
     const tags = document.querySelectorAll('.stack-tag');
     
     tags.forEach(tag => {
         const name = tag.textContent.trim().toLowerCase();
-        const originalText = tag.textContent.trim();
+        const labelText = displayNames[name] || tag.textContent.trim().toUpperCase();
         
         const img = new Image();
         if (iconMap[name]) {
@@ -96,7 +110,7 @@ function initToolIcons() {
             tag.appendChild(img);
             const span = document.createElement('span');
             span.className = 'tool-name';
-            span.textContent = originalText;
+            span.textContent = labelText;
             tag.appendChild(span);
         };
 

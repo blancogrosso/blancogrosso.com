@@ -1,0 +1,423 @@
+/* =========================================
+   NIDO — Case study de identidad de marca
+   Sistema visual propio — NO comparte nada
+   con css/brand-core.css, portfolio.css,
+   project-detail.css ni styles.css
+   ========================================= */
+
+:root {
+    --lino: #F3EEE4;
+    --espresso: #2B211A;
+    --terracota: #C17A54;
+    --salvia: #8A9A7E;
+    --arena: #D9CBB8;
+    --pad: 1.25rem;
+}
+
+/* ── Reset mínimo ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; scroll-behavior: smooth; }
+body {
+    background: var(--lino);
+    color: var(--espresso);
+    font-family: 'Karla', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+}
+
+/* ── Loader ── */
+.nido-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--lino);
+    transition: opacity 0.4s ease;
+}
+.nido-loader.is-hidden { opacity: 0; pointer-events: none; }
+.nido-loader-icon {
+    width: clamp(120px, 20vw, 160px);
+    height: auto;
+    filter: invert(1);
+    opacity: 0;
+    transform: scale(0.92);
+    animation: nido-loader-in 900ms ease-out forwards;
+}
+@keyframes nido-loader-in {
+    to { opacity: 1; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .nido-loader { display: none; }
+}
+
+/* ── Link de retorno ── */
+.return-link {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 50;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--espresso);
+    opacity: 0.65;
+    padding: 0.5rem 0.6rem;
+    transition: opacity 0.2s ease, color 0.2s ease;
+}
+.return-link:hover { opacity: 1; color: var(--terracota); }
+
+.return-link-footer {
+    position: static;
+    display: inline-block;
+    margin-top: 0.5rem;
+    opacity: 0.85;
+}
+
+/* ── Layout base de sección ── */
+.section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem var(--pad);
+}
+@media (min-width: 720px) { .section { padding: 6rem var(--pad); } }
+@media (min-width: 1080px) { .section { padding: 8rem var(--pad); } }
+@media (min-width: 1280px) { .section { max-width: 1240px; padding: 9.5rem var(--pad); } }
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--terracota);
+    margin-bottom: 1.5rem;
+}
+
+/* ── Reveal on scroll ── */
+.reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.is-visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ── Placeholder de imagen ── */
+.media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--arena);
+    border-radius: 2px;
+}
+.media img { width: 100%; height: 100%; object-fit: cover; }
+
+.ph {
+    display: none;
+    position: absolute;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem;
+    background: rgba(217, 203, 184, 0.4);
+    border: 1px dashed var(--espresso);
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    color: var(--espresso);
+    opacity: 0.75;
+    word-break: break-word;
+}
+
+/* ── Hero ── */
+.hero {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 2rem;
+    padding: 6rem 1.25rem 4rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+.lockup-wrap {
+    width: min(320px, 70vw);
+    display: flex;
+    flex-direction: column;
+}
+@media (min-width: 1280px) {
+    .hero { max-width: 1100px; gap: 2.75rem; }
+    .lockup-wrap { width: min(420px, 30vw); }
+}
+.lockup-img { width: 100%; height: auto; margin: 0 auto; }
+.ph-lockup {
+    position: static;
+    display: none;
+    width: 100%;
+    aspect-ratio: 3 / 1;
+    border: 1px dashed var(--espresso);
+    background: rgba(217, 203, 184, 0.4);
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+}
+.hero-copy {
+    font-family: 'Fraunces', serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-size: clamp(1.25rem, 1rem + 2vw, 2.6rem);
+    line-height: 1.35;
+    max-width: 46ch;
+}
+.hero-meta {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.7rem;
+    color: var(--espresso);
+    opacity: 0.6;
+    max-width: 46ch;
+}
+
+/* ── Concepto ── */
+.concept { text-align: center; }
+.quote {
+    font-family: 'Fraunces', serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: clamp(1.75rem, 1.1rem + 4vw, 4.5rem);
+    line-height: 1.2;
+    max-width: 22ch;
+    margin: 0 auto 2rem;
+}
+.prose {
+    font-size: 1rem;
+    line-height: 1.75;
+    max-width: 70ch;
+    margin: 0 auto;
+    opacity: 0.9;
+}
+.nido-mark {
+    font-family: 'Fraunces', serif;
+    --nido-wght: 600;
+    --nido-opsz: 144;
+    --nido-soft: 0;
+    --nido-wonk: 0;
+    font-variation-settings:
+        'wght' var(--nido-wght),
+        'opsz' var(--nido-opsz),
+        'SOFT' var(--nido-soft),
+        'WONK' var(--nido-wonk);
+}
+.process-link {
+    display: inline-block;
+    margin-top: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--terracota);
+    opacity: 0.85;
+    transition: opacity 0.2s ease, letter-spacing 0.2s ease;
+}
+.process-link:hover { opacity: 1; letter-spacing: 0.17em; }
+.process-link-fraunces {
+    font-family: 'Fraunces', serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+}
+
+/* ── Sistema ── */
+.marca-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 3.5rem;
+}
+@media (min-width: 720px) {
+    .marca-grid { grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+}
+.marca-cell-media {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 4px;
+    border: 1px solid rgba(43, 33, 26, 0.12);
+    background: var(--arena);
+}
+.marca-cell-media img { width: 100%; height: 100%; object-fit: contain; }
+.marca-cell-label {
+    margin-top: 0.6rem;
+    font-size: 0.7rem;
+    text-align: center;
+    opacity: 0.7;
+}
+
+.palette {
+    display: flex;
+    flex-direction: column;
+    gap: 2.25rem;
+    margin-bottom: 4rem;
+}
+.palette-tier {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.75rem;
+    align-items: flex-end;
+}
+.swatch-tier {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.65rem;
+    opacity: 0.55;
+    margin-bottom: 0.3rem;
+}
+.swatch-color { width: 100%; aspect-ratio: 1; border-radius: 4px; margin-bottom: 0.75rem; }
+.swatch-lg { width: 260px; }
+.swatch-lg .swatch-color { border-radius: 6px; }
+.swatch-sm { width: 130px; }
+@media (min-width: 1280px) {
+    .palette-tier { gap: 2.25rem; }
+    .swatch-lg { width: 300px; }
+    .swatch-sm { width: 150px; }
+}
+.swatch-lino .swatch-color { background: var(--lino); border: 1px solid var(--espresso); }
+.swatch-espresso .swatch-color { background: var(--espresso); }
+.swatch-terracota .swatch-color { background: var(--terracota); }
+.swatch-salvia .swatch-color { background: var(--salvia); }
+.swatch-arena .swatch-color { background: var(--arena); }
+.swatch-name { font-weight: 700; font-size: 0.85rem; }
+.swatch-hex { font-size: 0.75rem; opacity: 0.6; }
+
+.specimen {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+}
+@media (min-width: 720px) {
+    .specimen { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+}
+.specimen-label {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--terracota);
+    margin-bottom: 1rem;
+}
+.specimen-fraunces {
+    font-family: 'Fraunces', serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-size: clamp(1.15rem, 1rem + 1.4vw, 2rem);
+    line-height: 1.5;
+}
+.specimen-karla {
+    font-family: 'Karla', sans-serif;
+    font-size: clamp(1rem, 0.9rem + 0.8vw, 1.35rem);
+    line-height: 1.6;
+}
+
+/* ── Divisor decorativo ── */
+.divider {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 2rem var(--pad);
+    max-width: 1100px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.divider img { width: 18px; height: 18px; opacity: 0.1; flex-shrink: 0; filter: invert(1); }
+
+/* ── Fotografía ── */
+.photo-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+@media (min-width: 720px) {
+    .photo-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1280px) {
+    .photo-grid { gap: 2.25rem; }
+}
+.caption { margin-top: 1.5rem; font-size: 0.85rem; opacity: 0.65; text-align: center; }
+
+/* ── Feed ── */
+.feed-posts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    align-items: start;
+}
+.feed-stories {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    align-items: start;
+}
+@media (max-width: 719px) {
+    .feed-posts { grid-template-columns: 1fr; }
+    .feed-stories { gap: 0.6rem; }
+}
+@media (min-width: 1280px) {
+    .feed-posts, .feed-stories { gap: 1.75rem; }
+}
+
+/* Imágenes reales del feed: se muestran completas, sin recortar */
+.feed-posts .media,
+.feed-stories .media {
+    aspect-ratio: auto;
+    overflow: visible;
+    background: transparent;
+    min-height: 3rem;
+}
+.feed-posts .media img,
+.feed-stories .media img {
+    width: 100%;
+    height: auto;
+    object-fit: initial;
+}
+
+/* ── Link externo (entre Feed y Cierre) ── */
+.external-link {
+    text-align: center;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 var(--pad) 5rem;
+}
+
+/* ── Cierre ── */
+.cierre {
+    text-align: center;
+    padding-top: 8rem;
+    padding-bottom: 6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+.signature-icon { width: 26px; height: 26px; opacity: 0.8; filter: invert(1); }
+.cierre-meta {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.7rem;
+    opacity: 0.55;
+}
