@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIDO — Identidad de marca — Blanco Grosso</title>
+    <meta name="description" content="Case study de branding: identidad visual completa para NIDO, marca de diseño para el hogar.">
+    <link rel="icon" type="image/svg+xml" href="img/works/nido/marca/SVG/nido%20icono%20transparente.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,100..900,0..100,0..1&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/nido.css">
+</head>
+<body>
+
+    <div id="nido-loader" class="nido-loader" aria-hidden="true">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" class="nido-loader-icon">
+    </div>
+    <script>
+        (function () {
+            var loader = document.getElementById('nido-loader');
+            if (!loader) return;
+
+            var MIN_VISIBLE_MS = 1200;
+            var SAFETY_TIMEOUT_MS = 3000;
+            var start = Date.now();
+            var hidden = false;
+
+            function hideLoader() {
+                if (hidden) return;
+                hidden = true;
+                loader.classList.add('is-hidden');
+                loader.addEventListener('transitionend', function () {
+                    loader.style.display = 'none';
+                }, { once: true });
+            }
+
+            function attemptHide() {
+                var remaining = MIN_VISIBLE_MS - (Date.now() - start);
+                if (remaining > 0) {
+                    setTimeout(hideLoader, remaining);
+                } else {
+                    hideLoader();
+                }
+            }
+
+            window.addEventListener('load', attemptHide);
+            setTimeout(hideLoader, SAFETY_TIMEOUT_MS);
+        })();
+    </script>
+
+    <script>
+        function imgFallback(img, next) {
+            if (next) {
+                img.onerror = function () { imgFallback(img); };
+                img.src = next;
+            } else {
+                img.style.display = 'none';
+                var ph = img.nextElementSibling;
+                if (ph) ph.style.display = 'flex';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var reveals = document.querySelectorAll('.reveal');
+
+            if (reduceMotion || !('IntersectionObserver' in window)) {
+                reveals.forEach(function (el) { el.classList.add('is-visible'); });
+                return;
+            }
+
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+            reveals.forEach(function (el) { observer.observe(el); });
+        });
+    </script>
+
+    <a href="index.html" class="return-link">← blancogrosso.com</a>
+
+    <!-- ══════════════════════════════════════════
+         1. HERO
+         ══════════════════════════════════════════ -->
+    <section class="hero">
+        <div class="lockup-wrap">
+            <img src="img/works/nido/marca/nido_lockup_positivo_color_bg.svg" alt="NIDO" class="lockup-img" onerror="imgFallback(this)">
+            <div class="ph ph-lockup">marca/nido_lockup_positivo_color_bg.svg</div>
+        </div>
+        <p class="hero-copy">Diseño para el hogar. Muebles, iluminación, objetos y textiles — piezas que transforman una casa en un lugar donde quedarse.</p>
+        <p class="hero-meta">POCITOS, MONTEVIDEO · 25–40 AÑOS · CÁLIDO · SERENO · CON CRITERIO · NÓRDICO CÁLIDO</p>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         2. CONCEPTO
+         ══════════════════════════════════════════ -->
+    <section class="section concept reveal">
+        <p class="eyebrow">CONCEPTO</p>
+        <blockquote class="quote"><span class="nido-mark">nido</span> no vende muebles, acompaña el criterio de armar un lugar propio.</blockquote>
+        <p class="prose">El nombre remite al nido literal: un objeto antiguo, armado a mano, ramita por ramita, con lo que hay cerca. No responde a un plano sino a un instinto que se ajusta con el tiempo y con quien lo habita. <span class="nido-mark">nido</span> vive en esa misma tensión — la del living real — donde el ruido de mil opciones se decanta, pieza por pieza, hasta el criterio de lo esencial.</p>
+        <a href="img/works/nido/nido_documentacion_prompts.pdf" target="_blank" class="process-link">VER PROCESO COMPLETO (PDF) →</a>
+    </section>
+
+    <div class="divider" aria-hidden="true">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         3. SISTEMA DE MARCA
+         ══════════════════════════════════════════ -->
+    <section class="section sistema reveal">
+        <p class="eyebrow">SISTEMA</p>
+
+        <div class="marca-grid">
+            <div class="marca-cell">
+                <div class="marca-cell-media">
+                    <img src="img/works/nido/marca/nido_icono_positivo_color_bg.svg" alt="Ícono NIDO, variante positiva a color" loading="lazy" onerror="imgFallback(this)">
+                    <div class="ph">marca/nido_icono_positivo_color_bg.svg</div>
+                </div>
+                <p class="marca-cell-label">Icono · Positivo · Color</p>
+            </div>
+            <div class="marca-cell">
+                <div class="marca-cell-media">
+                    <img src="img/works/nido/marca/nido_icono_negativo_mono_bg.svg" alt="Ícono NIDO, variante positiva monocromática" loading="lazy" onerror="imgFallback(this)">
+                    <div class="ph">marca/nido_icono_negativo_mono_bg.svg</div>
+                </div>
+                <p class="marca-cell-label">Icono · Positivo · ByN</p>
+            </div>
+            <div class="marca-cell">
+                <div class="marca-cell-media">
+                    <img src="img/works/nido/marca/nido_icono_negativo_color_bg.svg" alt="Ícono NIDO, variante negativa a color" loading="lazy" onerror="imgFallback(this)">
+                    <div class="ph">marca/nido_icono_negativo_color_bg.svg</div>
+                </div>
+                <p class="marca-cell-label">Icono · Negativo · Color</p>
+            </div>
+            <div class="marca-cell">
+                <div class="marca-cell-media">
+                    <img src="img/works/nido/marca/nido_icono_positivo_mono_bg.svg" alt="Ícono NIDO, variante negativa monocromática" loading="lazy" onerror="imgFallback(this)">
+                    <div class="ph">marca/nido_icono_positivo_mono_bg.svg</div>
+                </div>
+                <p class="marca-cell-label">Icono · Negativo · ByN</p>
+            </div>
+            <div class="marca-cell">
+                <div class="marca-cell-media">
+                    <img src="img/works/nido/marca/nido_lockup_positivo_color_bg.svg" alt="Lockup NIDO, variante positiva a color" loading="lazy" onerror="imgFallback(this)">
+                    <div class="ph">marca/nido_lockup_positivo_color_bg.svg</div>
+                </div>
+                <p class="marca-cell-label">Lockup · Positivo · Color</p>
+            </div>
+            <div class="marca-cell">
+                <div class="marca-cell-media">
+                    <img src="img/works/nido/marca/nido_lockup_positivo_mono_bg.svg" alt="Lockup NIDO, variante positiva monocromática" loading="lazy" onerror="imgFallback(this)">
+                    <div class="ph">marca/nido_lockup_positivo_mono_bg.svg</div>
+                </div>
+                <p class="marca-cell-label">Lockup · Positivo · ByN</p>
+            </div>
+            <div class="marca-cell">
+                <div class="marca-cell-media">
+                    <img src="img/works/nido/marca/nido_lockup_negativo_color_bg.svg" alt="Lockup NIDO, variante negativa a color" loading="lazy" onerror="imgFallback(this)">
+                    <div class="ph">marca/nido_lockup_negativo_color_bg.svg</div>
+                </div>
+                <p class="marca-cell-label">Lockup · Negativo · Color</p>
+            </div>
+            <div class="marca-cell">
+                <div class="marca-cell-media">
+                    <img src="img/works/nido/marca/nido_lockup_negativo_mono_bg.svg" alt="Lockup NIDO, variante negativa monocromática" loading="lazy" onerror="imgFallback(this)">
+                    <div class="ph">marca/nido_lockup_negativo_mono_bg.svg</div>
+                </div>
+                <p class="marca-cell-label">Lockup · Negativo · ByN</p>
+            </div>
+        </div>
+
+        <div class="palette">
+            <div class="palette-tier palette-primary">
+                <div class="swatch swatch-lg swatch-lino">
+                    <div class="swatch-color"></div>
+                    <p class="swatch-tier">Primario</p>
+                    <p class="swatch-name">Lino</p>
+                    <p class="swatch-hex">#F3EEE4</p>
+                </div>
+                <div class="swatch swatch-lg swatch-espresso">
+                    <div class="swatch-color"></div>
+                    <p class="swatch-tier">Primario</p>
+                    <p class="swatch-name">Espresso</p>
+                    <p class="swatch-hex">#2B211A</p>
+                </div>
+            </div>
+            <div class="palette-tier palette-secondary">
+                <div class="swatch swatch-sm swatch-terracota">
+                    <div class="swatch-color"></div>
+                    <p class="swatch-tier">Secundario</p>
+                    <p class="swatch-name">Terracota</p>
+                    <p class="swatch-hex">#C17A54</p>
+                </div>
+                <div class="swatch swatch-sm swatch-salvia">
+                    <div class="swatch-color"></div>
+                    <p class="swatch-tier">Secundario</p>
+                    <p class="swatch-name">Salvia</p>
+                    <p class="swatch-hex">#8A9A7E</p>
+                </div>
+                <div class="swatch swatch-sm swatch-arena">
+                    <div class="swatch-color"></div>
+                    <p class="swatch-tier">Secundario</p>
+                    <p class="swatch-name">Arena</p>
+                    <p class="swatch-hex">#D9CBB8</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="specimen">
+            <div class="specimen-block">
+                <p class="specimen-label">Fraunces — Display</p>
+                <p class="specimen-abc specimen-fraunces">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789</p>
+            </div>
+            <div class="specimen-block">
+                <p class="specimen-label">Karla — Body</p>
+                <p class="specimen-abc specimen-karla">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider" aria-hidden="true">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" onerror="this.parentElement.style.display='none'">
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         4. FOTOGRAFÍA
+         ══════════════════════════════════════════ -->
+    <section class="section fotografia reveal">
+        <p class="eyebrow">FOTOGRAFÍA</p>
+        <div class="photo-grid">
+            <div class="media">
+                <img src="img/works/nido/fotos/01_living.jpg" alt="Living ambientado con piezas NIDO" loading="lazy" onerror="imgFallback(this)">
+                <div class="ph">fotos/01_living.jpg</div>
+            </div>
+            <div class="media">
+                <img src="img/works/nido/fotos/02_mueble.jpg" alt="Mueble de diseño NIDO" loading="lazy" onerror="imgFallback(this)">
+                <div class="ph">fotos/02_mueble.jpg</div>
+            </div>
+            <div class="media">
+                <img src="img/works/nido/fotos/03_ceramic.jpg" alt="Cerámica y objetos NIDO" loading="lazy" onerror="imgFallback(this)">
+                <div class="ph">fotos/03_ceramic.jpg</div>
+            </div>
+            <div class="media">
+                <img src="img/works/nido/fotos/04_wool_texture.jpg" alt="Detalle de textura y textiles NIDO" loading="lazy" onerror="imgFallback(this)">
+                <div class="ph">fotos/04_wool_texture.jpg</div>
+            </div>
+        </div>
+        <p class="caption">Cuatro escenas, un mismo ecosistema tonal.</p>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         5. FEED
+         ══════════════════════════════════════════ -->
+    <section class="section feed reveal">
+        <p class="eyebrow">INSTAGRAM</p>
+        <div class="feed-posts">
+            <div class="media media-square">
+                <img src="img/works/nido/feed/post_01_apertura.jpg" alt="Post de Instagram NIDO 1" loading="lazy" onerror="imgFallback(this)">
+                <div class="ph">feed/post_01_apertura.jpg</div>
+            </div>
+            <div class="media media-square">
+                <img src="img/works/nido/feed/post_02_living.jpg" alt="Post de Instagram NIDO 2" loading="lazy" onerror="imgFallback(this)">
+                <div class="ph">feed/post_02_living.jpg</div>
+            </div>
+            <div class="media media-square">
+                <img src="img/works/nido/feed/post_03_objetos.jpg" alt="Post de Instagram NIDO 3" loading="lazy" onerror="imgFallback(this)">
+                <div class="ph">feed/post_03_objetos.jpg</div>
+            </div>
+        </div>
+        <div class="feed-stories">
+            <div class="media media-vertical">
+                <img src="img/works/nido/feed/historia_01.jpg" alt="Historia de Instagram NIDO 1" loading="lazy" onerror="imgFallback(this)">
+                <div class="ph">feed/historia_01.jpg</div>
+            </div>
+            <div class="media media-vertical">
+                <img src="img/works/nido/feed/historia_02.jpg" alt="Historia de Instagram NIDO 2" loading="lazy" onerror="imgFallback(this)">
+                <div class="ph">feed/historia_02.jpg</div>
+            </div>
+            <div class="media media-vertical">
+                <img src="img/works/nido/feed/historia_03.jpg" alt="Historia de Instagram NIDO 3" loading="lazy" onerror="imgFallback(this)">
+                <div class="ph">feed/historia_03.jpg</div>
+            </div>
+        </div>
+    </section>
+
+    <p class="external-link">
+        <a href="https://we.tl/t-zwyVhKPtpzdxXFut" target="_blank" rel="noopener" class="process-link process-link-fraunces">DESCARGAR NIDO_BLANCO_TOMAS ↓</a>
+    </p>
+
+    <!-- ══════════════════════════════════════════
+         6. CIERRE
+         ══════════════════════════════════════════ -->
+    <section class="section cierre reveal">
+        <img src="img/works/nido/marca/SVG/nido%20icono%20transparente.svg" alt="" class="signature-icon" onerror="this.style.display='none'">
+        <p class="cierre-meta">Prueba técnica — Diseñador Gráfico · Dendra · 2026</p>
+        <a href="index.html" class="return-link return-link-footer">← Volver a blancogrosso.com</a>
+    </section>
+
+</body>
+</html>

@@ -506,7 +506,7 @@ button { font-family: var(--font); cursor: pointer; }
 }
 
 .pc-tools span:hover {
-    max-width: 140px;
+    max-width: 210px;
     gap: 0.5rem;
     padding-right: 0.8rem;
     background: rgba(255,255,255,0.12);
@@ -1099,6 +1099,4 @@ body.lang-en-active p.lang-en { display: block; }
     object-fit: contain;
 }
 
-.tools-ticker-container:hover .tools-ticker {
-    animation-play-state: paused;
-}
+/* Ticker always plays — no pause on hover */

@@ -1,0 +1,57 @@
+NIDO — Assets
+==============
+Estado real de img/works/nido/ y qué usa cada archivo en nido.html.
+Todo lo listado abajo con [x] ya está cargado y en uso. No queda
+ningún placeholder activo en la página a esta fecha.
+
+marca/  (9 archivos, todos cargados)
+  [x] nido_icono_negativo_color.svg       → favicon, divisores decorativos, firma del cierre
+  [x] nido_icono_negativo_color_bg.svg     → grilla SISTEMA: "Icono · Negativo · Color"
+  [x] nido_icono_negativo_mono_bg.svg      → grilla SISTEMA: "Icono · Positivo · Mono" (*)
+  [x] nido_icono_positivo_color_bg.svg     → grilla SISTEMA: "Icono · Positivo · Color"
+  [x] nido_icono_positivo_mono_bg.svg      → grilla SISTEMA: "Icono · Negativo · Mono" (*)
+  [x] nido_lockup_negativo_color_bg.svg    → grilla SISTEMA: "Lockup · Negativo · Color"
+  [x] nido_lockup_negativo_mono_bg.svg     → grilla SISTEMA: "Lockup · Negativo · Mono"
+  [x] nido_lockup_positivo_color_bg.svg    → HERO (lockup grande) + grilla SISTEMA: "Lockup · Positivo · Color"
+  [x] nido_lockup_positivo_mono_bg.svg     → grilla SISTEMA: "Lockup · Positivo · Mono"
+
+  (*) OJO: en estos dos archivos el nombre de archivo dice una cosa
+      pero el contenido real (colores + id interno del SVG) dice lo
+      contrario: "...negativo_mono_bg.svg" en realidad se ve claro/
+      oscuro (positivo) y "...positivo_mono_bg.svg" se ve oscuro/claro
+      (negativo). La etiqueta en la página está puesta según lo que
+      se VE, no según el nombre del archivo. Si se re-exportan estos
+      dos SVG, conviene corregir el swap en origen.
+
+  Pendiente: no llegó ningún archivo del lockup realmente sin fondo
+  (los 4 "*_bg" tienen su propio rectángulo de fondo incluido).
+  Se usa nido_lockup_positivo_color_bg.svg para el HERO porque su
+  fondo (#f3eee3) es prácticamente idéntico al --lino de la página
+  (#F3EEE4), así que visualmente no se nota el borde del artboard.
+  Además, nido_icono_negativo_color.svg (el único sin sufijo "_bg")
+  en realidad SÍ trae un rectángulo de fondo espresso opaco dentro
+  del SVG — no es transparente pese al nombre. Se usa igual para
+  favicon/divisores/firma tal como se pidió, pero visualmente va a
+  verse como un cuadrado/punto sólido en vez de un trazo suelto. Si
+  se puede re-exportar una versión realmente transparente (sin ese
+  <rect> de fondo), mejora bastante los divisores y la firma.
+
+fotos/  (4 archivos, todos cargados)
+  [x] 01_living.jpg        → Fotografía, celda 1 (living)
+  [x] 02_mueble.jpg        → Fotografía, celda 2 (mueble)
+  [x] 03_ceramic.jpg       → Fotografía, celda 3 (cerámica)
+  [x] 04_wool_texture.jpg  → Fotografía, celda 4 (textura)
+
+feed/  (6 archivos, todos cargados)
+  [x] post_01_apertura.jpg → Instagram, post 1
+  [x] post_02_living.jpg   → Instagram, post 2
+  [x] post_03_objetos.jpg  → Instagram, post 3
+  [x] historia_01.jpg      → Instagram, historia 1
+  [x] historia_02.jpg      → Instagram, historia 2
+  [x] historia_03.jpg      → Instagram, historia 3
+
+raíz (img/works/nido/, sin subcarpeta)
+  [x] nido_documentacion_prompts.pdf
+      (el link "VER PROCESO COMPLETO (PDF)" en la sección Concepto
+      apunta directo a este archivo; mantiene este nombre al
+      descargarse/abrirse)
