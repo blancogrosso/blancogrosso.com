@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>SERRA — Brief de marca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{
+    --rojo:#C1272D;
+    --bordo:#7D1D18;
+    --crema:#FBF4E8;
+    --blanco:#FFFFFF;
+    --carbon:#26120D;
+    --gris:#8A7A70;
+    --ok:#2E7D46;
+    --sombra:4px 4px 0 var(--bordo);
+    --radio:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    html{scroll-behavior:auto}
+  }
+  body{
+    font-family:'Archivo',sans-serif;
+    background:var(--crema);
+    color:var(--carbon);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+  .checker{
+    height:18px;
+    background:
+      repeating-conic-gradient(var(--rojo) 0% 25%, var(--blanco) 0% 50%)
+      0 0 / 36px 36px;
+    border-bottom:3px solid var(--carbon);
+  }
+  .checker.bottom{border-bottom:none;border-top:3px solid var(--carbon);margin-top:auto}
+
+  main{width:100%;max-width:760px;margin:0 auto;padding:28px 20px 60px;flex:1}
+
+  h1,h2,.display{font-family:'Alfa Slab One',serif;font-weight:400;line-height:1.05}
+
+  /* ---------- MENU ---------- */
+  .menu{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding-top:6vh}
+  .menu .logo{
+    font-size:clamp(64px,16vw,120px);
+    color:var(--rojo);
+    letter-spacing:2px;
+    text-shadow:5px 5px 0 var(--bordo);
+  }
+  .menu .tag{
+    font-weight:700;text-transform:uppercase;letter-spacing:.22em;
+    font-size:13px;color:var(--carbon);margin-top:-2px;
+  }
+  .menu .sub{
+    max-width:420px;color:var(--gris);font-size:15px;line-height:1.5;margin-top:10px;
+  }
+  .players{display:flex;flex-direction:column;gap:14px;margin-top:34px;width:100%;max-width:400px}
+  .player-btn{
+    font-family:'Alfa Slab One',serif;
+    font-size:22px;
+    background:var(--blanco);
+    border:3px solid var(--carbon);
+    border-radius:var(--radio);
+    box-shadow:var(--sombra);
+    padding:18px 22px;
+    cursor:pointer;
+    color:var(--carbon);
+    display:flex;flex-direction:column;gap:8px;align-items:center;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .player-btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--bordo)}
+  .player-btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--bordo)}
+  .player-btn:focus-visible{outline:3px dashed var(--rojo);outline-offset:4px}
+  .player-btn .accion{font-size:13px;font-family:'Archivo';font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--rojo)}
+  .player-btn .nombre{font-size:26px}
+  .prog-wrap{width:100%;height:12px;border:2px solid var(--carbon);border-radius:99px;overflow:hidden;background:var(--crema)}
+  .prog-fill{height:100%;background:var(--rojo);width:0%}
+  .prog-label{font-family:'Archivo';font-size:12px;font-weight:600;color:var(--gris)}
+  .menu footer{margin-top:40px;font-size:12px;color:var(--gris);letter-spacing:.05em}
+  .menu footer a{color:var(--bordo);font-weight:700;text-decoration:underline;text-underline-offset:2px}
+
+  /* ---------- MAPA ---------- */
+  .top-bar{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:26px;flex-wrap:wrap;
+  }
+  .top-bar-links{display:flex;gap:16px;flex-wrap:wrap}
+  .pill{
+    font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+    border:2px solid var(--carbon);border-radius:99px;padding:7px 16px;background:var(--blanco);
+  }
+  .pill.rojo{background:var(--rojo);color:var(--blanco);border-color:var(--bordo)}
+  .link-btn{
+    background:none;border:none;font-family:'Archivo';font-weight:700;font-size:13px;
+    color:var(--bordo);cursor:pointer;text-decoration:underline;text-underline-offset:3px;
+  }
+  .link-btn:focus-visible{outline:3px dashed var(--rojo);outline-offset:3px}
+  .mapa h2{font-size:clamp(28px,6vw,40px);margin-bottom:6px}
+  .mapa .hint{color:var(--gris);font-size:14px;margin-bottom:24px}
+  .bloques{display:flex;flex-direction:column;gap:12px}
+  .bloque-card{
+    display:flex;align-items:center;gap:16px;
+    background:var(--blanco);border:3px solid var(--carbon);border-radius:var(--radio);
+    box-shadow:var(--sombra);padding:16px 18px;cursor:pointer;text-align:left;width:100%;
+    transition:transform .12s ease, box-shadow .12s ease;font-family:'Archivo';
+  }
+  .bloque-card:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--bordo)}
+  .bloque-card:focus-visible{outline:3px dashed var(--rojo);outline-offset:4px}
+  .bloque-num{
+    font-family:'Alfa Slab One';font-size:20px;color:var(--blanco);
+    background:var(--rojo);border:2px solid var(--bordo);
+    min-width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  }
+  .bloque-info{flex:1}
+  .bloque-info .t{font-weight:800;font-size:16px}
+  .bloque-info .d{font-size:13px;color:var(--gris);margin-top:2px}
+  .bloque-prog{font-weight:800;font-size:13px;color:var(--bordo);white-space:nowrap}
+  .bloque-prog.done{color:var(--ok)}
+
+  /* ---------- INTERMEDIO ---------- */
+  .intermedio{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:10vh;gap:14px}
+  .intermedio .num{
+    font-family:'Alfa Slab One';font-size:16px;color:var(--blanco);background:var(--rojo);
+    border:2px solid var(--bordo);border-radius:10px;padding:10px 16px;
+  }
+  .intermedio h2{font-size:clamp(28px,7vw,46px);margin-top:10px}
+  .intermedio p{max-width:440px;color:var(--gris);font-size:15px;line-height:1.55;margin-top:6px}
+  .intermedio .btn{margin-top:30px}
+
+  /* ---------- FINAL ---------- */
+  .final{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:8vh;gap:12px}
+  .final h2{font-size:clamp(30px,8vw,52px)}
+  .final p{max-width:440px;color:var(--gris);font-size:15px;line-height:1.6}
+  .final-actions{display:flex;flex-direction:column;gap:14px;margin-top:26px;width:100%;max-width:340px}
+  .wa-btn{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    font-family:'Alfa Slab One';font-size:17px;color:var(--blanco);background:#3DA35D;
+    border:3px solid #276B3B;border-radius:var(--radio);box-shadow:4px 4px 0 #276B3B;
+    padding:16px 20px;cursor:pointer;text-decoration:none;transition:transform .12s ease;
+  }
+  .wa-btn:hover{transform:translate(-2px,-2px)}
+  .exp-btn{
+    font-family:'Archivo';font-weight:800;font-size:14px;background:var(--blanco);
+    border:2px solid var(--carbon);border-radius:99px;padding:12px 18px;cursor:pointer;
+  }
+
+  /* ---------- PREGUNTA ---------- */
+  .q-head{margin-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .q-eyebrow{font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--rojo)}
+  .q-count{font-size:12px;font-weight:600;color:var(--gris)}
+  .pregunta h2{font-size:clamp(24px,5.4vw,34px);line-height:1.15;margin:6px 0 10px}
+  .q-hint{color:var(--gris);font-size:14px;line-height:1.55;margin-bottom:22px;max-width:60ch}
+
+  textarea, input[type="text"]{
+    width:100%;font-family:'Archivo';font-size:16px;line-height:1.5;color:var(--carbon);
+    background:var(--blanco);border:3px solid var(--carbon);border-radius:var(--radio);
+    padding:14px 16px;resize:vertical;
+  }
+  textarea{min-height:140px}
+  textarea:focus-visible, input[type="text"]:focus-visible{outline:3px dashed var(--rojo);outline-offset:3px}
+
+  .words4{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media (max-width:480px){.words4{grid-template-columns:1fr}}
+
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+  .chip{
+    font-family:'Archivo';font-weight:800;font-size:14px;letter-spacing:.06em;
+    border:3px solid var(--carbon);border-radius:99px;background:var(--blanco);
+    padding:10px 18px;cursor:pointer;transition:transform .1s ease;
+  }
+  .chip:hover{transform:translateY(-2px)}
+  .chip:focus-visible{outline:3px dashed var(--rojo);outline-offset:3px}
+  .chip.sel{background:var(--rojo);color:var(--blanco);border-color:var(--bordo);box-shadow:2px 2px 0 var(--bordo)}
+
+  .cards-opt{display:flex;flex-direction:column;gap:12px}
+  .card-opt{
+    text-align:left;background:var(--blanco);border:3px solid var(--carbon);border-radius:var(--radio);
+    padding:16px 18px;cursor:pointer;font-family:'Archivo';transition:transform .1s ease;
+  }
+  .card-opt:hover{transform:translate(-2px,-2px)}
+  .card-opt:focus-visible{outline:3px dashed var(--rojo);outline-offset:3px}
+  .card-opt.sel{background:var(--rojo);color:var(--blanco);border-color:var(--bordo);box-shadow:var(--sombra)}
+  .card-opt .ct{font-weight:800;font-size:15px}
+  .card-opt .cd{font-size:13px;margin-top:3px;opacity:.85}
+
+  .checks{display:flex;flex-direction:column;gap:10px}
+  .check-row{display:flex;align-items:center;gap:12px;background:var(--blanco);border:3px solid var(--carbon);border-radius:12px;padding:12px 16px;cursor:pointer;font-weight:600;font-size:15px}
+  .check-row input{width:20px;height:20px;accent-color:var(--rojo);cursor:pointer}
+
+  .refs{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px}
+  .ref-slot{
+    border:3px dashed var(--carbon);border-radius:var(--radio);background:var(--blanco);
+    min-height:150px;display:flex;align-items:center;justify-content:center;text-align:center;
+    padding:14px;font-size:13px;color:var(--gris);line-height:1.45;
+  }
+  .ref-slot img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+
+  .ojo-bar{display:flex;justify-content:flex-end;margin:16px 0 4px}
+  .ojo-btn{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'Archivo';font-weight:700;font-size:13px;
+    border:2px solid var(--carbon);border-radius:99px;background:var(--blanco);
+    padding:8px 16px;cursor:pointer;
+  }
+  .ojo-btn:focus-visible{outline:3px dashed var(--rojo);outline-offset:3px}
+  .ojo-btn.on{background:var(--carbon);color:var(--crema)}
+  .otros{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+  .otro-card{
+    background:#F4E8D6;border:2px solid var(--carbon);border-radius:12px;padding:12px 16px;font-size:14px;line-height:1.5;
+  }
+  .otro-card .who{font-weight:800;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--bordo);display:block;margin-bottom:4px}
+  .otro-card .empty{color:var(--gris);font-style:italic}
+
+  .save-flag{
+    font-size:12px;font-weight:700;color:var(--ok);opacity:0;transition:opacity .25s ease;margin-top:8px;display:inline-block;
+  }
+  .save-flag.show{opacity:1}
+
+  .nav-bot{display:flex;justify-content:space-between;gap:12px;margin-top:34px}
+  .btn{
+    font-family:'Alfa Slab One';font-size:16px;letter-spacing:.04em;
+    background:var(--blanco);color:var(--carbon);
+    border:3px solid var(--carbon);border-radius:var(--radio);box-shadow:var(--sombra);
+    padding:13px 26px;cursor:pointer;transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--bordo)}
+  .btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--bordo)}
+  .btn:focus-visible{outline:3px dashed var(--rojo);outline-offset:4px}
+  .btn.primario{background:var(--rojo);color:var(--blanco);border-color:var(--bordo)}
+  .btn[disabled]{opacity:.35;cursor:default;transform:none;box-shadow:var(--sombra)}
+
+  .hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="checker" aria-hidden="true"></div>
+<main id="app" role="main"></main>
+<div class="checker bottom" aria-hidden="true"></div>
+
+<script>
+const WHATSAPP_NUMERO = '59899234543';
+
+const SUPABASE_URL = 'https://hmaqdzkpjkxamggaiypo.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhtYXFkemtwamt4YW1nZ2FpeXBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwNDc2ODYsImV4cCI6MjA5MTYyMzY4Nn0.icnpnoSJrSaDVEJtRCTPZlEXAK_TlLGkTmIuVtSh6rw';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+async function refreshAnswers(){
+  const {data: rows, error} = await sb.from('serra_respuestas').select('question_id,player,value');
+  if(!error && rows){
+    const answers = {};
+    rows.forEach(r=>{
+      if(!answers[r.question_id]) answers[r.question_id] = {};
+      answers[r.question_id][r.player] = r.value;
+    });
+    state.answers = answers;
+  } else if(error){
+    console.error('Error cargando respuestas', error);
+  }
+  const {data: prefRows, error: perr} = await sb.from('serra_prefs').select('player,eye');
+  if(!perr && prefRows){
+    const prefs = {};
+    prefRows.forEach(r=> prefs[r.player] = {eye: r.eye});
+    state.prefs = prefs;
+  } else if(perr){
+    console.error('Error cargando preferencias', perr);
+  }
+}
+
+async function nav(){
+  await refreshAnswers();
+  render();
+}
+
+const PLAYERS = [
+  {id:'enzo',  label:'Enzo'},
+  {id:'mica',  label:'Mica'},
+  {id:'juntos',label:'Juntos'}
+];
+
+const BLOCKS = [
+  {
+    id:'b1', num:1, title:'Rompiendo el hielo',
+    desc:'De dónde viene SERRA y a dónde va.',
+    qs:[
+      {id:'q1', t:'¿Por qué nace la idea de armar SERRA?', h:'La historia detrás: cómo surgió, qué los empujó a arrancar.'},
+      {id:'q2', t:'¿Por qué el nombre SERRA?', h:'¿Tiene un significado particular para ustedes? Contalo aunque parezca obvio.'},
+      {id:'q3', t:'¿Quiénes están detrás de SERRA hoy?', h:'¿Son solo ustedes dos, o hay alguien más en el proyecto?'},
+      {id:'q4', t:'¿Qué es SERRA para vos?', h:'Respuesta personal, la primera que se te ocurra.'}
+    ]
+  },
+  {
+    id:'b2', num:2, title:'Contexto y categoría',
+    desc:'Cómo ven el rubro y dónde se paran.',
+    qs:[
+      {id:'q6', t:'El corazón del proyecto es la pizzería, y el catering es la puerta de entrada. ¿Cómo se imaginan que conviven los dos el día que abran el local?', h:'¿El catering queda como un servicio más del local, sigue siendo algo aparte, o cambia de rol?'},
+      {id:'q7', t:'¿Qué le falta al rubro hoy?', h:'Problemas o cosas mal resueltas que ven en pizzerías y caterings de la zona.'},
+      {id:'q8', t:'¿Cómo creen que va a evolucionar el rubro en los próximos años?', h:'Tendencias, cambios de consumo, lo que ven venir.'},
+      {id:'q9', t:'Cuando alguien piensa en "pizzería", ¿qué imagen se le viene a la cabeza?', h:'¿Les sirve esa imagen o quieren romper con eso? ¿Por qué?'}
+    ]
+  },
+  {
+    id:'b3', num:3, title:'Competencia',
+    desc:'Contra quién se compara SERRA, aunque no quiera.',
+    qs:[
+      {id:'q10', t:'¿Qué pizzerías o caterings considerás competencia directa?', h:'Nombralas todas, de la más fuerte a la más chica.'},
+      {id:'q11', t:'¿Cuál lo hace mejor? ¿Qué te gusta de ella?', h:'Puede ser el producto, la marca, la atención, el Instagram, lo que sea.'},
+      {id:'q12', t:'¿Qué es lo que no te gusta de la competencia?', h:'De cualquiera de las que nombraste. Sin filtro.'},
+      {id:'q13', t:'¿Qué hace diferente a SERRA de todas esas opciones?', h:'Si un cliente duda entre SERRA y otra, ¿qué inclina la balanza?'},
+      {id:'q14', t:'¿Alguna marca de cualquier rubro que te gustaría que SERRA se parezca en espíritu?', h:'No hace falta que sea de comida. Puede ser ropa, bebida, un bar, lo que sea.'}
+    ]
+  },
+  {
+    id:'b4', num:4, title:'Audiencias',
+    desc:'Para quién es SERRA, hoy y mañana.',
+    qs:[
+      {id:'q15', t:'¿A quién le van a vender el catering?', h:'Particulares, empresas, algún tipo de evento puntual. ¿A quién apuntan primero?'},
+      {id:'q16', t:'Pensando en el local a futuro, ¿quién entra a comer ahí?', h:'¿Es el mismo cliente del catering o cambia? Descríbanlo: edad, ocasión, con quién viene.'},
+      {id:'q17', t:'¿Qué clientes les interesa más fidelizar?', h:'Los que más margen dejan, los que más repiten, o los que abren puertas nuevas.'}
+    ]
+  },
+  {
+    id:'b5', num:5, title:'Cómo somos',
+    desc:'La personalidad de SERRA en palabras.',
+    qs:[
+      {id:'q18', t:'Definí a SERRA en 4 palabras', h:'Las primeras que se les ocurran, sin pensarlo mucho.', type:'words4'},
+      {id:'q19', t:'¿Qué 4 palabras querés que la gente asocie a SERRA en el futuro?', h:'Ahora sí, aspiracional: cómo quieren ser vistos.', type:'words4'},
+      {id:'q20', t:'Si SERRA fuera un verbo (o varios), ¿cuáles serían?', h:'Elegí los que sientan que la representan, pueden ser más de uno.', type:'chips_multi',
+        opts:['COMPARTIR','SORPRENDER','DISFRUTAR','ALIMENTAR','ACOMPAÑAR','CELEBRAR','JUNTAR']},
+      {id:'q21', t:'3 cosas que los hacen únicos o fuertes como proyecto', h:'Producto, historia, forma de trabajar, lo que sea que la competencia no tiene.'},
+      {id:'q22', t:'¿Qué principios no sacrificarían nunca?', h:'1 o 2, los innegociables. Pase lo que pase con el negocio.'},
+      {id:'q23', t:'¿Qué emoción querés que sienta alguien con SERRA?', h:'Cuando come algo de SERRA, recibe el pedido o, a futuro, entra al local.'}
+    ]
+  },
+  {
+    id:'b6', num:6, title:'Qué, cómo y por qué',
+    desc:'La oferta concreta y la razón de fondo.',
+    qs:[
+      {id:'q24', t:'¿Qué van a ofrecer exactamente en el catering para arrancar?', h:'Ya sabemos de las pre-pizzas para calentar en el evento. ¿Qué más? ¿Variedades, combos, extras?'},
+      {id:'q25', t:'¿Qué va a sumar el local que el catering no puede dar?', h:'La experiencia, el volumen, el tipo de cliente... ¿por qué el local es la meta?'},
+      {id:'q26', t:'Si el dinero no fuera un problema, ¿por qué seguirían haciendo SERRA?', h:'La respuesta a esta pregunta suele ser el corazón de la marca.'}
+    ]
+  },
+  {
+    id:'b7', num:7, title:'Construcción visual',
+    desc:'Las primeras decisiones del logo y la estética.',
+    qs:[
+      {id:'q27', t:'¿Cómo se imaginan el logo de SERRA?', h:'No hay respuesta correcta, es un punto de partida para explorar.', type:'cards',
+        opts:[
+          {v:'simbolo_nombre', t:'Símbolo + nombre', d:'Un dibujo o ícono que acompaña a la palabra SERRA. Ej: la llama de un horno junto al nombre.'},
+          {v:'solo_tipo', t:'Solo tipografía', d:'La palabra SERRA trabajada con carácter propio, sin dibujo. Ej: como Zara o SUPREME.'},
+          {v:'no_se', t:'No sabemos, sorprendannos', d:'Confiamos en la propuesta que surja de este proceso.'}
+        ]},
+      {id:'q28', t:'Las referencias que nos pasaron', h:'Son las 3 imágenes que mandaron como inspiración. ¿Qué les atrae de cada una? ¿Hay algo ahí que no quieren para SERRA?', type:'refs'},
+      {id:'q29', t:'Colores: ¿cuáles sí y cuáles no?', h:'Las referencias van por el lado del rojo y blanco. ¿Confirman ese camino? ¿Hay algún color que no quieren ver en su marca?'},
+      {id:'q30', t:'¿Dónde va a vivir el logo en el corto plazo?', h:'Marcá todo lo que aplique. Esto define en qué formatos lo diseñamos primero.', type:'checks',
+        opts:['Instagram','Catálogo PDF','WhatsApp','Etiquetas o stickers para las cajas','Otro (contanos en el campo de al lado)']}
+    ]
+  }
+];
+
+const ALL_QS = BLOCKS.flatMap(b=>b.qs);
+const TOTAL = ALL_QS.length;
+
+let state = {answers:{}, prefs:{}};
+let vista = {screen:'menu', player:null, blockIdx:0, qIdx:0};
+
+function ansOf(qid, player){
+  return (state.answers[qid] && state.answers[qid][player]) || null;
+}
+function isAnswered(qid, player){
+  const v = ansOf(qid, player);
+  if(v === null || v === undefined) return false;
+  if(typeof v === 'string') return v.trim().length > 0;
+  if(Array.isArray(v)) return v.some(x => (x||'').trim().length > 0);
+  if(typeof v === 'object') return Object.values(v).some(x => Array.isArray(x) ? x.length>0 : (x||'').toString().trim().length>0);
+  return false;
+}
+function progressOf(player){
+  return ALL_QS.filter(q=>isAnswered(q.id, player)).length;
+}
+async function setAnswer(qid, player, value){
+  if(!state.answers[qid]) state.answers[qid] = {};
+  state.answers[qid][player] = value;
+  flashSaved();
+  const {error} = await sb.from('serra_respuestas').upsert(
+    {question_id: qid, player: player, value: value, updated_at: new Date().toISOString()},
+    {onConflict: 'question_id,player'}
+  );
+  if(error) console.error('Error guardando respuesta', error);
+}
+
+async function setEyePref(player, eye){
+  if(!state.prefs[player]) state.prefs[player] = {};
+  state.prefs[player].eye = eye;
+  const {error} = await sb.from('serra_prefs').upsert(
+    {player, eye, updated_at: new Date().toISOString()},
+    {onConflict: 'player'}
+  );
+  if(error) console.error('Error guardando preferencia', error);
+}
+
+function otrosVisibles(player){
+  if(player === 'juntos') return ['enzo','mica'];
+  return PLAYERS.map(p=>p.id).filter(id => id !== player && id !== 'juntos');
+}
+
+const app = document.getElementById('app');
+
+function render(){
+  if(vista.screen==='menu') renderMenu();
+  else if(vista.screen==='mapa') renderMapa();
+  else if(vista.screen==='intermedio') renderIntermedio();
+  else if(vista.screen==='final') renderFinal();
+  else renderPregunta();
+  window.scrollTo(0,0);
+}
+
+function renderMenu(){
+  const btns = PLAYERS.map(p=>{
+    const done = progressOf(p.id);
+    const started = done > 0;
+    const accion = started ? 'Seguir como' : (p.id==='juntos' ? 'Completar' : 'Completar como');
+    const nombre = p.id==='juntos' ? 'Juntos' : p.label;
+    const pct = Math.round(done/TOTAL*100);
+    return `
+      <button class="player-btn" data-player="${p.id}">
+        <span class="accion">${accion}</span>
+        <span class="nombre">${nombre}</span>
+        ${started ? `
+          <span class="prog-wrap"><span class="prog-fill" style="width:${pct}%"></span></span>
+          <span class="prog-label">${done}/${TOTAL} respondidas</span>` : ''}
+      </button>`;
+  }).join('');
+
+  app.innerHTML = `
+    <div class="menu">
+      <h1 class="logo">SERRA</h1>
+      <div class="tag">Brief de marca</div>
+      <p class="sub">El primer paso para construir la identidad de SERRA. Respondan con calma, no hay apuro ni respuestas correctas.</p>
+      <div class="players">${btns}</div>
+      <footer>Un proceso de marca de <a href="https://blancogrosso.com" target="_blank" rel="noopener">blancogrosso</a></footer>
+    </div>`;
+
+  app.querySelectorAll('.player-btn').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      vista.player = b.dataset.player;
+      vista.screen = 'mapa';
+      nav();
+    });
+  });
+}
+
+function renderMapa(){
+  const p = PLAYERS.find(x=>x.id===vista.player);
+  const cards = BLOCKS.map((b,i)=>{
+    const done = b.qs.filter(q=>isAnswered(q.id, vista.player)).length;
+    const cls = done===b.qs.length ? 'done' : '';
+    return `
+      <button class="bloque-card" data-idx="${i}">
+        <span class="bloque-num">${b.num}</span>
+        <span class="bloque-info">
+          <span class="t">${b.title}</span><br>
+          <span class="d">${b.desc}</span>
+        </span>
+        <span class="bloque-prog ${cls}">${done}/${b.qs.length}</span>
+      </button>`;
+  }).join('');
+
+  app.innerHTML = `
+    <div class="top-bar">
+      <span class="pill rojo">${p.label}</span>
+      <span class="top-bar-links">
+        <button class="link-btn" id="exportar">Exportar respuestas</button>
+        <button class="link-btn" id="volver-menu">Volver al inicio</button>
+      </span>
+    </div>
+    <div class="mapa">
+      <h2>Elegí un bloque</h2>
+      <p class="hint">Podés entrar y salir cuando quieras, las respuestas quedan guardadas.</p>
+      <div class="bloques">${cards}</div>
+    </div>`;
+
+  document.getElementById('volver-menu').addEventListener('click', ()=>{
+    vista.screen='menu'; vista.player=null; nav();
+  });
+  document.getElementById('exportar').addEventListener('click', exportarRespuestas);
+  app.querySelectorAll('.bloque-card').forEach(c=>{
+    c.addEventListener('click', ()=>{
+      vista.blockIdx = parseInt(c.dataset.idx,10);
+      vista.qIdx = 0;
+      vista.screen = 'pregunta';
+      nav();
+    });
+  });
+}
+
+function renderIntermedio(){
+  const b = BLOCKS[vista.blockIdx];
+  app.innerHTML = `
+    <div class="intermedio">
+      <span class="num">Bloque ${b.num} de ${BLOCKS.length}</span>
+      <h2>${b.title}</h2>
+      <p>${b.desc}</p>
+      <button class="btn primario" id="comenzar-bloque">Comenzar bloque</button>
+    </div>`;
+  document.getElementById('comenzar-bloque').addEventListener('click', ()=>{
+    vista.qIdx = 0;
+    vista.screen = 'pregunta';
+    nav();
+  });
+}
+
+function renderFinal(){
+  const p = PLAYERS.find(x=>x.id===vista.player);
+  const msg = encodeURIComponent(`Hola Tomás! Completamos el brief de SERRA (${p.label}). Ya podés revisar las respuestas.`);
+  const waLink = `https://wa.me/${WHATSAPP_NUMERO}?text=${msg}`;
+  app.innerHTML = `
+    <div class="final">
+      <h2>Listo 🍕</h2>
+      <p>Terminaron todos los bloques. Avisale a Tomás para que se ponga a laburar con esto.</p>
+      <div class="final-actions">
+        <a class="wa-btn" href="${waLink}" target="_blank" rel="noopener">Avisar por WhatsApp</a>
+        <button class="exp-btn" id="exportar-final">Exportar respuestas</button>
+        <button class="link-btn" id="volver-mapa-final">Volver a los bloques</button>
+      </div>
+    </div>`;
+  document.getElementById('exportar-final').addEventListener('click', exportarRespuestas);
+  document.getElementById('volver-mapa-final').addEventListener('click', ()=>{
+    vista.screen='mapa'; nav();
+  });
+}
+
+function renderPregunta(){
+  const block = BLOCKS[vista.blockIdx];
+  const q = block.qs[vista.qIdx];
+  const p = PLAYERS.find(x=>x.id===vista.player);
+  const eyeOn = !!(state.prefs[vista.player] && state.prefs[vista.player].eye);
+  const otrosIds = otrosVisibles(vista.player);
+
+  const otrosHtml = (eyeOn && otrosIds.length) ? `
+    <div class="otros">
+      ${otrosIds.map(oid=>{
+        const label = PLAYERS.find(x=>x.id===oid).label;
+        const v = ansOf(q.id, oid);
+        return `<div class="otro-card">
+          <span class="who">${label}</span>
+          ${v && isAnswered(q.id,oid) ? formatAnswer(q, v) : '<span class="empty">Todavía no respondió esta pregunta.</span>'}
+        </div>`;
+      }).join('')}
+    </div>` : '';
+
+  app.innerHTML = `
+    <div class="top-bar">
+      <span class="pill rojo">${p.label}</span>
+      <button class="link-btn" id="volver-mapa">Volver a los bloques</button>
+    </div>
+    <div class="pregunta">
+      <div class="q-head">
+        <span class="q-eyebrow">Bloque ${block.num} · ${block.title}</span>
+        <span class="q-count">Pregunta ${vista.qIdx+1} de ${block.qs.length}</span>
+      </div>
+      <h2>${q.t}</h2>
+      <p class="q-hint">${q.h}</p>
+      <div id="input-zone">${renderInput(q)}</div>
+      <span class="save-flag" id="save-flag">Guardado ✓</span>
+      ${otrosIds.length ? `
+      <div class="ojo-bar">
+        <button class="ojo-btn ${eyeOn?'on':''}" id="ojo">
+          ${eyeOn ? '🙈 Ocultar respuestas del resto' : '👁️ Ver respuestas del resto'}
+        </button>
+      </div>` : ''}
+      ${otrosHtml}
+      <div class="nav-bot">
+        <button class="btn" id="prev" ${vista.qIdx===0 && vista.blockIdx===0 ? 'disabled':''}>← Anterior</button>
+        <button class="btn primario" id="next">${labelNext()}</button>
+      </div>
+    </div>`;
+
+  document.getElementById('volver-mapa').addEventListener('click', ()=>{
+    vista.screen='mapa'; nav();
+  });
+  const ojoBtn = document.getElementById('ojo');
+  if(ojoBtn){
+    ojoBtn.addEventListener('click', async ()=>{
+      await setEyePref(vista.player, !eyeOn);
+      render();
+    });
+  }
+  document.getElementById('prev').addEventListener('click', ()=>navQ(-1));
+  document.getElementById('next').addEventListener('click', ()=>navQ(1));
+
+  bindInput(q);
+}
+
+function labelNext(){
+  const block = BLOCKS[vista.blockIdx];
+  const lastQ = vista.qIdx === block.qs.length-1;
+  const lastB = vista.blockIdx === BLOCKS.length-1;
+  if(lastQ && lastB) return 'Terminar 🎉';
+  if(lastQ) return 'Siguiente bloque →';
+  return 'Siguiente →';
+}
+
+function navQ(dir){
+  const block = BLOCKS[vista.blockIdx];
+  let q = vista.qIdx + dir;
+
+  if(q >= block.qs.length){
+    if(vista.blockIdx < BLOCKS.length-1){
+      vista.blockIdx++;
+      vista.screen = 'intermedio';
+    } else {
+      vista.screen = 'final';
+    }
+  } else if(q < 0){
+    if(vista.blockIdx > 0){ vista.blockIdx--; vista.qIdx = BLOCKS[vista.blockIdx].qs.length-1; }
+    else { vista.qIdx = 0; }
+  } else {
+    vista.qIdx = q;
+  }
+  nav();
+}
+
+function renderInput(q){
+  const v = ansOf(q.id, vista.player);
+  switch(q.type){
+    case 'words4':{
+      const arr = Array.isArray(v) ? v : ['','','',''];
+      return `<div class="words4">${[0,1,2,3].map(i=>
+        `<input type="text" maxlength="30" placeholder="Palabra ${i+1}" data-w="${i}" value="${esc(arr[i]||'')}">`
+      ).join('')}</div>`;
+    }
+    case 'chips_multi':{
+      const val = v && typeof v==='object' ? v : {sel:[], otro:''};
+      const sel = Array.isArray(val.sel) ? val.sel : [];
+      return `
+        <div class="chips">${q.opts.map(o=>
+          `<button class="chip ${sel.includes(o)?'sel':''}" data-chip="${o}">${o}</button>`
+        ).join('')}</div>
+        <input type="text" id="chip-otro" placeholder="¿Otro verbo? Escribilo acá" value="${esc(val.otro||'')}">`;
+    }
+    case 'cards':{
+      return `<div class="cards-opt">${q.opts.map(o=>
+        `<button class="card-opt ${v===o.v?'sel':''}" data-card="${o.v}">
+          <span class="ct">${o.t}</span><br><span class="cd">${o.d}</span>
+        </button>`).join('')}</div>`;
+    }
+    case 'checks':{
+      const arr = Array.isArray(v && v.sel) ? v.sel : (Array.isArray(v)? v : []);
+      const nota = (v && v.nota) || '';
+      return `
+        <div class="checks">${q.opts.map(o=>
+          `<label class="check-row"><input type="checkbox" data-check="${esc(o)}" ${arr.includes(o)?'checked':''}> ${o}</label>`
+        ).join('')}</div>
+        <div style="margin-top:12px"><input type="text" id="checks-nota" placeholder="Algo más que quieras aclarar" value="${esc(nota)}"></div>`;
+    }
+    case 'refs':{
+      return `
+        <div class="refs">
+          <div class="ref-slot">Ref. 1 — Salón con cuadros ilustrados en rojo, pared de ladrillo blanco, piso damero</div>
+          <div class="ref-slot">Ref. 2 — Techo blanco con trazos rojos, azulejo damero rojo y blanco</div>
+          <div class="ref-slot">Ref. 3 — Barra de azulejo bordó brillante, lámparas colgantes rojas</div>
+        </div>
+        <textarea placeholder="¿Qué les atrae de estas imágenes? ¿Hay algo que no quieren?">${esc(typeof v==='string'?v:'')}</textarea>`;
+    }
+    default:
+      return `<textarea placeholder="Escribí acá...">${esc(typeof v==='string'?v:'')}</textarea>`;
+  }
+}
+
+function bindInput(q){
+  const zone = document.getElementById('input-zone');
+  switch(q.type){
+    case 'words4':{
+      zone.querySelectorAll('input').forEach(inp=>{
+        inp.addEventListener('input', debounce(()=>{
+          const arr = [...zone.querySelectorAll('input')].map(i=>i.value);
+          setAnswer(q.id, vista.player, arr);
+        }, 500));
+      });
+      break;
+    }
+    case 'chips_multi':{
+      const save = ()=>{
+        const sel = [...zone.querySelectorAll('.chip.sel')].map(c=>c.dataset.chip);
+        const otro = zone.querySelector('#chip-otro').value;
+        setAnswer(q.id, vista.player, {sel, otro});
+      };
+      zone.querySelectorAll('.chip').forEach(ch=>{
+        ch.addEventListener('click', ()=>{
+          ch.classList.toggle('sel');
+          save();
+        });
+      });
+      zone.querySelector('#chip-otro').addEventListener('input', debounce(save, 500));
+      break;
+    }
+    case 'cards':{
+      zone.querySelectorAll('.card-opt').forEach(c=>{
+        c.addEventListener('click', ()=>{
+          zone.querySelectorAll('.card-opt').forEach(x=>x.classList.remove('sel'));
+          c.classList.add('sel');
+          setAnswer(q.id, vista.player, c.dataset.card);
+        });
+      });
+      break;
+    }
+    case 'checks':{
+      const save = ()=>{
+        const sel = [...zone.querySelectorAll('input[type=checkbox]:checked')].map(i=>i.dataset.check);
+        const nota = zone.querySelector('#checks-nota').value;
+        setAnswer(q.id, vista.player, {sel, nota});
+      };
+      zone.querySelectorAll('input[type=checkbox]').forEach(i=>i.addEventListener('change', save));
+      zone.querySelector('#checks-nota').addEventListener('input', debounce(save, 500));
+      break;
+    }
+    default:{
+      const ta = zone.querySelector('textarea');
+      if(ta) ta.addEventListener('input', debounce(()=>{
+        setAnswer(q.id, vista.player, ta.value);
+      }, 500));
+    }
+  }
+}
+
+function formatAnswer(q, v){
+  if(typeof v === 'string') return esc(v).replace(/\n/g,'<br>');
+  if(Array.isArray(v)) return esc(v.filter(Boolean).join(' · '));
+  if(v && typeof v==='object'){
+    if('sel' in v && Array.isArray(v.sel)) return esc([...v.sel, v.otro||v.nota].filter(Boolean).join(' · '));
+    if('sel' in v) return esc([v.sel, v.otro].filter(Boolean).join(' — '));
+  }
+  return esc(String(v));
+}
+
+function textAnswer(q, v){
+  if(v===null || v===undefined) return '(sin responder)';
+  if(typeof v === 'string') return v.trim() || '(sin responder)';
+  if(Array.isArray(v)) return v.filter(Boolean).join(', ') || '(sin responder)';
+  if(typeof v === 'object'){
+    if('sel' in v && Array.isArray(v.sel)) return [...v.sel, v.otro||v.nota].filter(Boolean).join(', ') || '(sin responder)';
+    if('sel' in v) return [v.sel, v.otro].filter(Boolean).join(' — ') || '(sin responder)';
+  }
+  return String(v);
+}
+
+function esc(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+let saveTimer;
+function flashSaved(){
+  const f = document.getElementById('save-flag');
+  if(!f) return;
+  f.classList.add('show');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>f.classList.remove('show'), 1600);
+}
+
+function debounce(fn, ms){
+  let t;
+  return (...args)=>{ clearTimeout(t); t = setTimeout(()=>fn(...args), ms); };
+}
+
+async function exportarRespuestas(){
+  await refreshAnswers();
+  let out = `SERRA — Respuestas del brief de marca\nExportado: ${new Date().toLocaleString('es-UY')}\n\n`;
+  BLOCKS.forEach(b=>{
+    out += `\n===== BLOQUE ${b.num}. ${b.title.toUpperCase()} =====\n`;
+    b.qs.forEach(q=>{
+      out += `\n${q.t}\n`;
+      PLAYERS.forEach(p=>{
+        const v = ansOf(q.id, p.id);
+        if(v!==null && v!==undefined){
+          out += `  ${p.label}: ${textAnswer(q,v)}\n`;
+        }
+      });
+    });
+  });
+  const blob = new Blob([out], {type:'text/plain;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'serra-respuestas.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+(async function(){
+  await refreshAnswers();
+  render();
+})();
+</script>
+</body>
+</html>
