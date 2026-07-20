@@ -87,6 +87,12 @@
   .prog-label{font-family:'Archivo';font-size:12px;font-weight:600;color:var(--gris)}
   .menu footer{margin-top:40px;font-size:12px;color:var(--gris);letter-spacing:.05em}
   .menu footer a{color:var(--bordo);font-weight:700;text-decoration:underline;text-underline-offset:2px}
+  .reset-link{
+    margin-top:18px;background:none;border:none;font-family:'Archivo';font-size:11px;
+    color:var(--gris);opacity:.6;cursor:pointer;text-decoration:underline;text-underline-offset:2px;
+  }
+  .reset-link:hover{opacity:1}
+  .reset-link:focus-visible{outline:3px dashed var(--rojo);outline-offset:3px}
 
   /* ---------- MAPA ---------- */
   .top-bar{
@@ -114,16 +120,23 @@
   }
   .bloque-card:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--bordo)}
   .bloque-card:focus-visible{outline:3px dashed var(--rojo);outline-offset:4px}
+  .bloque-card.done{background:#EAF4EC;border-color:var(--ok)}
   .bloque-num{
     font-family:'Alfa Slab One';font-size:20px;color:var(--blanco);
     background:var(--rojo);border:2px solid var(--bordo);
     min-width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;
   }
+  .bloque-num.done{background:var(--ok);border-color:#1F5C31}
   .bloque-info{flex:1}
   .bloque-info .t{font-weight:800;font-size:16px}
   .bloque-info .d{font-size:13px;color:var(--gris);margin-top:2px}
-  .bloque-prog{font-weight:800;font-size:13px;color:var(--bordo);white-space:nowrap}
+  .bloque-prog{font-weight:800;font-size:13px;color:var(--bordo);white-space:nowrap;display:flex;align-items:center;gap:8px}
   .bloque-prog.done{color:var(--ok)}
+  .bloque-check{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:20px;height:20px;border-radius:50%;background:var(--ok);color:var(--blanco);
+    font-size:12px;font-weight:800;line-height:1;
+  }
 
   /* ---------- INTERMEDIO ---------- */
   .intermedio{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:10vh;gap:14px}
@@ -447,6 +460,7 @@ function renderMenu(){
       <p class="sub">El primer paso para construir la identidad de SERRA. Respondan con calma, no hay apuro ni respuestas correctas.</p>
       <div class="players">${btns}</div>
       <footer>Un proceso de marca de <a href="https://blancogrosso.com" target="_blank" rel="noopener">blancogrosso</a></footer>
+      <button class="reset-link" id="reset-todo">Reiniciar respuestas (borra todo)</button>
     </div>`;
 
   app.querySelectorAll('.player-btn').forEach(b=>{
@@ -456,6 +470,20 @@ function renderMenu(){
       nav();
     });
   });
+  document.getElementById('reset-todo').addEventListener('click', resetTodo);
+}
+
+async function resetTodo(){
+  if(!confirm('¿Seguro que querés borrar TODAS las respuestas de Enzo y Mica? Esta acción no se puede deshacer.')) return;
+  const {error: e1} = await sb.from('serra_respuestas').delete().neq('question_id', '');
+  const {error: e2} = await sb.from('serra_prefs').delete().neq('player', '');
+  if(e1 || e2){
+    console.error('Error reiniciando', e1, e2);
+    alert('Hubo un error al reiniciar. Revisá la consola.');
+    return;
+  }
+  state = {answers:{}, prefs:{}};
+  await nav();
 }
 
 function renderMapa(){
@@ -464,13 +492,13 @@ function renderMapa(){
     const done = b.qs.filter(q=>isAnswered(q.id, vista.player)).length;
     const cls = done===b.qs.length ? 'done' : '';
     return `
-      <button class="bloque-card" data-idx="${i}">
-        <span class="bloque-num">${b.num}</span>
+      <button class="bloque-card ${cls}" data-idx="${i}">
+        <span class="bloque-num ${cls}">${b.num}</span>
         <span class="bloque-info">
           <span class="t">${b.title}</span><br>
           <span class="d">${b.desc}</span>
         </span>
-        <span class="bloque-prog ${cls}">${done}/${b.qs.length}</span>
+        <span class="bloque-prog ${cls}">${done}/${b.qs.length}${cls ? '<span class="bloque-check">✓</span>' : ''}</span>
       </button>`;
   }).join('');
 
@@ -510,10 +538,15 @@ function renderIntermedio(){
       <h2>${b.title}</h2>
       <p>${b.desc}</p>
       <button class="btn primario" id="comenzar-bloque">Comenzar bloque</button>
+      <button class="link-btn" id="volver-mapa-intermedio">Volver a los bloques</button>
     </div>`;
   document.getElementById('comenzar-bloque').addEventListener('click', ()=>{
     vista.qIdx = 0;
     vista.screen = 'pregunta';
+    nav();
+  });
+  document.getElementById('volver-mapa-intermedio').addEventListener('click', ()=>{
+    vista.screen = 'mapa';
     nav();
   });
 }
