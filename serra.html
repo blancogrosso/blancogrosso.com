@@ -437,6 +437,7 @@ function render(){
 }
 
 function renderMenu(){
+  const esAdmin = new URLSearchParams(window.location.search).get('admin') === '1';
   const btns = PLAYERS.map(p=>{
     const done = progressOf(p.id);
     const started = done > 0;
@@ -460,7 +461,7 @@ function renderMenu(){
       <p class="sub">El primer paso para construir la identidad de SERRA. Respondan con calma, no hay apuro ni respuestas correctas.</p>
       <div class="players">${btns}</div>
       <footer>Un proceso de marca de <a href="https://blancogrosso.com" target="_blank" rel="noopener">blancogrosso</a></footer>
-      <button class="reset-link" id="reset-todo">Reiniciar respuestas (borra todo)</button>
+      ${esAdmin ? `<button class="reset-link" id="reset-todo">Reiniciar respuestas (borra todo)</button>` : ''}
     </div>`;
 
   app.querySelectorAll('.player-btn').forEach(b=>{
@@ -470,7 +471,8 @@ function renderMenu(){
       nav();
     });
   });
-  document.getElementById('reset-todo').addEventListener('click', resetTodo);
+  const resetBtn = document.getElementById('reset-todo');
+  if(resetBtn) resetBtn.addEventListener('click', resetTodo);
 }
 
 async function resetTodo(){
