@@ -249,7 +249,7 @@
   }
   .lightbox.show img{transform:scale(1)}
   .lightbox-close{
-    position:absolute;top:20px;right:20px;
+    position:absolute;top:20px;right:20px;z-index:2;
     width:44px;height:44px;border-radius:50%;
     background:var(--blanco);border:3px solid var(--carbon);
     font-family:'Archivo';font-weight:800;font-size:18px;color:var(--carbon);
@@ -258,6 +258,23 @@
   }
   .lightbox-close:hover{transform:scale(1.08)}
   .lightbox-close:focus-visible{outline:3px dashed var(--rojo);outline-offset:3px}
+
+  .modal-overlay{
+    position:fixed;inset:0;z-index:2000;
+    background:rgba(38,18,13,.6);
+    display:flex;align-items:center;justify-content:center;padding:24px;
+    opacity:0;pointer-events:none;transition:opacity .22s ease;
+  }
+  .modal-overlay.show{opacity:1;pointer-events:auto}
+  .modal-box{
+    background:var(--crema);border:3px solid var(--carbon);border-radius:var(--radio);
+    box-shadow:var(--sombra);padding:26px;max-width:360px;width:100%;text-align:center;
+    transform:scale(.94);transition:transform .22s cubic-bezier(.22,1,.36,1);
+  }
+  .modal-overlay.show .modal-box{transform:scale(1)}
+  .modal-msg{font-size:15px;line-height:1.55;color:var(--carbon);margin-bottom:22px}
+  .modal-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .modal-actions .btn{font-size:14px;padding:12px 20px}
 
   .ojo-bar{display:flex;justify-content:flex-end;margin:16px 0 4px}
   .ojo-btn{
@@ -304,6 +321,13 @@
 <div class="lightbox" id="lightbox" aria-hidden="true">
   <button class="lightbox-close" id="lightbox-close" aria-label="Cerrar imagen" type="button">✕</button>
   <img id="lightbox-img" src="" alt="">
+</div>
+
+<div class="modal-overlay" id="modal-overlay" aria-hidden="true">
+  <div class="modal-box" role="alertdialog" aria-modal="true" aria-labelledby="modal-msg">
+    <p class="modal-msg" id="modal-msg"></p>
+    <div class="modal-actions" id="modal-actions"></div>
+  </div>
 </div>
 
 <script>
@@ -524,12 +548,13 @@ function renderMenu(){
 }
 
 async function resetTodo(){
-  if(!confirm('¿Seguro que querés borrar TODAS las respuestas de Enzo y Mica? Esta acción no se puede deshacer.')) return;
+  const ok = await showConfirm('¿Seguro que querés borrar TODAS las respuestas de Enzo y Mica? Esta acción no se puede deshacer.');
+  if(!ok) return;
   const {error: e1} = await sb.from('serra_respuestas').delete().neq('question_id', '');
   const {error: e2} = await sb.from('serra_prefs').delete().neq('player', '');
   if(e1 || e2){
     console.error('Error reiniciando', e1, e2);
-    alert('Hubo un error al reiniciar. Revisá la consola.');
+    await showAlert('Hubo un error al reiniciar. Revisá la consola.');
     return;
   }
   state = {answers:{}, prefs:{}};
@@ -843,6 +868,38 @@ document.getElementById('lightbox-close').addEventListener('click', closeLightbo
 document.addEventListener('keydown', e=>{
   if(e.key === 'Escape') closeLightbox();
 });
+
+function showModal(message, buttons){
+  return new Promise(resolve=>{
+    const overlay = document.getElementById('modal-overlay');
+    document.getElementById('modal-msg').textContent = message;
+    const actions = document.getElementById('modal-actions');
+    actions.innerHTML = '';
+    buttons.forEach(b=>{
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn' + (b.primary ? ' primario' : '');
+      btn.textContent = b.label;
+      btn.addEventListener('click', ()=>{
+        overlay.classList.remove('show');
+        overlay.setAttribute('aria-hidden', 'true');
+        resolve(b.value);
+      });
+      actions.appendChild(btn);
+    });
+    overlay.classList.add('show');
+    overlay.setAttribute('aria-hidden', 'false');
+  });
+}
+function showConfirm(message){
+  return showModal(message, [
+    {label:'Cancelar', value:false},
+    {label:'Sí, borrar', value:true, primary:true}
+  ]);
+}
+function showAlert(message){
+  return showModal(message, [{label:'Entendido', value:true, primary:true}]);
+}
 
 function formatAnswer(q, v){
   if(typeof v === 'string') return esc(v).replace(/\n/g,'<br>');
