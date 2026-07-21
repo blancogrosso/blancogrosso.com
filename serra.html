@@ -700,9 +700,9 @@ function renderInput(q){
     case 'refs':{
       return `
         <div class="refs">
-          <div class="ref-slot">Ref. 1 — Salón con cuadros ilustrados en rojo, pared de ladrillo blanco, piso damero</div>
-          <div class="ref-slot">Ref. 2 — Techo blanco con trazos rojos, azulejo damero rojo y blanco</div>
-          <div class="ref-slot">Ref. 3 — Barra de azulejo bordó brillante, lámparas colgantes rojas</div>
+          <div class="ref-slot"><img src="refs/ref1.jpg" alt="Referencia 1 — salón con cuadros ilustrados en rojo, pared de ladrillo blanco, piso damero" loading="lazy"></div>
+          <div class="ref-slot"><img src="refs/ref2.jpg" alt="Referencia 2 — techo blanco con trazos rojos, azulejo damero rojo y blanco" loading="lazy"></div>
+          <div class="ref-slot"><img src="refs/ref3.jpg" alt="Referencia 3 — barra de azulejo bordó brillante, lámparas colgantes rojas" loading="lazy"></div>
         </div>
         <textarea placeholder="¿Qué les atrae de estas imágenes? ¿Hay algo que no quieren?">${esc(typeof v==='string'?v:'')}</textarea>`;
     }
