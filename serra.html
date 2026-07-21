@@ -209,14 +209,19 @@
   .check-row input{width:20px;height:20px;accent-color:var(--rojo);cursor:pointer}
 
   .refs{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px}
+  @media (max-width:480px){
+    .refs{grid-template-columns:repeat(3,1fr);gap:8px}
+    .ref-slot{min-height:100px;padding:6px}
+    .ref-zoom-badge{width:22px;height:22px;font-size:11px;bottom:5px;right:5px}
+  }
   .ref-slot{
-    position:relative;overflow:hidden;
+    position:relative;overflow:hidden;min-width:0;
     border:3px dashed var(--carbon);border-radius:var(--radio);background:var(--blanco);
     min-height:150px;display:flex;align-items:center;justify-content:center;text-align:center;
     padding:14px;font-size:13px;color:var(--gris);line-height:1.45;
   }
   .ref-slot img{
-    width:100%;height:100%;object-fit:cover;border-radius:10px;cursor:zoom-in;
+    display:block;width:100%;height:100%;min-width:0;object-fit:cover;border-radius:10px;cursor:zoom-in;
     transition:transform .18s ease;
   }
   .ref-slot img:hover{transform:scale(1.04)}
