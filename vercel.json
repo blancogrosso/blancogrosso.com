@@ -1,5 +1,6 @@
 {
   "rewrites": [
-    { "source": "/serra", "destination": "/serra.html" }
+    { "source": "/serra", "destination": "/serra.html" },
+    { "source": "/serra-identidad", "destination": "/serra-identidad.html" }
   ]
 }
