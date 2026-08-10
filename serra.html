@@ -35,6 +35,29 @@
     display:flex;
     flex-direction:column;
   }
+
+  /* ---------- SITE HEADER ---------- */
+  .site-header{
+    position:sticky;top:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:12px 20px;
+    background:var(--carbon);color:var(--crema);
+    font-family:'Archivo',sans-serif;
+  }
+  .site-header .brand{
+    font-weight:800;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--crema);
+  }
+  .site-header nav{display:flex;gap:6px}
+  .site-header .tab{
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+    padding:7px 15px;border-radius:99px;color:var(--crema);text-decoration:none;
+    opacity:.6;background:transparent;border:none;cursor:pointer;display:inline-block;
+    transition:opacity .15s ease, background .15s ease, color .15s ease;
+  }
+  .site-header .tab:hover{opacity:.9}
+  .site-header .tab.active{opacity:1;background:var(--rojo);color:var(--blanco)}
+  .site-header .tab:focus-visible{outline:2px dashed var(--crema);outline-offset:2px}
+
   .checker{
     height:18px;
     background:
@@ -314,6 +337,13 @@
 </style>
 </head>
 <body>
+<header class="site-header">
+  <span class="brand">SERRA</span>
+  <nav>
+    <span class="tab active" aria-current="page">Brief</span>
+    <a class="tab" href="/serra-identidad">Identidad</a>
+  </nav>
+</header>
 <div class="checker" aria-hidden="true"></div>
 <main id="app" role="main"></main>
 <div class="checker bottom" aria-hidden="true"></div>
