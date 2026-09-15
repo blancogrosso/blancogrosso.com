@@ -18,7 +18,6 @@
     --carbon:#26120D;
     --gris:#8A7A70;
     --ok:#2E7D46;
-    --plata:#C7C9CC;
     --plata-2:#9AA0A6;
     --sombra:4px 4px 0 var(--bordo);
     --radio:14px;
@@ -76,6 +75,7 @@
   }
   .grid-toggle:hover{transform:translate(-1px,-1px)}
   .grid-toggle:focus-visible{outline:3px dashed var(--rojo);outline-offset:3px}
+  .control-bar-actions{display:flex;gap:8px;flex-wrap:wrap}
 
   /* ---------- STAGE / SLIDES ---------- */
   .stage{flex:1;position:relative;min-height:0}
@@ -94,8 +94,9 @@
 
   /* Bloques centrados: se limitan por max-width y quedan al medio */
   .sl-h,.sl-story,.sl-foda,.sl-pos-block,.sl-check-note,.sl-tone-text,
-  .sl-msgs,.sl-concept,.sl-concept-note,.sl-dir-grid,.sl-feed-note,.sl-ig-grid,
-  .sl-close-intro,.sl-close-list,.sl-close-outro,.sl-check-grid,.sl-edit-wrap{
+  .sl-msgs,.sl-concept,.sl-concept-note,
+  .sl-close-intro,.sl-close-list,.sl-close-outro,.sl-check-grid,.sl-edit-wrap,
+  .sl-agenda{
     margin-left:auto;margin-right:auto;width:100%;
   }
   .sl-tags{justify-content:center}
@@ -170,6 +171,20 @@
   .sl-cover-logo{font-size:clamp(64px,14vw,140px);color:var(--rojo);text-shadow:6px 6px 0 var(--bordo);letter-spacing:2px}
   .sl-cover-eyebrow{font-weight:800;letter-spacing:.3em;text-transform:uppercase;font-size:12px;color:var(--bordo)}
   .sl-cover-sub{font-family:'Archivo';font-weight:600;font-size:17px;color:var(--gris)}
+
+  /* ---------- INDICE / AGENDA ---------- */
+  .sl-agenda{
+    display:flex;flex-wrap:wrap;justify-content:center;gap:12px;max-width:1020px;
+  }
+  .sl-agenda-item{
+    flex:1 1 128px;max-width:160px;text-align:left;
+    background:var(--blanco);border:3px solid var(--carbon);border-radius:var(--radio);
+    box-shadow:var(--sombra);padding:14px 14px 16px;
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .sl-agenda-num{font-family:'Alfa Slab One';font-size:18px;color:var(--rojo)}
+  .sl-agenda-label{font-family:'Archivo';font-weight:800;font-size:13.5px;line-height:1.25;color:var(--carbon)}
+  .sl-agenda-sub{font-size:10.5px;line-height:1.4;color:var(--gris)}
 
   /* ---------- STORY ---------- */
   .sl-story{max-width:62ch;display:flex;flex-direction:column;gap:14px}
@@ -251,45 +266,27 @@
     border:2px solid var(--bordo);border-radius:10px;padding:8px 14px;
   }
   .sl-transition h2{font-size:clamp(24px,6vw,40px);max-width:16ch}
+  .sl-transition-sub{font-size:15px;line-height:1.6;color:var(--gris);max-width:46ch;margin-top:2px}
 
-  /* ---------- DIRECCIONES ---------- */
-  .sl-dir-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:26px;align-items:start;max-width:820px;width:100%}
-  @media (max-width:700px){.sl-dir-grid{grid-template-columns:1fr}}
-  .sl-logo-mock{
-    display:flex;align-items:center;justify-content:center;background:var(--blanco);
-    border:3px solid var(--carbon);border-radius:var(--radio);min-height:190px;padding:20px;
+  /* ---------- INSTAGRAM (usuario disponible) ---------- */
+  .sl-ig-layout{display:grid;grid-template-columns:1.15fr 1fr;gap:28px;align-items:center;max-width:820px;width:100%}
+  @media (max-width:700px){.sl-ig-layout{grid-template-columns:1fr}}
+  .sl-ig-layout .img-ph{aspect-ratio:4/5;max-height:min(48vh,420px)}
+  .sl-handle-list{display:flex;flex-direction:column;gap:10px;text-align:left}
+  .sl-handle{
+    display:flex;align-items:center;gap:10px;
+    background:var(--blanco);border:2px solid var(--carbon);border-radius:10px;
+    padding:11px 15px;font-family:'Archivo';font-weight:700;font-size:14.5px;color:var(--carbon);
   }
-  .sl-logo-a .sl-logo-mock-frame{
-    font-family:'Alfa Slab One';font-size:clamp(30px,5vw,48px);color:var(--rojo);
-    text-shadow:4px 4px 0 var(--bordo);border:4px double var(--bordo);
-    padding:16px 30px;border-radius:8px;letter-spacing:1px;
+  .sl-handle-mark{
+    flex:0 0 auto;width:22px;height:22px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:800;color:var(--blanco);
   }
-  .sl-logo-b .sl-logo-mock-frame{
-    font-family:'Archivo';font-weight:600;font-size:clamp(24px,4vw,38px);color:var(--carbon);
-    letter-spacing:.35em;border-top:2px solid var(--plata-2);border-bottom:2px solid var(--plata-2);
-    padding:16px 6px;text-align:center;
-  }
-  .sl-dir-info{display:flex;flex-direction:column;gap:16px}
-  .sl-palette{display:flex;flex-wrap:wrap;gap:8px}
-  .sl-swatch{
-    flex:1;min-width:110px;border-radius:10px;border:2px solid var(--carbon);
-    padding:26px 10px 8px;font-family:'Archivo';font-weight:800;font-size:11px;color:var(--blanco);
-    display:flex;flex-direction:column;gap:2px;
-  }
-  .sl-swatch em{font-style:normal;font-weight:600;font-size:10px;opacity:.85}
-  .sl-swatch.dark-text{color:var(--carbon)}
-  .sl-type-sample{background:var(--blanco);border:2px solid var(--carbon);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
-  .sl-type-a-title{font-family:'Alfa Slab One';font-size:20px}
-  .sl-type-a-body{font-family:'Archivo';font-size:13px;color:var(--gris)}
-  .sl-type-b-title{font-family:'Archivo';font-weight:600;font-size:16px;letter-spacing:.1em;text-transform:uppercase}
-  .sl-type-b-body{font-family:'Archivo';font-size:13px;color:var(--gris)}
-
-  .sl-feed-note{font-size:13.5px;color:var(--gris);line-height:1.55;max-width:52ch;margin-bottom:16px;font-style:italic}
-  .sl-ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:400px;width:100%}
-  .sl-ig-cell{
-    aspect-ratio:1/1;border-radius:6px;display:flex;align-items:center;justify-content:center;
-    overflow:hidden;position:relative;font-family:'Archivo';font-weight:800;
-  }
+  .sl-handle.ok .sl-handle-mark{background:var(--ok)}
+  .sl-handle.no{opacity:.65}
+  .sl-handle.no .sl-handle-mark{background:var(--rojo)}
+  .sl-handle.no .sl-handle-at{text-decoration:line-through}
 
   /* ---------- CIERRE ---------- */
   .sl-close-intro{font-size:16px;margin-bottom:14px;max-width:56ch}
@@ -309,6 +306,56 @@
   .cierre-text{flex:1}
   .sl-close-list li.done .cierre-text{color:var(--gris);text-decoration:line-through}
   .sl-close-outro{font-family:'Alfa Slab One';font-size:clamp(18px,3vw,24px);color:var(--bordo);max-width:40ch;margin-top:8px}
+
+  /* ---------- PLACEHOLDERS DE IMAGEN (bloque creativo) ----------
+     Mismo lenguaje visual que el resto de la web: marco punteado con
+     etiqueta, para piezas gráficas que el cliente carga más adelante.
+     Cada uno trae un <img> apuntando al archivo esperado en /identidad/:
+     si el archivo todavía no existe, el error de carga lo saca del DOM
+     (initInicializarImgPlaceholders más abajo) y queda visible la
+     etiqueta; en cuanto el archivo aparece con ese nombre exacto, la
+     imagen real reemplaza al placeholder sin tocar código. */
+  .img-ph{
+    position:relative;overflow:hidden;
+    background:rgba(138,122,112,.08);border:2px dashed var(--plata-2);border-radius:var(--radio);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--gris);font-family:'Archivo';font-weight:700;font-size:12px;letter-spacing:.04em;
+    text-align:center;
+  }
+  .img-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .img-ph-label{
+    display:flex;flex-direction:column;gap:5px;align-items:center;justify-content:center;
+    padding:14px;position:relative;z-index:1;
+  }
+  .img-ph-file{font-size:10px;font-weight:600;color:var(--plata-2);text-transform:uppercase;letter-spacing:.1em}
+  .img-ph.has-img{border-style:solid;border-color:var(--carbon);background:none}
+  .img-ph.has-img .img-ph-label{display:none}
+
+  .sl-isotipo-imgs{
+    display:flex;flex-wrap:wrap;gap:22px;justify-content:center;
+    width:100%;max-width:640px;margin:0 auto 24px;
+  }
+  .sl-isotipo-imgs .img-ph{flex:1 1 220px;max-width:260px;aspect-ratio:1/1}
+
+  .sl-ph-row{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;width:100%;max-width:820px;margin:0 auto}
+  .sl-ph-row .img-ph{flex:1 1 180px;max-width:230px;aspect-ratio:4/5;max-height:min(25vh,190px)}
+  .sl-ph-row.sl-ph-row-lg .img-ph{flex:1 1 240px;max-width:340px;aspect-ratio:3/4;max-height:min(38vh,280px)}
+  .sl-ph-full{width:100%;max-width:820px;aspect-ratio:16/9;margin:0 auto}
+
+  /* ---------- PRÓXIMOS PASOS ---------- */
+  .sl-next-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:680px;width:100%;margin:0 auto}
+  @media (max-width:700px){.sl-next-grid{grid-template-columns:1fr}}
+  .sl-next-block{
+    background:var(--blanco);border:3px solid var(--carbon);border-radius:var(--radio);
+    box-shadow:var(--sombra);padding:18px 20px;text-align:left;
+  }
+  .sl-next-block p{font-size:14px;line-height:1.55;margin-top:8px}
+
+  /* ---------- PREGUNTAS / GRACIAS ---------- */
+  .sl-endcard{
+    font-family:'Alfa Slab One',serif;font-size:clamp(40px,10vw,96px);
+    color:var(--rojo);text-shadow:6px 6px 0 var(--bordo);line-height:1.05;
+  }
 
   /* ---------- EDICIÓN POR BLOQUE ----------
      Cada bloque editable (FODA, Tono, Mensajes, Menú) tiene su propio
@@ -351,6 +398,37 @@
   @media (max-width:820px){.sl-check-grid{grid-template-columns:1fr}}
   .sl-check-col{display:flex;flex-direction:column;gap:14px}
   .sl-check-col .sl-vs-card{min-width:0}
+
+  /* ---------- CHECKPOINT DE MENÚ: TÍTULO+POSTURAS A LA IZQUIERDA,
+     MOCKUP A TODA ALTURA A LA DERECHA ----------
+     Todo el texto de contexto (título, subtítulo, posturas, nota) vive en
+     una columna angosta fija a la izquierda; la columna derecha queda
+     libre para que el mockup use el alto completo de la diapositiva. */
+  .menu-layout{
+    display:flex;gap:32px;width:100%;height:100%;flex:1 1 auto;min-height:0;
+    text-align:left;
+  }
+  .menu-layout-side{
+    flex:0 0 240px;display:flex;flex-direction:column;gap:12px;
+    overflow-y:auto;padding-right:2px;
+  }
+  .menu-layout-side .sl-h{font-size:clamp(18px,2.2vw,22px);text-align:left;margin:0;max-width:none}
+  .menu-layout-main{
+    flex:1;min-width:0;min-height:0;display:flex;flex-direction:column;gap:10px;
+  }
+  @media (max-width:820px){
+    .menu-layout{flex-direction:column;height:auto}
+    .menu-layout-side{flex:0 0 auto;overflow-y:visible}
+  }
+  .sl-menu-postures{
+    display:flex;flex-direction:column;flex-wrap:nowrap;gap:10px;width:100%;margin:0;
+  }
+  .sl-menu-postures .sl-vs-card{
+    flex:0 0 auto;min-width:0;padding:11px 14px;
+    display:flex;align-items:baseline;gap:8px;text-align:left;
+  }
+  .sl-menu-postures .sl-vs-who{margin-bottom:0;flex:0 0 auto}
+  .sl-menu-postures p{font-size:13px;line-height:1.4}
 
   /* ---------- SLIDER DE RANGO DE EDAD ---------- */
   .age-box{
@@ -395,29 +473,44 @@
     font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gris);
   }
 
-  /* ---------- MOCKUP DE MENÚ: SPREAD DE DOS HOJAS ---------- */
-  .menu-spread{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;align-items:flex-start;width:100%}
-  .menu-spread .menu-mock{flex:0 1 480px;margin-left:0;margin-right:0}
-  .menu-spread.two-page .menu-mock{flex-basis:400px}
+  /* ---------- MOCKUP DE MENÚ: SPREAD DE DOS HOJAS ----------
+     El spread ahora vive en .menu-layout-main y crece para ocupar todo
+     el alto disponible (stretch en el eje cruzado); cada hoja es una
+     columna flex propia para que su .menu-page pueda repartirse el alto
+     restante después del encabezado "SERRA / Catering". */
+  .menu-spread{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;align-items:stretch;width:100%;flex:1 1 auto;min-height:0}
+  .menu-spread .menu-mock{flex:0 1 560px;margin-left:0;margin-right:0}
+  .menu-spread.two-page .menu-mock{flex-basis:460px}
   @media (max-width:900px){
     .menu-spread{flex-direction:column;align-items:center}
     .menu-spread .menu-mock{flex-basis:auto;width:100%}
   }
   .menu-mock{
-    position:relative;
+    position:relative;display:flex;flex-direction:column;min-height:0;
     background:var(--blanco);border:3px solid var(--carbon);border-radius:var(--radio);
-    box-shadow:var(--sombra);padding:24px 28px;text-align:left;max-width:520px;width:100%;
+    box-shadow:var(--sombra);padding:24px 28px;text-align:left;max-width:600px;width:100%;
     margin-left:auto;margin-right:auto;
   }
-  .menu-mock-head{text-align:center;border-bottom:3px double var(--bordo);padding-bottom:12px;margin-bottom:16px}
+  .menu-mock-head{flex:0 0 auto;text-align:center;border-bottom:3px double var(--bordo);padding-bottom:12px;margin-bottom:16px}
   .menu-mock-head .m-logo{font-family:'Alfa Slab One';font-size:26px;color:var(--rojo);letter-spacing:1px}
   .menu-mock-head .m-sub{font-size:10px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:var(--gris);margin-top:4px}
+  .menu-page{flex:1 1 auto;min-height:0}
   .menu-cat{margin-bottom:16px}
   .menu-cat:last-of-type{margin-bottom:0}
+  .menu-cat-head{
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+    border-bottom:1.5px solid rgba(38,18,13,.18);padding-bottom:4px;margin-bottom:8px;
+  }
   .menu-cat-name{
     font-family:'Archivo';font-weight:800;font-size:12px;letter-spacing:.16em;text-transform:uppercase;
-    color:var(--bordo);border-bottom:1.5px solid rgba(38,18,13,.18);padding-bottom:4px;margin-bottom:8px;
+    color:var(--bordo);flex:1;min-width:0;
   }
+  .menu-cat-del{
+    display:none;flex:0 0 auto;border:none;background:none;cursor:pointer;color:var(--gris);
+    font-family:'Archivo';font-weight:800;font-size:16px;line-height:1;padding:0 2px;
+  }
+  .menu-cat-del:hover{color:var(--rojo)}
+  .menu-spread.editing .menu-cat-del{display:inline-block}
   .menu-row{display:flex;align-items:baseline;gap:8px;margin-bottom:5px;font-size:13.5px;line-height:1.4}
   .menu-row .m-name{flex:0 1 auto}
   .menu-row .m-dots{flex:1 1 auto;border-bottom:1.5px dotted rgba(38,18,13,.3);min-width:14px;transform:translateY(-3px)}
@@ -442,6 +535,15 @@
     background:rgba(193,39,45,.06);border-radius:4px;padding:0 3px;min-width:22px;display:inline-block;
   }
   .menu-spread.editing .menu-mock{box-shadow:0 0 0 2px var(--rojo)}
+
+  .menu-toolbar{width:100%;display:flex;justify-content:center;margin-top:12px}
+  .menu-addcat{
+    font-family:'Archivo';font-weight:800;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
+    background:var(--carbon);color:var(--crema);border:2px solid var(--carbon);border-radius:99px;
+    padding:9px 18px;cursor:pointer;
+  }
+  .menu-addcat:hover{background:var(--bordo);border-color:var(--bordo)}
+  .menu-addcat:focus-visible{outline:3px dashed var(--rojo);outline-offset:2px}
 
   /* ---------- COMENTARIOS ---------- */
   .cmt-launcher{
@@ -489,6 +591,22 @@
   .cmt-send:disabled{opacity:.5;cursor:default}
   .cmt-send:focus-visible{outline:3px dashed var(--carbon);outline-offset:3px}
 
+  /* ---------- TODOS LOS COMENTARIOS ---------- */
+  .cmtall-list{display:flex;flex-direction:column;gap:10px}
+  .cmtall-item{
+    display:block;width:100%;text-align:left;font-family:'Archivo';
+    background:var(--blanco);border:3px solid var(--carbon);border-radius:10px;
+    padding:12px 14px;cursor:pointer;transition:transform .1s ease, box-shadow .1s ease;
+  }
+  .cmtall-item:hover{transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--bordo)}
+  .cmtall-item:focus-visible{outline:3px dashed var(--rojo);outline-offset:2px}
+  .cmtall-slide{
+    display:inline-block;font-weight:800;font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--rojo);margin-bottom:6px;
+  }
+  .cmtall-item p{font-size:13.5px;line-height:1.45;color:var(--carbon);white-space:pre-wrap;word-break:break-word}
+  .cmtall-item time{display:block;font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--gris);margin-top:6px}
+
   .hidden{display:none!important}
 </style>
 </head>
@@ -502,8 +620,11 @@
 </header>
 
 <div class="control-bar">
-  <span class="slide-indicator" id="slide-indicator">Diapositiva 1 de 15</span>
-  <button class="grid-toggle" id="grid-toggle" type="button" aria-haspopup="dialog">▦ Ver todas</button>
+  <span class="slide-indicator" id="slide-indicator">Diapositiva 1 de 21</span>
+  <div class="control-bar-actions">
+    <button class="grid-toggle" id="cmt-all-toggle" type="button" aria-haspopup="dialog">&#128172; Ver comentarios</button>
+    <button class="grid-toggle" id="grid-toggle" type="button" aria-haspopup="dialog">▦ Ver todas</button>
+  </div>
 </div>
 
 <div class="stage">
@@ -516,7 +637,13 @@
     </div>
   </section>
 
-  <section class="slide" data-index="1" data-slide-id="punto-partida">
+  <section class="slide" data-index="1" data-slide-id="indice">
+    <span class="sl-eyebrow">Antes de arrancar</span>
+    <h2 class="sl-h">De qué vamos a hablar</h2>
+    <div class="sl-agenda" id="sl-agenda"></div>
+  </section>
+
+  <section class="slide" data-index="2" data-slide-id="punto-partida">
     <span class="sl-eyebrow">01 · Punto de partida</span>
     <h2 class="sl-h">Lo que nos contaron</h2>
     <div class="sl-story">
@@ -525,7 +652,7 @@
     </div>
   </section>
 
-  <section class="slide" data-index="2" data-slide-id="foda">
+  <section class="slide" data-index="3" data-slide-id="foda">
     <span class="sl-eyebrow">02 · Diagnóstico</span>
     <h2 class="sl-h">FODA</h2>
     <div class="edit-block" style="max-width:820px">
@@ -571,7 +698,7 @@
     </div>
   </section>
 
-  <section class="slide" data-index="3" data-slide-id="posicionamiento">
+  <section class="slide" data-index="4" data-slide-id="posicionamiento">
     <span class="sl-eyebrow">03 · Estrategia</span>
     <h2 class="sl-h">Posicionamiento y propuesta de valor</h2>
     <div class="sl-pos-block">
@@ -584,7 +711,7 @@
     </div>
   </section>
 
-  <section class="slide" data-index="4" data-slide-id="checkpoint-publico">
+  <section class="slide" data-index="5" data-slide-id="checkpoint-publico">
     <span class="sl-eyebrow">04 · Checkpoint</span>
     <h2 class="sl-h">Esto todavía lo estamos definiendo juntos</h2>
     <p class="sl-check-sub">Público objetivo del local</p>
@@ -618,32 +745,51 @@
     <p class="sl-check-note">No es un error, es una decisión pendiente. Movamos el rango juntos: queda guardado para los tres.</p>
   </section>
 
-  <section class="slide" data-index="5" data-slide-id="checkpoint-catering">
-    <span class="sl-eyebrow">04 · Checkpoint</span>
-    <h2 class="sl-h">Esto también lo estamos definiendo juntos</h2>
-    <p class="sl-check-sub">Alcance del catering</p>
-    <div class="menu-spread" id="menu-spread">
-      <div class="menu-mock" id="menu-mock">
-        <button class="edit-pencil corner" type="button" data-block="menu_catering" aria-label="Editar menú de catering" aria-pressed="false">&#9998;</button>
-        <span class="block-save-flag corner" data-flag="menu_catering">Guardado &#10003;</span>
-        <div class="menu-mock-head">
-          <div class="m-logo">SERRA</div>
-          <div class="m-sub">Catering</div>
+  <section class="slide" data-index="6" data-slide-id="checkpoint-catering">
+    <div class="menu-layout" id="menu-layout">
+      <div class="menu-layout-side">
+        <span class="sl-eyebrow">04 · Checkpoint</span>
+        <h2 class="sl-h">Alcance del catering</h2>
+        <p class="sl-check-sub">Esto también lo estamos definiendo juntos.</p>
+        <div class="sl-menu-postures">
+          <div class="sl-vs-card">
+            <span class="sl-vs-who">Enzo</span>
+            <p>Menú acotado, más chico que el del local.</p>
+          </div>
+          <div class="sl-vs-card">
+            <span class="sl-vs-who">Mica</span>
+            <p>Menú completo — pizzas, fainá, chivitos, hamburguesas, empanadas.</p>
+          </div>
         </div>
-        <div class="menu-page" id="menu-cats"></div>
+        <p class="sl-check-note">Esto define el catálogo, la logística y hasta el packaging. Completemos la plantilla para ver el alcance real.</p>
       </div>
-      <div class="menu-mock hidden" id="menu-mock-2">
-        <div class="menu-mock-head">
-          <div class="m-logo">SERRA</div>
-          <div class="m-sub">Catering — continúa</div>
+      <div class="menu-layout-main">
+        <div class="menu-spread" id="menu-spread">
+          <div class="menu-mock" id="menu-mock">
+            <button class="edit-pencil corner" type="button" data-block="menu_catering" aria-label="Editar menú de catering" aria-pressed="false">&#9998;</button>
+            <span class="block-save-flag corner" data-flag="menu_catering">Guardado &#10003;</span>
+            <div class="menu-mock-head">
+              <div class="m-logo">SERRA</div>
+              <div class="m-sub">Catering</div>
+            </div>
+            <div class="menu-page" id="menu-cats"></div>
+          </div>
+          <div class="menu-mock hidden" id="menu-mock-2">
+            <div class="menu-mock-head">
+              <div class="m-logo">SERRA</div>
+              <div class="m-sub">Catering — continúa</div>
+            </div>
+            <div class="menu-page" id="menu-cats-2"></div>
+          </div>
         </div>
-        <div class="menu-page" id="menu-cats-2"></div>
+        <div class="menu-toolbar hidden" id="menu-toolbar">
+          <button class="menu-addcat" id="menu-addcat" type="button">+ agregar categoría</button>
+        </div>
       </div>
     </div>
-    <p class="sl-check-note">Esto define el catálogo, la logística y hasta el packaging. Completemos la plantilla para ver el alcance real.</p>
   </section>
 
-  <section class="slide" data-index="6" data-slide-id="tono">
+  <section class="slide" data-index="7" data-slide-id="tono">
     <span class="sl-eyebrow">05 · Personalidad</span>
     <h2 class="sl-h">Tono y personalidad de marca</h2>
     <p class="sl-tone-text">Cercano, directo, con humor cotidiano rioplatense. Nada de lenguaje corporativo.</p>
@@ -658,7 +804,7 @@
     </div>
   </section>
 
-  <section class="slide" data-index="7" data-slide-id="mensajes">
+  <section class="slide" data-index="8" data-slide-id="mensajes">
     <span class="sl-eyebrow">06 · Mensajes</span>
     <h2 class="sl-h">Mensajes clave</h2>
     <div class="edit-block" style="max-width:60ch">
@@ -672,105 +818,136 @@
     </div>
   </section>
 
-  <section class="slide" data-index="8" data-slide-id="concepto">
+  <section class="slide" data-index="9" data-slide-id="concepto">
     <span class="sl-eyebrow">07 · Concepto</span>
     <h2 class="sl-h">Concepto creativo</h2>
     <p class="sl-concept">"La mesa que empezó hace 60 años"</p>
     <p class="sl-concept-note">Todo el sistema de marca —tono, mensajes, estética— gira sobre esta idea: una mesa familiar que sigue puesta, generación tras generación.</p>
   </section>
 
-  <section class="slide" data-index="9" data-slide-id="transicion">
+  <section class="slide" data-index="10" data-slide-id="transicion">
     <div class="sl-transition">
       <span class="sl-transition-num">08</span>
-      <h2>Ahora, dos caminos visuales para explorar juntos</h2>
+      <h2>Recorrido de identidad visual</h2>
+      <p class="sl-transition-sub">Isotipo, aplicaciones gráficas, menú y packaging, la fachada del local, el perfil de Instagram y la vestimenta del equipo.</p>
     </div>
   </section>
 
-  <section class="slide" data-index="10" data-slide-id="direccion-a-logo">
-    <span class="sl-eyebrow">09 · Dirección A</span>
-    <h2 class="sl-h">Trattoria con carácter</h2>
-    <div class="sl-dir-grid">
-      <div class="sl-logo-mock sl-logo-a">
-        <span class="sl-logo-mock-frame">SERRA</span>
+  <section class="slide" data-index="11" data-slide-id="isotipo">
+    <span class="sl-eyebrow">09 · Identidad visual</span>
+    <h2 class="sl-h">El isotipo</h2>
+    <div class="sl-isotipo-imgs">
+      <div class="img-ph">
+        <img src="/identidad/isotipo-1.jpg" alt="Isotipo — versión 1">
+        <span class="img-ph-label">Imagen pendiente<span class="img-ph-file">isotipo-1.jpg</span></span>
       </div>
-      <div class="sl-dir-info">
-        <div class="sl-palette">
-          <span class="sl-swatch" style="background:#C1272D">Rojo<em>#C1272D</em></span>
-          <span class="sl-swatch" style="background:#7D1D18">Bordó<em>#7D1D18</em></span>
-          <span class="sl-swatch dark-text" style="background:#FBF4E8;border-color:#26120D">Crema<em>#FBF4E8</em></span>
-          <span class="sl-swatch" style="background:#26120D">Carbón<em>#26120D</em></span>
-        </div>
-        <div class="sl-type-sample">
-          <span class="sl-type-a-title">Alfa Slab One</span>
-          <span class="sl-type-a-body">Archivo — texto de apoyo</span>
-        </div>
+      <div class="img-ph">
+        <img src="/identidad/isotipo-2.jpg" alt="Isotipo — versión 2">
+        <span class="img-ph-label">Imagen pendiente<span class="img-ph-file">isotipo-2.jpg</span></span>
       </div>
     </div>
-  </section>
-
-  <section class="slide" data-index="11" data-slide-id="direccion-a-feed">
-    <span class="sl-eyebrow">09 · Dirección A</span>
-    <h2 class="sl-h">Feed de Instagram — ritmo visual</h2>
-    <p class="sl-feed-note">Mockup de ritmo visual con bloques de color, patrones y tipografía. No son fotos finales: todavía no cuentan con fotografía propia de producto o local.</p>
-    <div class="sl-ig-grid">
-      <div class="sl-ig-cell" style="background:#C1272D;color:#fff;font-family:'Alfa Slab One';font-size:26px">S</div>
-      <div class="sl-ig-cell" style="background:repeating-conic-gradient(#C1272D 0% 25%, #FBF4E8 0% 50%) 0 0/24px 24px"></div>
-      <div class="sl-ig-cell" style="background:#7D1D18;color:#FBF4E8;font-size:11px;letter-spacing:.1em;text-transform:uppercase;text-align:center;padding:8px">Desde<br>los 60</div>
-      <div class="sl-ig-cell" style="background:#FBF4E8;color:#7D1D18;border:4px double #7D1D18;font-family:'Alfa Slab One';font-size:15px">SERRA</div>
-      <div class="sl-ig-cell" style="background:linear-gradient(45deg,#26120D 25%,#3a1e15 25%,#3a1e15 50%,#26120D 50%,#26120D 75%,#3a1e15 75%)"></div>
-      <div class="sl-ig-cell" style="background:#FBF4E8;color:#C1272D;font-family:'Alfa Slab One';font-size:40px">"</div>
-      <div class="sl-ig-cell" style="background:#C1272D;color:#FBF4E8;font-size:11px;letter-spacing:.1em;text-align:center;padding:8px">Historia<br>familiar</div>
-      <div class="sl-ig-cell" style="background:#7D1D18"></div>
-      <div class="sl-ig-cell" style="background:#FBF4E8;color:#C1272D;font-family:'Alfa Slab One';font-size:16px;border:2px solid #26120D">SERRA</div>
-    </div>
-  </section>
-
-  <section class="slide" data-index="12" data-slide-id="direccion-b-logo">
-    <span class="sl-eyebrow">10 · Dirección B</span>
-    <h2 class="sl-h">Autor contemporáneo</h2>
-    <div class="sl-dir-grid">
-      <div class="sl-logo-mock sl-logo-b">
-        <span class="sl-logo-mock-frame">SERRA</span>
-      </div>
-      <div class="sl-dir-info">
-        <div class="sl-palette">
-          <span class="sl-swatch" style="background:#C1272D">Rojo<em>#C1272D</em></span>
-          <span class="sl-swatch" style="background:#7D1D18">Bordó<em>#7D1D18</em></span>
-          <span class="sl-swatch dark-text" style="background:#FBF4E8;border-color:#26120D">Crema<em>#FBF4E8</em></span>
-          <span class="sl-swatch dark-text" style="background:linear-gradient(135deg,#D8D9DB,#9AA0A6)">Plata<em>acento nuevo</em></span>
-        </div>
-        <div class="sl-type-sample">
-          <span class="sl-type-b-title">Archivo Medium</span>
-          <span class="sl-type-b-body">Sans serif refinada, sin la slab</span>
-        </div>
+    <div class="edit-block" style="max-width:64ch">
+      <button class="edit-pencil corner" type="button" data-block="isotipo_explicacion" aria-label="Editar explicación del isotipo" aria-pressed="false">&#9998;</button>
+      <span class="block-save-flag corner" data-flag="isotipo_explicacion">Guardado &#10003;</span>
+      <div class="sl-story" data-edit="isotipo_explicacion">
+        <p>Escribí acá por qué elegimos este camino para el isotipo.</p>
       </div>
     </div>
   </section>
 
-  <section class="slide" data-index="13" data-slide-id="direccion-b-feed">
-    <span class="sl-eyebrow">10 · Dirección B</span>
-    <h2 class="sl-h">Feed de Instagram — ritmo visual</h2>
-    <p class="sl-feed-note">Misma lógica de mockup, estética más minimalista y con el acento plateado que mencionó Enzo. Tampoco son fotos finales.</p>
-    <div class="sl-ig-grid">
-      <div class="sl-ig-cell" style="background:#FBF4E8;border:2px solid #26120D"><span style="width:34%;height:34%;border:2px solid #9AA0A6"></span></div>
-      <div class="sl-ig-cell" style="background:#26120D"></div>
-      <div class="sl-ig-cell" style="background:linear-gradient(135deg,#D8D9DB,#9AA0A6)"></div>
-      <div class="sl-ig-cell" style="background:#FBF4E8;color:#26120D;font-size:11px;letter-spacing:.2em;text-align:center">S.</div>
-      <div class="sl-ig-cell" style="background:#26120D;color:#C7C9CC;font-size:20px">+</div>
-      <div class="sl-ig-cell" style="background:#FBF4E8;border:2px solid #26120D"></div>
-      <div class="sl-ig-cell" style="background:linear-gradient(135deg,#D8D9DB,#9AA0A6);color:#26120D;font-size:12px;letter-spacing:.15em">SERRA</div>
-      <div class="sl-ig-cell" style="background:#26120D;border:2px solid #C7C9CC;border-radius:50%"></div>
-      <div class="sl-ig-cell" style="background:#FBF4E8"><span style="width:8px;height:8px;border-radius:50%;background:#C1272D;display:block"></span></div>
+  <section class="slide" data-index="12" data-slide-id="aplicaciones">
+    <span class="sl-eyebrow">09 · Identidad visual</span>
+    <h2 class="sl-h">Aplicaciones — flyers e ilustraciones</h2>
+    <div class="sl-ph-row">
+      <div class="img-ph"><img src="/identidad/aplicaciones-1.jpg" alt="Aplicación gráfica 1"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">aplicaciones-1.jpg</span></span></div>
+      <div class="img-ph"><img src="/identidad/aplicaciones-2.jpg" alt="Aplicación gráfica 2"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">aplicaciones-2.jpg</span></span></div>
+      <div class="img-ph"><img src="/identidad/aplicaciones-3.jpg" alt="Aplicación gráfica 3"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">aplicaciones-3.jpg</span></span></div>
+      <div class="img-ph"><img src="/identidad/aplicaciones-4.jpg" alt="Aplicación gráfica 4"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">aplicaciones-4.jpg</span></span></div>
+      <div class="img-ph"><img src="/identidad/aplicaciones-5.jpg" alt="Aplicación gráfica 5"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">aplicaciones-5.jpg</span></span></div>
+      <div class="img-ph"><img src="/identidad/aplicaciones-6.jpg" alt="Aplicación gráfica 6"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">aplicaciones-6.jpg</span></span></div>
     </div>
   </section>
 
-  <section class="slide" data-index="14" data-slide-id="cierre">
-    <span class="sl-eyebrow">11 · Próximos pasos</span>
+  <section class="slide" data-index="13" data-slide-id="menu-packaging">
+    <span class="sl-eyebrow">09 · Identidad visual</span>
+    <h2 class="sl-h">Menú y packaging</h2>
+    <div class="sl-ph-row sl-ph-row-lg">
+      <div class="img-ph"><img src="/identidad/menu-packaging-1.jpg" alt="Menú y packaging 1"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">menu-packaging-1.jpg</span></span></div>
+      <div class="img-ph"><img src="/identidad/menu-packaging-2.jpg" alt="Menú y packaging 2"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">menu-packaging-2.jpg</span></span></div>
+      <div class="img-ph"><img src="/identidad/menu-packaging-3.jpg" alt="Menú y packaging 3"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">menu-packaging-3.jpg</span></span></div>
+    </div>
+  </section>
+
+  <section class="slide" data-index="14" data-slide-id="fachada">
+    <span class="sl-eyebrow">09 · Identidad visual</span>
+    <h2 class="sl-h">Vista exterior del local</h2>
+    <div class="img-ph sl-ph-full">
+      <img src="/identidad/fachada-1.jpg" alt="Vista exterior del local">
+      <span class="img-ph-label">Imagen pendiente<span class="img-ph-file">fachada-1.jpg</span></span>
+    </div>
+  </section>
+
+  <section class="slide" data-index="15" data-slide-id="instagram">
+    <span class="sl-eyebrow">09 · Identidad visual</span>
+    <h2 class="sl-h">Instagram — usuario disponible</h2>
+    <div class="sl-ig-layout">
+      <div class="img-ph">
+        <img src="/identidad/instagram-1.jpg" alt="Mockup de feed / perfil de Instagram">
+        <span class="img-ph-label">Imagen pendiente<span class="img-ph-file">instagram-1.jpg</span></span>
+      </div>
+      <div class="sl-handle-list">
+        <div class="sl-handle ok"><span class="sl-handle-mark">&#10003;</span><span class="sl-handle-at">@serra</span></div>
+        <div class="sl-handle ok"><span class="sl-handle-mark">&#10003;</span><span class="sl-handle-at">@serra.pizza</span></div>
+        <div class="sl-handle ok"><span class="sl-handle-mark">&#10003;</span><span class="sl-handle-at">@pizzeriaserra</span></div>
+        <div class="sl-handle no"><span class="sl-handle-mark">&#10005;</span><span class="sl-handle-at">@serrapizzeria</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-index="16" data-slide-id="vestimenta">
+    <span class="sl-eyebrow">09 · Identidad visual</span>
+    <h2 class="sl-h">Vestimenta de cocineros</h2>
+    <div class="sl-ph-row">
+      <div class="img-ph"><img src="/identidad/vestimenta-1.jpg" alt="Vestimenta — delantal"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">vestimenta-1.jpg</span></span></div>
+      <div class="img-ph"><img src="/identidad/vestimenta-2.jpg" alt="Vestimenta — gorra"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">vestimenta-2.jpg</span></span></div>
+      <div class="img-ph"><img src="/identidad/vestimenta-3.jpg" alt="Vestimenta — remera de trabajo"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">vestimenta-3.jpg</span></span></div>
+    </div>
+  </section>
+
+  <section class="slide" data-index="17" data-slide-id="proximos-pasos">
+    <span class="sl-eyebrow">10 · Próximos pasos</span>
+    <h2 class="sl-h">Próximos pasos</h2>
+    <div class="edit-block" style="max-width:680px">
+      <button class="edit-pencil corner" type="button" data-block="proximos_pasos" aria-label="Editar próximos pasos" aria-pressed="false">&#9998;</button>
+      <span class="block-save-flag corner" data-flag="proximos_pasos">Guardado &#10003;</span>
+      <div class="sl-next-grid" data-edit="proximos_pasos">
+        <div class="sl-next-block">
+          <span class="sl-pos-label">Corto plazo</span>
+          <p>Entrega del menú esta semana, para tener a mano antes de eventos.</p>
+        </div>
+        <div class="sl-next-block">
+          <span class="sl-pos-label">Mediano plazo</span>
+          <p>Manual de marca final + archivos editables.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-index="18" data-slide-id="cierre">
+    <span class="sl-eyebrow">11 · Cierre</span>
     <h2 class="sl-h">Cierre</h2>
     <p class="sl-close-intro">Para avanzar con la identidad final necesitamos que resuelvan, entre ustedes:</p>
     <ul class="sl-close-list" id="cierre-list"></ul>
     <span class="block-save-flag" id="cierre-save-flag">Guardado &#10003;</span>
     <p class="sl-close-outro">Con esa devolución, armamos la identidad final de SERRA.</p>
+  </section>
+
+  <section class="slide" data-index="19" data-slide-id="preguntas">
+    <h2 class="sl-endcard">&#191;Preguntas?</h2>
+  </section>
+
+  <section class="slide" data-index="20" data-slide-id="gracias">
+    <h2 class="sl-endcard">Gracias</h2>
   </section>
 
 </div>
@@ -806,16 +983,32 @@
   </div>
 </div>
 
+<div class="grid-overlay" id="cmtall-overlay" aria-hidden="true">
+  <div class="grid-box" role="dialog" aria-modal="true" aria-labelledby="cmtall-title">
+    <div class="grid-box-head">
+      <h3 id="cmtall-title">Todos los comentarios</h3>
+      <button class="grid-close" id="cmtall-close" type="button" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="cmtall-list" id="cmtall-list"></div>
+  </div>
+</div>
+
 <script>
 const slides = [...document.querySelectorAll('.slide')];
 const TOTAL = slides.length;
 const TITLES = [
-  'Portada','Lo que nos contaron','FODA','Posicionamiento y propuesta',
+  'Portada','De qué vamos a hablar','Lo que nos contaron','FODA','Posicionamiento y propuesta',
   'Checkpoint: público','Checkpoint: catering','Tono y personalidad',
   'Mensajes clave','Concepto creativo','Transición',
-  'Dirección A — Logo y paleta','Dirección A — Feed IG',
-  'Dirección B — Logo y paleta','Dirección B — Feed IG','Cierre'
+  'El isotipo','Aplicaciones — flyers e ilustraciones','Menú y packaging','Vista exterior del local',
+  'Instagram — usuario disponible','Vestimenta de cocineros',
+  'Próximos pasos','Cierre','¿Preguntas?','Gracias'
 ];
+/* Título real por data-slide-id, para no volver a tipear los mismos
+   nombres en el índice/agenda: si un título cambia acá, el índice
+   se actualiza solo. */
+const TITLES_BY_ID = {};
+slides.forEach((s,i)=> TITLES_BY_ID[s.dataset.slideId] = TITLES[i] || ('Diapositiva ' + (i+1)));
 
 let current = 0;
 
@@ -834,6 +1027,31 @@ thumbGrid.innerHTML = slides.map((s,i)=>`
   </button>
 `).join('');
 const thumbs = [...thumbGrid.querySelectorAll('.thumb')];
+
+/* Índice/agenda: bloques temáticos armados a partir de los data-slide-id
+   reales, con el subtítulo tomado de TITLES_BY_ID — así, si se edita un
+   título de diapositiva más arriba, el índice no se desincroniza. */
+const AGENDA_BLOCKS = [
+  {label:'Contexto',                ids:['punto-partida']},
+  {label:'FODA',                    ids:['foda']},
+  {label:'Estrategia',              ids:['posicionamiento']},
+  {label:'Checkpoints',             ids:['checkpoint-publico','checkpoint-catering']},
+  {label:'Personalidad y mensajes', ids:['tono','mensajes','concepto']},
+  {label:'Identidad visual',        ids:['transicion','isotipo','aplicaciones','menu-packaging','fachada','instagram','vestimenta']},
+  {label:'Próximos pasos',          ids:['proximos-pasos']},
+  {label:'Cierre',                  ids:['cierre','preguntas','gracias']}
+];
+const agendaEl = document.getElementById('sl-agenda');
+if(agendaEl){
+  agendaEl.innerHTML = AGENDA_BLOCKS.map((b,i)=>{
+    const sub = b.ids.map(id=> TITLES_BY_ID[id]).filter(Boolean).join(' · ');
+    return '<div class="sl-agenda-item">' +
+      '<span class="sl-agenda-num">' + String(i+1).padStart(2,'0') + '</span>' +
+      '<span class="sl-agenda-label">' + b.label + '</span>' +
+      '<span class="sl-agenda-sub">' + sub + '</span>' +
+    '</div>';
+  }).join('');
+}
 
 function goToSlide(idx){
   if(idx < 0 || idx >= TOTAL || idx === current) return;
@@ -880,6 +1098,11 @@ document.addEventListener('keydown', e=>{
     if(e.key === 'Escape') closeGrid();
     return;
   }
+  /* El panel de "todos los comentarios" se declara en el script siguiente:
+     lo buscamos en vivo en vez de depender de una variable que todavía
+     no existe cuando este listener corre. */
+  const cmtAllOv = document.getElementById('cmtall-overlay');
+  if(cmtAllOv && cmtAllOv.classList.contains('show')) return;
   if(e.key === 'ArrowRight') goToSlide(current + 1);
   else if(e.key === 'ArrowLeft') goToSlide(current - 1);
 });
@@ -989,7 +1212,9 @@ function wireTextBlock(seccion){
 
 const textBlocks = {
   foda: wireTextBlock('foda'),
-  mensajes: wireTextBlock('mensajes')
+  mensajes: wireTextBlock('mensajes'),
+  isotipo_explicacion: wireTextBlock('isotipo_explicacion'),
+  proximos_pasos: wireTextBlock('proximos_pasos')
 };
 
 /* ============================================================
@@ -1043,7 +1268,31 @@ const TONO_DEFAULT = [
   {texto:'Auténtica', resaltado:true},
   {texto:'Cercana', resaltado:true},
   {texto:'Con historia', resaltado:true},
-  {texto:'Sin vueltas', resaltado:true}
+  {texto:'Sin vueltas', resaltado:true},
+  /* Palabras predefinidas adicionales, sin resaltar por defecto —
+     tomadas del FODA, los mensajes clave y la personalidad de marca
+     ya definidos. Se suman a los conceptos libres, no los reemplazan. */
+  {texto:'Familiar', resaltado:false},
+  {texto:'Rioplatense', resaltado:false},
+  {texto:'Con humor', resaltado:false},
+  {texto:'Directa', resaltado:false},
+  {texto:'Calidez', resaltado:false},
+  {texto:'De barrio', resaltado:false},
+  {texto:'Tradición', resaltado:false},
+  {texto:'Generación tras generación', resaltado:false},
+  {texto:'Casera', resaltado:false},
+  {texto:'Confiable', resaltado:false},
+  {texto:'Sabor real', resaltado:false},
+  {texto:'De toda la vida', resaltado:false},
+  {texto:'Sin lenguaje corporativo', resaltado:false},
+  {texto:'Con carácter', resaltado:false},
+  {texto:'Atención cercana', resaltado:false},
+  /* Términos de registro/tono pedidos aparte. */
+  {texto:'Serio', resaltado:false},
+  {texto:'Coloquial', resaltado:false},
+  {texto:'Formal', resaltado:false},
+  {texto:'Emotivo', resaltado:false},
+  {texto:'Racional', resaltado:false}
 ];
 let tonoConceptos = TONO_DEFAULT.map(c=>({...c}));
 let tonoEditing = false;
@@ -1140,8 +1389,11 @@ function filaMenu(item){
 function renderMenu(data){
   menuCats.innerHTML = data.map(cat=>
     '<div class="menu-cat">' +
-      '<div class="menu-cat-name" data-mfield="categoria" data-ph="[Categoría]"' + (menuEditing ? ' contenteditable="true"' : '') + '>' +
-        escI(cat.categoria) +
+      '<div class="menu-cat-head">' +
+        '<div class="menu-cat-name" data-mfield="categoria" data-ph="[Categoría]"' + (menuEditing ? ' contenteditable="true"' : '') + '>' +
+          escI(cat.categoria) +
+        '</div>' +
+        '<button class="menu-cat-del" type="button" aria-label="Eliminar categoría">&times;</button>' +
       '</div>' +
       (cat.items || []).map(filaMenu).join('') +
       '<button class="menu-add" type="button">+ ítem</button>' +
@@ -1166,19 +1418,17 @@ function leerMenu(){
   }));
 }
 
-/* Altura disponible para cada hoja del menú, medida en vivo contra lo que
-   realmente ocupan el resto de los elementos de la diapositiva (eyebrow,
-   título, subtítulo, nota) y el propio marco de la tarjeta (padding +
-   encabezado "SERRA / Catering"). Preferimos medir en vez de adivinar un
-   número fijo: así se adapta a cualquier alto de pantalla de escritorio
-   sin dejar de tener en cuenta el título y la nota. */
+/* Altura disponible para cada hoja del menú. Con el layout nuevo
+   (.menu-layout ocupa el 100% del alto de la diapositiva vía flexbox, y
+   .menu-mock se estira —align-items:stretch— al alto de esa columna) el
+   alto de #menu-mock YA viene determinado por el layout, independiente de
+   cuánto contenido tenga adentro: no hace falta sumar/restar hermanos a
+   mano como antes. Sólo restamos el propio marco de la tarjeta (padding +
+   encabezado "SERRA / Catering") para saber cuánto le queda a la lista de
+   categorías. */
 function alturaMaximaPaginaMenu(){
   const slide = slides[current];
   if(!slide || slide.dataset.slideId !== 'checkpoint-catering') return 300;
-
-  const otrosAltos = [...slide.children]
-    .filter(el => el !== menuSpread)
-    .reduce((sum, el)=> sum + el.offsetHeight, 0);
 
   const mock = document.getElementById('menu-mock');
   const head = mock.querySelector('.menu-mock-head');
@@ -1187,13 +1437,8 @@ function alturaMaximaPaginaMenu(){
     + parseFloat(csMock.paddingTop) + parseFloat(csMock.paddingBottom)
     + parseFloat(csMock.borderTopWidth) + parseFloat(csMock.borderBottomWidth);
 
-  const csSlide = getComputedStyle(slide);
-  const slidePad = parseFloat(csSlide.paddingTop) + parseFloat(csSlide.paddingBottom);
-
-  /* Colchón por los márgenes/gaps entre bloques que no se capturan con
-     offsetHeight (evita que quede al ras del borde de la pantalla). */
-  const colchon = 80;
-  const disponible = slide.clientHeight - otrosAltos - slidePad - mockChrome - colchon;
+  const colchon = 8;
+  const disponible = mock.clientHeight - mockChrome - colchon;
   return Math.max(160, disponible);
 }
 
@@ -1207,41 +1452,59 @@ function actualizarPaginacionMenu(){
   if(!slide || slide.dataset.slideId !== 'checkpoint-catering') return;
 
   const cats = [...menuCats.children, ...menuCats2.children];
-  const maxH = alturaMaximaPaginaMenu();
-  menuCats.innerHTML = '';
-  menuCats2.innerHTML = '';
+  let maxH = alturaMaximaPaginaMenu();
 
-  let splitAt = cats.length;
-  for(let i=0; i<cats.length; i++){
-    menuCats.appendChild(cats[i]);
-    /* La primera categoría siempre queda en la hoja 1, aunque por sí sola
-       exceda la altura: mejor eso que una hoja 1 vacía. */
-    if(i > 0 && menuCats.scrollHeight > maxH){
-      menuCats.removeChild(cats[i]);
-      splitAt = i;
-      break;
+  /* Repartimos y, si hace falta, volvemos a repartir con menos alto: la
+     diapositiva NUNCA debe terminar necesitando su propio scroll (eso es
+     lo que hacía que una categoría pareciera "cortada" — el scroll del
+     conjunto de la diapositiva se activaba en vez del de la hoja, y
+     tapaba el título en una hoja pero no en la otra). Si el cálculo
+     inicial de maxH quedó corto por algún elemento no contemplado
+     (por ejemplo la barra "+ agregar categoría" al entrar en modo
+     edición), esta segunda vuelta lo corrige achicando maxH hasta que
+     la diapositiva completa entra sin scroll propio. */
+  for(let intento=0; intento<6; intento++){
+    menuCats.innerHTML = '';
+    menuCats2.innerHTML = '';
+
+    let splitAt = cats.length;
+    for(let i=0; i<cats.length; i++){
+      menuCats.appendChild(cats[i]);
+      /* La primera categoría siempre queda en la hoja 1, aunque por sí sola
+         exceda la altura: mejor eso que una hoja 1 vacía. */
+      if(i > 0 && menuCats.scrollHeight > maxH){
+        menuCats.removeChild(cats[i]);
+        splitAt = i;
+        break;
+      }
     }
+    for(let i=splitAt; i<cats.length; i++) menuCats2.appendChild(cats[i]);
+
+    const hayPagina2 = menuCats2.children.length > 0;
+    menuMock2.classList.toggle('hidden', !hayPagina2);
+    menuSpread.classList.toggle('two-page', hayPagina2);
+
+    /* Techo de seguridad en ambas hojas, aplicado siempre por igual: si
+       una necesita scroll interno, las dos quedan con la misma regla
+       (aunque una termine sin usarlo por tener menos contenido). */
+    [menuCats, menuCats2].forEach(page=>{
+      page.style.maxHeight = maxH + 'px';
+      page.style.overflowY = 'auto';
+    });
+
+    if(slide.scrollHeight <= slide.clientHeight + 1) break;
+    const exceso = slide.scrollHeight - slide.clientHeight;
+    maxH = Math.max(120, maxH - exceso - 8);
   }
-  for(let i=splitAt; i<cats.length; i++) menuCats2.appendChild(cats[i]);
-
-  const hayPagina2 = menuCats2.children.length > 0;
-  menuMock2.classList.toggle('hidden', !hayPagina2);
-  menuSpread.classList.toggle('two-page', hayPagina2);
-
-  /* Techo de seguridad en ambas hojas: por construcción ninguna de las
-     dos debería superar maxH, pero dos casos de borde sí pueden hacerlo
-     (una sola categoría gigante en la hoja 1, o más contenido del que
-     entra en 2 hojas). Para esos casos, en vez de volver a estirar la
-     diapositiva y tapar el título, esa hoja puntual scrollea por dentro. */
-  [menuCats, menuCats2].forEach(page=>{
-    page.style.maxHeight = maxH + 'px';
-    page.style.overflowY = 'auto';
-  });
 }
+
+const menuToolbar = document.getElementById('menu-toolbar');
+const menuAddCatBtn = document.getElementById('menu-addcat');
 
 function setMenuEditing(v){
   menuEditing = v;
   menuSpread.classList.toggle('editing', v);
+  menuToolbar.classList.toggle('hidden', !v);
   pencilMenu.classList.toggle('on', v);
   pencilMenu.setAttribute('aria-pressed', String(v));
   pencilMenu.textContent = v ? '✓' : '✎';
@@ -1252,6 +1515,16 @@ function setMenuEditing(v){
 pencilMenu.addEventListener('click', ()=>{
   if(menuEditing){ guardarSeccion('menu_catering', leerMenu(), flagMenu); setMenuEditing(false); }
   else setMenuEditing(true);
+});
+
+menuAddCatBtn.addEventListener('click', ()=>{
+  const data = leerMenu();
+  data.push({categoria:'', items:[{nombre:'',precio:''}]});
+  renderMenu(data);
+  guardarSeccion('menu_catering', leerMenu(), flagMenu);
+  const nombres = menuSpread.querySelectorAll('.menu-cat-name');
+  const ultimo = nombres[nombres.length - 1];
+  if(ultimo) ultimo.focus();
 });
 
 const guardarMenuDebounced = debounceI(()=>{
@@ -1280,6 +1553,10 @@ menuSpread.addEventListener('click', e=>{
     e.target.closest('.menu-row').remove();
     guardarSeccion('menu_catering', leerMenu(), flagMenu);
     actualizarPaginacionMenu();
+  } else if(e.target.closest('.menu-cat-del')){
+    e.target.closest('.menu-cat').remove();
+    guardarSeccion('menu_catering', leerMenu(), flagMenu);
+    actualizarPaginacionMenu();
   }
 });
 menuSpread.addEventListener('paste', e=>{
@@ -1299,8 +1576,7 @@ window.addEventListener('resize', ()=>{
    ============================================================ */
 const CIERRE_DEFAULT = [
   {id:'checkpoints', texto:'Los dos checkpoints pendientes: público objetivo y alcance del catering.', completado:false},
-  {id:'direccion',   texto:'Elegir entre la Dirección A, la Dirección B, o pedir una mezcla de ambas.', completado:false},
-  {id:'plateado',    texto:'Confirmar si el acento plateado suma a la marca o lo dejamos afuera.', completado:false}
+  {id:'direccion',   texto:'Elegir entre la Dirección A, la Dirección B, o pedir una mezcla de ambas.', completado:false}
 ];
 let cierreItems = CIERRE_DEFAULT.map(i=>({...i}));
 const cierreList = document.getElementById('cierre-list');
@@ -1361,9 +1637,18 @@ async function cargarContenido(){
 
   const tono = porSeccion['tono'];
   if(Array.isArray(tono) && tono.length){
-    tonoConceptos = tono
+    /* Lo guardado NUNCA reemplaza del todo la lista: se completa con las
+       palabras predefinidas que todavía no estén ahí (comparando sin
+       importar mayúsculas). Así, si se suman palabras nuevas a
+       TONO_DEFAULT en el código, aparecen también para decks que ya
+       tenían datos guardados, en vez de quedar tapadas por el guardado
+       viejo. */
+    const guardados = tono
       .filter(c=> c && typeof c.texto === 'string' && c.texto.trim())
       .map(c=>({texto: c.texto.trim().slice(0,40), resaltado: !!c.resaltado}));
+    const yaEstan = new Set(guardados.map(c=> c.texto.toLowerCase()));
+    const faltantes = TONO_DEFAULT.filter(d=> !yaEstan.has(d.texto.toLowerCase()));
+    tonoConceptos = [...guardados, ...faltantes];
     renderTono();
   }
 
@@ -1463,6 +1748,66 @@ cmtText.addEventListener('keydown', e=>{
 });
 
 /* ============================================================
+   7b. PANEL DE TODOS LOS COMENTARIOS (todas las diapositivas)
+   ============================================================ */
+const cmtAllToggle  = document.getElementById('cmt-all-toggle');
+const cmtAllOverlay = document.getElementById('cmtall-overlay');
+const cmtAllClose   = document.getElementById('cmtall-close');
+const cmtAllList    = document.getElementById('cmtall-list');
+
+function tituloDeSlideId(sid){
+  const idx = slides.findIndex(s=> s.dataset.slideId === sid);
+  return idx >= 0 ? (TITLES[idx] || sid) : sid;
+}
+
+async function cargarTodosComentarios(){
+  cmtAllList.innerHTML = '<p class="cmt-empty">Cargando…</p>';
+  const {data, error} = await sbi.from('serra_identidad_comentarios')
+    .select('id,slide_id,texto,creado_en')
+    .order('creado_en', {ascending: false});
+
+  if(error){
+    console.error('Error cargando todos los comentarios', error);
+    cmtAllList.innerHTML = '<p class="cmt-empty">No se pudieron cargar los comentarios.</p>';
+    return;
+  }
+  if(!data || !data.length){
+    cmtAllList.innerHTML = '<p class="cmt-empty">Todavía no hay comentarios en ninguna diapositiva.</p>';
+    return;
+  }
+  cmtAllList.innerHTML = data.map(c=>{
+    const idx = slides.findIndex(s=> s.dataset.slideId === c.slide_id);
+    return '<button type="button" class="cmtall-item" data-idx="' + idx + '">' +
+      '<span class="cmtall-slide">' + escI(tituloDeSlideId(c.slide_id)) + '</span>' +
+      '<p>' + escI(c.texto) + '</p>' +
+      '<time>' + escI(fechaCorta(c.creado_en)) + '</time>' +
+    '</button>';
+  }).join('');
+}
+
+function abrirTodosComentarios(){
+  cmtAllOverlay.classList.add('show');
+  cmtAllOverlay.setAttribute('aria-hidden','false');
+  cargarTodosComentarios();
+}
+function cerrarTodosComentarios(){
+  cmtAllOverlay.classList.remove('show');
+  cmtAllOverlay.setAttribute('aria-hidden','true');
+}
+cmtAllToggle.addEventListener('click', abrirTodosComentarios);
+cmtAllClose.addEventListener('click', cerrarTodosComentarios);
+cmtAllOverlay.addEventListener('click', e=>{ if(e.target === cmtAllOverlay) cerrarTodosComentarios(); });
+cmtAllList.addEventListener('click', e=>{
+  const btn = e.target.closest('.cmtall-item');
+  if(!btn) return;
+  const idx = +btn.dataset.idx;
+  if(idx >= 0){ goToSlide(idx); cerrarTodosComentarios(); }
+});
+document.addEventListener('keydown', e=>{
+  if(cmtAllOverlay.classList.contains('show') && e.key === 'Escape') cerrarTodosComentarios();
+});
+
+/* ============================================================
    8. ENGANCHE CON LA NAVEGACIÓN EXISTENTE
    ============================================================ */
 const _updateControls = updateControls;
@@ -1481,6 +1826,19 @@ document.addEventListener('keydown', e=>{
   const escribiendo = t.isContentEditable || t.tagName === 'TEXTAREA' || t.tagName === 'INPUT';
   if(escribiendo && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) e.stopPropagation();
 }, true);
+
+/* ============================================================
+   9. PLACEHOLDERS DE IMAGEN DEL BLOQUE CREATIVO
+   Cada .img-ph trae un <img> apuntando al archivo esperado en /identidad/.
+   Si el archivo todavía no existe, el error de carga lo saca del DOM y
+   queda visible la etiqueta punteada "Imagen pendiente"; en cuanto el
+   archivo aparece con ese nombre exacto, basta recargar la página para
+   que la imagen real reemplace al placeholder — no hace falta tocar código.
+   ============================================================ */
+document.querySelectorAll('.img-ph img').forEach(img=>{
+  img.addEventListener('load', ()=> img.closest('.img-ph').classList.add('has-img'));
+  img.addEventListener('error', ()=> img.remove());
+});
 
 cargarContenido();
 cargarComentarios();
