@@ -91,6 +91,12 @@
   @media (max-width:760px){
     .slide{padding:36px 22px 74px}
   }
+  /* Diapositivas donde la imagen debe dominar: menos aire alrededor que en
+     las diapositivas de puro texto, para que la pieza gráfica gane espacio. */
+  .slide.sl-img-focus{padding:32px 44px 48px}
+  @media (max-width:760px){
+    .slide.sl-img-focus{padding:22px 16px 40px}
+  }
 
   /* Bloques centrados: se limitan por max-width y quedan al medio */
   .sl-h,.sl-story,.sl-foda,.sl-pos-block,.sl-check-note,.sl-tone-text,
@@ -185,6 +191,12 @@
   .sl-agenda-num{font-family:'Alfa Slab One';font-size:18px;color:var(--rojo)}
   .sl-agenda-label{font-family:'Archivo';font-weight:800;font-size:13.5px;line-height:1.25;color:var(--carbon)}
   .sl-agenda-sub{font-size:10.5px;line-height:1.4;color:var(--gris)}
+  .sl-agenda-item-checkpoint{border-style:dashed;border-color:var(--rojo);background:rgba(193,39,45,.06)}
+  .sl-agenda-flag{
+    align-self:flex-start;font-size:9px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--rojo);background:var(--blanco);border:1.5px solid var(--rojo);border-radius:99px;
+    padding:2px 8px;
+  }
 
   /* ---------- STORY ---------- */
   .sl-story{max-width:62ch;display:flex;flex-direction:column;gap:14px}
@@ -258,6 +270,7 @@
   /* ---------- CONCEPTO ---------- */
   .sl-concept{font-family:'Alfa Slab One';font-size:clamp(28px,6vw,50px);color:var(--rojo);text-shadow:4px 4px 0 var(--bordo);max-width:16ch;margin-bottom:18px}
   .sl-concept-note{font-size:15px;line-height:1.6;color:var(--gris);max-width:56ch}
+  #concept-img-toggle{margin-bottom:22px}
 
   /* ---------- TRANSICION ---------- */
   .sl-transition{margin:auto;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px}
@@ -268,10 +281,16 @@
   .sl-transition h2{font-size:clamp(24px,6vw,40px);max-width:16ch}
   .sl-transition-sub{font-size:15px;line-height:1.6;color:var(--gris);max-width:46ch;margin-top:2px}
 
-  /* ---------- INSTAGRAM (usuario disponible) ---------- */
-  .sl-ig-layout{display:grid;grid-template-columns:1.15fr 1fr;gap:28px;align-items:center;max-width:820px;width:100%}
-  @media (max-width:700px){.sl-ig-layout{grid-template-columns:1fr}}
-  .sl-ig-layout .img-ph{aspect-ratio:4/5;max-height:min(48vh,420px)}
+  /* ---------- INSTAGRAM (usuario disponible) ----------
+     Las imágenes son lo que domina la diapositiva: van arriba, grandes;
+     la lista de @ queda como franja compacta y horizontal debajo. */
+  .sl-ig-layout{display:flex;flex-direction:column;align-items:center;gap:22px;max-width:980px;width:100%}
+  .sl-ig-imgs{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;width:100%}
+  .sl-ig-imgs .img-ph{flex:1 1 320px;max-width:430px;aspect-ratio:4/5;max-height:min(56vh,520px)}
+  /* Los 3 @ disponibles van juntos en un renglón; el tachado (no
+     disponible) siempre salta a su propio renglón debajo. */
+  .sl-ig-layout .sl-handle-list{flex-direction:column;align-items:center;gap:10px;max-width:680px}
+  .sl-handle-row{display:flex;flex-wrap:nowrap;gap:10px;justify-content:center}
   .sl-handle-list{display:flex;flex-direction:column;gap:10px;text-align:left}
   .sl-handle{
     display:flex;align-items:center;gap:10px;
@@ -331,16 +350,22 @@
   .img-ph.has-img{border-style:solid;border-color:var(--carbon);background:none}
   .img-ph.has-img .img-ph-label{display:none}
 
-  .sl-isotipo-imgs{
-    display:flex;flex-wrap:wrap;gap:22px;justify-content:center;
-    width:100%;max-width:640px;margin:0 auto 24px;
-  }
-  .sl-isotipo-imgs .img-ph{flex:1 1 220px;max-width:260px;aspect-ratio:1/1}
+  /* Imagen única, protagonista: la usan Concepto (junto al texto) y
+     Fusión cerámica y pizza (sola). Más chica que .sl-ph-full porque en
+     esas dos diapositivas convive con texto arriba. */
+  .sl-ph-hero{width:100%;max-width:900px;aspect-ratio:16/9;max-height:min(58vh,560px);margin:0 auto}
 
   .sl-ph-row{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;width:100%;max-width:820px;margin:0 auto}
   .sl-ph-row .img-ph{flex:1 1 180px;max-width:230px;aspect-ratio:4/5;max-height:min(25vh,190px)}
-  .sl-ph-row.sl-ph-row-lg .img-ph{flex:1 1 240px;max-width:340px;aspect-ratio:3/4;max-height:min(38vh,280px)}
-  .sl-ph-full{width:100%;max-width:820px;aspect-ratio:16/9;margin:0 auto}
+  /* Aplicación de la identidad: sin título, apiladas verticalmente, y el
+     marco de cada foto se ajusta a su tamaño real (no a una caja de
+     proporción fija) — así nunca queda más grande que la imagen. */
+  .sl-ph-row.sl-ph-row-lg{flex-direction:column;align-items:center;max-width:920px}
+  .sl-ph-row.sl-ph-row-lg .img-ph{flex:0 0 auto;width:auto;max-width:100%;aspect-ratio:auto;max-height:none}
+  [data-slide-id="aplicacion-identidad"] .img-ph img{
+    position:static;display:block;width:auto;height:auto;max-width:920px;max-height:min(46vh,460px);
+  }
+  .sl-ph-full{width:100%;max-width:1040px;aspect-ratio:16/9;max-height:min(66vh,620px);margin:0 auto}
 
   /* ---------- PRÓXIMOS PASOS ---------- */
   .sl-next-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:680px;width:100%;margin:0 auto}
@@ -409,7 +434,7 @@
     text-align:left;
   }
   .menu-layout-side{
-    flex:0 0 240px;display:flex;flex-direction:column;gap:12px;
+    flex:0 0 320px;display:flex;flex-direction:column;gap:12px;
     overflow-y:auto;padding-right:2px;
   }
   .menu-layout-side .sl-h{font-size:clamp(18px,2.2vw,22px);text-align:left;margin:0;max-width:none}
@@ -631,7 +656,6 @@
 
   <section class="slide active enter" data-index="0" data-slide-id="portada">
     <div class="sl-cover">
-      <span class="sl-cover-eyebrow">Presentación de identidad</span>
       <h1 class="sl-cover-logo">SERRA</h1>
       <p class="sl-cover-sub">Identidad de marca</p>
     </div>
@@ -699,7 +723,6 @@
   </section>
 
   <section class="slide" data-index="4" data-slide-id="posicionamiento">
-    <span class="sl-eyebrow">03 · Estrategia</span>
     <h2 class="sl-h">Posicionamiento y propuesta de valor</h2>
     <div class="sl-pos-block">
       <span class="sl-pos-label">Posicionamiento</span>
@@ -713,8 +736,7 @@
 
   <section class="slide" data-index="5" data-slide-id="checkpoint-publico">
     <span class="sl-eyebrow">04 · Checkpoint</span>
-    <h2 class="sl-h">Esto todavía lo estamos definiendo juntos</h2>
-    <p class="sl-check-sub">Público objetivo del local</p>
+    <h2 class="sl-h">Público objetivo del local</h2>
     <div class="sl-check-grid">
       <div class="sl-check-col">
         <div class="sl-vs-card">
@@ -742,7 +764,6 @@
         </div>
       </div>
     </div>
-    <p class="sl-check-note">No es un error, es una decisión pendiente. Movamos el rango juntos: queda guardado para los tres.</p>
   </section>
 
   <section class="slide" data-index="6" data-slide-id="checkpoint-catering">
@@ -792,7 +813,6 @@
   <section class="slide" data-index="7" data-slide-id="tono">
     <span class="sl-eyebrow">05 · Personalidad</span>
     <h2 class="sl-h">Tono y personalidad de marca</h2>
-    <p class="sl-tone-text">Cercano, directo, con humor cotidiano rioplatense. Nada de lenguaje corporativo.</p>
     <div class="edit-block" style="max-width:640px">
       <button class="edit-pencil corner" type="button" data-block="tono" aria-label="Editar conceptos de tono" aria-pressed="false">&#9998;</button>
       <span class="block-save-flag corner" data-flag="tono">Guardado &#10003;</span>
@@ -806,7 +826,7 @@
 
   <section class="slide" data-index="8" data-slide-id="mensajes">
     <span class="sl-eyebrow">06 · Mensajes</span>
-    <h2 class="sl-h">Mensajes clave</h2>
+    <h2 class="sl-h">¿Qué comunicar?</h2>
     <div class="edit-block" style="max-width:60ch">
       <button class="edit-pencil corner" type="button" data-block="mensajes" aria-label="Editar mensajes clave" aria-pressed="false">&#9998;</button>
       <span class="block-save-flag corner" data-flag="mensajes">Guardado &#10003;</span>
@@ -818,103 +838,85 @@
     </div>
   </section>
 
-  <section class="slide" data-index="9" data-slide-id="concepto">
-    <span class="sl-eyebrow">07 · Concepto</span>
-    <h2 class="sl-h">Concepto creativo</h2>
-    <p class="sl-concept">"La mesa que empezó hace 60 años"</p>
-    <p class="sl-concept-note">Todo el sistema de marca —tono, mensajes, estética— gira sobre esta idea: una mesa familiar que sigue puesta, generación tras generación.</p>
-  </section>
-
-  <section class="slide" data-index="10" data-slide-id="transicion">
+  <section class="slide" data-index="9" data-slide-id="transicion">
     <div class="sl-transition">
       <span class="sl-transition-num">08</span>
       <h2>Recorrido de identidad visual</h2>
-      <p class="sl-transition-sub">Isotipo, aplicaciones gráficas, menú y packaging, la fachada del local, el perfil de Instagram y la vestimenta del equipo.</p>
+      <p class="sl-transition-sub">Concepto, isotipo, aplicaciones gráficas, la identidad aplicada, el perfil de Instagram y la fachada del local.</p>
     </div>
   </section>
 
-  <section class="slide" data-index="11" data-slide-id="isotipo">
+  <section class="slide sl-img-focus" data-index="10" data-slide-id="concepto">
     <span class="sl-eyebrow">09 · Identidad visual</span>
-    <h2 class="sl-h">El isotipo</h2>
-    <div class="sl-isotipo-imgs">
-      <div class="img-ph">
-        <img src="/identidad/isotipo-1.jpg" alt="Isotipo — versión 1">
-        <span class="img-ph-label">Imagen pendiente<span class="img-ph-file">isotipo-1.jpg</span></span>
-      </div>
-      <div class="img-ph">
-        <img src="/identidad/isotipo-2.jpg" alt="Isotipo — versión 2">
-        <span class="img-ph-label">Imagen pendiente<span class="img-ph-file">isotipo-2.jpg</span></span>
-      </div>
-    </div>
-    <div class="edit-block" style="max-width:64ch">
-      <button class="edit-pencil corner" type="button" data-block="isotipo_explicacion" aria-label="Editar explicación del isotipo" aria-pressed="false">&#9998;</button>
-      <span class="block-save-flag corner" data-flag="isotipo_explicacion">Guardado &#10003;</span>
-      <div class="sl-story" data-edit="isotipo_explicacion">
-        <p>Escribí acá por qué elegimos este camino para el isotipo.</p>
-      </div>
+    <h2 class="sl-h">Concepto creativo</h2>
+    <p class="sl-concept">"La mesa que empezó hace 60 años"</p>
+    <button class="grid-toggle" id="concept-img-toggle" type="button" aria-expanded="false" aria-controls="concept-img">Mostrar imagen</button>
+    <div class="img-ph sl-ph-hero hidden" id="concept-img">
+      <img src="/identidad/isotipo-1.png" alt="Cerámica y pizza — recorridos por separado">
+      <span class="img-ph-label">Imagen pendiente<span class="img-ph-file">isotipo-1.png</span></span>
     </div>
   </section>
 
-  <section class="slide" data-index="12" data-slide-id="aplicaciones">
+  <section class="slide sl-img-focus" data-index="11" data-slide-id="isotipo">
     <span class="sl-eyebrow">09 · Identidad visual</span>
-    <h2 class="sl-h">Aplicaciones — flyers e ilustraciones</h2>
-    <div class="sl-ph-row">
-      <div class="img-ph"><img src="/identidad/aplicaciones-1.jpg" alt="Aplicación gráfica 1"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">aplicaciones-1.jpg</span></span></div>
-      <div class="img-ph"><img src="/identidad/aplicaciones-2.jpg" alt="Aplicación gráfica 2"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">aplicaciones-2.jpg</span></span></div>
-      <div class="img-ph"><img src="/identidad/aplicaciones-3.jpg" alt="Aplicación gráfica 3"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">aplicaciones-3.jpg</span></span></div>
-      <div class="img-ph"><img src="/identidad/aplicaciones-4.jpg" alt="Aplicación gráfica 4"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">aplicaciones-4.jpg</span></span></div>
-      <div class="img-ph"><img src="/identidad/aplicaciones-5.jpg" alt="Aplicación gráfica 5"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">aplicaciones-5.jpg</span></span></div>
-      <div class="img-ph"><img src="/identidad/aplicaciones-6.jpg" alt="Aplicación gráfica 6"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">aplicaciones-6.jpg</span></span></div>
+    <h2 class="sl-h">Fusión cerámica y pizza</h2>
+    <div class="img-ph sl-ph-hero">
+      <img src="/identidad/isotipo-2.png" alt="Fusión de cerámica y pizza">
+      <span class="img-ph-label">Imagen pendiente<span class="img-ph-file">isotipo-2.png</span></span>
     </div>
   </section>
 
-  <section class="slide" data-index="13" data-slide-id="menu-packaging">
+  <section class="slide sl-img-focus" data-index="12" data-slide-id="aplicaciones">
     <span class="sl-eyebrow">09 · Identidad visual</span>
-    <h2 class="sl-h">Menú y packaging</h2>
-    <div class="sl-ph-row sl-ph-row-lg">
-      <div class="img-ph"><img src="/identidad/menu-packaging-1.jpg" alt="Menú y packaging 1"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">menu-packaging-1.jpg</span></span></div>
-      <div class="img-ph"><img src="/identidad/menu-packaging-2.jpg" alt="Menú y packaging 2"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">menu-packaging-2.jpg</span></span></div>
-      <div class="img-ph"><img src="/identidad/menu-packaging-3.jpg" alt="Menú y packaging 3"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">menu-packaging-3.jpg</span></span></div>
-    </div>
-  </section>
-
-  <section class="slide" data-index="14" data-slide-id="fachada">
-    <span class="sl-eyebrow">09 · Identidad visual</span>
-    <h2 class="sl-h">Vista exterior del local</h2>
+    <h2 class="sl-h">Recursos gráficos que acompañan la identidad</h2>
     <div class="img-ph sl-ph-full">
-      <img src="/identidad/fachada-1.jpg" alt="Vista exterior del local">
-      <span class="img-ph-label">Imagen pendiente<span class="img-ph-file">fachada-1.jpg</span></span>
+      <img src="/identidad/recursos-graficos-1.png" alt="Recursos gráficos que acompañan la identidad">
+      <span class="img-ph-label">Imagen pendiente<span class="img-ph-file">recursos-graficos-1.png</span></span>
     </div>
   </section>
 
-  <section class="slide" data-index="15" data-slide-id="instagram">
+  <section class="slide sl-img-focus" data-index="13" data-slide-id="aplicacion-identidad">
+    <div class="sl-ph-row sl-ph-row-lg">
+      <div class="img-ph"><img src="/identidad/aplicacion-packaging-1.png" alt="Aplicación — packaging"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">aplicacion-packaging-1.png</span></span></div>
+      <div class="img-ph"><img src="/identidad/aplicacion-vestimenta-1.png" alt="Aplicación — vestimenta"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">aplicacion-vestimenta-1.png</span></span></div>
+    </div>
+  </section>
+
+  <section class="slide sl-img-focus" data-index="14" data-slide-id="instagram">
     <span class="sl-eyebrow">09 · Identidad visual</span>
     <h2 class="sl-h">Instagram — usuario disponible</h2>
     <div class="sl-ig-layout">
-      <div class="img-ph">
-        <img src="/identidad/instagram-1.jpg" alt="Mockup de feed / perfil de Instagram">
-        <span class="img-ph-label">Imagen pendiente<span class="img-ph-file">instagram-1.jpg</span></span>
+      <div class="sl-ig-imgs">
+        <div class="img-ph">
+          <img src="/identidad/instagram-contenido-1.png" alt="Línea gráfica de redes/publicidad">
+          <span class="img-ph-label">Imagen pendiente<span class="img-ph-file">instagram-contenido-1.png</span></span>
+        </div>
+        <div class="img-ph">
+          <img src="/identidad/instagram-mockup-1.png" alt="Mockup de feed / perfil de Instagram">
+          <span class="img-ph-label">Imagen pendiente<span class="img-ph-file">instagram-mockup-1.png</span></span>
+        </div>
       </div>
       <div class="sl-handle-list">
-        <div class="sl-handle ok"><span class="sl-handle-mark">&#10003;</span><span class="sl-handle-at">@serra</span></div>
-        <div class="sl-handle ok"><span class="sl-handle-mark">&#10003;</span><span class="sl-handle-at">@serra.pizza</span></div>
-        <div class="sl-handle ok"><span class="sl-handle-mark">&#10003;</span><span class="sl-handle-at">@pizzeriaserra</span></div>
+        <div class="sl-handle-row">
+          <div class="sl-handle ok"><span class="sl-handle-mark">&#10003;</span><span class="sl-handle-at">@serra</span></div>
+          <div class="sl-handle ok"><span class="sl-handle-mark">&#10003;</span><span class="sl-handle-at">@serra.pizza</span></div>
+          <div class="sl-handle ok"><span class="sl-handle-mark">&#10003;</span><span class="sl-handle-at">@pizzeriaserra</span></div>
+        </div>
         <div class="sl-handle no"><span class="sl-handle-mark">&#10005;</span><span class="sl-handle-at">@serrapizzeria</span></div>
       </div>
     </div>
   </section>
 
-  <section class="slide" data-index="16" data-slide-id="vestimenta">
+  <section class="slide sl-img-focus" data-index="15" data-slide-id="fachada">
     <span class="sl-eyebrow">09 · Identidad visual</span>
-    <h2 class="sl-h">Vestimenta de cocineros</h2>
-    <div class="sl-ph-row">
-      <div class="img-ph"><img src="/identidad/vestimenta-1.jpg" alt="Vestimenta — delantal"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">vestimenta-1.jpg</span></span></div>
-      <div class="img-ph"><img src="/identidad/vestimenta-2.jpg" alt="Vestimenta — gorra"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">vestimenta-2.jpg</span></span></div>
-      <div class="img-ph"><img src="/identidad/vestimenta-3.jpg" alt="Vestimenta — remera de trabajo"><span class="img-ph-label">Imagen pendiente<span class="img-ph-file">vestimenta-3.jpg</span></span></div>
+    <h2 class="sl-h">Vista exterior del local</h2>
+    <div class="img-ph sl-ph-full">
+      <img src="/identidad/fachada-1.png" alt="Vista exterior del local">
+      <span class="img-ph-label">Imagen pendiente<span class="img-ph-file">fachada-1.png</span></span>
     </div>
   </section>
 
-  <section class="slide" data-index="17" data-slide-id="proximos-pasos">
+  <section class="slide" data-index="16" data-slide-id="proximos-pasos">
     <span class="sl-eyebrow">10 · Próximos pasos</span>
     <h2 class="sl-h">Próximos pasos</h2>
     <div class="edit-block" style="max-width:680px">
@@ -933,20 +935,19 @@
     </div>
   </section>
 
-  <section class="slide" data-index="18" data-slide-id="cierre">
+  <section class="slide" data-index="17" data-slide-id="cierre">
     <span class="sl-eyebrow">11 · Cierre</span>
     <h2 class="sl-h">Cierre</h2>
-    <p class="sl-close-intro">Para avanzar con la identidad final necesitamos que resuelvan, entre ustedes:</p>
     <ul class="sl-close-list" id="cierre-list"></ul>
     <span class="block-save-flag" id="cierre-save-flag">Guardado &#10003;</span>
     <p class="sl-close-outro">Con esa devolución, armamos la identidad final de SERRA.</p>
   </section>
 
-  <section class="slide" data-index="19" data-slide-id="preguntas">
+  <section class="slide" data-index="18" data-slide-id="preguntas">
     <h2 class="sl-endcard">&#191;Preguntas?</h2>
   </section>
 
-  <section class="slide" data-index="20" data-slide-id="gracias">
+  <section class="slide" data-index="19" data-slide-id="gracias">
     <h2 class="sl-endcard">Gracias</h2>
   </section>
 
@@ -999,9 +1000,9 @@ const TOTAL = slides.length;
 const TITLES = [
   'Portada','De qué vamos a hablar','Lo que nos contaron','FODA','Posicionamiento y propuesta',
   'Checkpoint: público','Checkpoint: catering','Tono y personalidad',
-  'Mensajes clave','Concepto creativo','Transición',
-  'El isotipo','Aplicaciones — flyers e ilustraciones','Menú y packaging','Vista exterior del local',
-  'Instagram — usuario disponible','Vestimenta de cocineros',
+  '¿Qué comunicar?','Transición','Concepto creativo',
+  'Fusión cerámica y pizza','Recursos gráficos que acompañan la identidad','Aplicación de la identidad',
+  'Instagram — usuario disponible','Vista exterior del local',
   'Próximos pasos','Cierre','¿Preguntas?','Gracias'
 ];
 /* Título real por data-slide-id, para no volver a tipear los mismos
@@ -1032,21 +1033,18 @@ const thumbs = [...thumbGrid.querySelectorAll('.thumb')];
    reales, con el subtítulo tomado de TITLES_BY_ID — así, si se edita un
    título de diapositiva más arriba, el índice no se desincroniza. */
 const AGENDA_BLOCKS = [
-  {label:'Contexto',                ids:['punto-partida']},
-  {label:'FODA',                    ids:['foda']},
-  {label:'Estrategia',              ids:['posicionamiento']},
-  {label:'Checkpoints',             ids:['checkpoint-publico','checkpoint-catering']},
-  {label:'Personalidad y mensajes', ids:['tono','mensajes','concepto']},
-  {label:'Identidad visual',        ids:['transicion','isotipo','aplicaciones','menu-packaging','fachada','instagram','vestimenta']},
-  {label:'Próximos pasos',          ids:['proximos-pasos']},
-  {label:'Cierre',                  ids:['cierre','preguntas','gracias']}
+  {label:'Repaso del brief', ids:['punto-partida','foda','posicionamiento']},
+  {label:'Checkpoints',      ids:['checkpoint-publico','checkpoint-catering'], checkpoint:true},
+  {label:'Recorrido visual', ids:['transicion','concepto','isotipo','aplicaciones','aplicacion-identidad','instagram','fachada']},
+  {label:'Próximos pasos',   ids:['proximos-pasos']}
 ];
 const agendaEl = document.getElementById('sl-agenda');
 if(agendaEl){
   agendaEl.innerHTML = AGENDA_BLOCKS.map((b,i)=>{
     const sub = b.ids.map(id=> TITLES_BY_ID[id]).filter(Boolean).join(' · ');
-    return '<div class="sl-agenda-item">' +
+    return '<div class="sl-agenda-item' + (b.checkpoint ? ' sl-agenda-item-checkpoint' : '') + '">' +
       '<span class="sl-agenda-num">' + String(i+1).padStart(2,'0') + '</span>' +
+      (b.checkpoint ? '<span class="sl-agenda-flag">A definir en la llamada</span>' : '') +
       '<span class="sl-agenda-label">' + b.label + '</span>' +
       '<span class="sl-agenda-sub">' + sub + '</span>' +
     '</div>';
@@ -1213,7 +1211,6 @@ function wireTextBlock(seccion){
 const textBlocks = {
   foda: wireTextBlock('foda'),
   mensajes: wireTextBlock('mensajes'),
-  isotipo_explicacion: wireTextBlock('isotipo_explicacion'),
   proximos_pasos: wireTextBlock('proximos_pasos')
 };
 
@@ -1273,26 +1270,19 @@ const TONO_DEFAULT = [
      tomadas del FODA, los mensajes clave y la personalidad de marca
      ya definidos. Se suman a los conceptos libres, no los reemplazan. */
   {texto:'Familiar', resaltado:false},
-  {texto:'Rioplatense', resaltado:false},
   {texto:'Con humor', resaltado:false},
   {texto:'Directa', resaltado:false},
   {texto:'Calidez', resaltado:false},
   {texto:'De barrio', resaltado:false},
-  {texto:'Tradición', resaltado:false},
-  {texto:'Generación tras generación', resaltado:false},
   {texto:'Casera', resaltado:false},
   {texto:'Confiable', resaltado:false},
-  {texto:'Sabor real', resaltado:false},
-  {texto:'De toda la vida', resaltado:false},
-  {texto:'Sin lenguaje corporativo', resaltado:false},
   {texto:'Con carácter', resaltado:false},
   {texto:'Atención cercana', resaltado:false},
   /* Términos de registro/tono pedidos aparte. */
   {texto:'Serio', resaltado:false},
   {texto:'Coloquial', resaltado:false},
   {texto:'Formal', resaltado:false},
-  {texto:'Emotivo', resaltado:false},
-  {texto:'Racional', resaltado:false}
+  {texto:'Emotivo', resaltado:false}
 ];
 let tonoConceptos = TONO_DEFAULT.map(c=>({...c}));
 let tonoEditing = false;
@@ -1575,8 +1565,9 @@ window.addEventListener('resize', ()=>{
    5. CIERRE — checklist de próximos pasos
    ============================================================ */
 const CIERRE_DEFAULT = [
-  {id:'checkpoints', texto:'Los dos checkpoints pendientes: público objetivo y alcance del catering.', completado:false},
-  {id:'direccion',   texto:'Elegir entre la Dirección A, la Dirección B, o pedir una mezcla de ambas.', completado:false}
+  {id:'publico-objetivo', texto:'Público objetivo', completado:false},
+  {id:'alcance-catering', texto:'Alcance del catering', completado:false},
+  {id:'direccion-visual', texto:'Dirección de identidad visual definida o con cosas a cambiar', completado:false}
 ];
 let cierreItems = CIERRE_DEFAULT.map(i=>({...i}));
 const cierreList = document.getElementById('cierre-list');
@@ -1839,6 +1830,21 @@ document.querySelectorAll('.img-ph img').forEach(img=>{
   img.addEventListener('load', ()=> img.closest('.img-ph').classList.add('has-img'));
   img.addEventListener('error', ()=> img.remove());
 });
+
+/* ============================================================
+   10. CONCEPTO — la imagen de isotipo-1 queda oculta hasta que se
+   aprieta "Mostrar imagen" (para no anticipar el isotipo en esta
+   diapositiva, que es solo del concepto creativo).
+   ============================================================ */
+const conceptImgToggle = document.getElementById('concept-img-toggle');
+const conceptImg = document.getElementById('concept-img');
+if(conceptImgToggle && conceptImg){
+  conceptImgToggle.addEventListener('click', ()=>{
+    const mostrar = conceptImg.classList.toggle('hidden') === false;
+    conceptImgToggle.textContent = mostrar ? 'Ocultar imagen' : 'Mostrar imagen';
+    conceptImgToggle.setAttribute('aria-expanded', String(mostrar));
+  });
+}
 
 cargarContenido();
 cargarComentarios();
