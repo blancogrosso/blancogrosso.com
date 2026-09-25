@@ -694,7 +694,16 @@
     color:var(--rojo);margin-bottom:6px;
   }
   .cmtall-item p{font-size:13.5px;line-height:1.45;color:var(--carbon);white-space:pre-wrap;word-break:break-word}
-  .cmtall-item time{display:block;font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--gris);margin-top:6px}
+  .cmtall-item time{display:block;font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--gris)}
+  .cmtall-item .cmt-foot{margin-top:6px}
+  .cmtall-item textarea{
+    font-family:'Archivo';font-size:13.5px;line-height:1.45;color:var(--carbon);
+    background:var(--blanco);border:2px solid var(--carbon);border-radius:10px;
+    padding:9px 11px;resize:vertical;min-height:62px;width:100%;
+  }
+  .cmtall-item textarea:focus-visible{outline:3px dashed var(--rojo);outline-offset:2px}
+  .cmtall-item.editing{cursor:default;transform:none;box-shadow:none}
+  .cmtall-flag{margin-left:auto;margin-right:12px}
 
   .hidden{display:none!important}
 </style>
@@ -1053,6 +1062,7 @@
   <div class="grid-box" role="dialog" aria-modal="true" aria-labelledby="cmtall-title">
     <div class="grid-box-head">
       <h3 id="cmtall-title">Todos los comentarios</h3>
+      <span class="block-save-flag cmtall-flag" id="cmtall-save-flag">Guardado &#10003;</span>
       <button class="grid-close" id="cmtall-close" type="button" aria-label="Cerrar">✕</button>
     </div>
     <div class="cmtall-list" id="cmtall-list"></div>
@@ -1750,8 +1760,19 @@ function cambiarModoComentario(item, modo){
   }
 }
 
+/* Tras editar/eliminar, refrescamos el panel de la diapositiva y, si está
+   abierto, el de todos los comentarios. El aviso sale en el panel desde
+   donde se hizo la acción. */
+async function refrescarComentarios(){
+  await cargarComentarios();
+  if(cmtAllOverlay.classList.contains('show')) await cargarTodosComentarios();
+}
+
 async function accionComentario(item, act){
   const id = item.dataset.id;
+  const flag = item.closest('#cmtall-list') ? document.getElementById('cmtall-save-flag') : cmtSaveFlag;
+  if(act === 'edit' || act === 'del') item.classList.add('editing');
+  else if(act === 'cancel') item.classList.remove('editing');
   if(act === 'edit') cambiarModoComentario(item, 'editar');
   else if(act === 'del') cambiarModoComentario(item, 'borrar');
   else if(act === 'cancel') cambiarModoComentario(item, null);
@@ -1764,20 +1785,21 @@ async function accionComentario(item, act){
     const ok = await editarComentario(id, texto);
     if(!ok){
       ta.disabled = false;
-      flashFlag(cmtSaveFlag, 'No se pudo editar', true);
+      flashFlag(flag, 'No se pudo editar', true);
       return;
     }
-    flashFlag(cmtSaveFlag, 'Comentario editado ✓');
-    await cargarComentarios();
+    flashFlag(flag, 'Comentario editado ✓');
+    await refrescarComentarios();
   } else if(act === 'del-ok'){
     const ok = await eliminarComentario(id);
     if(!ok){
       cambiarModoComentario(item, null);
-      flashFlag(cmtSaveFlag, 'No se pudo eliminar', true);
+      item.classList.remove('editing');
+      flashFlag(flag, 'No se pudo eliminar', true);
       return;
     }
-    flashFlag(cmtSaveFlag, 'Comentario eliminado ✓');
-    await cargarComentarios();
+    flashFlag(flag, 'Comentario eliminado ✓');
+    await refrescarComentarios();
   }
 }
 
@@ -1785,12 +1807,13 @@ cmtList.addEventListener('click', e=>{
   const btn = e.target.closest('.cmt-tool');
   if(btn) accionComentario(btn.closest('.cmt-item'), btn.dataset.act);
 });
-cmtList.addEventListener('keydown', e=>{
+function teclasEdicionComentario(e){
   if(e.target.tagName !== 'TEXTAREA') return;
-  const item = e.target.closest('.cmt-item');
+  const item = e.target.closest('[data-id]');
   if((e.metaKey || e.ctrlKey) && e.key === 'Enter'){ e.preventDefault(); accionComentario(item, 'save'); }
   else if(e.key === 'Escape'){ e.stopPropagation(); accionComentario(item, 'cancel'); }
-});
+}
+cmtList.addEventListener('keydown', teclasEdicionComentario);
 
 function abrirComentarios(){
   cmtPanel.classList.add('show');
@@ -1859,11 +1882,11 @@ async function cargarTodosComentarios(){
   }
   cmtAllList.innerHTML = data.map(c=>{
     const idx = slides.findIndex(s=> s.dataset.slideId === c.slide_id);
-    return '<button type="button" class="cmtall-item" data-idx="' + idx + '">' +
+    return '<div class="cmtall-item" role="button" tabindex="0" data-idx="' + idx + '" data-id="' + escI(c.id) + '">' +
       '<span class="cmtall-slide">' + escI(tituloDeSlideId(c.slide_id)) + '</span>' +
       '<p>' + escI(c.texto) + '</p>' +
-      '<time>' + escI(fechaCorta(c.creado_en)) + '</time>' +
-    '</button>';
+      '<div class="cmt-foot"><time>' + escI(fechaCorta(c.creado_en)) + '</time>' + herramientasComentario() + '</div>' +
+    '</div>';
   }).join('');
 }
 
@@ -1879,11 +1902,25 @@ function cerrarTodosComentarios(){
 cmtAllToggle.addEventListener('click', abrirTodosComentarios);
 cmtAllClose.addEventListener('click', cerrarTodosComentarios);
 cmtAllOverlay.addEventListener('click', e=>{ if(e.target === cmtAllOverlay) cerrarTodosComentarios(); });
-cmtAllList.addEventListener('click', e=>{
-  const btn = e.target.closest('.cmtall-item');
-  if(!btn) return;
-  const idx = +btn.dataset.idx;
+/* Tocar un comentario lleva a su diapositiva, salvo que se toque
+   editar/eliminar o se lo esté editando. */
+function irAComentario(item){
+  const idx = +item.dataset.idx;
   if(idx >= 0){ goToSlide(idx); cerrarTodosComentarios(); }
+}
+cmtAllList.addEventListener('click', e=>{
+  const item = e.target.closest('.cmtall-item');
+  if(!item) return;
+  const tool = e.target.closest('.cmt-tool');
+  if(tool){ accionComentario(item, tool.dataset.act); return; }
+  if(item.classList.contains('editing')) return;
+  irAComentario(item);
+});
+cmtAllList.addEventListener('keydown', e=>{
+  if(e.target.tagName === 'TEXTAREA'){ teclasEdicionComentario(e); return; }
+  if(e.target.classList.contains('cmtall-item') && (e.key === 'Enter' || e.key === ' ')){
+    e.preventDefault(); irAComentario(e.target);
+  }
 });
 document.addEventListener('keydown', e=>{
   if(cmtAllOverlay.classList.contains('show') && e.key === 'Escape') cerrarTodosComentarios();
