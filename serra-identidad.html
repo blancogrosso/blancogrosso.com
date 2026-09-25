@@ -357,15 +357,63 @@
 
   .sl-ph-row{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;width:100%;max-width:820px;margin:0 auto}
   .sl-ph-row .img-ph{flex:1 1 180px;max-width:230px;aspect-ratio:4/5;max-height:min(25vh,190px)}
-  /* Aplicación de la identidad: sin título, apiladas verticalmente, y el
-     marco de cada foto se ajusta a su tamaño real (no a una caja de
-     proporción fija) — así nunca queda más grande que la imagen. */
-  .sl-ph-row.sl-ph-row-lg{flex-direction:column;align-items:center;max-width:920px}
-  .sl-ph-row.sl-ph-row-lg .img-ph{flex:0 0 auto;width:auto;max-width:100%;aspect-ratio:auto;max-height:none}
+  /* Aplicación de la identidad: sin título, packaging y vestimenta una al
+     lado de la otra ocupando todo el ancho de la diapositiva (mitad cada
+     una). El marco se ajusta al tamaño real de la foto (no a una caja de
+     proporción fija) — así nunca queda más grande que la imagen. En
+     pantallas angostas vuelven a apilarse para no quedar diminutas. */
+  .sl-ph-row.sl-ph-row-lg{flex-wrap:nowrap;align-items:center;max-width:none}
+  .sl-ph-row.sl-ph-row-lg .img-ph{flex:1 1 0;min-width:0;width:auto;max-width:none;aspect-ratio:auto;max-height:none}
   [data-slide-id="aplicacion-identidad"] .img-ph img{
-    position:static;display:block;width:auto;height:auto;max-width:920px;max-height:min(46vh,460px);
+    position:static;display:block;width:100%;height:auto;max-height:calc(100vh - 160px);object-fit:contain;
+  }
+  /* Margen lateral justo para que las flechas de navegación no tapen
+     los bordes de las fotos. */
+  .slide.sl-img-focus[data-slide-id="aplicacion-identidad"]{padding-left:78px;padding-right:78px}
+  @media (max-width:760px){
+    .slide.sl-img-focus[data-slide-id="aplicacion-identidad"]{padding-left:16px;padding-right:16px}
+  }
+  @media (max-width:700px){
+    .sl-ph-row.sl-ph-row-lg{flex-direction:column}
+    .sl-ph-row.sl-ph-row-lg .img-ph{flex:0 0 auto;width:100%}
   }
   .sl-ph-full{width:100%;max-width:1040px;aspect-ratio:16/9;max-height:min(66vh,620px);margin:0 auto}
+
+  /* Visor en grande de Aplicación de la identidad: tocar una foto la abre
+     a pantalla completa; con las flechas (en pantalla o del teclado) se
+     pasa a la otra, y con la cruz o Escape se cierra. */
+  [data-slide-id="aplicacion-identidad"] .img-ph.has-img{cursor:zoom-in}
+  .lightbox{
+    position:fixed;inset:0;z-index:950;
+    background:rgba(38,18,13,.94);
+    display:flex;align-items:center;justify-content:center;padding:64px 88px;
+    opacity:0;pointer-events:none;transition:opacity .25s ease;
+  }
+  .lightbox.show{opacity:1;pointer-events:auto}
+  .lightbox-img{
+    display:block;max-width:100%;max-height:100%;object-fit:contain;
+    border:3px solid var(--crema);border-radius:var(--radio);
+  }
+  .lightbox-close{
+    position:absolute;top:16px;right:16px;
+    width:44px;height:44px;border-radius:50%;
+    background:var(--blanco);border:3px solid var(--carbon);box-shadow:3px 3px 0 var(--bordo);
+    font-family:'Archivo';font-weight:800;font-size:18px;color:var(--carbon);cursor:pointer;
+  }
+  .lightbox-close:focus-visible{outline:3px dashed var(--crema);outline-offset:3px}
+  .lightbox .nav-arrow{z-index:1}
+  .lightbox .nav-arrow.left{left:20px}
+  .lightbox .nav-arrow.right{right:20px}
+  .lightbox .nav-arrow[disabled]{opacity:0}
+  .lightbox-count{
+    position:absolute;bottom:18px;left:0;right:0;text-align:center;
+    color:var(--crema);font-family:'Archivo';font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  }
+  @media (max-width:640px){
+    .lightbox{padding:64px 12px}
+    .lightbox .nav-arrow.left{left:8px}
+    .lightbox .nav-arrow.right{right:8px}
+  }
 
   /* ---------- PRÓXIMOS PASOS ---------- */
   .sl-next-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:680px;width:100%;margin:0 auto}
@@ -861,7 +909,7 @@
     <span class="sl-eyebrow">09 · Identidad visual</span>
     <h2 class="sl-h">Fusión cerámica y pizza</h2>
     <div class="img-ph sl-ph-hero">
-      <img src="/identidad/isotipo-2.png" alt="Fusión de cerámica y pizza">
+      <img src="/identidad/isotipo-2.png?v=3" alt="Fusión de cerámica y pizza">
       <span class="img-ph-label">Imagen pendiente<span class="img-ph-file">isotipo-2.png</span></span>
     </div>
   </section>
@@ -972,6 +1020,14 @@
     <button class="cmt-send" id="cmt-send" type="button">Enviar</button>
     <span class="block-save-flag" id="cmt-save-flag">Guardado &#10003;</span>
   </div>
+</div>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Imagen en grande" aria-hidden="true">
+  <button class="lightbox-close" id="lightbox-close" aria-label="Cerrar">✕</button>
+  <button class="nav-arrow left" id="lightbox-prev" aria-label="Imagen anterior">←</button>
+  <img class="lightbox-img" id="lightbox-img" src="" alt="">
+  <button class="nav-arrow right" id="lightbox-next" aria-label="Imagen siguiente">→</button>
+  <span class="lightbox-count" id="lightbox-count"></span>
 </div>
 
 <div class="grid-overlay" id="grid-overlay" aria-hidden="true">
@@ -1092,6 +1148,10 @@ thumbs.forEach(t=>{
 });
 
 document.addEventListener('keydown', e=>{
+  /* Con el visor abierto, las flechas pasan de foto (lo maneja el propio
+     visor) y no deben cambiar de diapositiva. */
+  const lightboxEl = document.getElementById('lightbox');
+  if(lightboxEl && lightboxEl.classList.contains('show')) return;
   if(gridOverlay.classList.contains('show')){
     if(e.key === 'Escape') closeGrid();
     return;
@@ -1830,6 +1890,67 @@ document.querySelectorAll('.img-ph img').forEach(img=>{
   img.addEventListener('load', ()=> img.closest('.img-ph').classList.add('has-img'));
   img.addEventListener('error', ()=> img.remove());
 });
+
+/* ============================================================
+   9b. VISOR EN GRANDE — Aplicación de la identidad
+   Tocar packaging o vestimenta la abre a pantalla completa. Desde ahí
+   se pasa a la otra solo con las flechas (botones o teclado ← →);
+   la cruz, Escape o un clic en el fondo cierran el visor.
+   ============================================================ */
+(function(){
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightbox-img');
+  const lbPrev = document.getElementById('lightbox-prev');
+  const lbNext = document.getElementById('lightbox-next');
+  const lbCount = document.getElementById('lightbox-count');
+  const thumbs = [...document.querySelectorAll('[data-slide-id="aplicacion-identidad"] .img-ph')];
+  let idx = 0, lastFocus = null;
+
+  function fotos(){ return thumbs.map(t=>t.querySelector('img')).filter(Boolean); }
+
+  function mostrar(i){
+    const imgs = fotos();
+    if(!imgs.length) return;
+    idx = Math.max(0, Math.min(i, imgs.length - 1));
+    lbImg.src = imgs[idx].currentSrc || imgs[idx].src;
+    lbImg.alt = imgs[idx].alt;
+    lbPrev.disabled = idx === 0;
+    lbNext.disabled = idx === imgs.length - 1;
+    lbCount.textContent = (idx + 1) + ' / ' + imgs.length;
+  }
+  function abrir(i){
+    lastFocus = document.activeElement;
+    mostrar(i);
+    lb.classList.add('show');
+    lb.setAttribute('aria-hidden','false');
+    document.getElementById('lightbox-close').focus();
+  }
+  function cerrar(){
+    lb.classList.remove('show');
+    lb.setAttribute('aria-hidden','true');
+    if(lastFocus) lastFocus.focus();
+  }
+
+  thumbs.forEach(t=>{
+    t.addEventListener('click', ()=>{
+      const img = t.querySelector('img');
+      if(!img) return; /* sin imagen cargada, queda el placeholder: nada que ampliar */
+      abrir(fotos().indexOf(img));
+    });
+  });
+  lbPrev.addEventListener('click', ()=> mostrar(idx - 1));
+  lbNext.addEventListener('click', ()=> mostrar(idx + 1));
+  document.getElementById('lightbox-close').addEventListener('click', cerrar);
+  lb.addEventListener('click', e=>{ if(e.target === lb) cerrar(); });
+  document.addEventListener('keydown', e=>{
+    if(!lb.classList.contains('show')) return;
+    if(e.key === 'Escape') cerrar();
+    else if(e.key === 'ArrowRight') mostrar(idx + 1);
+    else if(e.key === 'ArrowLeft') mostrar(idx - 1);
+    else return;
+    e.preventDefault();
+  });
+})();
 
 /* ============================================================
    10. CONCEPTO — la imagen de isotipo-1 queda oculta hasta que se
