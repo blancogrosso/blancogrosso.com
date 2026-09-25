@@ -379,10 +379,11 @@
   }
   .sl-ph-full{width:100%;max-width:1040px;aspect-ratio:16/9;max-height:min(66vh,620px);margin:0 auto}
 
-  /* Visor en grande de Aplicación de la identidad: tocar una foto la abre
-     a pantalla completa; con las flechas (en pantalla o del teclado) se
-     pasa a la otra, y con la cruz o Escape se cierra. */
-  [data-slide-id="aplicacion-identidad"] .img-ph.has-img{cursor:zoom-in}
+  /* Visor en grande: tocar cualquier foto cargada la abre a pantalla
+     completa; si la diapositiva tiene más de una, con las flechas (en
+     pantalla o del teclado) se pasa a las otras. Cruz o Escape cierran. */
+  .img-ph.has-img{cursor:zoom-in}
+  .lightbox.single .nav-arrow,.lightbox.single .lightbox-count{display:none}
   .lightbox{
     position:fixed;inset:0;z-index:950;
     background:rgba(38,18,13,.94);
@@ -546,16 +547,17 @@
     font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--gris);
   }
 
-  /* ---------- MOCKUP DE MENÚ: SPREAD DE DOS HOJAS ----------
-     El spread ahora vive en .menu-layout-main y crece para ocupar todo
-     el alto disponible (stretch en el eje cruzado); cada hoja es una
-     columna flex propia para que su .menu-page pueda repartirse el alto
-     restante después del encabezado "SERRA / Catering". */
-  .menu-spread{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;align-items:stretch;width:100%;flex:1 1 auto;min-height:0}
+  /* ---------- MOCKUP DE MENÚ: UNA SOLA HOJA ----------
+     El menú es siempre una única hoja que ocupa el alto disponible de
+     .menu-layout-main. Si las categorías no entran, la hoja se ensancha y
+     las reparte en dos columnas (.two-col); si aun así no entran, aparece
+     scroll dentro de la hoja — nunca en la diapositiva entera. */
+  .menu-spread{display:flex;justify-content:center;align-items:stretch;width:100%;flex:1 1 auto;min-height:0}
   .menu-spread .menu-mock{flex:0 1 560px;margin-left:0;margin-right:0}
-  .menu-spread.two-page .menu-mock{flex-basis:460px}
+  .menu-spread .menu-mock.two-col{flex-basis:900px;max-width:900px}
+  .menu-mock.two-col #menu-cats{column-count:2;column-gap:32px}
+  .menu-mock.two-col .menu-cat{break-inside:avoid}
   @media (max-width:900px){
-    .menu-spread{flex-direction:column;align-items:center}
     .menu-spread .menu-mock{flex-basis:auto;width:100%}
   }
   .menu-mock{
@@ -567,7 +569,7 @@
   .menu-mock-head{flex:0 0 auto;text-align:center;border-bottom:3px double var(--bordo);padding-bottom:12px;margin-bottom:16px}
   .menu-mock-head .m-logo{font-family:'Alfa Slab One';font-size:26px;color:var(--rojo);letter-spacing:1px}
   .menu-mock-head .m-sub{font-size:10px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:var(--gris);margin-top:4px}
-  .menu-page{flex:1 1 auto;min-height:0}
+  .menu-page{flex:1 1 auto;min-height:0;overflow-y:auto}
   .menu-cat{margin-bottom:16px}
   .menu-cat:last-of-type{margin-bottom:0}
   .menu-cat-head{
@@ -648,6 +650,20 @@
   .cmt-item{background:var(--blanco);border:2px solid rgba(38,18,13,.2);border-radius:10px;padding:9px 11px}
   .cmt-item p{font-size:13px;line-height:1.45;white-space:pre-wrap;word-break:break-word}
   .cmt-item time{display:block;font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--gris);margin-top:5px}
+  /* Pie de cada comentario: fecha a la izquierda, editar/eliminar a la
+     derecha. Al editar, el texto se cambia por un textarea en el lugar. */
+  .cmt-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:5px}
+  .cmt-foot time{margin-top:0}
+  .cmt-tools{display:flex;gap:4px;align-items:center}
+  .cmt-tool{
+    font-family:'Archivo';font-weight:700;font-size:10.5px;letter-spacing:.04em;
+    background:none;border:none;color:var(--gris);cursor:pointer;padding:2px 4px;border-radius:6px;
+  }
+  .cmt-tool:hover{color:var(--rojo)}
+  .cmt-tool:focus-visible{outline:2px dashed var(--rojo);outline-offset:1px}
+  .cmt-tool.danger{color:var(--rojo)}
+  .cmt-tools-q{font-size:10.5px;font-weight:700;color:var(--carbon)}
+  .cmt-item textarea{min-height:54px;font-size:13px;margin-bottom:2px}
   .cmt-empty{font-size:12.5px;color:var(--gris);font-style:italic}
   .cmt-panel textarea{
     font-family:'Archivo';font-size:13.5px;line-height:1.45;color:var(--carbon);
@@ -841,14 +857,7 @@
               <div class="m-logo">SERRA</div>
               <div class="m-sub">Catering</div>
             </div>
-            <div class="menu-page" id="menu-cats"></div>
-          </div>
-          <div class="menu-mock hidden" id="menu-mock-2">
-            <div class="menu-mock-head">
-              <div class="m-logo">SERRA</div>
-              <div class="m-sub">Catering — continúa</div>
-            </div>
-            <div class="menu-page" id="menu-cats-2"></div>
+            <div class="menu-page" id="menu-page"><div id="menu-cats"></div></div>
           </div>
         </div>
         <div class="menu-toolbar hidden" id="menu-toolbar">
@@ -964,8 +973,16 @@
     </div>
   </section>
 
-  <section class="slide" data-index="16" data-slide-id="proximos-pasos">
-    <span class="sl-eyebrow">10 · Próximos pasos</span>
+  <section class="slide" data-index="16" data-slide-id="cierre">
+    <span class="sl-eyebrow">10 · Cierre</span>
+    <h2 class="sl-h">Cierre</h2>
+    <ul class="sl-close-list" id="cierre-list"></ul>
+    <span class="block-save-flag" id="cierre-save-flag">Guardado &#10003;</span>
+    <p class="sl-close-outro">Con esa devolución, armamos la identidad final de SERRA.</p>
+  </section>
+
+  <section class="slide" data-index="17" data-slide-id="proximos-pasos">
+    <span class="sl-eyebrow">11 · Próximos pasos</span>
     <h2 class="sl-h">Próximos pasos</h2>
     <div class="edit-block" style="max-width:680px">
       <button class="edit-pencil corner" type="button" data-block="proximos_pasos" aria-label="Editar próximos pasos" aria-pressed="false">&#9998;</button>
@@ -981,14 +998,6 @@
         </div>
       </div>
     </div>
-  </section>
-
-  <section class="slide" data-index="17" data-slide-id="cierre">
-    <span class="sl-eyebrow">11 · Cierre</span>
-    <h2 class="sl-h">Cierre</h2>
-    <ul class="sl-close-list" id="cierre-list"></ul>
-    <span class="block-save-flag" id="cierre-save-flag">Guardado &#10003;</span>
-    <p class="sl-close-outro">Con esa devolución, armamos la identidad final de SERRA.</p>
   </section>
 
   <section class="slide" data-index="18" data-slide-id="preguntas">
@@ -1059,7 +1068,7 @@ const TITLES = [
   '¿Qué comunicar?','Transición','Concepto creativo',
   'Fusión cerámica y pizza','Recursos gráficos que acompañan la identidad','Aplicación de la identidad',
   'Instagram — usuario disponible','Vista exterior del local',
-  'Próximos pasos','Cierre','¿Preguntas?','Gracias'
+  'Cierre','Próximos pasos','¿Preguntas?','Gracias'
 ];
 /* Título real por data-slide-id, para no volver a tipear los mismos
    nombres en el índice/agenda: si un título cambia acá, el índice
@@ -1402,7 +1411,7 @@ tonoInput.addEventListener('keydown', e=>{
 });
 
 /* ============================================================
-   4. MOCKUP DE MENÚ DE CATERING — spread de dos hojas
+   4. MOCKUP DE MENÚ DE CATERING — una sola hoja
    ============================================================ */
 const PH_NOMBRE = '[Nombre del producto]';
 const PH_PRECIO = '$XXX';
@@ -1415,8 +1424,8 @@ const MENU_DEFAULT = [
 ];
 const menuSpread = document.getElementById('menu-spread');
 const menuCats   = document.getElementById('menu-cats');
-const menuCats2  = document.getElementById('menu-cats-2');
-const menuMock2  = document.getElementById('menu-mock-2');
+const menuPage   = document.getElementById('menu-page');
+const menuMock   = document.getElementById('menu-mock');
 const pencilMenu = document.querySelector('.edit-pencil[data-block="menu_catering"]');
 const flagMenu   = document.querySelector('.block-save-flag[data-flag="menu_catering"]');
 let menuEditing = false;
@@ -1449,9 +1458,6 @@ function renderMenu(data){
       '<button class="menu-add" type="button">+ ítem</button>' +
     '</div>'
   ).join('');
-  menuCats2.innerHTML = '';
-  menuMock2.classList.add('hidden');
-  menuSpread.classList.remove('two-page');
   actualizarPaginacionMenu();
 }
 
@@ -1468,83 +1474,19 @@ function leerMenu(){
   }));
 }
 
-/* Altura disponible para cada hoja del menú. Con el layout nuevo
-   (.menu-layout ocupa el 100% del alto de la diapositiva vía flexbox, y
-   .menu-mock se estira —align-items:stretch— al alto de esa columna) el
-   alto de #menu-mock YA viene determinado por el layout, independiente de
-   cuánto contenido tenga adentro: no hace falta sumar/restar hermanos a
-   mano como antes. Sólo restamos el propio marco de la tarjeta (padding +
-   encabezado "SERRA / Catering") para saber cuánto le queda a la lista de
-   categorías. */
-function alturaMaximaPaginaMenu(){
-  const slide = slides[current];
-  if(!slide || slide.dataset.slideId !== 'checkpoint-catering') return 300;
-
-  const mock = document.getElementById('menu-mock');
-  const head = mock.querySelector('.menu-mock-head');
-  const csMock = getComputedStyle(mock);
-  const mockChrome = head.offsetHeight
-    + parseFloat(csMock.paddingTop) + parseFloat(csMock.paddingBottom)
-    + parseFloat(csMock.borderTopWidth) + parseFloat(csMock.borderBottomWidth);
-
-  const colchon = 8;
-  const disponible = mock.clientHeight - mockChrome - colchon;
-  return Math.max(160, disponible);
-}
-
-/* Reparte las categorías entre las dos hojas según la altura disponible.
-   La unidad mínima que se mueve es la categoría completa (con todos sus
-   ítems): así ninguna categoría queda partida a la mitad entre hojas.
-   Se recalcula cada vez que la diapositiva de catering está activa y
-   cada vez que se agregan/quitan filas en modo edición. */
+/* Ajusta la hoja del menú al espacio disponible. Por defecto es una sola
+   columna; sólo si las categorías no entran en el alto de la hoja pasa a
+   dos columnas (ensanchándose, si hay ancho de sobra para que no queden
+   apretadas). Si ni así entran, .menu-page tiene su propio scroll.
+   Se recalcula al entrar en la diapositiva, al editar y al redimensionar. */
 function actualizarPaginacionMenu(){
   const slide = slides[current];
   if(!slide || slide.dataset.slideId !== 'checkpoint-catering') return;
 
-  const cats = [...menuCats.children, ...menuCats2.children];
-  let maxH = alturaMaximaPaginaMenu();
-
-  /* Repartimos y, si hace falta, volvemos a repartir con menos alto: la
-     diapositiva NUNCA debe terminar necesitando su propio scroll (eso es
-     lo que hacía que una categoría pareciera "cortada" — el scroll del
-     conjunto de la diapositiva se activaba en vez del de la hoja, y
-     tapaba el título en una hoja pero no en la otra). Si el cálculo
-     inicial de maxH quedó corto por algún elemento no contemplado
-     (por ejemplo la barra "+ agregar categoría" al entrar en modo
-     edición), esta segunda vuelta lo corrige achicando maxH hasta que
-     la diapositiva completa entra sin scroll propio. */
-  for(let intento=0; intento<6; intento++){
-    menuCats.innerHTML = '';
-    menuCats2.innerHTML = '';
-
-    let splitAt = cats.length;
-    for(let i=0; i<cats.length; i++){
-      menuCats.appendChild(cats[i]);
-      /* La primera categoría siempre queda en la hoja 1, aunque por sí sola
-         exceda la altura: mejor eso que una hoja 1 vacía. */
-      if(i > 0 && menuCats.scrollHeight > maxH){
-        menuCats.removeChild(cats[i]);
-        splitAt = i;
-        break;
-      }
-    }
-    for(let i=splitAt; i<cats.length; i++) menuCats2.appendChild(cats[i]);
-
-    const hayPagina2 = menuCats2.children.length > 0;
-    menuMock2.classList.toggle('hidden', !hayPagina2);
-    menuSpread.classList.toggle('two-page', hayPagina2);
-
-    /* Techo de seguridad en ambas hojas, aplicado siempre por igual: si
-       una necesita scroll interno, las dos quedan con la misma regla
-       (aunque una termine sin usarlo por tener menos contenido). */
-    [menuCats, menuCats2].forEach(page=>{
-      page.style.maxHeight = maxH + 'px';
-      page.style.overflowY = 'auto';
-    });
-
-    if(slide.scrollHeight <= slide.clientHeight + 1) break;
-    const exceso = slide.scrollHeight - slide.clientHeight;
-    maxH = Math.max(120, maxH - exceso - 8);
+  menuMock.classList.remove('two-col');
+  const noEntra = ()=> menuPage.scrollHeight > menuPage.clientHeight + 1;
+  if(noEntra() && menuSpread.clientWidth >= 640){
+    menuMock.classList.add('two-col');
   }
 }
 
@@ -1582,8 +1524,8 @@ const guardarMenuDebounced = debounceI(()=>{
   actualizarPaginacionMenu();
 }, 900);
 
-/* El menú se re-renderiza y se reparte entre dos contenedores, así que
-   los handlers van delegados en el contenedor común a ambas hojas. */
+/* El menú se re-renderiza entero, así que los handlers van delegados en
+   el contenedor de la hoja. */
 menuSpread.addEventListener('input', e=>{
   /* Al borrar todo, contentEditable suele dejar un <br>: lo limpiamos para
      que :empty vuelva a mostrar el placeholder. */
@@ -1757,9 +1699,98 @@ async function cargarComentarios(){
   cmtCount.classList.toggle('hide', n === 0);
 
   cmtList.innerHTML = n
-    ? data.map(c=> '<div class="cmt-item"><p>' + escI(c.texto) + '</p><time>' + escI(fechaCorta(c.creado_en)) + '</time></div>').join('')
+    ? data.map(c=> '<div class="cmt-item" data-id="' + escI(c.id) + '"><p>' + escI(c.texto) + '</p>' +
+        '<div class="cmt-foot"><time>' + escI(fechaCorta(c.creado_en)) + '</time>' + herramientasComentario() + '</div></div>').join('')
     : '<p class="cmt-empty">Todavía no hay comentarios en esta diapositiva.</p>';
 }
+
+/* Botones de cada comentario según su estado: normal (editar/eliminar),
+   confirmando borrado, o editando el texto. */
+function herramientasComentario(modo){
+  if(modo === 'borrar') return '<span class="cmt-tools"><span class="cmt-tools-q">¿Eliminar?</span>' +
+    '<button class="cmt-tool danger" type="button" data-act="del-ok">Sí</button>' +
+    '<button class="cmt-tool" type="button" data-act="cancel">No</button></span>';
+  if(modo === 'editar') return '<span class="cmt-tools">' +
+    '<button class="cmt-tool danger" type="button" data-act="save">Guardar</button>' +
+    '<button class="cmt-tool" type="button" data-act="cancel">Cancelar</button></span>';
+  return '<span class="cmt-tools">' +
+    '<button class="cmt-tool" type="button" data-act="edit">Editar</button>' +
+    '<button class="cmt-tool" type="button" data-act="del">Eliminar</button></span>';
+}
+
+/* Si la tabla no permite UPDATE/DELETE para este usuario, Supabase no
+   devuelve error: simplemente no afecta filas. Por eso pedimos las filas
+   afectadas (.select) y tratamos "cero filas" como fallo. */
+async function editarComentario(id, texto){
+  const {data, error} = await sbi.from('serra_identidad_comentarios')
+    .update({texto}).eq('id', id).select('id');
+  return !error && data && data.length > 0;
+}
+async function eliminarComentario(id){
+  const {data, error} = await sbi.from('serra_identidad_comentarios')
+    .delete().eq('id', id).select('id');
+  return !error && data && data.length > 0;
+}
+
+function cambiarModoComentario(item, modo){
+  const tools = item.querySelector('.cmt-tools');
+  tools.outerHTML = herramientasComentario(modo);
+  const p = item.querySelector('p');
+  const ta = item.querySelector('textarea');
+  if(modo === 'editar' && !ta){
+    const nuevo = document.createElement('textarea');
+    nuevo.value = p.textContent;
+    p.hidden = true;
+    p.after(nuevo);
+    nuevo.focus();
+    nuevo.setSelectionRange(nuevo.value.length, nuevo.value.length);
+  } else if(modo !== 'editar' && ta){
+    ta.remove();
+    p.hidden = false;
+  }
+}
+
+async function accionComentario(item, act){
+  const id = item.dataset.id;
+  if(act === 'edit') cambiarModoComentario(item, 'editar');
+  else if(act === 'del') cambiarModoComentario(item, 'borrar');
+  else if(act === 'cancel') cambiarModoComentario(item, null);
+  else if(act === 'save'){
+    const ta = item.querySelector('textarea');
+    const texto = ta.value.trim();
+    if(!texto) return;
+    if(texto === item.querySelector('p').textContent){ cambiarModoComentario(item, null); return; }
+    ta.disabled = true;
+    const ok = await editarComentario(id, texto);
+    if(!ok){
+      ta.disabled = false;
+      flashFlag(cmtSaveFlag, 'No se pudo editar', true);
+      return;
+    }
+    flashFlag(cmtSaveFlag, 'Comentario editado ✓');
+    await cargarComentarios();
+  } else if(act === 'del-ok'){
+    const ok = await eliminarComentario(id);
+    if(!ok){
+      cambiarModoComentario(item, null);
+      flashFlag(cmtSaveFlag, 'No se pudo eliminar', true);
+      return;
+    }
+    flashFlag(cmtSaveFlag, 'Comentario eliminado ✓');
+    await cargarComentarios();
+  }
+}
+
+cmtList.addEventListener('click', e=>{
+  const btn = e.target.closest('.cmt-tool');
+  if(btn) accionComentario(btn.closest('.cmt-item'), btn.dataset.act);
+});
+cmtList.addEventListener('keydown', e=>{
+  if(e.target.tagName !== 'TEXTAREA') return;
+  const item = e.target.closest('.cmt-item');
+  if((e.metaKey || e.ctrlKey) && e.key === 'Enter'){ e.preventDefault(); accionComentario(item, 'save'); }
+  else if(e.key === 'Escape'){ e.stopPropagation(); accionComentario(item, 'cancel'); }
+});
 
 function abrirComentarios(){
   cmtPanel.classList.add('show');
@@ -1892,10 +1923,10 @@ document.querySelectorAll('.img-ph img').forEach(img=>{
 });
 
 /* ============================================================
-   9b. VISOR EN GRANDE — Aplicación de la identidad
-   Tocar packaging o vestimenta la abre a pantalla completa. Desde ahí
-   se pasa a la otra solo con las flechas (botones o teclado ← →);
-   la cruz, Escape o un clic en el fondo cierran el visor.
+   9b. VISOR EN GRANDE
+   Tocar cualquier foto cargada la abre a pantalla completa. Si en la
+   misma diapositiva hay más fotos, se pasa entre ellas con las flechas
+   (botones o teclado ← →); la cruz, Escape o un clic en el fondo cierran.
    ============================================================ */
 (function(){
   const lb = document.getElementById('lightbox');
@@ -1903,24 +1934,24 @@ document.querySelectorAll('.img-ph img').forEach(img=>{
   const lbPrev = document.getElementById('lightbox-prev');
   const lbNext = document.getElementById('lightbox-next');
   const lbCount = document.getElementById('lightbox-count');
-  const thumbs = [...document.querySelectorAll('[data-slide-id="aplicacion-identidad"] .img-ph')];
-  let idx = 0, lastFocus = null;
-
-  function fotos(){ return thumbs.map(t=>t.querySelector('img')).filter(Boolean); }
+  let grupo = [], idx = 0, lastFocus = null;
 
   function mostrar(i){
-    const imgs = fotos();
-    if(!imgs.length) return;
-    idx = Math.max(0, Math.min(i, imgs.length - 1));
-    lbImg.src = imgs[idx].currentSrc || imgs[idx].src;
-    lbImg.alt = imgs[idx].alt;
+    if(!grupo.length) return;
+    idx = Math.max(0, Math.min(i, grupo.length - 1));
+    lbImg.src = grupo[idx].currentSrc || grupo[idx].src;
+    lbImg.alt = grupo[idx].alt;
     lbPrev.disabled = idx === 0;
-    lbNext.disabled = idx === imgs.length - 1;
-    lbCount.textContent = (idx + 1) + ' / ' + imgs.length;
+    lbNext.disabled = idx === grupo.length - 1;
+    lbCount.textContent = (idx + 1) + ' / ' + grupo.length;
   }
-  function abrir(i){
+  function abrir(img){
+    /* Las fotos que se recorren son las cargadas de la misma diapositiva
+       (las que siguen en placeholder no cuentan). */
+    grupo = [...img.closest('.slide').querySelectorAll('.img-ph.has-img img')];
+    lb.classList.toggle('single', grupo.length < 2);
     lastFocus = document.activeElement;
-    mostrar(i);
+    mostrar(grupo.indexOf(img));
     lb.classList.add('show');
     lb.setAttribute('aria-hidden','false');
     document.getElementById('lightbox-close').focus();
@@ -1931,11 +1962,10 @@ document.querySelectorAll('.img-ph img').forEach(img=>{
     if(lastFocus) lastFocus.focus();
   }
 
-  thumbs.forEach(t=>{
-    t.addEventListener('click', ()=>{
-      const img = t.querySelector('img');
-      if(!img) return; /* sin imagen cargada, queda el placeholder: nada que ampliar */
-      abrir(fotos().indexOf(img));
+  document.querySelectorAll('.img-ph').forEach(ph=>{
+    ph.addEventListener('click', ()=>{
+      const img = ph.querySelector('img');
+      if(img && ph.classList.contains('has-img')) abrir(img);
     });
   });
   lbPrev.addEventListener('click', ()=> mostrar(idx - 1));
