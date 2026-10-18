@@ -23,6 +23,11 @@
       el.setAttribute('aria-label', en ? el.dataset.enAriaLabel : el.dataset.esAriaLabel);
     });
     if (mailCopy) mailCopy.textContent = en ? mailCopy.dataset.en : mailCopy.dataset.es;
+    document.querySelectorAll('img[data-en-alt]').forEach(function (img) {
+      if (!img.dataset.esAlt) img.dataset.esAlt = img.alt;
+      img.alt = en ? img.dataset.enAlt : img.dataset.esAlt;
+    });
+    if (typeof updateCount === 'function' && countEl) updateCount();
     updateReelToggle();
     try { localStorage.setItem('bg-lang', lang); } catch (e) {}
   }
@@ -114,6 +119,175 @@
     updateReelToggle();
   }
 
+  /* ══ Trabajos ═══════════════════════════════════════════
+     Un solo lugar para los datos: sumar un trabajo = agregar una entrada.
+     filters: branding | sport | web | motion | campaigns (puede tener varios).
+     featured: aparece en "Destacados" (en este orden). external: abre en pestaña nueva.
+     fit: 'contain' + bg: la portada se muestra entera sobre ese color (para logos que no admiten recorte). */
+  var WORKS = [
+    { slug: 'labufarra-social', title: { es: 'Vuelta a las redes @labufarra', en: 'Vuelta a las redes @labufarra' },
+      cat: 'AI-Powered · Audiovisual Production',
+      desc: { es: 'Video 100% IA para anunciar la vuelta a la conducción de redes.', en: '100% AI video to announce the return to social media management.' },
+      tools: 'GPT, Gemini, Photoshop, Flow, Premiere', img: 'img/works/labufarra-social.avif', preview: 'img/works/labufarra-social-preview.mp4',
+      href: '/labufarra-social', featured: true, filters: ['motion'] },
+    { slug: 'sport-editorial', title: { es: 'Sport Editorial', en: 'Sport Editorial' }, cat: 'AI-Powered · Sport Design',
+      desc: { es: 'Creación de imágenes sport editorial de alto nivel.', en: 'High-level sport editorial image creation.' },
+      tools: 'GPT, Gemini, Photoshop', img: 'img/works/sport-editorial.avif', href: '/sport-editorial', featured: true, filters: ['sport'] },
+    { slug: 'bufarra-umbro', title: { es: 'La Bufarra x Umbro Uruguay', en: 'La Bufarra x Umbro Uruguay' }, cat: 'AI-Powered · Sport Design · Apparel',
+      desc: { es: 'Diseño de prenda y campaña express con video hype.', en: 'Apparel design and express campaign with hype video.' },
+      tools: 'Illustrator, Photoshop, Claude, Gemini, Flow, CapCut', img: 'img/works/bufarra-umbro.avif', preview: 'img/works/bufarra-umbro-preview.mp4',
+      href: '/bufarra-umbro', featured: true, filters: ['sport', 'motion'] },
+    { slug: 'bufarra-kithome', title: { es: 'Bufarra KitHome 24/25', en: 'Bufarra KitHome 24/25' }, cat: 'AI-Powered · Sport Design',
+      desc: { es: 'Diseño de prenda. Foto shooting IA con GPT/Gemini. Piezas para redes sociales.', en: 'Apparel design. AI photo shooting with GPT/Gemini. Social media assets.' },
+      tools: 'GPT, Gemini, Photoshop, Illustrator, Lightroom', img: 'img/works/bufarra-kithome.avif', href: '/bufarra-kithome', featured: true, filters: ['sport'] },
+    { slug: 'tienda-nacional', title: { es: 'Tienda Nacional', en: 'Tienda Nacional' }, cat: 'Brand Systems · Digital Content',
+      desc: { es: 'Campaña Nacional Campeón e IVA OFF. Banners web y pautas RRSS.', en: 'National Champion & VAT OFF campaign. Web banners and social media ads.' },
+      tools: 'Illustrator, Photoshop', img: 'img/works/tienda-nacional.avif', href: '/tienda-nacional', featured: true, filters: ['campaigns'] },
+    { slug: 'by-kafuse', title: { es: 'By Kafuse Alas y Raíces', en: 'By Kafuse Alas y Raíces' }, cat: 'Apparel Design · Creative Direction · Audiovisual Production',
+      desc: { es: 'Drop de media estación Otoño/Invierno. Diseño 2 en 1 y producción de estudio.', en: 'Autumn/Winter mid-season drop. 2-in-1 design and studio production.' },
+      tools: 'Illustrator, Photoshop, Lightroom', img: 'img/works/by-kafuse.avif', preview: 'img/works/by-kafuse-preview.mp4',
+      href: '/by-kafuse', featured: true, filters: ['campaigns'] },
+    { slug: 'serie-rio-plata', title: { es: 'Serie Río de la Plata', en: 'Serie Río de la Plata' }, cat: 'Sport Design · Digital Content',
+      desc: { es: 'Matchday de partidos internacionales seleccionados para las redes oficiales.', en: 'Matchday designs for selected international matches on official networks.' },
+      tools: 'Photoshop, Lightroom', img: 'img/works/serie-rio-plata.avif', href: '/serie-rio-plata', featured: true, filters: ['sport'] },
+    { slug: 'iris-lab', title: { es: 'Iris Lab', en: 'Iris Lab' }, cat: 'Photography · Brand Systems',
+      desc: { es: 'Temporada Punta del Este. Fotos, color, diseño, impresión y armado de cuadro.', en: 'Punta del Este summer season. Photography, color, design, and final artwork.' },
+      tools: 'Lightroom, Photoshop', img: 'img/works/iris-lab.avif', href: '/iris-lab', featured: true, filters: [] },
+    { slug: 'final-clasica', title: { es: 'Final Clásica Fútbol Uruguayo', en: 'Final Clásica Fútbol Uruguayo' }, cat: 'Sport Design',
+      desc: { es: 'Anuncio de cobertura de partido final clásica para las redes de Fix.', en: 'Classic final match coverage announcement for Fix networks.' },
+      tools: 'Photoshop, Lightroom', img: 'img/works/final-clasica.avif', href: '/final-clasica', featured: true, filters: ['sport'] },
+    { slug: 'nido', title: { es: 'NIDO', en: 'NIDO' }, cat: 'Brand Systems',
+      desc: { es: 'Identidad visual completa para nido, marca de diseño para el hogar: ícono, paleta, tipografía, fotografía y piezas para Instagram.',
+              en: 'Complete visual identity for nido, a home design brand: icon, palette, typography, photography and Instagram pieces.' },
+      tools: 'GPT, Gemini, Photoshop', img: 'img/works/nido.avif', fit: 'contain', bg: '#f3eee3', href: '/nido', featured: true, filters: ['branding'] },
+    { slug: 'navaja-barber', title: { es: 'Navaja Barber', en: 'Navaja Barber' }, cat: 'Web Design · Development',
+      desc: { es: 'Sitio de una página para una barbería en Uruguay, con reservas online integradas.', en: 'One-page site for a barbershop in Uruguay, with built-in online booking.' },
+      tools: 'Antigravity, HTML, CSS, JavaScript', img: 'img/works/navaja-barber.avif', href: 'https://www.navajabarber.com', external: true, featured: false, filters: ['web'] },
+    { slug: 'labufarra-web', title: { es: 'La Bufarra · labufarra.com', en: 'La Bufarra · labufarra.com' }, cat: 'Web Design · Development',
+      desc: { es: 'Sitio del club con partidos, jugadores, campeonatos e historia, y su panel de administración.', en: 'Club website with matches, players, championships and history, plus its admin panel.' },
+      tools: 'HTML, CSS, JavaScript, Supabase', img: 'img/works/labufarra-web.avif', href: 'https://www.labufarra.com', external: true, featured: false, filters: ['web'] }
+  ];
+
+  var grid = document.getElementById('worksGrid');
+  var countEl = document.getElementById('worksCount');
+  var filterButtons = document.querySelectorAll('.filter');
+  var currentFilter = 'featured';
+  var ICON_INTERNAL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  var ICON_EXTERNAL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>';
+  function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function bi(o) { return '<span class="lang-es">' + esc(o.es) + '</span><span class="lang-en" lang="en">' + esc(o.en) + '</span>'; }
+
+  function cardHTML(w) {
+    var ext = w.external ? ' target="_blank" rel="noopener"' : '';
+    return '<a class="card" href="' + esc(w.href) + '"' + ext + ' data-slug="' + w.slug + '"' + (w.preview ? ' data-preview="' + w.preview + '"' : '') + '>' +
+      '<div class="card-media"' + (w.bg ? ' style="background:' + w.bg + '"' : '') + '>' +
+        '<img data-src="' + w.img + '" width="1200" height="900" alt="' + esc(w.title.es) + '" data-en-alt="' + esc(w.title.en) + '"' + (w.fit === 'contain' ? ' class="fit-contain"' : '') + ' loading="lazy" decoding="async" fetchpriority="low">' +
+        (w.preview ? '<video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>' : '') +
+        '<span class="card-go">' + (w.external ? ICON_EXTERNAL : ICON_INTERNAL) + '</span>' +
+      '</div>' +
+      '<div class="card-meta">' +
+        '<h3>' + bi(w.title) + '</h3>' +
+        '<p class="card-cat">' + esc(w.cat) + '</p>' +
+        '<p class="card-desc">' + bi(w.desc) + '</p>' +
+        '<p class="card-tools">' + esc(w.tools) + '</p>' +
+        (w.external ? '<span class="sr-only">' + bi({ es: ' (abre el sitio en una pestaña nueva)', en: ' (opens the site in a new tab)' }) + '</span>' : '') +
+      '</div></a>';
+  }
+  grid.innerHTML = WORKS.map(cardHTML).join('');
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.card'));
+  function workOf(card) { return WORKS.filter(function (w) { return w.slug === card.dataset.slug; })[0]; }
+  function matches(w, f) { return f === 'featured' ? w.featured : w.filters.indexOf(f) !== -1; }
+
+  /* Tamaños: el patrón 7/5, 4/4/4, 5/7, 6/6 se repite; la última fila nunca deja una
+     tarjeta chica sola (sobra 1: ancho completo; 2: 6/6; 3: 4/4/4). */
+  var PATTERN = [[7, 5], [4, 4, 4], [5, 7], [6, 6]];
+  var TAIL = { 1: [12], 2: [6, 6], 3: [4, 4, 4] };
+  function layout(visible) {
+    var spans = [], i = 0, row = 0;
+    while (i < visible.length) {
+      var left = visible.length - i;
+      var r = left <= 3 ? TAIL[left] : PATTERN[row % PATTERN.length];
+      if (left > 3 && left - r.length === 0) r = PATTERN[row % PATTERN.length];
+      r.forEach(function (sp) { spans.push(sp); });
+      i += r.length; row++;
+    }
+    visible.forEach(function (card, k) {
+      card.classList.remove('s12', 's7', 's5', 's4', 's6', 'h-tall', 'h-mid', 'h-wide', 'h-full', 'two-col-full');
+      var sp = spans[k];
+      card.classList.add('s' + sp, sp === 12 ? 'h-full' : (sp === 7 || sp === 5) ? 'h-tall' : sp === 4 ? 'h-mid' : 'h-wide');
+    });
+    // en dos columnas (tablet), una tarjeta impar al final ocupa todo el ancho
+    if (visible.length % 2 === 1) visible[visible.length - 1].classList.add('two-col-full');
+  }
+  function updateCount() {
+    var n = cards.filter(function (c) { return !c.hidden; }).length;
+    var en = root.classList.contains('lang-en-active');
+    countEl.textContent = en ? n + (n === 1 ? ' project' : ' projects') : n + (n === 1 ? ' trabajo' : ' trabajos');
+  }
+  function applyFilter(f) {
+    currentFilter = f;
+    var visible = [];
+    cards.forEach(function (card) {
+      var on = matches(workOf(card), f);
+      card.hidden = !on;
+      if (on) visible.push(card);
+    });
+    layout(visible);
+    filterButtons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.filter === f)); });
+    updateCount();
+  }
+  applyFilter('featured');
+
+  filterButtons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var f = b.dataset.filter;
+      if (f === currentFilter) return;
+      var canFlip = !reduce && window.Flip && hasGsap;
+      if (!canFlip) { applyFilter(f); loadVisibleImages(); return; }
+      var state = Flip.getState(cards, { props: 'opacity' });
+      applyFilter(f);
+      loadVisibleImages();
+      cards.forEach(function (c) { c.classList.remove('is-await'); });
+      Flip.from(state, {
+        duration: 0.6, ease: 'power2.inOut', absolute: true, scale: false, nested: true,
+        onEnter: function (els) { return gsap.fromTo(els, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.45, delay: 0.15 }); },
+        onLeave: function (els) { return gsap.to(els, { opacity: 0, duration: 0.3 }); },
+        onComplete: function () { ScrollTrigger.refresh(); }
+      });
+    });
+  });
+
+  /* imágenes: cargan recién al acercarse (el lazy nativo de Chrome en móvil las pide
+     demasiado pronto y compiten con la fuente del logo en la primera carga) */
+  function showImg(img) { if (img.dataset.src) { img.src = img.dataset.src; img.removeAttribute('data-src'); } }
+  var imgIO = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { showImg(e.target); imgIO.unobserve(e.target); } });
+  }, { rootMargin: '300px 0px' }) : null;
+  function loadVisibleImages() {
+    cards.forEach(function (c) {
+      var img = c.querySelector('img[data-src]');
+      if (!img || c.hidden) return;
+      if (imgIO) imgIO.observe(img); else showImg(img);
+    });
+  }
+  loadVisibleImages();
+
+  // video de preview al pasar el mouse (carga recién en el primer hover)
+  cards.forEach(function (card) {
+    var v = card.querySelector('video');
+    if (!v || !finePointer || reduce) return;
+    function play() {
+      if (!v.src) v.src = card.dataset.preview;
+      card.classList.add('is-playing');
+      var p = v.play(); if (p && p.catch) p.catch(function () {});
+    }
+    function stop() { card.classList.remove('is-playing'); v.pause(); }
+    card.addEventListener('mouseenter', play);
+    card.addEventListener('mouseleave', stop);
+    card.addEventListener('focus', play);
+    card.addEventListener('blur', stop);
+  });
+
   /* ── Aparición al scrollear ──────────────────────────────
      Solo lo que arranca debajo de la pantalla: lo visible al
      cargar se ve de entrada. */
@@ -126,7 +300,7 @@
       });
     }, { rootMargin: '0px 0px -8% 0px' });
     var gridIndex = 0;
-    document.querySelectorAll('[data-reveal]').forEach(function (el) {
+    document.querySelectorAll('[data-reveal], .card:not([hidden])').forEach(function (el) {
       if (el.getBoundingClientRect().top < window.innerHeight) return;
       el.classList.add('is-await');
       // el estado inicial se aplica antes de habilitar la transición
@@ -135,34 +309,6 @@
       revealIO.observe(el);
     });
   }
-
-  /* ── Imágenes de las tarjetas: cargan recién al acercarse ──
-     (el loading="lazy" nativo de Chrome en móvil las pide demasiado
-     pronto y compiten con la fuente del logo en la primera carga) */
-  var lazyImgs = document.querySelectorAll('img[data-src]');
-  function showImg(img) { img.src = img.dataset.src; img.removeAttribute('data-src'); }
-  if ('IntersectionObserver' in window) {
-    var imgIO = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { showImg(e.target); imgIO.unobserve(e.target); } });
-    }, { rootMargin: '300px 0px' });
-    lazyImgs.forEach(function (img) { imgIO.observe(img); });
-  } else { lazyImgs.forEach(showImg); }
-
-  /* ── Video de preview al pasar el mouse ───────────────── */
-  document.querySelectorAll('.card[data-preview]').forEach(function (card) {
-    var v = card.querySelector('video');
-    if (!v || !finePointer || reduce) return;
-    function play() {
-      if (!v.src) v.src = card.dataset.preview; // carga recién en el primer hover
-      card.classList.add('is-playing');
-      var p = v.play(); if (p && p.catch) p.catch(function () {});
-    }
-    function stop() { card.classList.remove('is-playing'); v.pause(); }
-    card.addEventListener('mouseenter', play);
-    card.addEventListener('mouseleave', stop);
-    card.addEventListener('focus', play);
-    card.addEventListener('blur', stop);
-  });
 
   /* ── Copiar el mail ──────────────────────────────────── */
   if (mailCopy) {
@@ -192,6 +338,7 @@
     hasGsap = !!(window.gsap && window.ScrollTrigger);
     if (!hasGsap) { root.classList.remove('motion'); return; }
     gsap.registerPlugin(ScrollTrigger);
+    if (window.Flip) gsap.registerPlugin(Flip);
     if (window.Lenis) {
       lenis = new Lenis({ lerp: 0.09 });
       lenis.on('scroll', ScrollTrigger.update);
@@ -241,7 +388,7 @@
   if (!reduce) {
     var startMotion = function () {
       loadScript('js/vendor/gsap.min.js')
-        .then(function () { return Promise.all([loadScript('js/vendor/ScrollTrigger.min.js'), loadScript('js/vendor/lenis.min.js')]); })
+        .then(function () { return Promise.all([loadScript('js/vendor/ScrollTrigger.min.js'), loadScript('js/vendor/lenis.min.js'), loadScript('js/vendor/Flip.min.js')]); })
         .then(initMotion, function () { root.classList.remove('motion'); });
     };
     if (document.readyState === 'complete') startMotion(); else window.addEventListener('load', startMotion, { once: true });
