@@ -1,53 +1,276 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blanco Grosso | Portfolio 2026</title>
-    <meta name="description" content="Blanco Grosso Creative Studio. Sport Design, Vibe Coding & AI-Powered Creativity. Actualizando portfolio 2026.">
-    <link rel="icon" type="image/png" href="img/icons/logo-verde.png">
-    <link rel="stylesheet" href="css/brand-core.css">
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="js/lang-switch.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Blanco Grosso | Creative Studio for Sports &amp; Tech</title>
+  <meta name="description" content="Blanco Grosso es un estudio creativo especializado en Sport Design, Vibe Coding e inteligencia artificial aplicada. Diseño estratégico para marcas que compiten.">
+  <meta name="theme-color" content="#050505">
+  <link rel="icon" type="image/png" href="img/icons/logo-verde.png">
+  <link rel="preload" href="fonts/archivo-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/home.css">
+  <script>
+    /* Antes de pintar: idioma guardado y si hay JS para las animaciones y si hay movimiento (evita parpadeos y saltos de layout) */
+    (function () {
+      var d = document.documentElement; d.classList.add('js');
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('motion');
+      try { if (localStorage.getItem('bg-lang') === 'en') { d.classList.add('lang-en-active'); d.lang = 'en'; } } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
-    <div class="accent-glow-bg"></div>
-    <div class="grid-overlay"></div>
+  <a class="skip" href="#trabajos"><span class="lang-es">Saltar a los trabajos</span><span class="lang-en" lang="en">Skip to work</span></a>
 
-    <div class="lang-switcher" style="position: absolute; top: 2rem; right: var(--pad, 2rem); z-index: 100;">
-        <span class="lang-toggle" data-lang="es">ES</span>
-        <span style="color: var(--text-dim);">/</span>
-        <span class="lang-toggle" data-lang="en">EN</span>
+  <div class="bg" aria-hidden="true">
+    <div class="bg-mesh"></div>
+    <div class="bg-grid"></div>
+  </div>
+
+  <header class="nav" id="nav">
+    <div class="wrap nav-row">
+      <a href="#inicio" class="nav-mark" aria-label="Blanco Grosso, inicio"><span class="mark-long">Blanco Grosso</span><span class="mark-short" aria-hidden="true">BG</span></a>
+      <nav aria-label="Principal">
+        <ul class="nav-links">
+          <li><a href="#trabajos"><span class="lang-es">Trabajos</span><span class="lang-en" lang="en">Work</span></a></li>
+          <li><a href="#servicios"><span class="lang-es">Servicios</span><span class="lang-en" lang="en">Services</span></a></li>
+          <li><a href="#contacto"><span class="lang-es">Contacto</span><span class="lang-en" lang="en">Contact</span></a></li>
+        </ul>
+      </nav>
+      <div class="lang" role="group" aria-label="Idioma / Language">
+        <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
     </div>
+  </header>
 
-    <main class="landing-page">
-        <div class="hero-content">
-            <div class="update-badge">
-                <span class="pulse-dot"></span>
-                <span class="lang-es">ACTUALIZANDO PORTFOLIO 2026</span>
-                <span class="lang-en">UPDATING PORTFOLIO 2026</span>
+  <main>
+    <section class="intro" id="inicio">
+      <div class="wrap intro-inner" id="introInner">
+        <h1 class="logo" id="logo" aria-label="Blanco Grosso"><span class="logo-row" aria-hidden="true"><span>BLANCO</span></span><span class="logo-row" aria-hidden="true"><span>GROSSO</span></span></h1>
+        <div class="intro-foot">
+          <div>
+            <p class="claim">Creative Studio <span class="claim-acc">for Sports &amp; Tech</span></p>
+            <p class="tags">Sport Design · Vibe Coding · AI Powered</p>
+          </div>
+          <div class="intro-side">
+            <p class="lead"><span class="lang-es">Diseño estratégico, tecnología moderna e inteligencia artificial para marcas que compiten.</span><span class="lang-en" lang="en">Strategic design, modern technology, and artificial intelligence for competing brands.</span></p>
+            <div class="ctas">
+              <a class="btn btn-primary" href="#trabajos"><span class="lang-es">Ver trabajos</span><span class="lang-en" lang="en">View work</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg></a>
+              <a class="btn btn-ghost" href="#contacto"><span class="lang-es">Hablemos</span><span class="lang-en" lang="en">Let's talk</span></a>
             </div>
-            <h1 class="brand-logo">
-                <span>BLANCO</span>
-                <span>GROSSO</span>
-            </h1>
-            <p class="hero-tagline">Sport Design · Vibe Coding · AI Powered</p>
-            <div class="hero-actions">
-                <a href="portfolio.html" class="hero-cta">
-                    <span class="lang-es">VER PORTFOLIO COMPLETO</span>
-                    <span class="lang-en">VIEW FULL PORTFOLIO</span>
-                    <span class="arrow">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                    </span>
-                </a>
-            </div>
+          </div>
         </div>
+      </div>
+    </section>
 
-        <footer class="landing-footer">
-            <div class="footer-bottom">
-            <span>© 2026 Blanco Grosso. </span>
+    <section class="reel-sec" id="reelSec" aria-label="Showreel">
+      <div class="reel-stage" id="reelStage">
+        <div class="reel" id="reel">
+          <!-- TODO: reel provisorio armado con imágenes de los 9 trabajos. Lo reemplazo por el reel final de Remotion. -->
+          <video id="reelVideo" muted loop playsinline preload="none" data-poster="img/reel/reel-provisorio-poster.avif" data-src="img/reel/reel-provisorio.mp4" width="1920" height="1080" aria-label="Showreel de Blanco Grosso: fragmentos de los nueve trabajos" data-en-aria-label="Blanco Grosso showreel: excerpts from the nine projects"></video>
+          <button type="button" class="reel-toggle" id="reelToggle" aria-pressed="false"><span class="lang-es">Pausar</span><span class="lang-en" lang="en">Pause</span></button>
         </div>
-        </footer>
-    </main>
+      </div>
+    </section>
+
+    <section class="works wrap" id="trabajos" aria-labelledby="t-trabajos">
+      <span id="works" class="anchor-alias" aria-hidden="true"></span>
+      <div class="sec-head" data-reveal>
+        <h2 id="t-trabajos"><span class="lang-es">Trabajos seleccionados</span><span class="lang-en" lang="en">Selected work</span></h2>
+        <p><span class="lang-es">9 proyectos</span><span class="lang-en" lang="en">9 projects</span></p>
+      </div>
+      <div class="grid">
+      <a class="card s7 r1" href="/labufarra-social" data-reveal data-preview="img/works/labufarra-social-preview.mp4">
+        <div class="card-media">
+          <img data-src="img/works/labufarra-social.avif" width="1200" height="900" alt="Vuelta a las redes @labufarra" loading="lazy" decoding="async" fetchpriority="low">
+          <noscript><img src="img/works/labufarra-social.avif" width="1200" height="900" alt="Vuelta a las redes @labufarra" loading="lazy" decoding="async"></noscript>
+          <video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="card-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+        </div>
+        <div class="card-meta">
+          <h3>Vuelta a las redes @labufarra</h3>
+          <p class="card-cat">AI-Powered · Audiovisual Production</p>
+          <p class="card-desc"><span class="lang-es">Video 100% IA para anunciar la vuelta a la conducción de redes.</span><span class="lang-en" lang="en">100% AI video to announce the return to social media management.</span></p>
+          <p class="card-tools">GPT, Gemini, Photoshop, Flow, Premiere</p>
+        </div>
+      </a>
+      <a class="card s5 r1" href="/sport-editorial" data-reveal>
+        <div class="card-media">
+          <img data-src="img/works/sport-editorial.avif" width="1200" height="900" alt="Sport Editorial" loading="lazy" decoding="async" fetchpriority="low">
+          <noscript><img src="img/works/sport-editorial.avif" width="1200" height="900" alt="Sport Editorial" loading="lazy" decoding="async"></noscript>
+          <span class="card-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+        </div>
+        <div class="card-meta">
+          <h3>Sport Editorial</h3>
+          <p class="card-cat">AI-Powered · Sport Design</p>
+          <p class="card-desc"><span class="lang-es">Creación de imágenes sport editorial de alto nivel.</span><span class="lang-en" lang="en">High-level sport editorial image creation.</span></p>
+          <p class="card-tools">GPT, Gemini, Photoshop</p>
+        </div>
+      </a>
+      <a class="card s4 r2" href="/bufarra-umbro" data-reveal data-preview="img/works/bufarra-umbro-preview.mp4">
+        <div class="card-media">
+          <img data-src="img/works/bufarra-umbro.avif" width="1200" height="900" alt="La Bufarra x Umbro Uruguay" loading="lazy" decoding="async" fetchpriority="low">
+          <noscript><img src="img/works/bufarra-umbro.avif" width="1200" height="900" alt="La Bufarra x Umbro Uruguay" loading="lazy" decoding="async"></noscript>
+          <video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="card-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+        </div>
+        <div class="card-meta">
+          <h3>La Bufarra x Umbro Uruguay</h3>
+          <p class="card-cat">AI-Powered · Sport Design · Apparel</p>
+          <p class="card-desc"><span class="lang-es">Diseño de prenda y campaña express con video hype.</span><span class="lang-en" lang="en">Apparel design and express campaign with hype video.</span></p>
+          <p class="card-tools">Illustrator, Photoshop, Claude, Gemini, Flow, CapCut</p>
+        </div>
+      </a>
+      <a class="card s4 r2" href="/bufarra-kithome" data-reveal>
+        <div class="card-media">
+          <img data-src="img/works/bufarra-kithome.avif" width="1200" height="900" alt="Bufarra KitHome 24/25" loading="lazy" decoding="async" fetchpriority="low">
+          <noscript><img src="img/works/bufarra-kithome.avif" width="1200" height="900" alt="Bufarra KitHome 24/25" loading="lazy" decoding="async"></noscript>
+          <span class="card-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+        </div>
+        <div class="card-meta">
+          <h3>Bufarra KitHome 24/25</h3>
+          <p class="card-cat">AI-Powered · Sport Design</p>
+          <p class="card-desc"><span class="lang-es">Diseño de prenda. Foto shooting IA con GPT/Gemini. Piezas para redes sociales.</span><span class="lang-en" lang="en">Apparel design. AI photo shooting with GPT/Gemini. Social media assets.</span></p>
+          <p class="card-tools">GPT, Gemini, Photoshop, Illustrator, Lightroom</p>
+        </div>
+      </a>
+      <a class="card s4 r2" href="/tienda-nacional" data-reveal>
+        <div class="card-media">
+          <img data-src="img/works/tienda-nacional.avif" width="1200" height="900" alt="Tienda Nacional" loading="lazy" decoding="async" fetchpriority="low">
+          <noscript><img src="img/works/tienda-nacional.avif" width="1200" height="900" alt="Tienda Nacional" loading="lazy" decoding="async"></noscript>
+          <span class="card-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+        </div>
+        <div class="card-meta">
+          <h3>Tienda Nacional</h3>
+          <p class="card-cat">Brand Systems · Digital Content</p>
+          <p class="card-desc"><span class="lang-es">Campaña Nacional Campeón e IVA OFF. Banners web y pautas RRSS.</span><span class="lang-en" lang="en">National Champion &amp; VAT OFF campaign. Web banners and social media ads.</span></p>
+          <p class="card-tools">Illustrator, Photoshop</p>
+        </div>
+      </a>
+      <a class="card s5 r3" href="/by-kafuse" data-reveal data-preview="img/works/by-kafuse-preview.mp4">
+        <div class="card-media">
+          <img data-src="img/works/by-kafuse.avif" width="1200" height="900" alt="By Kafuse Alas y Raíces" loading="lazy" decoding="async" fetchpriority="low">
+          <noscript><img src="img/works/by-kafuse.avif" width="1200" height="900" alt="By Kafuse Alas y Raíces" loading="lazy" decoding="async"></noscript>
+          <video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="card-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+        </div>
+        <div class="card-meta">
+          <h3>By Kafuse Alas y Raíces</h3>
+          <p class="card-cat">Apparel Design · Creative Direction · Audiovisual Production</p>
+          <p class="card-desc"><span class="lang-es">Drop de media estación Otoño/Invierno. Diseño 2 en 1 y producción de estudio.</span><span class="lang-en" lang="en">Autumn/Winter mid-season drop. 2-in-1 design and studio production.</span></p>
+          <p class="card-tools">Illustrator, Photoshop, Lightroom</p>
+        </div>
+      </a>
+      <a class="card s7 r3" href="/serie-rio-plata" data-reveal>
+        <div class="card-media">
+          <img data-src="img/works/serie-rio-plata.avif" width="1200" height="900" alt="Serie Río de la Plata" loading="lazy" decoding="async" fetchpriority="low">
+          <noscript><img src="img/works/serie-rio-plata.avif" width="1200" height="900" alt="Serie Río de la Plata" loading="lazy" decoding="async"></noscript>
+          <span class="card-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+        </div>
+        <div class="card-meta">
+          <h3>Serie Río de la Plata</h3>
+          <p class="card-cat">Sport Design · Digital Content</p>
+          <p class="card-desc"><span class="lang-es">Matchday de partidos internacionales seleccionados para las redes oficiales.</span><span class="lang-en" lang="en">Matchday designs for selected international matches on official networks.</span></p>
+          <p class="card-tools">Photoshop, Lightroom</p>
+        </div>
+      </a>
+      <a class="card s6 r4" href="/iris-lab" data-reveal>
+        <div class="card-media">
+          <img data-src="img/works/iris-lab.avif" width="1200" height="900" alt="Iris Lab" loading="lazy" decoding="async" fetchpriority="low">
+          <noscript><img src="img/works/iris-lab.avif" width="1200" height="900" alt="Iris Lab" loading="lazy" decoding="async"></noscript>
+          <span class="card-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+        </div>
+        <div class="card-meta">
+          <h3>Iris Lab</h3>
+          <p class="card-cat">Photography · Brand Systems</p>
+          <p class="card-desc"><span class="lang-es">Temporada Punta del Este. Fotos, color, diseño, impresión y armado de cuadro.</span><span class="lang-en" lang="en">Punta del Este summer season. Photography, color, design, and final artwork.</span></p>
+          <p class="card-tools">Lightroom, Photoshop</p>
+        </div>
+      </a>
+      <a class="card s6 r4" href="/final-clasica" data-reveal>
+        <div class="card-media">
+          <img data-src="img/works/final-clasica.avif" width="1200" height="900" alt="Final Clásica Fútbol Uruguayo" loading="lazy" decoding="async" fetchpriority="low">
+          <noscript><img src="img/works/final-clasica.avif" width="1200" height="900" alt="Final Clásica Fútbol Uruguayo" loading="lazy" decoding="async"></noscript>
+          <span class="card-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+        </div>
+        <div class="card-meta">
+          <h3>Final Clásica Fútbol Uruguayo</h3>
+          <p class="card-cat">Sport Design</p>
+          <p class="card-desc"><span class="lang-es">Anuncio de cobertura de partido final clásica para las redes de Fix.</span><span class="lang-en" lang="en">Classic final match coverage announcement for Fix networks.</span></p>
+          <p class="card-tools">Photoshop, Lightroom</p>
+        </div>
+      </a>
+      </div>
+    </section>
+
+    <section class="services wrap" id="servicios" aria-labelledby="t-servicios">
+      <div class="sec-head" data-reveal>
+        <h2 id="t-servicios"><span class="lang-es">Servicios</span><span class="lang-en" lang="en">Services</span></h2>
+        <p><span class="lang-es">Cada uno con un trabajo de ejemplo</span><span class="lang-en" lang="en">Each with an example project</span></p>
+      </div>
+    <article class="offer" data-reveal>
+      <h3>Visual Sprint</h3>
+      <div class="offer-body">
+        <p><span class="lang-es">Branding, Social Media, piezas de campaña. Identidad visual con impacto inmediato.</span><span class="lang-en" lang="en">Branding, Social Media, campaign assets. Visual identity with immediate impact.</span></p>
+        <p class="offer-inc"><span class="lang-es">Identidad de marca, key visuals y campañas, contenido para redes, templates y sistemas gráficos.</span><span class="lang-en" lang="en">Brand identity, key visuals and campaigns, social media content, templates and graphic systems.</span></p>
+        <p class="offer-ex"><span class="lang-es">Ejemplo:</span><span class="lang-en" lang="en">Example:</span> <a href="/tienda-nacional">Tienda Nacional</a></p>
+      </div>
+      <div class="offer-cta">
+        <a class="btn btn-ghost lang-es" href="https://wa.me/59899234543?text=Hola%20Tom%C3%A1s%2C%20me%20gustar%C3%ADa%20pedir%20presupuesto%20para%20un%20Visual%20Sprint%20%28Branding/Identidad%29." target="_blank" rel="noopener">Pedir presupuesto</a>
+        <a class="btn btn-ghost lang-en" lang="en" href="https://wa.me/59899234543?text=Hi%20Tom%C3%A1s%2C%20I%27d%20like%20to%20request%20a%20quote%20for%20a%20Visual%20Sprint%20%28Branding/Identity%29." target="_blank" rel="noopener">Request a quote</a>
+      </div>
+    </article>
+    <article class="offer" data-reveal>
+      <h3>Digital Powerhouse</h3>
+      <div class="offer-body">
+        <p><span class="lang-es">Web, producto digital, dashboards de datos. Diseño + código con visión estratégica.</span><span class="lang-en" lang="en">Web, digital product, data dashboards. Design + code with strategic vision.</span></p>
+        <p class="offer-inc"><span class="lang-es">Sitios web y landing pages, producto digital y UI/UX, dashboards y visualización de datos, integración con IA.</span><span class="lang-en" lang="en">Websites and landing pages, digital product and UI/UX, dashboards and data viz, AI integration.</span></p>
+        <p class="offer-ex"><span class="lang-es">Ejemplo:</span><span class="lang-en" lang="en">Example:</span> <a href="https://navajabarber.com" target="_blank" rel="noopener">navajabarber.com</a></p>
+      </div>
+      <div class="offer-cta">
+        <a class="btn btn-ghost lang-es" href="https://wa.me/59899234543?text=Hola%20Tom%C3%A1s%2C%20me%20gustar%C3%ADa%20pedir%20presupuesto%20para%20un%20proyecto%20de%20Digital%20Powerhouse%20%28Web/Producto%29." target="_blank" rel="noopener">Pedir presupuesto</a>
+        <a class="btn btn-ghost lang-en" lang="en" href="https://wa.me/59899234543?text=Hi%20Tom%C3%A1s%2C%20I%27d%20like%20to%20request%20a%20quote%20for%20a%20Digital%20Powerhouse%20project%20%28Web/Product%29." target="_blank" rel="noopener">Request a quote</a>
+      </div>
+    </article>
+    <article class="offer" data-reveal>
+      <h3>Creative Partnership</h3>
+      <div class="offer-body">
+        <p><span class="lang-es">Dirección creativa externa, acompañamiento recurrente. Tu estudio creativo on-demand.</span><span class="lang-en" lang="en">External creative direction, recurring support. Your on-demand creative studio.</span></p>
+        <p class="offer-inc"><span class="lang-es">Dirección creativa, consultoría de marca, retainer mensual, estrategia y ejecución.</span><span class="lang-en" lang="en">Creative direction, brand consultancy, monthly retainer, strategy and execution.</span></p>
+        <p class="offer-ex"><span class="lang-es">Ejemplo:</span><span class="lang-en" lang="en">Example:</span> <a href="/bufarra-umbro">La Bufarra x Umbro</a></p>
+      </div>
+      <div class="offer-cta">
+        <a class="btn btn-ghost lang-es" href="https://wa.me/59899234543?text=Hola%20Tom%C3%A1s%2C%20me%20gustar%C3%ADa%20pedir%20presupuesto%20para%20un%20Creative%20Partnership." target="_blank" rel="noopener">Pedir presupuesto</a>
+        <a class="btn btn-ghost lang-en" lang="en" href="https://wa.me/59899234543?text=Hi%20Tom%C3%A1s%2C%20I%27d%20like%20to%20request%20a%20quote%20for%20a%20Creative%20Partnership." target="_blank" rel="noopener">Request a quote</a>
+      </div>
+    </article>
+    </section>
+
+    <section class="contact wrap" id="contacto" aria-labelledby="t-contacto">
+      <h2 id="t-contacto" data-reveal><span class="lang-es">¿Tenés un proyecto en mente?</span><span class="lang-en" lang="en">Have a project in mind?</span></h2>
+      <p class="lead" data-reveal><span class="lang-es">Contame tu idea y armamos una propuesta a medida.</span><span class="lang-en" lang="en">Tell me about your idea and we'll build a tailored proposal.</span></p>
+      <div class="ctas contact-ctas" data-reveal>
+        <a class="btn btn-primary lang-es" href="https://wa.me/59899234543?text=Hola%20Tom%C3%A1s%2C%20vi%20tu%20portfolio%20y%20me%20gustar%C3%ADa%20hablar%20sobre%20un%20proyecto." target="_blank" rel="noopener">Escribime por WhatsApp</a>
+        <a class="btn btn-primary lang-en" lang="en" href="https://wa.me/59899234543?text=Hi%20Tom%C3%A1s%2C%20I%20saw%20your%20portfolio%20and%20I%27d%20like%20to%20talk%20about%20a%20project." target="_blank" rel="noopener">Message me on WhatsApp</a>
+        <div class="mail">
+          <span class="mail-text" id="mailText">tomasblancogrosso@gmail.com</span>
+          <button type="button" class="mail-copy" id="mailCopy" data-es="Copiar" data-en="Copy" data-done-es="Copiado" data-done-en="Copied">Copiar</button>
+        </div>
+        <p class="sr-only" id="copyStatus" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-row">
+      <p>© 2026 Blanco Grosso · Montevideo, Uruguay</p>
+      <ul class="footer-links">
+        <li><a href="https://instagram.com/blancogrosso" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://linkedin.com/in/tomasblancogrosso" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://behance.net/blancogrosso" target="_blank" rel="noopener">Behance</a></li>
+        <li><a href="https://x.com/blancogrosso" target="_blank" rel="noopener">X</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- home.js carga gsap, ScrollTrigger y Lenis (js/vendor/) después del evento load -->
+  <script src="js/home.js" defer></script>
 </body>
 </html>
