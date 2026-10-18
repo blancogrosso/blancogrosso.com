@@ -1,4 +1,9 @@
 {
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/portfolio", "destination": "/", "statusCode": 301 },
+    { "source": "/portfolio.html", "destination": "/", "statusCode": 301 }
+  ],
   "rewrites": [
     { "source": "/serra", "destination": "/serra.html" },
     { "source": "/serra-identidad", "destination": "/serra-identidad.html" }
