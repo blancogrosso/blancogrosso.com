@@ -395,6 +395,12 @@ html.lenis, html.lenis body { height: auto; }
   .offer { grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) auto; align-items: start; }
 }
 
+/* contacto: la llamada es el botón secundario, con su aclaración */
+.call { display: inline-flex; align-items: center; gap: 4px 14px; flex-wrap: wrap; border-radius: var(--radius-pill); }
+.call:hover .call-btn { border-color: var(--fg); }
+.call-note { color: var(--muted); font-size: var(--fs-small); }
+.call:focus-visible { outline-offset: 6px; }
+
 /* contacto */
 .contact { padding-top: 112px; padding-bottom: 112px; scroll-margin-top: var(--nav-h); }
 .contact h2 { font-weight: 900; font-stretch: 108%; font-size: clamp(44px, 8vw, 128px); line-height: 0.92; letter-spacing: -0.04em; text-wrap: balance; max-width: 12ch; }
