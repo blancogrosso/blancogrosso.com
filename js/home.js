@@ -13,6 +13,13 @@
      así el idioma elegido se mantiene al navegar. */
   var langButtons = document.querySelectorAll('.lang-btn');
   var mailCopy = document.getElementById('mailCopy');
+  var cursorTag = document.getElementById('cursorTag');
+  var cursorText = cursorTag && cursorTag.firstElementChild;
+  var cursorExternal = false;
+  function cursorLabel() {
+    var en = root.classList.contains('lang-en-active');
+    return cursorExternal ? (en ? 'Visit site' : 'Ver sitio') : (en ? 'View case' : 'Ver caso');
+  }
   function setLang(lang) {
     var en = lang === 'en';
     root.classList.toggle('lang-en-active', en);
@@ -22,12 +29,12 @@
       if (!el.dataset.esAriaLabel) el.dataset.esAriaLabel = el.getAttribute('aria-label');
       el.setAttribute('aria-label', en ? el.dataset.enAriaLabel : el.dataset.esAriaLabel);
     });
-    if (mailCopy) mailCopy.textContent = en ? mailCopy.dataset.en : mailCopy.dataset.es;
+    if (mailCopy && !mailCopy.classList.contains('is-done')) mailCopy.querySelector('.mail-copy-label').textContent = en ? mailCopy.dataset.en : mailCopy.dataset.es;
+    if (cursorText) cursorText.textContent = cursorLabel();
     document.querySelectorAll('img[data-en-alt]').forEach(function (img) {
       if (!img.dataset.esAlt) img.dataset.esAlt = img.alt;
       img.alt = en ? img.dataset.enAlt : img.dataset.esAlt;
     });
-    if (typeof updateCount === 'function' && countEl) updateCount();
     updateReelToggle();
     try { localStorage.setItem('bg-lang', lang); } catch (e) {}
   }
@@ -120,86 +127,26 @@
   }
 
   /* ══ Trabajos ═══════════════════════════════════════════
-     Un solo lugar para los datos: sumar un trabajo = agregar una entrada.
-     filters: branding | sport | web | motion | campaigns (puede tener varios).
-     featured: aparece en "Destacados" (en este orden). external: abre en pestaña nueva.
-     fit: 'contain' + bg: la portada se muestra entera sobre ese color (para logos que no admiten recorte). */
-  var WORKS = [
-    { slug: 'labufarra-social', title: { es: 'Vuelta a las redes @labufarra', en: 'Vuelta a las redes @labufarra' },
-      cat: 'AI-Powered · Audiovisual Production',
-      desc: { es: 'Video 100% IA para anunciar la vuelta a la conducción de redes.', en: '100% AI video to announce the return to social media management.' },
-      tools: 'GPT, Gemini, Photoshop, Flow, Premiere', img: 'img/works/labufarra-social.avif', preview: 'img/works/labufarra-social-preview.mp4',
-      href: '/labufarra-social', featured: true, filters: ['motion'] },
-    { slug: 'sport-editorial', title: { es: 'Sport Editorial', en: 'Sport Editorial' }, cat: 'AI-Powered · Sport Design',
-      desc: { es: 'Creación de imágenes sport editorial de alto nivel.', en: 'High-level sport editorial image creation.' },
-      tools: 'GPT, Gemini, Photoshop', img: 'img/works/sport-editorial.avif', href: '/sport-editorial', featured: true, filters: ['sport'] },
-    { slug: 'bufarra-umbro', title: { es: 'La Bufarra x Umbro Uruguay', en: 'La Bufarra x Umbro Uruguay' }, cat: 'AI-Powered · Sport Design · Apparel',
-      desc: { es: 'Diseño de prenda y campaña express con video hype.', en: 'Apparel design and express campaign with hype video.' },
-      tools: 'Illustrator, Photoshop, Claude, Gemini, Flow, CapCut', img: 'img/works/bufarra-umbro.avif', preview: 'img/works/bufarra-umbro-preview.mp4',
-      href: '/bufarra-umbro', featured: true, filters: ['sport', 'motion'] },
-    { slug: 'bufarra-kithome', title: { es: 'Bufarra KitHome 24/25', en: 'Bufarra KitHome 24/25' }, cat: 'AI-Powered · Sport Design',
-      desc: { es: 'Diseño de prenda. Foto shooting IA con GPT/Gemini. Piezas para redes sociales.', en: 'Apparel design. AI photo shooting with GPT/Gemini. Social media assets.' },
-      tools: 'GPT, Gemini, Photoshop, Illustrator, Lightroom', img: 'img/works/bufarra-kithome.avif', href: '/bufarra-kithome', featured: true, filters: ['sport'] },
-    { slug: 'tienda-nacional', title: { es: 'Tienda Nacional', en: 'Tienda Nacional' }, cat: 'Brand Systems · Digital Content',
-      desc: { es: 'Campaña Nacional Campeón e IVA OFF. Banners web y pautas RRSS.', en: 'National Champion & VAT OFF campaign. Web banners and social media ads.' },
-      tools: 'Illustrator, Photoshop', img: 'img/works/tienda-nacional.avif', href: '/tienda-nacional', featured: true, filters: ['campaigns'] },
-    { slug: 'by-kafuse', title: { es: 'By Kafuse Alas y Raíces', en: 'By Kafuse Alas y Raíces' }, cat: 'Apparel Design · Creative Direction · Audiovisual Production',
-      desc: { es: 'Drop de media estación Otoño/Invierno. Diseño 2 en 1 y producción de estudio.', en: 'Autumn/Winter mid-season drop. 2-in-1 design and studio production.' },
-      tools: 'Illustrator, Photoshop, Lightroom', img: 'img/works/by-kafuse.avif', preview: 'img/works/by-kafuse-preview.mp4',
-      href: '/by-kafuse', featured: true, filters: ['campaigns'] },
-    { slug: 'serie-rio-plata', title: { es: 'Serie Río de la Plata', en: 'Serie Río de la Plata' }, cat: 'Sport Design · Digital Content',
-      desc: { es: 'Matchday de partidos internacionales seleccionados para las redes oficiales.', en: 'Matchday designs for selected international matches on official networks.' },
-      tools: 'Photoshop, Lightroom', img: 'img/works/serie-rio-plata.avif', href: '/serie-rio-plata', featured: true, filters: ['sport'] },
-    { slug: 'iris-lab', title: { es: 'Iris Lab', en: 'Iris Lab' }, cat: 'Photography · Brand Systems',
-      desc: { es: 'Temporada Punta del Este. Fotos, color, diseño, impresión y armado de cuadro.', en: 'Punta del Este summer season. Photography, color, design, and final artwork.' },
-      tools: 'Lightroom, Photoshop', img: 'img/works/iris-lab.avif', href: '/iris-lab', featured: true, filters: [] },
-    { slug: 'final-clasica', title: { es: 'Final Clásica Fútbol Uruguayo', en: 'Final Clásica Fútbol Uruguayo' }, cat: 'Sport Design',
-      desc: { es: 'Anuncio de cobertura de partido final clásica para las redes de Fix.', en: 'Classic final match coverage announcement for Fix networks.' },
-      tools: 'Photoshop, Lightroom', img: 'img/works/final-clasica.avif', href: '/final-clasica', featured: true, filters: ['sport'] },
-    { slug: 'nido', title: { es: 'NIDO', en: 'NIDO' }, cat: 'Brand Systems',
-      desc: { es: 'Identidad visual completa para nido, marca de diseño para el hogar: ícono, paleta, tipografía, fotografía y piezas para Instagram.',
-              en: 'Complete visual identity for nido, a home design brand: icon, palette, typography, photography and Instagram pieces.' },
-      tools: 'GPT, Gemini, Photoshop', img: 'img/works/nido.avif', fit: 'contain', bg: '#f3eee3', href: '/nido', featured: true, filters: ['branding'] },
-    { slug: 'navaja-barber', title: { es: 'Navaja Barber', en: 'Navaja Barber' }, cat: 'Web Design · Development',
-      desc: { es: 'Sitio de una página para una barbería en Uruguay, con reservas online integradas.', en: 'One-page site for a barbershop in Uruguay, with built-in online booking.' },
-      tools: 'Antigravity, HTML, CSS, JavaScript', img: 'img/works/navaja-barber.avif', href: 'https://www.navajabarber.com', external: true, featured: false, filters: ['web'] },
-    { slug: 'labufarra-web', title: { es: 'La Bufarra · labufarra.com', en: 'La Bufarra · labufarra.com' }, cat: 'Web Design · Development',
-      desc: { es: 'Sitio del club con partidos, jugadores, campeonatos e historia, y su panel de administración.', en: 'Club website with matches, players, championships and history, plus its admin panel.' },
-      tools: 'HTML, CSS, JavaScript, Supabase', img: 'img/works/labufarra-web.avif', href: 'https://www.labufarra.com', external: true, featured: false, filters: ['web'] }
-  ];
-
+     Los datos están en data/works.json (scripts/build-home.py arma el HTML).
+     Los destacados vienen escritos en el HTML; acá se suman los del <template>
+     (los que no están en Destacados) y se agregan los filtros. */
   var grid = document.getElementById('worksGrid');
-  var countEl = document.getElementById('worksCount');
+  var more = document.getElementById('worksMore');
+  if (more && more.content) grid.appendChild(more.content.cloneNode(true));
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.card'));
+  var countNum = document.getElementById('worksCountNum');
+  var countWord = document.getElementById('worksCountWord');
+  var countEl = document.getElementById('worksStatus');
   var filterButtons = document.querySelectorAll('.filter');
   var currentFilter = 'featured';
-  var ICON_INTERNAL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
-  var ICON_EXTERNAL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>';
-  function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
-  function bi(o) { return '<span class="lang-es">' + esc(o.es) + '</span><span class="lang-en" lang="en">' + esc(o.en) + '</span>'; }
-
-  function cardHTML(w) {
-    var ext = w.external ? ' target="_blank" rel="noopener"' : '';
-    return '<a class="card" href="' + esc(w.href) + '"' + ext + ' data-slug="' + w.slug + '"' + (w.preview ? ' data-preview="' + w.preview + '"' : '') + '>' +
-      '<div class="card-media"' + (w.bg ? ' style="background:' + w.bg + '"' : '') + '>' +
-        '<img data-src="' + w.img + '" width="1200" height="900" alt="' + esc(w.title.es) + '" data-en-alt="' + esc(w.title.en) + '"' + (w.fit === 'contain' ? ' class="fit-contain"' : '') + ' loading="lazy" decoding="async" fetchpriority="low">' +
-        (w.preview ? '<video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>' : '') +
-        '<span class="card-go">' + (w.external ? ICON_EXTERNAL : ICON_INTERNAL) + '</span>' +
-      '</div>' +
-      '<div class="card-meta">' +
-        '<h3>' + bi(w.title) + '</h3>' +
-        '<p class="card-cat">' + esc(w.cat) + '</p>' +
-        '<p class="card-desc">' + bi(w.desc) + '</p>' +
-        '<p class="card-tools">' + esc(w.tools) + '</p>' +
-        (w.external ? '<span class="sr-only">' + bi({ es: ' (abre el sitio en una pestaña nueva)', en: ' (opens the site in a new tab)' }) + '</span>' : '') +
-      '</div></a>';
+  var shownCount = cards.filter(function (c) { return c.hasAttribute('data-featured'); }).length;
+  function matches(card, f) {
+    return f === 'featured' ? card.hasAttribute('data-featured') : (' ' + card.dataset.filters + ' ').indexOf(' ' + f + ' ') !== -1;
   }
-  grid.innerHTML = WORKS.map(cardHTML).join('');
-  var cards = Array.prototype.slice.call(grid.querySelectorAll('.card'));
-  function workOf(card) { return WORKS.filter(function (w) { return w.slug === card.dataset.slug; })[0]; }
-  function matches(w, f) { return f === 'featured' ? w.featured : w.filters.indexOf(f) !== -1; }
 
   /* Tamaños: el patrón 7/5, 4/4/4, 5/7, 6/6 se repite; la última fila nunca deja una
-     tarjeta chica sola (sobra 1: ancho completo; 2: 6/6; 3: 4/4/4). */
+     tarjeta chica sola (sobra 1: ancho completo; 2: 6/6; 3: 4/4/4).
+     Misma regla que layout_classes() en scripts/build-home.py. */
   var PATTERN = [[7, 5], [4, 4, 4], [5, 7], [6, 6]];
   var TAIL = { 1: [12], 2: [6, 6], 3: [4, 4, 4] };
   function layout(visible) {
@@ -207,7 +154,6 @@
     while (i < visible.length) {
       var left = visible.length - i;
       var r = left <= 3 ? TAIL[left] : PATTERN[row % PATTERN.length];
-      if (left > 3 && left - r.length === 0) r = PATTERN[row % PATTERN.length];
       r.forEach(function (sp) { spans.push(sp); });
       i += r.length; row++;
     }
@@ -219,46 +165,63 @@
     // en dos columnas (tablet), una tarjeta impar al final ocupa todo el ancho
     if (visible.length % 2 === 1) visible[visible.length - 1].classList.add('two-col-full');
   }
-  function updateCount() {
+  function countLabel(n, en) { return en ? n + (n === 1 ? ' project' : ' projects') : n + (n === 1 ? ' trabajo' : ' trabajos'); }
+  function paintCount(n) {
+    var en = root.classList.contains('lang-en-active');
+    countNum.textContent = n;
+    countWord.querySelector('.lang-es').textContent = n === 1 ? 'trabajo' : 'trabajos';
+    countWord.querySelector('.lang-en').textContent = n === 1 ? 'project' : 'projects';
+    return en;
+  }
+  function updateCount(animate) {
     var n = cards.filter(function (c) { return !c.hidden; }).length;
     var en = root.classList.contains('lang-en-active');
-    countEl.textContent = en ? n + (n === 1 ? ' project' : ' projects') : n + (n === 1 ? ' trabajo' : ' trabajos');
+    countEl.textContent = countLabel(n, en); // lo anuncia el lector de pantalla (aria-live)
+    if (!animate || reduce || !hasGsap) { paintCount(n); shownCount = n; return; }
+    // el número visible cuenta hasta el nuevo valor
+    var o = { v: shownCount };
+    gsap.to(o, { v: n, duration: 0.5, ease: 'power2.out', overwrite: true, onUpdate: function () { paintCount(Math.round(o.v)); } });
+    shownCount = n;
   }
   function applyFilter(f) {
     currentFilter = f;
     var visible = [];
     cards.forEach(function (card) {
-      var on = matches(workOf(card), f);
+      var on = matches(card, f);
       card.hidden = !on;
       if (on) visible.push(card);
     });
     layout(visible);
     filterButtons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.filter === f)); });
-    updateCount();
   }
   applyFilter('featured');
+  paintCount(shownCount);
 
   filterButtons.forEach(function (b) {
     b.addEventListener('click', function () {
       var f = b.dataset.filter;
       if (f === currentFilter) return;
       var canFlip = !reduce && window.Flip && hasGsap;
-      if (!canFlip) { applyFilter(f); loadVisibleImages(); return; }
-      var state = Flip.getState(cards, { props: 'opacity' });
+      if (!canFlip) { applyFilter(f); loadVisibleImages(); updateCount(false); return; }
+      var state = Flip.getState(cards);
       // con absolute:true las tarjetas salen del flujo y la grilla quedaría en 0: se fija su alto y se anima al nuevo,
       // recortando las que salen para que no pasen por encima de Servicios
       var h0 = grid.offsetHeight;
       applyFilter(f);
       var h1 = grid.offsetHeight;
       loadVisibleImages();
-      cards.forEach(function (c) { c.classList.remove('is-await'); });
-      gsap.fromTo(grid, { height: h0, overflow: 'clip' }, { height: h1, duration: 0.6, ease: 'power2.inOut', overwrite: true, clearProps: 'height,overflow' });
+      cards.forEach(function (c) { c.classList.remove('is-await', 'is-revealing'); c.style.transitionDelay = ''; });
+      // (el alto se suelta recién cuando termina Flip: la cascada de entrada dura más que el reacomodo)
+      gsap.fromTo(grid, { height: h0, overflow: 'clip' }, { height: h1, duration: 0.7, ease: 'power3.inOut', overwrite: true });
+      // las que se quedan se reacomodan; las que salen se achican y se apagan (aceleran al irse);
+      // las que entran aparecen en cascada y frenan sin rebote
       Flip.from(state, {
-        duration: 0.6, ease: 'power2.inOut', absolute: true, scale: false, nested: true,
-        onEnter: function (els) { return gsap.fromTo(els, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.45, delay: 0.15 }); },
-        onLeave: function (els) { return gsap.to(els, { opacity: 0, duration: 0.3 }); },
-        onComplete: function () { ScrollTrigger.refresh(); }
+        duration: 0.7, ease: 'power3.inOut', absolute: true, scale: false, nested: true, prune: true,
+        onEnter: function (els) { return gsap.fromTo(els, { opacity: 0, y: 40, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, delay: 0.2, stagger: 0.06, ease: 'power3.out' }); },
+        onLeave: function (els) { return gsap.to(els, { opacity: 0, scale: 0.92, duration: 0.3, ease: 'power2.in' }); },
+        onComplete: function () { gsap.set(grid, { clearProps: 'height,overflow' }); ScrollTrigger.refresh(); }
       });
+      updateCount(true);
     });
   });
 
@@ -293,6 +256,56 @@
     card.addEventListener('blur', stop);
   });
 
+  /* ── Etiqueta que sigue al mouse sobre las tarjetas ──────
+     "Ver caso" en las internas, "Ver sitio" en las externas. Solo con mouse.
+     Con gsap la sigue con un leve retraso; sin gsap (o con movimiento reducido), directo. */
+  var moveTag = null;
+  if (cursorTag && finePointer) {
+    root.classList.add('has-cursor-tag');
+    var tx = 0, ty = 0;
+    moveTag = function (x, y) { tx = x; ty = y; cursorTag.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)'; };
+    window.addEventListener('pointermove', function (e) { if (e.pointerType === 'mouse') moveTag(e.clientX, e.clientY); }, { passive: true });
+    cards.forEach(function (c) {
+      c.addEventListener('mouseenter', function (e) {
+        cursorExternal = c.hasAttribute('data-external');
+        cursorText.textContent = cursorLabel();
+        if (!cursorTag.classList.contains('is-on')) moveTag(e.clientX, e.clientY, true); // aparece donde está el mouse
+        cursorTag.classList.add('is-on');
+      });
+      c.addEventListener('mouseleave', function () { cursorTag.classList.remove('is-on'); });
+    });
+  }
+
+  /* ── Portadas de los filtros ─────────────────────────────
+     Con la página cargada y el navegador libre, se piden las portadas de las
+     tarjetas que no están en Destacados: así no aparecen vacías al abrir un filtro. */
+  function preloadOtherCovers() {
+    cards.forEach(function (c) {
+      if (c.hasAttribute('data-featured')) return;
+      var img = c.querySelector('img[data-src]');
+      if (img) { var pre = new Image(); pre.decoding = 'async'; pre.src = img.dataset.src; }
+    });
+  }
+  var idle = window.requestIdleCallback ? function (f) { window.requestIdleCallback(f, { timeout: 4000 }); } : function (f) { setTimeout(f, 1500); };
+  if (document.readyState === 'complete') idle(preloadOtherCovers);
+  else window.addEventListener('load', function () { idle(preloadOtherCovers); }, { once: true });
+
+  /* ── Transición de la tarjeta al caso ────────────────────
+     View Transitions entre páginas (css/view-transitions.css). Al salir hacia un caso,
+     la imagen de su tarjeta toma el nombre case-<slug>, el mismo que la imagen principal
+     del caso. La vuelta la resuelve el script del <head> (evento pagereveal). */
+  window.addEventListener('pageswap', function (e) {
+    if (!e.viewTransition || !e.activation || !e.activation.entry) return;
+    var url = new URL(e.activation.entry.url);
+    if (url.origin !== location.origin) return;
+    var slug = url.pathname.replace(/^\/|\.html$/g, '');
+    var card = slug && grid.querySelector('.card[data-slug="' + slug + '"]:not([hidden])');
+    if (!card) return;
+    var img = card.querySelector('.card-media img');
+    img.style.viewTransitionName = 'case-' + slug;
+    e.viewTransition.finished.finally(function () { img.style.viewTransitionName = ''; });
+  });
+
   /* ── Aparición al scrollear ──────────────────────────────
      Solo lo que arranca debajo de la pantalla: lo visible al
      cargar se ve de entrada. */
@@ -319,12 +332,19 @@
   if (mailCopy) {
     var mailText = document.getElementById('mailText');
     var status = document.getElementById('copyStatus');
+    var copyLabel = mailCopy.querySelector('.mail-copy-label');
+    var copyTimer = null;
     mailCopy.addEventListener('click', function () {
       var en = root.classList.contains('lang-en-active');
       function done(ok) {
-        mailCopy.textContent = ok ? (en ? mailCopy.dataset.doneEn : mailCopy.dataset.doneEs) : (en ? 'Selected' : 'Seleccionado');
+        copyLabel.textContent = ok ? (en ? mailCopy.dataset.doneEn : mailCopy.dataset.doneEs) : (en ? 'Selected' : 'Seleccionado');
+        mailCopy.classList.toggle('is-done', ok);
         status.textContent = ok ? (en ? 'Email copied' : 'Mail copiado') : (en ? 'Email selected, copy it with Cmd+C' : 'Mail seleccionado, copialo con Cmd+C');
-        setTimeout(function () { mailCopy.textContent = en ? mailCopy.dataset.en : mailCopy.dataset.es; }, 1800);
+        clearTimeout(copyTimer);
+        copyTimer = setTimeout(function () {
+          mailCopy.classList.remove('is-done');
+          copyLabel.textContent = root.classList.contains('lang-en-active') ? mailCopy.dataset.en : mailCopy.dataset.es;
+        }, 1800);
       }
       function select() {
         var r = document.createRange(); r.selectNodeContents(mailText);
@@ -344,6 +364,13 @@
     if (!hasGsap) { root.classList.remove('motion'); return; }
     gsap.registerPlugin(ScrollTrigger);
     if (window.Flip) gsap.registerPlugin(Flip);
+    // la etiqueta del cursor lo sigue con un leve retraso (frena sin rebote)
+    if (moveTag) {
+      cursorTag.style.transform = '';
+      var qx = gsap.quickTo(cursorTag, 'x', { duration: 0.45, ease: 'power3.out' });
+      var qy = gsap.quickTo(cursorTag, 'y', { duration: 0.45, ease: 'power3.out' });
+      moveTag = function (x, y, instant) { if (instant) gsap.set(cursorTag, { x: x, y: y }); qx(x, instant ? x : undefined); qy(y, instant ? y : undefined); };
+    }
     if (window.Lenis) {
       lenis = new Lenis({ lerp: 0.09 });
       lenis.on('scroll', ScrollTrigger.update);
@@ -358,7 +385,7 @@
     // el reel se fija y crece desde ~40 % hasta casi toda la pantalla; después se suelta
     gsap.set(reelBox, { xPercent: -50, yPercent: -50, scale: 0.42 });
     gsap.timeline({
-      scrollTrigger: { trigger: '#reelStage', start: 'top top', end: '+=120%', scrub: 0.6, pin: true, anticipatePin: 1, invalidateOnRefresh: true }
+      scrollTrigger: { trigger: '#reelStage', start: 'top top', end: '+=120%', scrub: 0.6, pin: true, pinSpacing: false, anticipatePin: 1, invalidateOnRefresh: true }
     })
       .fromTo(reelBox, { scale: 0.42, borderRadius: 16 }, { scale: 1, borderRadius: 6, ease: 'power2.inOut', duration: 1 })
       .to(reelBox, { scale: 1, duration: 0.25 });

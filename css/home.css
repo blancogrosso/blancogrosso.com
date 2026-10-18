@@ -25,7 +25,8 @@
   --line: rgba(255, 255, 255, 0.1);
   --surface: #0e0f0e;
   --accent: #00ff88;
-  --on-accent: #03140b;
+  --accent-hover: #7dffc0; /* menta: hover de los botones verdes */
+  --on-accent: #03140b;    /* texto oscuro sobre verde (14,1:1) y sobre menta (15,3:1) */
   /* colores del fondo de marca (solo mesh y degradados de identidad) */
   --mesh-green: #00ff88;
   --mesh-cyan: #00ccff;
@@ -45,10 +46,15 @@
   --radius-pill: 999px;
   --nav-h: 68px;
 
-  /* movimiento */
-  --ease-out: cubic-bezier(0.19, 1, 0.22, 1);
+  /* movimiento: un solo ritmo para todo el sitio (calibrado con motion-reference-language:
+     entradas que frenan sin rebote 0,35-0,7 s, salidas que aceleran 0,3 s, desplazamientos de UI ~0,5 s) */
+  --ease-out: cubic-bezier(0.19, 1, 0.22, 1);   /* entradas: frena sin rebote */
+  --ease-in: cubic-bezier(0.55, 0, 1, 0.45);    /* salidas: acelera al irse */
+  --ease-io: cubic-bezier(0.65, 0, 0.35, 1);    /* desplazamientos y transición entre páginas */
   --dur-fast: 0.2s;
+  --dur-ui: 0.35s;
   --dur-mid: 0.45s;
+  --dur-sweep: 0.5s;
   --dur-slow: 0.9s;
 
   color-scheme: dark;
@@ -195,6 +201,14 @@ html.lenis, html.lenis body { height: auto; }
   transition: color var(--dur-fast);
 }
 .nav-links a:hover, .nav-links a.is-current { color: var(--fg); }
+.nav-links a { position: relative; }
+.nav-links a::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 9px; height: 1px;
+  background: currentColor;
+  transform: scaleX(0); transform-origin: right center;
+  transition: transform var(--dur-ui) var(--ease-out);
+}
+.nav-links a:hover::after, .nav-links a:focus-visible::after { transform: scaleX(1); transform-origin: left center; }
 .lang { display: flex; gap: 2px; margin-left: 8px; }
 .lang-btn {
   min-width: 44px; min-height: 44px; padding: 0 6px;
@@ -254,17 +268,31 @@ html.lenis, html.lenis body { height: auto; }
 /* botones */
 .ctas { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 .btn {
+  position: relative; overflow: hidden; isolation: isolate;
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
   min-height: 48px; padding: 0 22px;
   border-radius: var(--radius-pill);
   font-size: 16px; font-weight: 600; white-space: nowrap;
-  transition: transform var(--dur-mid) var(--ease-out), background-color var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast);
+  transition: color var(--dur-ui) var(--ease-out), border-color var(--dur-ui) var(--ease-out), transform var(--dur-fast) var(--ease-out);
 }
-.btn svg { width: 18px; height: 18px; flex: none; }
+/* el relleno barre de izquierda a derecha al pasar el mouse (o con foco de teclado) */
+.btn::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform var(--dur-sweep) var(--ease-out);
+}
+.btn:hover::before, .btn:focus-visible::before { transform: scaleX(1); }
+.btn:active { transform: scale(0.97); }
+.btn svg { width: 18px; height: 18px; flex: none; transition: transform var(--dur-ui) var(--ease-out); }
+.btn:hover .ar, .btn:focus-visible .ar { transform: translateX(3px); }
+.btn:hover .ar-down, .btn:focus-visible .ar-down { transform: translateY(3px); }
 .btn-primary { background: var(--accent); color: var(--on-accent); }
-.btn-primary:hover { transform: translateY(-2px); }
+.btn-primary::before { background: var(--accent-hover); }
 .btn-ghost { border: 1px solid rgba(255, 255, 255, 0.45); color: var(--fg); }
-.btn-ghost:hover { border-color: var(--fg); }
+.btn-ghost::before { background: var(--accent); }
+.btn-ghost:hover, .btn-ghost:focus-visible { color: var(--on-accent); border-color: var(--accent); }
+.btn-lg { min-height: 54px; padding: 0 24px; }
+.btn-lg svg { width: 20px; height: 20px; }
 
 /* =========================================================
    Escena del reel
@@ -291,7 +319,9 @@ html.lenis, html.lenis body { height: auto; }
 .reel-toggle:hover { border-color: var(--fg); }
 /* .motion se aplica en el <head> (JS activo y sin movimiento reducido): el layout del pin
    existe desde el primer pintado y GSAP solo anima la escala, sin saltos de layout */
-.motion .reel-sec { padding-bottom: 0; }
+.motion .reel-sec { padding-bottom: 120vh; } /* reserva el recorrido del pin (end: +=120%) desde el primer pintado:
+   el pin no agrega espaciador (pinSpacing: false), así el layout no cambia al montarlo y el
+   navegador restaura bien el scroll al volver de un caso. */
 .motion .reel-stage { position: relative; height: 100svh; }
 .motion .reel {
   position: absolute; left: 50%; top: 50%;
@@ -331,21 +361,23 @@ html.lenis, html.lenis body { height: auto; }
 .card-media video { opacity: 0; }
 .card-media img.fit-contain { object-fit: contain; }
 .card.is-playing .card-media video { opacity: 1; }
-.card:hover .card-media img, .card:focus-visible .card-media img, .card.is-playing .card-media video { transform: scale(1.045); }
-.card-go {
-  position: absolute; right: 14px; bottom: 14px;
-  width: 46px; height: 46px; border-radius: 50%;
-  display: grid; place-items: center;
-  background: var(--fg); color: var(--bg);
-  opacity: 0; transform: scale(0.6);
-  transition: transform var(--dur-mid) var(--ease-out), opacity 0.3s;
-}
-.card-go svg { width: 18px; height: 18px; }
-.card:hover .card-go, .card:focus-visible .card-go { opacity: 1; transform: none; }
+.card:hover .card-media img, .card:focus-visible .card-media img, .card.is-playing .card-media video { transform: scale(1.04); }
 .card-meta { display: flex; flex-direction: column; gap: 4px; }
 .card-meta h3 { font-weight: 800; font-size: clamp(22px, 1.8vw, 27px); line-height: 1.15; letter-spacing: -0.015em; }
-.card:hover h3 { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; text-decoration-color: var(--accent); }
 .card-cat { color: var(--accent); font-size: var(--fs-small); }
+.card-cat .ext-ic { display: inline-block; width: 14px; height: 14px; vertical-align: -1px; }
+.card:focus-visible { outline-offset: 6px; border-radius: var(--radius); }
+
+/* etiqueta que sigue al mouse: "Ver caso" / "Ver sitio" (solo con mouse; la mueve js/home.js) */
+.cursor-tag { position: fixed; left: 0; top: 0; z-index: 40; pointer-events: none; display: none; }
+.has-cursor-tag .cursor-tag { display: block; }
+.cursor-tag span {
+  display: block; padding: 10px 16px; border-radius: var(--radius-pill);
+  background: var(--fg); color: var(--bg); font-size: 14px; font-weight: 600; white-space: nowrap;
+  transform: translate(-50%, -50%) scale(0); opacity: 0;
+  transition: transform var(--dur-ui) var(--ease-out), opacity var(--dur-fast);
+}
+.cursor-tag.is-on span { transform: translate(-50%, -50%) scale(1); opacity: 1; }
 .card-desc { margin-top: 4px; color: var(--fg-soft); max-width: 52ch; }
 .card-tools { color: var(--muted); font-size: var(--fs-small); }
 
@@ -364,17 +396,39 @@ html.lenis, html.lenis body { height: auto; }
   .h-full .card-media { aspect-ratio: auto; height: clamp(340px, 40vw, 620px); }
 }
 
-/* filtros: texto simple, el activo subrayado */
-.filters { display: flex; flex-wrap: wrap; gap: 4px 22px; margin: -16px 0 8px; }
+/* cabecera de trabajos: título y cantidad, debajo los filtros */
+.works-top { display: flex; flex-direction: column; gap: 24px; margin-bottom: 48px; }
+.works-title { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; }
+.works-title h2 { font-weight: 800; font-size: clamp(36px, 4.6vw, 68px); line-height: 1; letter-spacing: -0.03em; }
+.works-count { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* filtros: las categorías en tamaño de título, con su cantidad en superíndice.
+   Inactivas atenuadas (rgba .45 ≈ 4:1 sobre el fondo, texto grande), más claras al pasar el mouse;
+   la activa con el degradado del logo. Sin JS no hay filtros: se ven los destacados. */
+:root:not(.js) .filters { display: none; }
+.filters { display: flex; flex-wrap: wrap; gap: 2px 28px; }
 .filter {
-  min-height: 44px; padding: 0; background: none; border: 0; cursor: pointer;
-  color: var(--muted); font-size: 17px;
-  text-decoration: underline; text-decoration-color: transparent; text-decoration-thickness: 2px; text-underline-offset: 8px;
-  transition: color var(--dur-fast), text-decoration-color var(--dur-fast);
+  appearance: none; background: none; border: 0; margin: 0; padding: 6px 0; cursor: pointer;
+  min-height: 44px; display: inline-flex; align-items: flex-start;
+  font-weight: 800; font-stretch: 112%; font-size: clamp(26px, 3.6vw, 52px); line-height: 1; letter-spacing: -0.03em;
+  color: rgba(240, 240, 240, 0.45);
+  transition: color var(--dur-ui) var(--ease-out), transform var(--dur-fast) var(--ease-out);
 }
-.filter:hover { color: var(--fg); }
-.filter[aria-pressed="true"] { color: var(--fg); text-decoration-color: var(--accent); }
-.filters-count { color: var(--muted); font-size: var(--fs-small); margin-bottom: 36px; min-height: 1.5em; }
+.filter:hover { color: rgba(240, 240, 240, 0.78); }
+.filter:active { transform: scale(0.97); }
+.filter sup {
+  font-size: max(12px, 0.32em); font-weight: 600; letter-spacing: 0; line-height: 1;
+  margin-left: 0.18em; position: relative; top: 0.2em;
+  color: var(--muted); font-variant-numeric: tabular-nums;
+}
+.filter[aria-pressed="true"] { color: var(--accent); }
+.filter[aria-pressed="true"] .filter-label {
+  background: var(--logo-gradient); background-size: 300% 300%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: textGradientFlow 8s ease infinite;
+}
+.filter[aria-pressed="true"] sup { color: var(--accent); }
 
 /* servicios */
 .services { padding-bottom: 104px; scroll-margin-top: var(--nav-h); }
@@ -382,41 +436,57 @@ html.lenis, html.lenis body { height: auto; }
   display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px 48px;
   padding-block: 40px;
 }
-.offer h3 { font-weight: 900; font-stretch: 108%; font-size: clamp(30px, 3.4vw, 48px); line-height: 1; letter-spacing: -0.03em; }
+.offer h3 {
+  font-weight: 900; font-stretch: 108%; font-size: clamp(30px, 3.4vw, 48px); line-height: 1; letter-spacing: -0.03em;
+  background: var(--logo-gradient); background-size: 300% 300%; background-position: 0% 50%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  transition: background-position 1.2s var(--ease-out);
+}
+.offer:hover h3 { background-position: 100% 50%; }
 .offer-body { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 .offer-body p { color: var(--fg-soft); max-width: 58ch; }
 .offer-body .offer-inc { color: var(--muted); }
 .offer-ex { font-size: var(--fs-small); }
 .offer-body .offer-ex { color: var(--muted); }
-.offer-ex a { color: var(--fg); border-bottom: 1px solid rgba(255, 255, 255, 0.35); padding-block: 4px; }
-.offer-ex a:hover { border-color: var(--accent); }
+.offer-ex a { color: var(--fg); border-bottom: 1px solid rgba(0, 255, 136, 0.55); padding-block: 4px; transition: color var(--dur-ui) var(--ease-out), border-color var(--dur-ui) var(--ease-out); }
+.offer-ex a:hover, .offer-ex a:focus-visible { color: var(--accent); border-bottom-color: var(--accent); }
 .offer-cta { display: flex; }
 @media (min-width: 900px) {
   .offer { grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) auto; align-items: start; }
 }
 
-/* contacto: la llamada es el botón secundario, con su aclaración */
-.call { display: inline-flex; align-items: center; gap: 4px 14px; flex-wrap: wrap; border-radius: var(--radius-pill); }
-.call:hover .call-btn { border-color: var(--fg); }
-.call-note { color: var(--muted); font-size: var(--fs-small); }
-.call:focus-visible { outline-offset: 6px; }
-
 /* contacto */
 .contact { padding-top: 112px; padding-bottom: 112px; scroll-margin-top: var(--nav-h); }
 .contact h2 { font-weight: 900; font-stretch: 108%; font-size: clamp(44px, 8vw, 128px); line-height: 0.92; letter-spacing: -0.04em; text-wrap: balance; max-width: 12ch; }
 .contact .lead { margin-top: 24px; }
-.contact-ctas { margin-top: 32px; }
+.contact-ctas { margin-top: 36px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+/* el mail: texto seleccionable y Copiar; al copiar, "Copiado" con un tilde que se dibuja */
 .mail {
   display: inline-flex; align-items: center; gap: 10px; max-width: 100%;
-  min-height: 48px; padding: 4px 4px 4px 20px;
+  min-height: 54px; padding: 6px 6px 6px 22px;
   border: 1px solid rgba(255, 255, 255, 0.45); border-radius: var(--radius-pill);
 }
 .mail-text { user-select: all; overflow-wrap: anywhere; }
-.mail-copy {
-  min-height: 40px; padding: 0 16px; border: 0; border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.12); font-size: 14px; cursor: pointer;
+/* celular: los tres del mismo ancho, apilados; el mail entra en una línea */
+@media (max-width: 559px) {
+  .contact-ctas > .btn, .contact-ctas > .mail { width: 100%; }
+  .mail { justify-content: space-between; padding-left: 18px; }
+  .mail-text { font-size: 15px; overflow-wrap: normal; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 }
-.mail-copy:hover { background: rgba(255, 255, 255, 0.2); }
+.mail-copy {
+  display: inline-flex; align-items: center; gap: 6px;
+  min-height: 42px; min-width: 44px; padding: 0 16px; border: 0; border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.12); font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: background-color var(--dur-ui) var(--ease-out), color var(--dur-ui) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.mail-copy:hover { background: rgba(0, 255, 136, 0.18); }
+.mail-copy:active { transform: scale(0.97); }
+.mail-copy .tick { width: 0; height: 14px; flex: none; margin-right: -6px; overflow: visible; transition: width var(--dur-ui) var(--ease-out), margin var(--dur-ui) var(--ease-out); }
+.mail-copy .tick path { stroke-dasharray: 24; stroke-dashoffset: 24; transition: stroke-dashoffset 0.4s var(--ease-out) 0.08s; }
+.mail-copy.is-done { background: rgba(0, 255, 136, 0.22); color: var(--accent); }
+.mail-copy.is-done .tick { width: 14px; margin-right: 0; }
+.mail-copy.is-done .tick path { stroke-dashoffset: 0; }
 
 /* footer: fondo sólido (el negro base); el fondo animado se funde hacia él, sin línea */
 .footer { position: relative; background: var(--bg); }
