@@ -245,9 +245,14 @@
       var canFlip = !reduce && window.Flip && hasGsap;
       if (!canFlip) { applyFilter(f); loadVisibleImages(); return; }
       var state = Flip.getState(cards, { props: 'opacity' });
+      // con absolute:true las tarjetas salen del flujo y la grilla quedaría en 0: se fija su alto y se anima al nuevo,
+      // recortando las que salen para que no pasen por encima de Servicios
+      var h0 = grid.offsetHeight;
       applyFilter(f);
+      var h1 = grid.offsetHeight;
       loadVisibleImages();
       cards.forEach(function (c) { c.classList.remove('is-await'); });
+      gsap.fromTo(grid, { height: h0, overflow: 'clip' }, { height: h1, duration: 0.6, ease: 'power2.inOut', overwrite: true, clearProps: 'height,overflow' });
       Flip.from(state, {
         duration: 0.6, ease: 'power2.inOut', absolute: true, scale: false, nested: true,
         onEnter: function (els) { return gsap.fromTo(els, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.45, delay: 0.15 }); },
