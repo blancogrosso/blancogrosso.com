@@ -1,6 +1,6 @@
 # Estado de blancogrosso.com
 
-_Última actualización: 2026-10-17 — cierre de la migración a Supabase propio y de la dieta de media._
+_Última actualización: 2026-10-18. Etapa 7.1 (home v2) en la rama `v2/redesign`, preview publicada, falta Lighthouse._
 
 ## Hecho
 
@@ -51,7 +51,32 @@ No borrar ninguno de los dos.
   `img/icons/<nombre>.svg` / `.png` para etiquetas que no están en `iconMap`. Hoy todas están
   mapeadas, pero una nueva sin mapear daría 404.
 
+## Etapa 7.1: home v2 (rama `v2/redesign`, sin merge a main)
+
+- **Home one-page** con el estilo y el comportamiento del prototipo v3 aprobado (`_ref/`, fuera de git):
+  filtros tipográficos con GSAP Flip, botones con barrido, etiqueta Ver caso / Ver sitio, transición
+  tarjeta → caso con View Transitions, contacto con WhatsApp, videollamada y mail con Copiar.
+- **Cómo se edita:** los trabajos están en `data/works.json`; el HTML de la home lo genera
+  `python3 scripts/build-home.py` (no editar `index.html` a mano). Los destacados quedan escritos en el
+  HTML; el resto va en un `<template>` que suma `js/home.js`.
+- **Transición entre páginas:** `css/view-transitions.css`, enlazada en la home, los 9 casos y NIDO.
+  Cada caso tiene `view-transition-name: case-<slug>` en su imagen principal (Serie Río de la Plata no
+  tiene: solo fundido).
+- **Preview:** https://blancogrosso-8i891f775-tomasblancogrosso-6137s-projects.vercel.app (commit e309936).
+  Tiene la protección de Vercel activada (pide login).
+- **Producción:** el póster de by-kafuse ya está arreglado en main (22612d6).
+- Pendiente (b) resuelto en la rama: `cleanUrls` en `vercel.json`. En producción `/by-kafuse` sigue en 404
+  hasta el merge (hoy funciona `/by-kafuse.html`).
+
 ## Próxima sesión: arrancar por acá
+
+1. **Lighthouse mobile contra la preview** (3 corridas, mediana de rendimiento, LCP y CLS). Necesita la
+   preview accesible: desactivar la protección de Vercel para previews o un bypass para automatización.
+   Si el LCP supera 2,5 s: recortar la fuente (ancho 100–112 %, solo los glifos usados), medir y pushear.
+2. Elegir la portada de labufarra.com (opción B, partidos y tabla, puesta por defecto; opción A, solo tabla).
+3. Revisar la preview y decidir el merge de `v2/redesign` a main.
+
+## Antes (etapa 7, todavía vigente)
 
 **Etapa 7: sistema de diseño y rediseño**, en la rama `v2/redesign`.
 
