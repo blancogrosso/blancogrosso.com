@@ -227,6 +227,13 @@
       if (y !== lastY) { bgRoot.style.setProperty('--grid-y', (-(y * 0.15) % 60).toFixed(2) + 'px'); lastY = y; } // se repite cada 60 px, sin costuras
     });
     ScrollTrigger.refresh();
+    // si se llegó con un ancla (ej. /#works desde una página de caso), el pin recién montado
+    // corrió el contenido hacia abajo: volver a ubicar el destino
+    var hashTarget = location.hash.length > 1 && document.getElementById(location.hash.slice(1));
+    if (hashTarget) {
+      var y = hashTarget.getBoundingClientRect().top + window.scrollY - (nav.offsetHeight - 1);
+      if (lenis) lenis.scrollTo(y, { immediate: true }); else window.scrollTo(0, y);
+    }
   }
   function loadScript(src) {
     return new Promise(function (ok, fail) { var s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = fail; document.head.appendChild(s); });
