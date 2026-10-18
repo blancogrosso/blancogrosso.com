@@ -307,7 +307,7 @@ html.lenis, html.lenis body { height: auto; }
    ========================================================= */
 .sec-head {
   display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px;
-  margin-bottom: 40px; padding-top: 28px; border-top: 1px solid var(--line);
+  margin-bottom: 40px;
 }
 .sec-head h2 { font-weight: 800; font-size: clamp(36px, 4.6vw, 68px); line-height: 1; letter-spacing: -0.03em; }
 .sec-head p { color: var(--muted); }
@@ -364,7 +364,7 @@ html.lenis, html.lenis body { height: auto; }
 .services { padding-bottom: 104px; scroll-margin-top: var(--nav-h); }
 .offer {
   display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px 48px;
-  padding-block: 36px; border-bottom: 1px solid var(--line);
+  padding-block: 40px;
 }
 .offer h3 { font-weight: 900; font-stretch: 108%; font-size: clamp(30px, 3.4vw, 48px); line-height: 1; letter-spacing: -0.03em; }
 .offer-body { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
@@ -380,7 +380,7 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 /* contacto */
-.contact { padding-top: 96px; padding-bottom: 80px; border-top: 1px solid var(--line); scroll-margin-top: var(--nav-h); }
+.contact { padding-top: 112px; padding-bottom: 112px; scroll-margin-top: var(--nav-h); }
 .contact h2 { font-weight: 900; font-stretch: 108%; font-size: clamp(44px, 8vw, 128px); line-height: 0.92; letter-spacing: -0.04em; text-wrap: balance; max-width: 12ch; }
 .contact .lead { margin-top: 24px; }
 .contact-ctas { margin-top: 32px; }
@@ -396,11 +396,17 @@ html.lenis, html.lenis body { height: auto; }
 }
 .mail-copy:hover { background: rgba(255, 255, 255, 0.2); }
 
-/* footer */
+/* footer: fondo sólido (el negro base); el fondo animado se funde hacia él, sin línea */
+.footer { position: relative; background: var(--bg); }
+.footer::before {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 100%; height: 160px;
+  background: linear-gradient(to bottom, rgba(5, 5, 5, 0), var(--bg));
+  pointer-events: none;
+}
 .footer-row {
   display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px;
   padding-top: 24px; padding-bottom: max(32px, env(safe-area-inset-bottom, 0px));
-  border-top: 1px solid var(--line); color: var(--muted); font-size: var(--fs-small);
+  color: var(--muted); font-size: var(--fs-small);
 }
 .footer-links { display: flex; flex-wrap: wrap; gap: 0 20px; list-style: none; margin: 0; padding: 0; }
 .footer-links a { display: inline-flex; align-items: center; min-height: 44px; }
