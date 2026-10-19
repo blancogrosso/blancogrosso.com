@@ -1,6 +1,6 @@
 # Estado de blancogrosso.com
 
-_Última actualización: 2026-10-18. Etapa 7.1 (home v2) en la rama `v2/redesign`, preview publicada, falta Lighthouse._
+_Última actualización: 2026-10-19. Etapa 8 (rendimiento del scroll + casos en panel), Parte 1 hecha en la rama `v2/redesign`._
 
 ## Hecho
 
@@ -68,13 +68,54 @@ No borrar ninguno de los dos.
 - Pendiente (b) resuelto en la rama: `cleanUrls` en `vercel.json`. En producción `/by-kafuse` sigue en 404
   hasta el merge (hoy funciona `/by-kafuse.html`).
 
+## Etapa 8, Parte 1: medición "antes" (hecha, sin cambios de código)
+
+Servidor local con `npx serve` (puerto 3000), Lighthouse 12.2.1 y trazas de Chrome headless (sin GPU:
+los números absolutos de fps son peores que en una Mac real, pero la causa es la misma).
+
+**Lighthouse local** (mediana de 3 corridas):
+
+| Página | Modo | Rendimiento | Accesibilidad | Buenas prácticas | SEO | LCP | TBT | CLS |
+|---|---|---|---|---|---|---|---|---|
+| Home | Celular | 95 | 100 | 100 | 100 | 2,32 s | 199 ms | 0 |
+| Home | Escritorio | 100 | 100 | 100 | 100 | 0,51 s | 0 ms | 0 |
+| by-kafuse | Celular | 91 | 91 | 100 | 92 | 3,39 s | 0 ms | 0 |
+| by-kafuse | Escritorio | 99 | 91 | 100 | 92 | 0,96 s | 0 ms | 0 |
+
+**Scroll de la home de arriba a abajo:**
+
+| | fps con fondo | fps sin fondo (control) |
+|---|---|---|
+| Escritorio | **5,3** | 58,5 |
+| Celular | **9,9** | 59,9 |
+
+Con el fondo no hay tareas largas ni mucho JavaScript: cada cuadro espera que se dibuje el fondo.
+**Causa:** los dos círculos gigantes del fondo (140vmax) con `filter: blur(140px)` + `mix-blend-mode`.
+
+Archivos (fuera de git, en `_ref/`): `_ref/lighthouse/antes/`, `_ref/trazas/antes-etapa8/`,
+`_ref/capturas/antes-etapa8/` (capturas con las animaciones congeladas en el mismo instante, para comparar).
+Los scripts de medición quedaron en el scratchpad de la sesión (no en el repo).
+
+**Decisiones:**
+- Los casos usan sus URLs reales (`/by-kafuse`, etc.). No se crea la ruta `/trabajos/`.
+- `_ref/` queda ignorado por `.git/info/exclude` (no se toca `.gitignore`).
+
 ## Próxima sesión: arrancar por acá
 
-1. **Lighthouse mobile contra la preview** (3 corridas, mediana de rendimiento, LCP y CLS). Necesita la
-   preview accesible: desactivar la protección de Vercel para previews o un bypass para automatización.
-   Si el LCP supera 2,5 s: recortar la fuente (ancho 100–112 %, solo los glifos usados), medir y pushear.
-2. Elegir la portada de labufarra.com (opción B, partidos y tabla, puesta por defecto; opción A, solo tabla).
-3. Revisar la preview y decidir el merge de `v2/redesign` a main.
+El prompt completo de la etapa 8 sigue vigente. Orden:
+
+1. **Parte 2:** fondo más liviano con el mismo look (a: degradados ya suaves sin `filter`, animando solo
+   transform y opacity; b: pausar fuera de pantalla y sin parallax al scrollear; c: solo proponer canvas/WebGL).
+   Medir cada intento con la misma traza y comparar capturas con las de "antes".
+2. **Parte 3:** casos en un panel sobre la home (NIDO sigue como URL aparte).
+3. **Parte 4:** medición "después", prueba a mano en Chrome y Safari y reporte.
+
+**Pendiente aparte:** efecto del logo (lava, sin cortes y viaje al menú), esperando la aprobación del prototipo.
+
+**Pendientes de la etapa 7.1:**
+- Lighthouse contra la preview de Vercel (tiene la protección activada: pide login).
+- Elegir la portada de labufarra.com (opción B, partidos y tabla, puesta por defecto; opción A, solo tabla).
+- Revisar la preview y decidir el merge de `v2/redesign` a main.
 
 ## Antes (etapa 7, todavía vigente)
 
