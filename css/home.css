@@ -123,34 +123,39 @@ html.lenis, html.lenis body { height: auto; }
 .bg-mesh::before, .bg-mesh::after {
   content: '';
   position: absolute;
-  width: 140vmax; height: 140vmax;
-  border-radius: 50%;
-  filter: blur(140px);
+  /* Las dos manchas ya vienen desenfocadas en una imagen (img/mesh-*.webp, generada una vez
+     con el mismo blur(140px) de antes). Antes el navegador recalculaba ese desenfoque gigante
+     en cada cuadro y el scroll bajaba a ~5 fps; ahora solo mueve una imagen ya pintada.
+     Tamaño: 140vmax del círculo + el borde que agrega el desenfoque (198.33 = 140 × 2856/2016). */
+  width: 198.33vmax; height: 198.33vmax;
+  margin: -29.17vmax;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
   opacity: 0.12;
-  mix-blend-mode: screen;
   will-change: transform;
 }
 .bg-mesh::before {
-  background: radial-gradient(circle, var(--mesh-green) 0%, var(--mesh-cyan) 100%);
+  background-image: url('../img/mesh-verde.webp');
   top: -30%; left: -30%;
   animation: meshFloat1 20s ease-in-out infinite;
 }
 .bg-mesh::after {
-  background: radial-gradient(circle, var(--mesh-violet) 0%, var(--mesh-orange) 100%);
+  background-image: url('../img/mesh-violeta.webp');
   bottom: -30%; right: -30%;
   animation: meshFloat2 25s ease-in-out infinite;
 }
+/* recorridos escalados × 0.706: la capa es más grande y el % se mide sobre ella; así el movimiento es el mismo que antes */
 @keyframes meshFloat1 {
-  0% { transform: translate(-5%, -5%) scale(1); }
-  33% { transform: translate(10%, 5%) scale(1.2); }
-  66% { transform: translate(-5%, 15%) scale(0.9); }
-  100% { transform: translate(-5%, -5%) scale(1); }
+  0% { transform: translate(-3.53%, -3.53%) scale(1); }
+  33% { transform: translate(7.06%, 3.53%) scale(1.2); }
+  66% { transform: translate(-3.53%, 10.59%) scale(0.9); }
+  100% { transform: translate(-3.53%, -3.53%) scale(1); }
 }
 @keyframes meshFloat2 {
-  0% { transform: translate(5%, 5%) scale(1.1); }
-  33% { transform: translate(-10%, -5%) scale(0.8); }
-  66% { transform: translate(5%, -15%) scale(1.2); }
-  100% { transform: translate(5%, 5%) scale(1.1); }
+  0% { transform: translate(3.53%, 3.53%) scale(1.1); }
+  33% { transform: translate(-7.06%, -3.53%) scale(0.8); }
+  66% { transform: translate(3.53%, -10.59%) scale(1.2); }
+  100% { transform: translate(3.53%, 3.53%) scale(1.1); }
 }
 .bg-grid {
   position: absolute; left: 0; right: 0; top: -60px; height: calc(100% + 120px);
@@ -158,8 +163,7 @@ html.lenis, html.lenis body { height: auto; }
     linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 60px 60px;
-  transform: translate3d(0, var(--grid-y, 0px), 0);
-  will-change: transform;
+  will-change: transform; /* el desplazamiento lo pone js/home.js directo en transform */
 }
 
 /* degradados de identidad que fluyen (logo y claim) */

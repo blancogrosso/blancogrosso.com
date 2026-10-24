@@ -400,10 +400,13 @@
         my((e.clientY / window.innerHeight - 0.5) * 2);
       }, { passive: true });
     }
+    // la grilla se mueve con transform directo sobre su propia capa (no con una variable en .bg,
+    // que obligaba a recalcular estilos de todo el fondo en cada cuadro)
+    var bgGrid = document.querySelector('.bg-grid');
     var lastY = -1;
     gsap.ticker.add(function () {
       var y = window.scrollY;
-      if (y !== lastY) { bgRoot.style.setProperty('--grid-y', (-(y * 0.15) % 60).toFixed(2) + 'px'); lastY = y; } // se repite cada 60 px, sin costuras
+      if (y !== lastY) { bgGrid.style.transform = 'translate3d(0,' + (-(y * 0.15) % 60).toFixed(2) + 'px,0)'; lastY = y; } // se repite cada 60 px, sin costuras
     });
     ScrollTrigger.refresh();
     // si se llegó con un ancla (ej. /#works desde una página de caso), el pin recién montado
