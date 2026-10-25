@@ -1,0 +1,109 @@
+{
+  "_leeme": "Páginas de caso. Cada caso genera <slug>.html con: python3 scripts/build-cases.py. Los textos van como {\"es\": …, \"en\": …} o como texto solo si es igual en los dos idiomas. Los bloques se muestran en el orden de la lista; tipos: hero, cover, facts, story, split-video, sheet, gallery, before-after, steps, prompt, video-embed, ext-link, next. El orden de los casos (contador y 'siguiente') es el de data/works.json. Explicación de cada bloque en scripts/build-cases.py.",
+  "cases": [
+    {
+      "slug": "by-kafuse",
+      "meta": {
+        "title": "By Kafuse | Blanco Grosso",
+        "og_title": "By Kafuse Alas y Raíces | Blanco Grosso",
+        "description": "Drop de media estación (Otoño/Invierno) para By Kafuse. Una prenda híbrida 2 en 1 que fusiona moldería técnica y diseño conceptual.",
+        "og_image_alt": "Portada del proyecto By Kafuse: modelo con la prenda y el título Alas y Raíces"
+      },
+      "blocks": [
+        { "type": "hero",
+          "title": "By Kafuse Alas y Raíces",
+          "lead": { "es": "Drop de media estación (Otoño/Invierno) para By Kafuse. Una prenda híbrida 2 en 1 que fusiona moldería técnica y diseño conceptual.",
+                    "en": "Mid-season drop (Autumn/Winter) for By Kafuse. A hybrid 2-in-1 garment merging technical patterning and conceptual design." },
+          "date": { "es": "Junio 2024", "en": "June 2024" } },
+        { "type": "cover", "src": "img/works/by-kafuse/caratula.avif",
+          "alt": { "es": "Campera By Kafuse Alas y Raíces", "en": "By Kafuse Alas y Raíces jacket" } },
+        { "type": "facts", "items": [
+          ["client", "By Kafuse"],
+          ["year", "2024"],
+          ["did", { "es": "Diseño de prenda, dirección creativa, producción audiovisual", "en": "Apparel design, creative direction, audiovisual production" }],
+          ["tools", "Illustrator, Photoshop, Lightroom"]
+        ] },
+        { "type": "story",
+          "heading": { "es": "Alas y Raíces", "en": "Wings and Roots" },
+          "paras": [
+            { "es": "La colección \"Alas y Raíces\" celebra la historia y el crecimiento de una marca emergente uruguaya fundada por tres amigos de la infancia. Esta entrega encapsula la unión de pasado y futuro, tradición y modernidad, simbolizando cómo los fuertes lazos del pasado se transforman en el motor que impulsa hacia nuevos horizontes.",
+              "en": "The \"Alas y Raíces\" collection celebrates the history and growth of an emerging Uruguayan brand founded by three childhood friends. This release encapsulates the union of past and future, tradition and modernity, symbolizing how the strong bonds of the past transform into the engine that drives toward new horizons." },
+            { "es": "La moldería técnica constituye la base (raíces) y el diseño visual de las mangas se despliega como \"alas\", creando una pieza híbrida 2 en 1 diseñada para la transición de temporadas.",
+              "en": "The technical patterning forms the base (roots) and the visual design of the sleeves unfolds as \"wings,\" creating a hybrid 2-in-1 piece designed for seasonal transition." }
+          ] },
+        { "type": "sheet", "src": "img/works/by-kafuse/mockup.avif",
+          "alt": { "es": "Diseño técnico de la prenda", "en": "Technical design of the garment" },
+          "caption": { "es": "Diseño técnico", "en": "Technical mockup" } },
+        { "type": "split-video", "src": "img/works/by-kafuse/video.mp4", "poster": "img/works/by-kafuse/video-poster.avif",
+          "heading": { "es": "Producción audiovisual", "en": "Audiovisual production" },
+          "paras": [] },
+        { "type": "gallery", "items": [
+          { "src": "img/works/by-kafuse/estudio-1.avif", "alt": { "es": "Estudio 1", "en": "Studio 1" } },
+          { "src": "img/works/by-kafuse/detalle-1.avif", "alt": { "es": "Detalle 1", "en": "Detail 1" } },
+          { "src": "img/works/by-kafuse/estudio-2.avif", "alt": { "es": "Estudio 2", "en": "Studio 2" } },
+          { "src": "img/works/by-kafuse/detalle-2.avif", "alt": { "es": "Detalle 2", "en": "Detail 2" } },
+          { "src": "img/works/by-kafuse/estudio-3.avif", "alt": { "es": "Estudio 3", "en": "Studio 3" } },
+          { "src": "img/works/by-kafuse/detalle-3.avif", "alt": { "es": "Detalle 3", "en": "Detail 3" } }
+        ] },
+        { "type": "ext-link", "href": "https://www.instagram.com/p/C8icrbSs_Xb/?img_index=1",
+          "label": { "es": "Ver en Instagram", "en": "View on Instagram" } },
+        { "type": "next" }
+      ]
+    },
+    {
+      "slug": "sport-editorial",
+      "meta": {
+        "title": "Sport Editorial | Blanco Grosso",
+        "og_title": "Sport Editorial | Blanco Grosso",
+        "description": "Creación de imágenes de alto nivel para Sport Design. Un flujo de trabajo optimizado para lograr resultados fotorrealistas con dirección de arte sintética.",
+        "og_image_alt": "Portada del proyecto Sport Editorial: collage de jugadores de La Bufarra con el escudo del club"
+      },
+      "blocks": [
+        { "type": "hero",
+          "title": "Sport Editorial High Quality",
+          "lead": { "es": "Creación de imágenes de alto nivel para Sport Design. Un flujo de trabajo optimizado para lograr resultados fotorrealistas con dirección de arte sintética.",
+                    "en": "High-level image creation for Sport Design. An optimized workflow to achieve photorealistic results with synthetic art direction." },
+          "date": { "es": "Mayo 2026", "en": "May 2026" } },
+        { "type": "before-after", "cover": true,
+          "before": { "src": "img/works/sport-editorial/dts-cruda-comparar.avif", "alt": { "es": "Foto generada, sin terminar", "en": "Generated photo, unfinished" } },
+          "after": { "src": "img/works/sport-editorial/dts-comparar.avif", "alt": { "es": "Pieza terminada", "en": "Finished piece" } } },
+        { "type": "facts", "items": [
+          ["client", "La Bufarra"],
+          ["year", "2026"],
+          ["did", { "es": "Sport Design con IA", "en": "AI-powered sport design" }],
+          ["tools", "GPT, Gemini, Photoshop"]
+        ] },
+        { "type": "story",
+          "heading": { "es": "Excelencia visual en segundos", "en": "Visual excellence in seconds" },
+          "paras": [
+            { "es": "Este proyecto demuestra la capacidad de la IA para generar contenido editorial de alta calidad que compite con la fotografía tradicional. El foco estuvo en la precisión anatómica, el dinamismo de la acción y la integración impecable de branding deportivo.",
+              "en": "This project demonstrates AI's capability to generate high-quality editorial content that competes with traditional photography. The focus was on anatomical precision, action dynamism, and flawless integration of sports branding." }
+          ] },
+        { "type": "steps", "items": [
+          { "title": { "es": "Curaduría & prompts", "en": "Curation & prompts" },
+            "text": { "es": "Armado de ideas y prompts complejos utilizando referencias visuales y GPT para establecer la base estética.",
+                      "en": "Developing complex ideas and prompts using visual references and GPT to establish the aesthetic base." } },
+          { "title": { "es": "Generación HQ", "en": "HQ generation" },
+            "text": { "es": "Creación de imágenes de alta fidelidad en Gemini, enfocadas en texturas, iluminación y composición deportiva.",
+                      "en": "Creating high-fidelity images in Gemini, focused on textures, lighting, and sports composition." } },
+          { "title": { "es": "Finalización", "en": "Finalization" },
+            "text": { "es": "Integración de elementos gráficos, retoque de color y acabado profesional en Adobe Photoshop.",
+                      "en": "Integration of graphic elements, color retouching, and professional finish in Adobe Photoshop." } }
+        ] },
+        { "type": "prompt", "label": "anzu_raw.prompt",
+          "text": "Ultra-realistic cinematic sports editorial photo of [PLAYER: adult male] portrayed as a field herpetologist / conservation biologist, premium campaign realism, serious attitude.\nMatch the provided face reference for identity (high similarity). The provided club jersey must be visible under wardrobe (open lab coat/tunic, tasteful).\nWardrobe (mandatory): white lab coat/tunic (slightly open), black nitrile gloves, clear laboratory safety glasses...\nOutput: 3:4 vertical, 4K, extremely detailed, magazine cover realism.\nNo text, no logos, no badges, no watermarks, no UI.",
+          "src": "img/works/sport-editorial/anzu-cruda.avif",
+          "alt": { "es": "Resultado del prompt", "en": "Prompt result" } },
+        { "type": "gallery", "items": [
+          { "src": "img/works/sport-editorial/anzu.avif", "alt": "Anzu" },
+          { "src": "img/works/sport-editorial/enzo.avif", "alt": "Enzo" },
+          { "src": "img/works/sport-editorial/pablo.avif", "alt": "Pablo" },
+          { "src": "img/works/sport-editorial/pepo.avif", "alt": "Pepo" },
+          { "src": "img/works/sport-editorial/toni.avif", "alt": "Toni" },
+          { "src": "img/works/sport-editorial/dts.avif", "alt": "DTs" }
+        ] },
+        { "type": "next" }
+      ]
+    }
+  ]
+}

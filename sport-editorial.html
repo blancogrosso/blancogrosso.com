@@ -1,257 +1,120 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sport Editorial | Blanco Grosso</title>
-    <!-- Open Graph / canonical -->
-    <link rel="canonical" href="https://www.blancogrosso.com/sport-editorial">
-    <meta property="og:type" content="article">
-    <meta property="og:site_name" content="Blanco Grosso">
-    <meta property="og:locale" content="es_UY">
-    <meta property="og:url" content="https://www.blancogrosso.com/sport-editorial">
-    <meta property="og:title" content="Sport Editorial | Blanco Grosso">
-    <meta property="og:description" content="Creación de imágenes de alto nivel para Sport Design. Un flujo de trabajo optimizado para lograr resultados fotorrealistas con dirección de arte sintética.">
-    <meta property="og:image" content="https://www.blancogrosso.com/img/og/sport-editorial.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Portada del proyecto Sport Editorial: collage de jugadores de La Bufarra con el escudo del club">
-    <meta name="twitter:card" content="summary_large_image">
-    <!-- /Open Graph -->
-    <link rel="icon" type="image/png" href="img/icons/logo-verde.png">
-    <link rel="stylesheet" href="css/project-detail.css">
-    <link rel="stylesheet" href="css/view-transitions.css">
-    <script src="js/lang-switch.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sport Editorial | Blanco Grosso</title>
+  <meta name="description" content="Creación de imágenes de alto nivel para Sport Design. Un flujo de trabajo optimizado para lograr resultados fotorrealistas con dirección de arte sintética.">
+  <meta name="theme-color" content="#0a0a0a">
+  <!-- Open Graph / canonical -->
+  <link rel="canonical" href="https://www.blancogrosso.com/sport-editorial">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Blanco Grosso">
+  <meta property="og:locale" content="es_UY">
+  <meta property="og:url" content="https://www.blancogrosso.com/sport-editorial">
+  <meta property="og:title" content="Sport Editorial | Blanco Grosso">
+  <meta property="og:description" content="Creación de imágenes de alto nivel para Sport Design. Un flujo de trabajo optimizado para lograr resultados fotorrealistas con dirección de arte sintética.">
+  <meta property="og:image" content="https://www.blancogrosso.com/img/og/sport-editorial.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Portada del proyecto Sport Editorial: collage de jugadores de La Bufarra con el escudo del club">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- /Open Graph -->
+  <link rel="icon" type="image/png" href="img/icons/logo-verde.png">
+  <link rel="preload" href="fonts/archivo-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/case.css">
+  <link rel="stylesheet" href="css/view-transitions.css">
+  <!-- la transición desde la home espera a que exista la imagen principal -->
+  <link rel="expect" href="#cover" blocking="render">
+  <script>
+    /* Antes de pintar: idioma guardado y si hay JS (evita parpadeos) */
+    (function () {
+      var d = document.documentElement; d.classList.add('js');
+      try { if (localStorage.getItem('bg-lang') === 'en') { d.classList.add('lang-en-active'); d.lang = 'en'; } } catch (e) {}
+      /* si se llega con la transición desde la home, la imagen principal ya está destapada */
+      window.addEventListener('pagereveal', function (e) {
+        var cover = document.querySelector('[data-vt]');
+        if (e.viewTransition && cover) cover.classList.add('in', 'no-anim');
+      });
+    })();
+  </script>
 </head>
 <body>
-
-    <nav class="detail-nav">
-        <a href="portfolio.html" class="detail-nav-brand">BLANCO GROSSO</a>
-        <div style="display: flex; align-items: center; gap: 1.5rem;">
-            <div class="lang-switcher">
-                <span class="lang-toggle" data-lang="es">ES</span>
-                <span>/</span>
-                <span class="lang-toggle" data-lang="en">EN</span>
-            </div>
-            <a href="portfolio.html#works" class="detail-nav-back">
-                <span class="lang-es">Sport Editorial</span>
-                <span class="lang-en">Sport Editorial</span>
-            </a>
-        </div>
-    </nav>
-
-    <header class="project-hero">
-        <div class="project-meta">
-            <span class="project-category">AI-Powered</span>
-            <span class="project-category">Sport Design</span>
-            <span class="project-date">May 2026</span>
-        </div>
-        <h1>Sport Editorial High Quality</h1>
-        <p class="project-hero-sub">
-            <span class="lang-es">Creación de imágenes de alto nivel para Sport Design. Un flujo de trabajo optimizado para lograr resultados fotorrealistas con dirección de arte sintética.</span>
-            <span class="lang-en">High-level image creation for Sport Design. An optimized workflow to achieve photorealistic results with synthetic art direction.</span>
-        </p>
-        <div class="project-stack">
-            <span class="stack-tag">Gpt</span>
-            <span class="stack-tag">Gemini</span>
-            <span class="stack-tag">Ps</span>
-        </div>
-    </header>
-
-    <div class="project-cover">
-        <div class="comparison-slider" style="view-transition-name: case-sport-editorial;">
-            <div class="cs-underlay">
-                <img src="img/works/sport-editorial/dts.avif" alt="Final Graphic" loading="lazy" decoding="async">
-                <div class="cs-label cs-label--after">FINAL GRAPHIC</div>
-            </div>
-            <div class="cs-overlay">
-                <div class="cs-overlay-inner">
-                    <img src="img/works/sport-editorial/dts-cruda.avif" alt="Raw AI Photo" loading="lazy" decoding="async">
-                    <div class="cs-label cs-label--before">RAW AI PHOTO</div>
-                </div>
-            </div>
-            <div class="cs-handle">
-                <div class="cs-handle-inner">
-                    <div class="cs-handle-circle">↔</div>
-                </div>
-            </div>
-        </div>
+  <header class="bar">
+    <span class="count"><span class="lang-es">2 de 10</span><span class="lang-en" lang="en">2 of 10</span></span>
+    <div class="bar-end">
+      <div class="lang" role="group" aria-label="Idioma / Language">
+        <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="close" href="/#works"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg><span class="lang-es">Cerrar</span><span class="lang-en" lang="en">Close</span></a>
     </div>
+  </header>
 
-    <section class="project-section">
-        <span class="project-section-label">
-            <span class="lang-es">PROCESO</span>
-            <span class="lang-en">PROCESS</span>
-        </span>
-        
-        <div class="process-scroll-wrapper" style="margin-top: 2rem; overflow-x: auto; padding-bottom: 2rem; -webkit-overflow-scrolling: touch;">
-            <div class="playbook-horizontal" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; min-width: 800px;">
-                <style>
-                    .process-scroll-wrapper::-webkit-scrollbar { height: 4px; }
-                    .process-scroll-wrapper::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
-                    .process-scroll-wrapper::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
-                    
-                    .pb-step-h { display: flex; flex-direction: column; gap: 1rem; }
-                    .pb-num-h { font-size: 0.75rem; font-weight: 800; color: var(--accent); opacity: 0.6; font-family: monospace; }
-                    .pb-content-h h3 { font-size: 0.9rem; margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: #fff; line-height: 1.3; }
-                    .pb-content-h p { font-size: 0.75rem; opacity: 0.5; line-height: 1.5; }
-                </style>
-
-                <div class="pb-step-h">
-                    <div class="pb-num-h">01</div>
-                    <div class="pb-content-h">
-                        <h3>
-                            <span class="lang-es">Curaduría & Prompts</span>
-                            <span class="lang-en">Curation & Prompts</span>
-                        </h3>
-                        <p>
-                            <span class="lang-es">Armado de ideas y prompts complejos utilizando referencias visuales y GPT para establecer la base estética.</span>
-                            <span class="lang-en">Developing complex ideas and prompts using visual references and GPT to establish the aesthetic base.</span>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="pb-step-h">
-                    <div class="pb-num-h">02</div>
-                    <div class="pb-content-h">
-                        <h3>
-                            <span class="lang-es">Generación HQ</span>
-                            <span class="lang-en">HQ Generation</span>
-                        </h3>
-                        <p>
-                            <span class="lang-es">Creación de imágenes de alta fidelidad en Gemini, enfocadas en texturas, iluminación y composición deportiva.</span>
-                            <span class="lang-en">Creating high-fidelity images in Gemini, focused on textures, lighting, and sports composition.</span>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="pb-step-h">
-                    <div class="pb-num-h">03</div>
-                    <div class="pb-content-h">
-                        <h3>
-                            <span class="lang-es">Finalización</span>
-                            <span class="lang-en">Finalization</span>
-                        </h3>
-                        <p>
-                            <span class="lang-es">Integración de elementos gráficos, retoque de color y acabado profesional en Adobe Photoshop.</span>
-                            <span class="lang-en">Integration of graphic elements, color retouching, and professional finish in Adobe Photoshop.</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <main>
+  <article class="case" data-case="sport-editorial">
+    <header class="c-hero">
+      <h1 class="rv">Sport Editorial High Quality</h1>
+      <p class="c-lead rv"><span class="lang-es">Creación de imágenes de alto nivel para Sport Design. Un flujo de trabajo optimizado para lograr resultados fotorrealistas con dirección de arte sintética.</span><span class="lang-en" lang="en">High-level image creation for Sport Design. An optimized workflow to achieve photorealistic results with synthetic art direction.</span></p>
+      <p class="c-meta rv"><span class="lang-es">Mayo 2026</span><span class="lang-en" lang="en">May 2026</span></p>
+    </header>
+    <div class="ba rv ba-cover" id="cover" data-vt>
+      <div class="ba-box" style="view-transition-name: case-sport-editorial">
+        <img src="img/works/sport-editorial/dts-cruda-comparar.avif" width="1080" height="1440" alt="Foto generada, sin terminar" data-en-alt="Generated photo, unfinished" fetchpriority="high">
+        <img src="img/works/sport-editorial/dts-comparar.avif" width="1080" height="1440" alt="Pieza terminada" data-en-alt="Finished piece" fetchpriority="high" class="after">
+        <span class="ba-line"></span>
+        <span class="ba-knob" aria-hidden="true"><svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 6l-5 5 5 5M14 6l5 5-5 5"/></svg></span>
+        <span class="ba-tag l" aria-hidden="true"><span class="lang-es">Generada</span><span class="lang-en" lang="en">Generated</span></span><span class="ba-tag r" aria-hidden="true"><span class="lang-es">Terminada</span><span class="lang-en" lang="en">Finished</span></span>
+        <input type="range" min="0" max="100" value="50" aria-label="Comparar foto generada y pieza terminada" data-en-aria-label="Compare generated photo and finished piece">
+      </div>
+    </div>
+    <dl class="facts rv">
+      <div><dt><span class="lang-es">Cliente</span><span class="lang-en" lang="en">Client</span></dt><dd>La Bufarra</dd></div>
+      <div><dt><span class="lang-es">Año</span><span class="lang-en" lang="en">Year</span></dt><dd>2026</dd></div>
+      <div><dt><span class="lang-es">Qué hice</span><span class="lang-en" lang="en">What I did</span></dt><dd><span class="lang-es">Sport Design con IA</span><span class="lang-en" lang="en">AI-powered sport design</span></dd></div>
+      <div><dt><span class="lang-es">Herramientas</span><span class="lang-en" lang="en">Tools</span></dt><dd>GPT, Gemini, Photoshop</dd></div>
+    </dl>
+    <section class="story">
+      <h2 class="rv"><span class="lang-es">Excelencia visual en segundos</span><span class="lang-en" lang="en">Visual excellence in seconds</span></h2>
+      <div class="rv"><p><span class="lang-es">Este proyecto demuestra la capacidad de la IA para generar contenido editorial de alta calidad que compite con la fotografía tradicional. El foco estuvo en la precisión anatómica, el dinamismo de la acción y la integración impecable de branding deportivo.</span><span class="lang-en" lang="en">This project demonstrates AI&#x27;s capability to generate high-quality editorial content that competes with traditional photography. The focus was on anatomical precision, action dynamism, and flawless integration of sports branding.</span></p></div>
     </section>
+    <ol class="steps">
+      <li class="rv"><span class="n grad" aria-hidden="true">01</span><h3><span class="lang-es">Curaduría &amp; prompts</span><span class="lang-en" lang="en">Curation &amp; prompts</span></h3><p><span class="lang-es">Armado de ideas y prompts complejos utilizando referencias visuales y GPT para establecer la base estética.</span><span class="lang-en" lang="en">Developing complex ideas and prompts using visual references and GPT to establish the aesthetic base.</span></p></li>
+      <li class="rv"><span class="n grad" aria-hidden="true">02</span><h3><span class="lang-es">Generación HQ</span><span class="lang-en" lang="en">HQ generation</span></h3><p><span class="lang-es">Creación de imágenes de alta fidelidad en Gemini, enfocadas en texturas, iluminación y composición deportiva.</span><span class="lang-en" lang="en">Creating high-fidelity images in Gemini, focused on textures, lighting, and sports composition.</span></p></li>
+      <li class="rv"><span class="n grad" aria-hidden="true">03</span><h3><span class="lang-es">Finalización</span><span class="lang-en" lang="en">Finalization</span></h3><p><span class="lang-es">Integración de elementos gráficos, retoque de color y acabado profesional en Adobe Photoshop.</span><span class="lang-en" lang="en">Integration of graphic elements, color retouching, and professional finish in Adobe Photoshop.</span></p></li>
+    </ol>
+    <section class="prompt">
+      <pre class="rv"><b>anzu_raw.prompt</b>
 
-    <section class="project-section">
-        <span class="project-section-label">
-            <span class="lang-es">ARQUITECTURA DE PROMPT</span>
-            <span class="lang-en">PROMPT ARCHITECTURE</span>
-        </span>
-        <h2>
-            <span class="lang-es">Prompt vs Resultado</span>
-            <span class="lang-en">Prompt vs Result</span>
-        </h2>
-        
-        <div style="margin-top: 2rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem;">
-            
-            <div class="prompt-overlay-image" style="position: relative; border-radius: var(--radius); overflow: hidden;">
-                <img src="img/works/sport-editorial/anzu-cruda.avif" alt="Anzu Raw" style="width: 100%; display: block;">
-                <div style="position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.9)); padding: 2rem; box-sizing: border-box;">
-                    <div style="margin-bottom: 0.5rem;">
-                        <span style="color: var(--accent); font-size: 0.75rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em;">anzu_raw.prompt</span>
-                    </div>
-                    <p style="color: #fff; font-size: 0.75rem; opacity: 0.9; font-family: monospace; white-space: pre-wrap; line-height: 1.4; margin: 0; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Ultra-realistic cinematic sports editorial photo of [PLAYER: adult male] portrayed as a field herpetologist / conservation biologist, premium campaign realism, serious attitude.
+Ultra-realistic cinematic sports editorial photo of [PLAYER: adult male] portrayed as a field herpetologist / conservation biologist, premium campaign realism, serious attitude.
 Match the provided face reference for identity (high similarity). The provided club jersey must be visible under wardrobe (open lab coat/tunic, tasteful).
 Wardrobe (mandatory): white lab coat/tunic (slightly open), black nitrile gloves, clear laboratory safety glasses...
 Output: 3:4 vertical, 4K, extremely detailed, magazine cover realism.
-No text, no logos, no badges, no watermarks, no UI.</p>
-                </div>
-            </div>
-
-            <div class="prompt-overlay-image" style="position: relative; border-radius: var(--radius); overflow: hidden;">
-                <img src="img/works/sport-editorial/pepo-cruda.avif" alt="Pepo Raw" style="width: 100%; display: block;">
-                <div style="position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.9)); padding: 2rem; box-sizing: border-box;">
-                    <div style="margin-bottom: 0.5rem;">
-                        <span style="color: var(--accent); font-size: 0.75rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em;">pepo_raw.prompt</span>
-                    </div>
-                    <p style="color: #fff; font-size: 0.75rem; opacity: 0.9; font-family: monospace; white-space: pre-wrap; line-height: 1.4; margin: 0; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Ultra-realistic cinematic sports editorial portrait of [PLAYER: adult male] sitting on the exact provided chair (same model, shape, armrests), arms wide open on the armrests, relaxed dominance posture.
-POV: drone camera hovering above and slightly in front of the subject (high angle top-down / 3-4 meters above, looking down), subject looks up directly toward the drone POV (eyes and head angled upward to camera).
-Match the provided face reference for identity and facial structure (high similarity)...
-4K, extremely detailed, magazine cover vibe.</p>
-                </div>
-            </div>
-
-        </div>
+No text, no logos, no badges, no watermarks, no UI.</pre>
+      <figure class="rv-img"><img src="img/works/sport-editorial/anzu-cruda.avif" width="1792" height="2400" alt="Resultado del prompt" data-en-alt="Prompt result" loading="lazy" decoding="async"></figure>
     </section>
-
-    <section class="project-section">
-        <span class="project-section-label">
-            <span class="lang-es">EL DESAFÍO</span>
-            <span class="lang-en">THE CHALLENGE</span>
-        </span>
-        <h2>
-            <span class="lang-es">Excelencia Visual en Segundos</span>
-            <span class="lang-en">Visual Excellence in Seconds</span>
-        </h2>
-        <p>
-            <span class="lang-es">Este proyecto demuestra la capacidad de la IA para generar contenido editorial de alta calidad que compite con la fotografía tradicional. El foco estuvo en la precisión anatómica, el dinamismo de la acción y la integración impecable de branding deportivo.</span>
-            <span class="lang-en">This project demonstrates AI's capability to generate high-quality editorial content that competes with traditional photography. The focus was on anatomical precision, action dynamism, and flawless integration of sports branding.</span>
-        </p>
-    </section>
-
-    <!-- ── Gallery ── -->
-    <section class="project-gallery">
-        <span class="gallery-label">
-            <span class="lang-es">GALERÍA EDITORIAL</span>
-            <span class="lang-en">EDITORIAL GALLERY</span>
-        </span>
-        <div class="gallery-grid" style="margin-top: 2rem; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
-            <img src="img/works/sport-editorial/anzu.avif" alt="ANZU" loading="lazy" decoding="async" style="width: 100%; border-radius: var(--radius);">
-            <img src="img/works/sport-editorial/dts.avif" alt="DTs" loading="lazy" decoding="async" style="width: 100%; border-radius: var(--radius);">
-            <img src="img/works/sport-editorial/enzo.avif" alt="ENZO" loading="lazy" decoding="async" style="width: 100%; border-radius: var(--radius);">
-            <img src="img/works/sport-editorial/pablo.avif" alt="PABLO" loading="lazy" decoding="async" style="width: 100%; border-radius: var(--radius);">
-            <img src="img/works/sport-editorial/pepo.avif" alt="PEPO" loading="lazy" decoding="async" style="width: 100%; border-radius: var(--radius);">
-            <img src="img/works/sport-editorial/toni.avif" alt="TONI" loading="lazy" decoding="async" style="width: 100%; border-radius: var(--radius);">
-        </div>
-    </section>
-
-    <!-- ── Link ── -->
-    <div style="margin: 6rem auto 8rem; text-align: center; max-width: var(--max-w); padding: 0 var(--pad);">
-        <a href="#" target="_blank" style="display: inline-flex; align-items: center; gap: 0.8rem; text-decoration: none; color: #00ff88; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; transition: all 0.3s ease; opacity: 0.7;" onmouseover="this.style.opacity='1'; this.style.gap='1.2rem'" onmouseout="this.style.opacity='0.7'; this.style.gap='0.8rem'">
-            <span class="lang-es">Ver proyecto en Instagram</span>
-            <span class="lang-en">View project on Instagram</span>
-            <span style="font-size: 1.1rem; line-height: 0;">↗</span>
-        </a>
+    <div class="gal-block rv">
+      <div class="gal-ctrl">
+        <span class="gc-count"><span class="gc-n">1</span> <span class="lang-es">de</span><span class="lang-en" lang="en">of</span> 6</span>
+        <span class="gc-btns"><button type="button" class="gc-prev" aria-label="Foto anterior" data-en-aria-label="Previous photo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4l-6 6 6 6"/></svg></button><button type="button" class="gc-next" aria-label="Foto siguiente" data-en-aria-label="Next photo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 4l6 6-6 6"/></svg></button></span>
+      </div>
+      <div class="gal">
+        <figure tabindex="0" role="button" aria-label="Ver foto 1 de 6 en grande" data-en-aria-label="View photo 1 of 6 large"><img src="img/works/sport-editorial/anzu-tira.avif" srcset="img/works/sport-editorial/anzu-tira.avif 1000w, img/works/sport-editorial/anzu.avif 1920w" sizes="(min-width: 760px) 460px, 85vw" width="1920" height="2560" alt="Anzu" loading="lazy" decoding="async" draggable="false" data-full="img/works/sport-editorial/anzu.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 2 de 6 en grande" data-en-aria-label="View photo 2 of 6 large"><img src="img/works/sport-editorial/enzo-tira.avif" srcset="img/works/sport-editorial/enzo-tira.avif 1000w, img/works/sport-editorial/enzo.avif 1920w" sizes="(min-width: 760px) 460px, 85vw" width="1920" height="2560" alt="Enzo" loading="lazy" decoding="async" draggable="false" data-full="img/works/sport-editorial/enzo.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 3 de 6 en grande" data-en-aria-label="View photo 3 of 6 large"><img src="img/works/sport-editorial/pablo-tira.avif" srcset="img/works/sport-editorial/pablo-tira.avif 1000w, img/works/sport-editorial/pablo.avif 1920w" sizes="(min-width: 760px) 460px, 85vw" width="1920" height="2560" alt="Pablo" loading="lazy" decoding="async" draggable="false" data-full="img/works/sport-editorial/pablo.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 4 de 6 en grande" data-en-aria-label="View photo 4 of 6 large"><img src="img/works/sport-editorial/pepo-tira.avif" srcset="img/works/sport-editorial/pepo-tira.avif 1000w, img/works/sport-editorial/pepo.avif 1920w" sizes="(min-width: 760px) 460px, 85vw" width="1920" height="2560" alt="Pepo" loading="lazy" decoding="async" draggable="false" data-full="img/works/sport-editorial/pepo.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 5 de 6 en grande" data-en-aria-label="View photo 5 of 6 large"><img src="img/works/sport-editorial/toni-tira.avif" srcset="img/works/sport-editorial/toni-tira.avif 1000w, img/works/sport-editorial/toni.avif 1920w" sizes="(min-width: 760px) 460px, 85vw" width="1920" height="2560" alt="Toni" loading="lazy" decoding="async" draggable="false" data-full="img/works/sport-editorial/toni.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 6 de 6 en grande" data-en-aria-label="View photo 6 of 6 large"><img src="img/works/sport-editorial/dts-tira.avif" srcset="img/works/sport-editorial/dts-tira.avif 1000w, img/works/sport-editorial/dts.avif 1920w" sizes="(min-width: 760px) 460px, 85vw" width="1920" height="2560" alt="DTs" loading="lazy" decoding="async" draggable="false" data-full="img/works/sport-editorial/dts.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+      </div>
     </div>
+    <a class="next" href="/bufarra-umbro">
+      <small><span class="lang-es">Siguiente</span><span class="lang-en" lang="en">Next</span></small>
+      <span class="nt"><span class="grad">La Bufarra x Umbro Uruguay</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M3 10h13M11 4l6 6-6 6"/></svg></span>
+      <span class="thumb"><img src="img/works/bufarra-umbro.avif" width="1200" height="900" alt="" loading="lazy" decoding="async"></span>
+    </a>
+  </article>
+  </main>
 
-    <nav class="project-nav">
-        <div class="project-nav-inner">
-            <a href="labufarra-social.html" class="project-nav-link">
-                <span class="project-nav-label">
-                    <span class="lang-es">Anterior</span>
-                    <span class="lang-en">Previous</span>
-                </span>
-                <span class="project-nav-title">Vuelta a las redes</span>
-            </a>
-            <a href="bufarra-umbro.html" class="project-nav-link">
-                <span class="project-nav-label">
-                    <span class="lang-es">Siguiente</span>
-                    <span class="lang-en">Next</span>
-                </span>
-                <span class="project-nav-title">Bufarra x Umbro</span>
-            </a>
-        </div>
-    </nav>
-
-    <footer class="detail-footer">
-        <span>© 2026 Blanco Grosso. 
-            <span class="lang-es">Basado en Montevideo, Uruguay.</span>
-            <span class="lang-en">Based in Montevideo, Uruguay.</span>
-        </span>
-    </footer>
-
-    <script src="js/project-components.js"></script>
-    <script src="js/lang-switch.js"></script>
-
+  <script src="js/case.js" defer></script>
 </body>
 </html>
