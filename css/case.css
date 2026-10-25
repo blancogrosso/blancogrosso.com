@@ -119,9 +119,21 @@ a { color: inherit; }
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 40px 80px -30px rgba(0, 255, 136, 0.25);
 }
 .phone video { width: 100%; height: 100%; object-fit: cover; }
+.blk-h { margin: 0 0 clamp(20px, 3vw, 32px); font-weight: 800; font-stretch: 112%; font-size: clamp(28px, 3.6vw, 48px); line-height: 1.18; letter-spacing: -0.03em; text-wrap: balance; }
 .split h2 { margin: 0 0 16px; font-weight: 800; font-stretch: 112%; font-size: clamp(28px, 3.6vw, 48px); line-height: 1.18; letter-spacing: -0.03em; }
 .split p { margin: 0 0 16px; color: var(--soft); max-width: 52ch; }
 .split p:last-child { margin-bottom: 0; }
+
+/* Dos videos cruzados: en escritorio el primero en las columnas 1-6 y el segundo en las 7-12,
+   bajado un cuarto de su alto (el marco es 9:16, como mucho 380 px de ancho) */
+.vpair { display: grid; gap: clamp(48px, 8vw, 72px); margin: var(--block) 0; }
+.vp-item { margin: 0; }
+.vp-item .blk-h { text-align: center; }
+@media (min-width: 760px) {
+  .vpair { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 16px; align-items: start; }
+  .vp-item:nth-child(odd) { grid-column: 1 / 7; }
+  .vp-item:nth-child(even) { grid-column: 7 / 13; margin-top: calc(min(380px, 100%) * 16 / 9 / 4); }
+}
 
 /* Pieza técnica sobre plano claro */
 .sheet-wrap { margin: var(--block) 0; }
@@ -212,10 +224,11 @@ a { color: inherit; }
 @media (hover: none) { .lb-nav { display: none; } }
 
 /* Antes / después: arrastrar para comparar */
-.ba { margin: clamp(40px, 6vw, 80px) auto 0; max-width: 720px; }
+/* el ancho se limita también por el alto, para que una foto vertical (9:16) entre en pantalla */
+.ba { margin: clamp(40px, 6vw, 80px) auto 0; max-width: min(720px, calc(82svh * (var(--ar, 3 / 4)))); }
 .ba.ba-cover { margin-top: 0; }
 .ba-box {
-  position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 3 / 4; background: #111;
+  position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: var(--ar, 3 / 4); background: #111;
   touch-action: pan-y; cursor: ew-resize; user-select: none; -webkit-user-select: none;
 }
 .ba-box img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
@@ -234,14 +247,16 @@ a { color: inherit; }
 
 /* Proceso: pasos con número grande */
 .steps { list-style: none; padding: 0; margin: var(--block) 0; display: grid; gap: 36px; }
-@media (min-width: 760px) { .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; } }
+/* tres por fila; con 4 pasos, dos por fila en tablet y los cuatro juntos en escritorio */
+@media (min-width: 760px) { .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; } .steps.four { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .steps.four { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .steps .n { display: block; font-weight: 800; font-stretch: 118%; font-size: clamp(56px, 7vw, 96px); line-height: 0.9; letter-spacing: -0.04em; margin-bottom: 16px; }
 .steps h3 { margin: 0 0 8px; font-size: 20px; font-weight: 700; }
 .steps p { margin: 0; color: var(--soft); }
 
 /* Prompt contra resultado */
 .prompt { display: grid; gap: 16px; margin: var(--block) 0; }
-@media (min-width: 900px) { .prompt { grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch; } }
+@media (min-width: 900px) { .prompt { grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch; } .prompt.solo { grid-template-columns: 1fr; } }
 .prompt pre {
   margin: 0; padding: 22px; border-radius: var(--radius); background: #121412; border: 1px solid var(--line);
   font: 13.5px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; color: #cfe9db;

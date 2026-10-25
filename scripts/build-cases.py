@@ -9,12 +9,13 @@ Cada caso es una lista de bloques en orden. Tipos de bloque:
   cover         imagen principal (src, alt); lleva el view-transition-name de la tarjeta de la home
   facts         ficha: items = [[clave, valor], …] con clave client | for | year | did | tools
   story         frase grande (heading) + párrafos (paras)
-  split-video   video vertical en marco (src, poster) + heading y paras
-  sheet         pieza sobre plano claro (src, alt, caption opcional)
-  gallery       tira de fotos que se desliza, con visor a pantalla completa (items = [{src, alt}])
+  split-video   video vertical en marco (src, poster) + heading y paras; "controls": true si tiene sonido
+  video-pair    dos videos verticales con sonido, cruzados en diagonal (items = [{src, poster, heading}])
+  sheet         pieza sobre plano claro (src, alt, caption y heading opcionales)
+  gallery       tira de fotos que se desliza, con visor a pantalla completa (items = [{src, alt}], heading opcional)
   before-after  comparador arrastrable (before, after); "cover": true si hace de imagen principal
   steps         pasos numerados (items = [{title, text}])
-  prompt        texto de prompt (label, text) + imagen resultado (src, alt)
+  prompt        texto de prompt (label, text) + imagen resultado opcional (src, alt)
   video-embed   video de YouTube (id, title)
   ext-link      link externo (href, label)
   next          siguiente caso (sale del orden de data/works.json)
@@ -113,6 +114,10 @@ def b_facts(b, c):
     rows = "\n".join(f'      <div><dt>{bi(dict(zip(("es", "en"), FACT_LABELS[k])))}</dt><dd>{bi(v)}</dd></div>' for k, v in b["items"])
     return f'    <dl class="facts rv">\n{rows}\n    </dl>'
 
+def block_heading(b):
+    """Título opcional de un bloque (galería, pieza sobre plano claro)."""
+    return f'\n      <h2 class="blk-h rv">{bi(b["heading"])}</h2>' if b.get("heading") else ""
+
 def paras(b):
     return "".join(f"<p>{bi(p)}</p>" for p in b.get("paras", []))
 
@@ -123,16 +128,28 @@ def b_story(b, c):
     </section>'''
 
 def b_split_video(b, c):
+    # "controls": true para piezas con sonido: no arranca sola y se reproduce con los controles
+    attrs = "controls playsinline" if b.get("controls") else "muted loop playsinline data-autoplay"
     return f'''    <section class="split">
-      <div class="phone rv-img"><video src="{E(b["src"])}" poster="{E(b["poster"])}" muted loop playsinline preload="metadata" data-autoplay></video></div>
+      <div class="phone rv-img"><video src="{E(b["src"])}" poster="{E(b["poster"])}" {attrs} preload="metadata"></video></div>
       <div class="rv">
         <h2>{bi(b["heading"])}</h2>{paras(b)}
       </div>
     </section>'''
 
+def b_video_pair(b, c):
+    """Dos videos verticales con sonido, cruzados: el primero arriba a la izquierda y el segundo
+    más abajo a la derecha. Se reproducen con los controles (no arrancan solos)."""
+    items = "\n".join(
+        f'''      <figure class="vp-item">
+        <h2 class="blk-h rv">{bi(v["heading"])}</h2>
+        <div class="phone rv-img"><video src="{E(v["src"])}" poster="{E(v["poster"])}" controls playsinline preload="metadata"></video></div>
+      </figure>''' for v in b["items"])
+    return f'    <section class="vpair">\n{items}\n    </section>'
+
 def b_sheet(b, c):
     cap = f'\n      <figcaption class="cap">{bi(b["caption"])}</figcaption>' if b.get("caption") else ""
-    return f'''    <figure class="sheet-wrap">
+    return f'''    <figure class="sheet-wrap">{block_heading(b)}
       <div class="sheet rv-img">{img(b["src"], b["alt"])}</div>{cap}
     </figure>'''
 
@@ -150,13 +167,15 @@ def b_gallery(b, c):
         for k, i in enumerate(b["items"]))
     prev = svg('<path d="M12 4l-6 6 6 6"/>')
     nxt = svg('<path d="M8 4l6 6-6 6"/>')
-    return f'''    <div class="gal-block rv">
+    return f'''    <div class="gal-block">{block_heading(b)}
+      <div class="rv">
       <div class="gal-ctrl">
         <span class="gc-count"><span class="gc-n">1</span> {bi({"es": "de", "en": "of"})} {n}</span>
         <span class="gc-btns"><button type="button" class="gc-prev" aria-label="Foto anterior" data-en-aria-label="Previous photo">{prev}</button><button type="button" class="gc-next" aria-label="Foto siguiente" data-en-aria-label="Next photo">{nxt}</button></span>
       </div>
       <div class="gal">
 {figs}
+      </div>
       </div>
     </div>'''
 
@@ -166,7 +185,8 @@ def b_before_after(b, c):
     name = vt(c["slug"]) if cover else ""
     lazy = not cover
     sizes = "(min-width: 760px) 720px, 100vw"  # el comparador mide como mucho 720 px
-    return f'''    <div class="ba rv{" ba-cover" if cover else ""}"{wrap}>
+    w, h = img_size(b["after"]["src"]) or (3, 4)  # la caja toma la proporción de las fotos (las dos miden igual)
+    return f'''    <div class="ba rv{" ba-cover" if cover else ""}"{wrap} style="--ar: {w} / {h}">
       <div class="ba-box"{name}>
         {img(b["before"]["src"], b["before"]["alt"], lazy, sizes=sizes)}
         {img(b["after"]["src"], b["after"]["alt"], lazy, ' class="after"', sizes)}
@@ -181,14 +201,16 @@ def b_steps(b, c):
     items = "\n".join(
         f'      <li class="rv"><span class="n grad" aria-hidden="true">{k + 1:02d}</span><h3>{bi(s["title"])}</h3><p>{bi(s["text"])}</p></li>'
         for k, s in enumerate(b["items"]))
-    return f'    <ol class="steps">\n{items}\n    </ol>'
+    four = " four" if len(b["items"]) == 4 else ""  # 4 pasos: de a dos en tablet, los cuatro juntos en escritorio
+    return f'    <ol class="steps{four}">\n{items}\n    </ol>'
 
 def b_prompt(b, c):
-    return f'''    <section class="prompt">
+    # la imagen resultado es opcional; sin ella el prompt ocupa todo el ancho
+    fig = f'\n      <figure class="rv-img">{img(b["src"], b["alt"])}</figure>' if b.get("src") else ""
+    return f'''    <section class="prompt{"" if fig else " solo"}">
       <pre class="rv"><b>{E(b["label"])}</b>
 
-{E(b["text"])}</pre>
-      <figure class="rv-img">{img(b["src"], b["alt"])}</figure>
+{E(b["text"])}</pre>{fig}
     </section>'''
 
 def b_video_embed(b, c):
@@ -209,7 +231,7 @@ def b_next(b, c):
 
 BLOCKS = {
     "hero": b_hero, "cover": b_cover, "facts": b_facts, "story": b_story, "split-video": b_split_video,
-    "sheet": b_sheet, "gallery": b_gallery, "before-after": b_before_after, "steps": b_steps,
+    "video-pair": b_video_pair, "sheet": b_sheet, "gallery": b_gallery, "before-after": b_before_after, "steps": b_steps,
     "prompt": b_prompt, "video-embed": b_video_embed, "ext-link": b_ext_link, "next": b_next,
 }
 
@@ -287,6 +309,8 @@ def page(c):
 OUT_DIR = sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv else ROOT
 for c in CASES:
     out = os.path.join(OUT_DIR, c["slug"] + ".html")
+    if os.path.islink(out):  # en una carpeta de prueba, no escribir a través de un acceso directo al sitio
+        sys.exit(f"{out} es un acceso directo: no lo piso")
     html_text = page(c)
     open(out, "w", encoding="utf-8").write(html_text)
     print("ok", out, len(html_text), "bytes")
