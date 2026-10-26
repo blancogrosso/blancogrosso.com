@@ -27,7 +27,11 @@
     /* Antes de pintar: idioma guardado y si hay JS para las animaciones y si hay movimiento (evita parpadeos y saltos de layout) */
     (function () {
       var d = document.documentElement; d.classList.add('js');
-      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('motion');
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        d.classList.add('motion');
+        /* la entrada (fondo, letras, claim, botones y menú) corre solo la primera vez por sesión */
+        try { if (!sessionStorage.getItem('bg-entrada')) { d.classList.add('intro-play'); sessionStorage.setItem('bg-entrada', '1'); } } catch (e) { d.classList.add('intro-play'); }
+      }
       try { if (localStorage.getItem('bg-lang') === 'en') { d.classList.add('lang-en-active'); d.lang = 'en'; } } catch (e) {}
       /* Al volver de un caso: la imagen de su tarjeta recibe el mismo nombre que la imagen
          principal del caso, así la transición entre páginas la devuelve a su lugar */
@@ -53,7 +57,7 @@
 
   <header class="nav" id="nav">
     <div class="wrap nav-row">
-      <a href="#inicio" class="nav-mark" aria-label="Blanco Grosso, inicio"><span class="mark-long">Blanco Grosso</span><span class="mark-short" aria-hidden="true">BG</span></a>
+      <a href="#inicio" class="nav-mark" aria-label="Blanco Grosso, inicio"><span class="mark" id="navMark" aria-hidden="true"><span>BLANCO</span><span>GROSSO</span></span></a>
       <nav aria-label="Principal">
         <ul class="nav-links">
           <li><a href="#trabajos"><span class="lang-es">Trabajos</span><span class="lang-en" lang="en">Work</span></a></li>
@@ -71,7 +75,7 @@
   <main>
     <section class="intro" id="inicio">
       <div class="wrap intro-inner" id="introInner">
-        <h1 class="logo" id="logo" aria-label="Blanco Grosso"><span class="logo-row" aria-hidden="true"><span>BLANCO</span></span><span class="logo-row" aria-hidden="true"><span>GROSSO</span></span></h1>
+        <div class="logo-wrap" id="logoWrap"><span class="halo" aria-hidden="true"></span><h1 class="logo" id="logo" aria-label="Blanco Grosso"><span class="logo-row" aria-hidden="true"><span><span class="ch" style="--i:0;--r:0">B</span><span class="ch" style="--i:1;--r:0">L</span><span class="ch k-la" style="--i:2;--r:0">A</span><span class="ch k-an" style="--i:3;--r:0">N</span><span class="ch" style="--i:4;--r:0">C</span><span class="ch" style="--i:5;--r:0">O</span></span></span><span class="logo-row" aria-hidden="true"><span><span class="ch" style="--i:6;--r:1">G</span><span class="ch k-gr" style="--i:7;--r:1">R</span><span class="ch k-ro" style="--i:8;--r:1">O</span><span class="ch k-os" style="--i:9;--r:1">S</span><span class="ch" style="--i:10;--r:1">S</span><span class="ch" style="--i:11;--r:1">O</span></span></span></h1></div>
         <div class="intro-foot">
           <div>
             <p class="claim">Creative Studio <span class="claim-acc">for Sports &amp; Tech</span></p>
@@ -91,8 +95,9 @@
     <section class="reel-sec" id="reelSec" aria-label="Showreel">
       <div class="reel-stage" id="reelStage">
         <div class="reel" id="reel">
-          <!-- TODO: reel provisorio armado con imágenes de los 9 trabajos. Lo reemplazo por el reel final de Remotion. -->
-          <video id="reelVideo" muted loop playsinline preload="none" data-poster="img/reel/reel-provisorio-poster.avif" data-src="img/reel/reel-provisorio.mp4" width="1920" height="1080" aria-label="Showreel de Blanco Grosso: fragmentos de los nueve trabajos" data-en-aria-label="Blanco Grosso showreel: excerpts from the nine projects"></video>
+          <!-- showreel de trabajos (_ref/showreel/): 1080p y, en pantallas de menos de 900 px, la versión de 720
+               (la elige js/home.js al cargarlo). Los anteriores (reel-provisorio, montaje-provisorio, reel-servicios) siguen en img/reel/. -->
+          <video id="reelVideo" muted loop playsinline preload="none" data-poster="img/reel/showreel-poster.avif" data-src="img/reel/showreel.mp4" data-src-chico="img/reel/showreel-720.mp4" width="1920" height="1080" aria-label="Showreel de trabajos de Blanco Grosso" data-en-aria-label="Blanco Grosso showreel of projects"></video>
           <button type="button" class="reel-toggle" id="reelToggle" aria-pressed="false"><span class="lang-es">Pausar</span><span class="lang-en" lang="en">Pause</span></button>
         </div>
       </div>
@@ -116,7 +121,7 @@
         <p class="sr-only" id="worksStatus" role="status" aria-live="polite"></p>
       </div>
       <div class="grid" id="worksGrid">
-      <a class="card s7 h-tall" href="/labufarra-social" data-slug="labufarra-social" data-filters="motion" data-featured data-preview="img/works/labufarra-social-preview.mp4">
+      <a class="card s7 h-tall" href="/labufarra-social" data-slug="labufarra-social" data-filters="motion" data-featured data-case data-preview="img/works/labufarra-social-preview.mp4">
         <div class="card-media">
           <img data-src="img/works/labufarra-social-limpio.avif" width="1200" height="900" alt="Vuelta a las redes @labufarra" loading="lazy" decoding="async" fetchpriority="low">
           <noscript><img src="img/works/labufarra-social-limpio.avif" width="1200" height="900" alt="Vuelta a las redes @labufarra" loading="lazy" decoding="async"></noscript>
@@ -129,7 +134,7 @@
           <p class="card-tools">GPT, Gemini, Photoshop, Flow, Premiere</p>
         </div>
       </a>
-      <a class="card s5 h-tall" href="/sport-editorial" data-slug="sport-editorial" data-filters="sport" data-featured>
+      <a class="card s5 h-tall" href="/sport-editorial" data-slug="sport-editorial" data-filters="sport" data-featured data-case>
         <div class="card-media">
           <img data-src="img/works/sport-editorial.avif" width="1200" height="900" alt="Sport Editorial" loading="lazy" decoding="async" fetchpriority="low">
           <noscript><img src="img/works/sport-editorial.avif" width="1200" height="900" alt="Sport Editorial" loading="lazy" decoding="async"></noscript>
@@ -141,7 +146,7 @@
           <p class="card-tools">GPT, Gemini, Photoshop</p>
         </div>
       </a>
-      <a class="card s4 h-mid" href="/bufarra-umbro" data-slug="bufarra-umbro" data-filters="sport motion" data-featured data-preview="img/works/bufarra-umbro-preview.mp4">
+      <a class="card s4 h-mid" href="/bufarra-umbro" data-slug="bufarra-umbro" data-filters="sport motion" data-featured data-case data-preview="img/works/bufarra-umbro-preview.mp4">
         <div class="card-media">
           <img data-src="img/works/bufarra-umbro.avif" width="1200" height="900" alt="La Bufarra x Umbro Uruguay" loading="lazy" decoding="async" fetchpriority="low">
           <noscript><img src="img/works/bufarra-umbro.avif" width="1200" height="900" alt="La Bufarra x Umbro Uruguay" loading="lazy" decoding="async"></noscript>
@@ -154,7 +159,7 @@
           <p class="card-tools">Illustrator, Photoshop, Claude, Gemini, Flow, CapCut</p>
         </div>
       </a>
-      <a class="card s4 h-mid" href="/bufarra-kithome" data-slug="bufarra-kithome" data-filters="sport" data-featured>
+      <a class="card s4 h-mid" href="/bufarra-kithome" data-slug="bufarra-kithome" data-filters="sport" data-featured data-case>
         <div class="card-media">
           <img data-src="img/works/bufarra-kithome.avif" width="1200" height="900" alt="Bufarra KitHome 24/25" loading="lazy" decoding="async" fetchpriority="low">
           <noscript><img src="img/works/bufarra-kithome.avif" width="1200" height="900" alt="Bufarra KitHome 24/25" loading="lazy" decoding="async"></noscript>
@@ -166,7 +171,7 @@
           <p class="card-tools">GPT, Gemini, Photoshop, Illustrator, Lightroom</p>
         </div>
       </a>
-      <a class="card s4 h-mid" href="/tienda-nacional" data-slug="tienda-nacional" data-filters="campaigns" data-featured>
+      <a class="card s4 h-mid" href="/tienda-nacional" data-slug="tienda-nacional" data-filters="campaigns" data-featured data-case>
         <div class="card-media">
           <img data-src="img/works/tienda-nacional.avif" width="1200" height="900" alt="Tienda Nacional" loading="lazy" decoding="async" fetchpriority="low">
           <noscript><img src="img/works/tienda-nacional.avif" width="1200" height="900" alt="Tienda Nacional" loading="lazy" decoding="async"></noscript>
@@ -178,7 +183,7 @@
           <p class="card-tools">Illustrator, Photoshop</p>
         </div>
       </a>
-      <a class="card s5 h-tall" href="/by-kafuse" data-slug="by-kafuse" data-filters="campaigns" data-featured data-preview="img/works/by-kafuse-preview.mp4">
+      <a class="card s5 h-tall" href="/by-kafuse" data-slug="by-kafuse" data-filters="campaigns" data-featured data-case data-preview="img/works/by-kafuse-preview.mp4">
         <div class="card-media">
           <img data-src="img/works/by-kafuse.avif" width="1200" height="900" alt="By Kafuse Alas y Raíces" loading="lazy" decoding="async" fetchpriority="low">
           <noscript><img src="img/works/by-kafuse.avif" width="1200" height="900" alt="By Kafuse Alas y Raíces" loading="lazy" decoding="async"></noscript>
@@ -191,7 +196,7 @@
           <p class="card-tools">Illustrator, Photoshop, Lightroom</p>
         </div>
       </a>
-      <a class="card s7 h-tall" href="/serie-rio-plata" data-slug="serie-rio-plata" data-filters="sport" data-featured>
+      <a class="card s7 h-tall" href="/serie-rio-plata" data-slug="serie-rio-plata" data-filters="sport" data-featured data-case>
         <div class="card-media">
           <img data-src="img/works/serie-rio-plata.avif" width="1200" height="900" alt="Serie Río de la Plata" loading="lazy" decoding="async" fetchpriority="low">
           <noscript><img src="img/works/serie-rio-plata.avif" width="1200" height="900" alt="Serie Río de la Plata" loading="lazy" decoding="async"></noscript>
@@ -203,7 +208,7 @@
           <p class="card-tools">Photoshop, Lightroom</p>
         </div>
       </a>
-      <a class="card s4 h-mid" href="/iris-lab" data-slug="iris-lab" data-filters="" data-featured>
+      <a class="card s4 h-mid" href="/iris-lab" data-slug="iris-lab" data-filters="" data-featured data-case>
         <div class="card-media">
           <img data-src="img/works/iris-lab.avif" width="1200" height="900" alt="Iris Lab" loading="lazy" decoding="async" fetchpriority="low">
           <noscript><img src="img/works/iris-lab.avif" width="1200" height="900" alt="Iris Lab" loading="lazy" decoding="async"></noscript>
@@ -215,7 +220,7 @@
           <p class="card-tools">Lightroom, Photoshop</p>
         </div>
       </a>
-      <a class="card s4 h-mid" href="/final-clasica" data-slug="final-clasica" data-filters="sport" data-featured>
+      <a class="card s4 h-mid" href="/final-clasica" data-slug="final-clasica" data-filters="sport" data-featured data-case>
         <div class="card-media">
           <img data-src="img/works/final-clasica.avif" width="1200" height="900" alt="Final Clásica Fútbol Uruguayo" loading="lazy" decoding="async" fetchpriority="low">
           <noscript><img src="img/works/final-clasica.avif" width="1200" height="900" alt="Final Clásica Fútbol Uruguayo" loading="lazy" decoding="async"></noscript>
@@ -227,10 +232,10 @@
           <p class="card-tools">Photoshop, Lightroom</p>
         </div>
       </a>
-      <a class="card s4 h-mid" href="/nido" data-slug="nido" data-filters="branding" data-featured>
-        <div class="card-media" style="background:#f3eee3">
-          <img data-src="img/works/nido.avif" width="1200" height="900" alt="NIDO" class="fit-contain" loading="lazy" decoding="async" fetchpriority="low">
-          <noscript><img src="img/works/nido.avif" width="1200" height="900" alt="NIDO" class="fit-contain" loading="lazy" decoding="async"></noscript>
+      <a class="card s4 h-mid" href="/nido-identidad" data-slug="nido-identidad" data-filters="branding" data-featured data-case>
+        <div class="card-media">
+          <img data-src="img/works/nido-identidad.avif" width="1200" height="900" alt="NIDO" loading="lazy" decoding="async" fetchpriority="low">
+          <noscript><img src="img/works/nido-identidad.avif" width="1200" height="900" alt="NIDO" loading="lazy" decoding="async"></noscript>
         </div>
         <div class="card-meta">
           <h3>NIDO</h3>
@@ -280,7 +285,7 @@
       <div class="offer-body">
         <p><span class="lang-es">Branding, Social Media, piezas de campaña. Identidad visual con impacto inmediato.</span><span class="lang-en" lang="en">Branding, Social Media, campaign assets. Visual identity with immediate impact.</span></p>
         <p class="offer-inc"><span class="lang-es">Identidad de marca, key visuals y campañas, contenido para redes, templates y sistemas gráficos.</span><span class="lang-en" lang="en">Brand identity, key visuals and campaigns, social media content, templates and graphic systems.</span></p>
-        <p class="offer-ex"><span class="lang-es">Ejemplo:</span><span class="lang-en" lang="en">Example:</span> <a href="/nido">NIDO</a></p>
+        <p class="offer-ex"><span class="lang-es">Ejemplo:</span><span class="lang-en" lang="en">Example:</span> <a href="/nido-identidad">NIDO</a></p>
       </div>
       <div class="offer-cta">
         <a class="btn btn-ghost lang-es" href="https://wa.me/59899234543?text=Hola%20Tom%C3%A1s%2C%20me%20gustar%C3%ADa%20pedir%20presupuesto%20para%20un%20Visual%20Sprint%20%28Branding/Identidad%29." target="_blank" rel="noopener">Pedir presupuesto <svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -313,6 +318,59 @@
     </article>
     </section>
 
+    <section class="stack" id="herramientas" aria-label="Herramientas" data-en-aria-label="Tools" data-reveal>
+      <div class="ribbon" id="ribbon">
+        <ul class="ribbon-track">
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/adobe-illustrator.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Illustrator</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/adobe-photoshop.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Photoshop</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/adobe-lightroom.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Lightroom</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/adobe-premiere.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Premiere</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic invert" src="img/icons/stack/capcut.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">CapCut</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/flow.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Flow</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/heygen.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">HeyGen</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/suno.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Suno</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/claude.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Claude</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic invert" src="img/icons/stack/chatgpt.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">ChatGPT</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/gemini.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Gemini</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/freepik.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Freepik</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/lovable.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Lovable</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/antigravity.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Antigravity</span></li>
+        </ul>
+        <ul class="ribbon-track ribbon-copy" aria-hidden="true">
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/adobe-illustrator.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Illustrator</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/adobe-photoshop.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Photoshop</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/adobe-lightroom.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Lightroom</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/adobe-premiere.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Premiere</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic invert" src="img/icons/stack/capcut.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">CapCut</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/flow.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Flow</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/heygen.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">HeyGen</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/suno.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Suno</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/claude.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Claude</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic invert" src="img/icons/stack/chatgpt.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">ChatGPT</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/gemini.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Gemini</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/freepik.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Freepik</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/lovable.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Lovable</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/antigravity.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Antigravity</span></li>
+        </ul>
+        <ul class="ribbon-track ribbon-copy" aria-hidden="true">
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/adobe-illustrator.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Illustrator</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/adobe-photoshop.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Photoshop</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/adobe-lightroom.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Lightroom</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/adobe-premiere.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Premiere</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic invert" src="img/icons/stack/capcut.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">CapCut</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/flow.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Flow</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/heygen.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">HeyGen</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/suno.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Suno</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/claude.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Claude</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic invert" src="img/icons/stack/chatgpt.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">ChatGPT</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/gemini.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Gemini</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/freepik.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Freepik</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/lovable.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Lovable</span></li>
+          <li class="tool"><span class="tool-tile"><img class="tool-ic" src="img/icons/stack/antigravity.avif" width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">Antigravity</span></li>
+        </ul>
+      </div>
+    </section>
+
     <section class="contact wrap" id="contacto" aria-labelledby="t-contacto">
       <h2 id="t-contacto" data-reveal><span class="lang-es">¿Tenés un proyecto en mente?</span><span class="lang-en" lang="en">Have a project in mind?</span></h2>
       <p class="lead" data-reveal><span class="lang-es">Contame tu idea y armamos una propuesta a medida.</span><span class="lang-en" lang="en">Tell me about your idea and we'll build a tailored proposal.</span></p>
@@ -343,6 +401,28 @@
 
   <!-- etiqueta que sigue al mouse sobre las tarjetas (solo con mouse) -->
   <div class="cursor-tag" id="cursorTag" aria-hidden="true"><span></span></div>
+
+  <!-- caso como panel sobre la home: js/home.js lo llena con el <article> de la página del caso
+       (las que genera scripts/build-cases.py); abrir la URL del caso directo muestra la página completa -->
+  <div class="cp-scrim" id="cpScrim" hidden></div>
+  <div class="case-panel case-tokens" id="casePanel" role="dialog" aria-modal="true" aria-label="Caso" tabindex="-1" hidden data-lenis-prevent>
+    <header class="bar" id="cpBar">
+      <span class="cp-handle" aria-hidden="true"></span>
+      <div class="bar-start">
+        <button type="button" class="back" id="cpBack"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 10H4M9 4l-6 6 6 6"/></svg><span class="lang-es">Trabajos</span><span class="lang-en" lang="en">Work</span></button>
+        <span class="count" id="cpCount"></span>
+      </div>
+      <span class="bar-title" id="cpTitle" aria-hidden="true"></span>
+      <div class="bar-end">
+        <div class="lang" role="group" aria-label="Idioma / Language">
+          <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
+          <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+        <button type="button" class="close x" id="cpClose" aria-label="Cerrar" data-en-aria-label="Close"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg></button>
+      </div>
+    </header>
+    <div class="cp-body" id="cpBody"></div>
+  </div>
 
   <!-- home.js carga gsap, ScrollTrigger, Flip y Lenis (js/vendor/) después del evento load -->
   <script src="js/home.js" defer></script>
