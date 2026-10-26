@@ -2,20 +2,24 @@
 """Genera index.html (home one-page) a partir de data/works.json y de los servicios de abajo.
 
 Uso (desde la raíz del repo):  python3 scripts/build-home.py
+                    (con --out CARPETA escribe index.html en otra carpeta, para probar sin pisar el del sitio)
 
 Los trabajos destacados quedan escritos en el HTML (los leen Google y las vistas previas
 de links, que no ejecutan JS). Los demás van en un <template>: js/home.js los agrega a la
 grilla junto con los filtros. Sin JS se ven los destacados.
 """
-import html, json, os, re, urllib.parse
+import html, json, os, re, sys, urllib.parse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT = os.path.join(ROOT, "index.html")
+# con --out CARPETA escribe index.html en otra carpeta, para probar sin pisar el del sitio
+OUT = os.path.join(sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv else ROOT, "index.html")
 E = lambda s: html.escape(s, quote=True)
 WA = "https://wa.me/59899234543?text="
 CALL = "https://calendar.app.google/xqyLbf59LWQSJCHk7"
 
 WORKS = json.load(open(os.path.join(ROOT, "data", "works.json"), encoding="utf-8"))["works"]
+# trabajos con página de caso de la plantilla (data/cases.json): en la home se abren como panel
+CASE_SLUGS = {c["slug"] for c in json.load(open(os.path.join(ROOT, "data", "cases.json"), encoding="utf-8"))["cases"]}
 FILTERS = [  # id, etiqueta ES, etiqueta EN
     ("featured", "Destacados", "Featured"),
     ("branding", "Branding", "Branding"),
@@ -67,6 +71,7 @@ ARROW_EXT = svg('<path d="M7 17 17 7M8 7h9v9"/>', "ext-ic")
 WHATSAPP = svg('<path d="M12 2.2A9.8 9.8 0 0 0 3.6 17l-1.4 4.8 4.9-1.3A9.8 9.8 0 1 0 12 2.2Zm0 17.8a8 8 0 0 1-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.8.9c-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5a.9.9 0 0 0-.6.3 2.6 2.6 0 0 0-.8 1.9 4.5 4.5 0 0 0 1 2.4 10.3 10.3 0 0 0 4 3.5c1.5.6 2 .7 2.8.6a2.3 2.3 0 0 0 1.5-1.1 1.9 1.9 0 0 0 .1-1.1c0-.1-.2-.2-.4-.3Z"/>', fill="currentColor")
 CAMERA = svg('<rect x="2" y="6" width="14" height="12" rx="2"/><path d="m22 8-6 4 6 4V8Z"/>', sw="2")
 TICK = svg('<path d="M4 12.5l5 5 11-11"/>', "tick", sw="2.6")
+CLOSE_X = '<svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg>'
 NEW_TAB = '<span class="sr-only">' + bi(" (abre en una pestaña nueva)", " (opens in a new tab)") + '</span>'
 
 # Tamaños: el patrón 7/5, 4/4/4, 5/7, 6/6 se repite; la última fila nunca deja una tarjeta chica
@@ -91,6 +96,7 @@ def card(w, size=""):
     ext = w.get("external", False)
     attrs = f' data-slug="{w["slug"]}" data-filters="{" ".join(w["filters"])}"'
     if w.get("featured"): attrs += ' data-featured'
+    if w["slug"] in CASE_SLUGS: attrs += ' data-case'
     if ext: attrs += ' target="_blank" rel="noopener" data-external'
     if w.get("preview"): attrs += f' data-preview="img/works/{w["slug"]}-preview.mp4"'
     img = f'img/works/{w["slug"]}.avif'
@@ -300,6 +306,23 @@ page = f'''<!DOCTYPE html>
   <!-- etiqueta que sigue al mouse sobre las tarjetas (solo con mouse) -->
   <div class="cursor-tag" id="cursorTag" aria-hidden="true"><span></span></div>
 
+  <!-- caso como panel sobre la home: js/home.js lo llena con el <article> de la página del caso
+       (las que genera scripts/build-cases.py); abrir la URL del caso directo muestra la página completa -->
+  <div class="cp-scrim" id="cpScrim" hidden></div>
+  <div class="case-panel case-tokens" id="casePanel" role="dialog" aria-modal="true" aria-label="Caso" tabindex="-1" hidden data-lenis-prevent>
+    <header class="bar">
+      <span class="count" id="cpCount"></span>
+      <div class="bar-end">
+        <div class="lang" role="group" aria-label="Idioma / Language">
+          <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
+          <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+        <button type="button" class="close" id="cpClose">{CLOSE_X}{bi("Cerrar", "Close")}</button>
+      </div>
+    </header>
+    <div class="cp-body" id="cpBody"></div>
+  </div>
+
   <!-- home.js carga gsap, ScrollTrigger, Flip y Lenis (js/vendor/) después del evento load -->
   <script src="js/home.js" defer></script>
 </body>
@@ -313,5 +336,7 @@ def limpio(m):
     return c if not src.endswith("-limpio.avif") and os.path.exists(os.path.join(ROOT, c)) else src
 page = re.sub(r"img/[^\"'\s,)]+?\.avif", limpio, page)
 
+if os.path.islink(OUT):  # en una carpeta de prueba, no escribir a través de un acceso directo al sitio
+    sys.exit(f"{OUT} es un acceso directo: no lo piso")
 open(OUT, "w", encoding="utf-8").write(page)
 print("ok", OUT, len(page), "bytes ·", len(featured), "destacados en el HTML,", len(others), "en el template")

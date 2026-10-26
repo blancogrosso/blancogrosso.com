@@ -336,7 +336,7 @@ def page(c):
     url = f"{SITE}/{slug}"
     body = "\n".join(BLOCKS[b["type"]](b, c) for b in c["blocks"])
     return f'''<!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="case-tokens">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -359,6 +359,7 @@ def page(c):
   <!-- /Open Graph -->
   <link rel="icon" type="image/png" href="img/icons/logo-verde.png">
   <link rel="preload" href="fonts/archivo-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/case-base.css">
   <link rel="stylesheet" href="css/case.css">
   <link rel="stylesheet" href="css/view-transitions.css">
   <!-- la transición desde la home espera a que exista la imagen principal -->

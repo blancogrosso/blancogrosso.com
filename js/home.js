@@ -429,6 +429,158 @@
     if (document.readyState === 'complete') startMotion(); else window.addEventListener('load', startMotion, { once: true });
   }
 
+  /* ── Caso como panel sobre la home (etapa 8, Parte 3) ────
+     Click en una tarjeta de caso: se pide la página del caso, se toma su <article> y se muestra
+     en un panel que sube por encima de la home. La URL pasa a ser la del caso (abrirla directo
+     muestra la página completa). Se cierra con Cerrar, Escape, "atrás" o tocando el fondo, y la
+     home queda donde estaba. css/case.css y js/case.js se cargan recién la primera vez. */
+  var panel = document.getElementById('casePanel');
+  if (panel && window.fetch && window.DOMParser && history.pushState) {
+    var scrim = document.getElementById('cpScrim');
+    var cpBody = document.getElementById('cpBody');
+    var cpCount = document.getElementById('cpCount');
+    var cp = { open: false, busy: false, destroy: null, opener: null, y: 0, closeTimer: null };
+    var caseCache = {};
+    var caseAssets = null;
+    var caseSlugs = cards.filter(function (c) { return c.hasAttribute('data-case'); }).map(function (c) { return c.dataset.slug; });
+
+    function slugOf(href) { return new URL(href, location.href).pathname.replace(/^\/|\.html$/g, ''); }
+    function isCase(href) { return caseSlugs.indexOf(slugOf(href)) !== -1; }
+    function loadCSS(href) {
+      return new Promise(function (ok, fail) { var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = href; l.onload = ok; l.onerror = fail; document.head.appendChild(l); });
+    }
+    function assets() {
+      if (!caseAssets) caseAssets = Promise.all([loadCSS('css/case.css'), loadScript('js/case.js')]);
+      return caseAssets;
+    }
+    // la página del caso: se pide una sola vez (y antes, al pasar el mouse por la tarjeta)
+    function fetchCase(href) {
+      var key = slugOf(href);
+      if (!caseCache[key]) {
+        caseCache[key] = fetch('/' + key).then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); }).then(function (t) {
+          var doc = new DOMParser().parseFromString(t, 'text/html');
+          var art = doc.querySelector('article.case');
+          if (!art) throw new Error('sin artículo');
+          return { article: art, count: doc.querySelector('.bar .count') };
+        });
+        caseCache[key].catch(function () { delete caseCache[key]; });
+      }
+      return caseCache[key];
+    }
+    function render(data) {
+      if (cp.destroy) { cp.destroy(); cp.destroy = null; }
+      var art = document.importNode(data.article, true);
+      // los nombres de la transición entre páginas no hacen falta adentro del panel
+      art.querySelectorAll('[style*="view-transition-name"]').forEach(function (el) { el.style.viewTransitionName = ''; });
+      cpBody.replaceChildren(art);
+      cpCount.innerHTML = data.count ? data.count.innerHTML : '';
+      var h1 = art.querySelector('h1');
+      panel.setAttribute('aria-label', h1 ? h1.textContent.trim() : 'Caso');
+      panel.scrollTop = 0;
+      setLang(root.classList.contains('lang-en-active') ? 'en' : 'es'); // textos alternativos y etiquetas en el idioma activo
+      cp.destroy = window.BGCase.init(art, panel);
+    }
+    function lockHome() {
+      cp.y = window.scrollY;
+      if (lenis) lenis.stop();
+      root.classList.add('cp-open');
+      if (cursorTag) cursorTag.classList.remove('is-on');
+      cards.forEach(function (c) { var v = c.querySelector('video'); if (v) { c.classList.remove('is-playing'); v.pause(); } });
+    }
+    function unlockHome() {
+      root.classList.remove('cp-open');
+      // la home vuelve exactamente a donde estaba
+      window.scrollTo(0, cp.y);
+      if (lenis) { lenis.start(); lenis.scrollTo(cp.y, { immediate: true }); }
+    }
+    function showPanel() {
+      clearTimeout(cp.closeTimer);
+      panel.hidden = false; scrim.hidden = false;
+      void panel.offsetWidth; // que la transición arranque desde abajo
+      panel.classList.add('on'); scrim.classList.add('on');
+      document.getElementById('cpClose').focus({ preventScroll: true });
+    }
+    // abre (o cambia) el caso. push: true agrega la URL al historial; false la reemplaza ("Siguiente")
+    function openCase(href, opener, push) {
+      if (cp.busy) return;
+      cp.busy = true;
+      Promise.all([fetchCase(href), assets()]).then(function (r) {
+        cp.busy = false;
+        var url = '/' + slugOf(href);
+        if (!cp.open) {
+          cp.open = true; cp.opener = opener || null;
+          lockHome(); render(r[0]); showPanel();
+          if (push) history.pushState({ casePanel: url }, '', url);
+          return;
+        }
+        // "Siguiente": el panel queda abierto y cambia el contenido con un fundido corto
+        cpBody.classList.add('is-swapping');
+        setTimeout(function () {
+          render(r[0]);
+          cpBody.classList.remove('is-swapping');
+          history.replaceState({ casePanel: url }, '', url);
+          document.getElementById('cpClose').focus({ preventScroll: true });
+        }, reduce ? 0 : 250);
+      }).catch(function () { cp.busy = false; location.href = href; }); // si falla, la página normal
+    }
+    function closeCase(fromHistory) {
+      if (!cp.open) return;
+      cp.open = false;
+      panel.classList.remove('on'); scrim.classList.remove('on');
+      cp.closeTimer = setTimeout(function () {
+        panel.hidden = true; scrim.hidden = true;
+        if (cp.destroy) { cp.destroy(); cp.destroy = null; }
+        cpBody.replaceChildren();
+      }, reduce ? 0 : 550);
+      cpBody.querySelectorAll('video').forEach(function (v) { v.pause(); });
+      unlockHome();
+      if (cp.opener) cp.opener.focus({ preventScroll: true });
+      if (!fromHistory && history.state && history.state.casePanel) history.back();
+    }
+
+    cards.forEach(function (card) {
+      if (!card.hasAttribute('data-case')) return; // externos y NIDO siguen como hoy
+      var href = card.getAttribute('href');
+      var warm = function () { fetchCase(href).catch(function () {}); assets().catch(function () {}); };
+      card.addEventListener('mouseenter', warm);
+      card.addEventListener('focus', warm);
+      card.addEventListener('click', function (e) {
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // nueva pestaña: como siempre
+        e.preventDefault();
+        openCase(href, card, true);
+      });
+    });
+    document.getElementById('cpClose').addEventListener('click', function () { closeCase(false); });
+    scrim.addEventListener('click', function () { closeCase(false); });
+    // "Siguiente" dentro del panel cambia de caso sin cerrarlo (NIDO, que no es un caso, abre su página)
+    cpBody.addEventListener('click', function (e) {
+      var a = e.target.closest('a.next');
+      if (!a || !isCase(a.getAttribute('href')) || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      e.preventDefault();
+      openCase(a.getAttribute('href'), cp.opener, false);
+    });
+    // atrás / adelante del navegador
+    window.addEventListener('popstate', function (e) {
+      var s = e.state && e.state.casePanel;
+      if (cp.open && !s) closeCase(true);
+      else if (!cp.open && s) openCase(s, grid.querySelector('.card[data-slug="' + slugOf(s) + '"]'), false);
+    });
+    // Escape cierra (el visor de fotos, si está abierto, se queda con su Escape) y el foco no sale del panel
+    document.addEventListener('keydown', function (e) {
+      if (!cp.open) return;
+      if (e.key === 'Escape') { e.preventDefault(); closeCase(false); return; }
+      if (e.key !== 'Tab') return;
+      var f = Array.prototype.filter.call(panel.querySelectorAll('a[href], button, input, video[controls], [tabindex]:not([tabindex="-1"])'), function (el) {
+        return !el.disabled && el.offsetParent !== null;
+      });
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (!panel.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+      else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+  }
+
   /* idioma inicial (el script del <head> ya aplicó la clase sin parpadeo) */
   setLang(root.classList.contains('lang-en-active') ? 'en' : 'es');
 })();
