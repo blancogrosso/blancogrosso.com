@@ -1,308 +1,135 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vuelta a las redes @labufarra | Blanco Grosso</title>
-    <!-- Open Graph / canonical -->
-    <link rel="canonical" href="https://www.blancogrosso.com/labufarra-social">
-    <meta property="og:type" content="article">
-    <meta property="og:site_name" content="Blanco Grosso">
-    <meta property="og:locale" content="es_UY">
-    <meta property="og:url" content="https://www.blancogrosso.com/labufarra-social">
-    <meta property="og:title" content="Vuelta a las redes @labufarra | Blanco Grosso">
-    <meta property="og:description" content="Video de 1 minuto generado 100% con IA para anunciar el regreso a la gestión de redes sociales: guionización, storyboard y animación sintética.">
-    <meta property="og:image" content="https://www.blancogrosso.com/img/og/labufarra-social.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Portada del proyecto Vuelta a las redes de La Bufarra: texto La vuelta del CM sobre un escritorio a oscuras">
-    <meta name="twitter:card" content="summary_large_image">
-    <!-- /Open Graph -->
-    <link rel="icon" type="image/png" href="img/icons/logo-verde.png">
-    <link rel="stylesheet" href="css/project-detail.css">
-    <link rel="stylesheet" href="css/view-transitions.css">
-    <script src="js/lang-switch.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Vuelta a las redes @labufarra | Blanco Grosso</title>
+  <meta name="description" content="Video de 1 minuto generado 100% con IA para anunciar el regreso a la gestión de redes sociales: guionización, storyboard y animación sintética.">
+  <meta name="theme-color" content="#0a0a0a">
+  <!-- Open Graph / canonical -->
+  <link rel="canonical" href="https://www.blancogrosso.com/labufarra-social">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Blanco Grosso">
+  <meta property="og:locale" content="es_UY">
+  <meta property="og:url" content="https://www.blancogrosso.com/labufarra-social">
+  <meta property="og:title" content="Vuelta a las redes @labufarra | Blanco Grosso">
+  <meta property="og:description" content="Video de 1 minuto generado 100% con IA para anunciar el regreso a la gestión de redes sociales: guionización, storyboard y animación sintética.">
+  <meta property="og:image" content="https://www.blancogrosso.com/img/og/labufarra-social.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Portada del proyecto Vuelta a las redes de La Bufarra: texto La vuelta del CM sobre un escritorio a oscuras">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- /Open Graph -->
+  <link rel="icon" type="image/png" href="img/icons/logo-verde.png">
+  <link rel="preload" href="fonts/archivo-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/case.css">
+  <link rel="stylesheet" href="css/view-transitions.css">
+  <!-- la transición desde la home espera a que exista la imagen principal -->
+  <link rel="expect" href="#cover" blocking="render">
+  <script>
+    /* Antes de pintar: idioma guardado y si hay JS (evita parpadeos) */
+    (function () {
+      var d = document.documentElement; d.classList.add('js');
+      try { if (localStorage.getItem('bg-lang') === 'en') { d.classList.add('lang-en-active'); d.lang = 'en'; } } catch (e) {}
+      /* si se llega con la transición desde la home, la imagen principal ya está destapada */
+      window.addEventListener('pagereveal', function (e) {
+        var cover = document.querySelector('[data-vt]');
+        if (e.viewTransition && cover) cover.classList.add('in', 'no-anim');
+      });
+    })();
+  </script>
 </head>
 <body>
-
-    <nav class="detail-nav">
-        <a href="portfolio.html" class="detail-nav-brand">BLANCO GROSSO</a>
-        <div style="display: flex; align-items: center; gap: 1.5rem;">
-            <div class="lang-switcher">
-                <span class="lang-toggle" data-lang="es">ES</span>
-                <span>/</span>
-                <span class="lang-toggle" data-lang="en">EN</span>
-            </div>
-            <a href="portfolio.html#works" class="detail-nav-back">
-                <span class="lang-es">← Volver al Portfolio</span>
-                <span class="lang-en">← Back to Portfolio</span>
-            </a>
-        </div>
-    </nav>
-
-    <header class="project-hero">
-        <div class="project-meta">
-            <span class="project-category">AI-Powered</span>
-            <span class="project-category">Audiovisual Production</span>
-            <span class="project-date">Abr 2026</span>
-        </div>
-        <h1>Vuelta a las redes @labufarra</h1>
-        <p class="project-hero-sub">
-            <span class="lang-es">Video de 1 minuto generado 100% con IA para anunciar el regreso a la gestión de redes sociales. Un flujo de trabajo integral que combina guionización, storyboard y animación sintética.</span>
-            <span class="lang-en">1-minute video 100% AI-generated to announce the return to social media management. An integrated workflow combining scripting, storyboard, and synthetic animation.</span>
-        </p>
-        <div class="project-stack">
-            <span class="stack-tag">Gpt</span>
-            <span class="stack-tag">Gemini</span>
-            <span class="stack-tag">Ps</span>
-            <span class="stack-tag">Flow</span>
-            <span class="stack-tag">Pr</span>
-            <span class="stack-tag">Freepik</span>
-        </div>
-    </header>
-
-    <div class="project-cover">
-        <div class="iphone-container">
-            <div class="iphone-frame" id="auto-rotate-phone">
-                <div class="iphone-screen">
-                    <video id="reel-video" autoplay muted loop playsinline style="view-transition-name: case-labufarra-social;">
-                        <source src="img/works/labufarra-social/reel.mp4" type="video/mp4">
-                    </video>
-                    <!-- Overlay controls -->
-                    <button id="mute-toggle" class="iphone-mute-btn" aria-label="Toggle Mute">
-                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon-muted"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
-                    </button>
-                </div>
-            </div>
-        </div>
+  <header class="bar">
+    <span class="count"><span class="lang-es">1 de 10</span><span class="lang-en" lang="en">1 of 10</span></span>
+    <div class="bar-end">
+      <div class="lang" role="group" aria-label="Idioma / Language">
+        <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="close" href="/#works"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg><span class="lang-es">Cerrar</span><span class="lang-en" lang="en">Close</span></a>
     </div>
+  </header>
 
-
-
-    <section class="project-section">
-        <span class="project-section-label">
-            <span class="lang-es">PROCESO</span>
-            <span class="lang-en">PROCESS</span>
-        </span>
-        
-        <div class="process-scroll-wrapper" style="margin-top: 4rem; overflow-x: auto; padding-bottom: 2rem; -webkit-overflow-scrolling: touch;">
-            <div class="playbook-horizontal" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem; min-width: 1000px;">
-                <style>
-                    .process-scroll-wrapper::-webkit-scrollbar { height: 4px; }
-                    .process-scroll-wrapper::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
-                    .process-scroll-wrapper::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
-                    
-                    .pb-step-h { display: flex; flex-direction: column; gap: 1rem; }
-                    .pb-num-h { font-size: 0.75rem; font-weight: 800; color: var(--accent); opacity: 0.6; font-family: monospace; }
-                    .pb-content-h h3 { font-size: 0.9rem; margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: #fff; line-height: 1.3; }
-                    .pb-content-h p { font-size: 0.75rem; opacity: 0.5; line-height: 1.5; }
-                </style>
-
-                <div class="pb-step-h">
-                    <div class="pb-num-h">01</div>
-                    <div class="pb-content-h">
-                        <h3>
-                            <span class="lang-es">Guion & Estructura</span>
-                            <span class="lang-en">Script & Structure</span>
-                        </h3>
-                        <p>
-                            <span class="lang-es">Bajada de idea y armado de guion técnico utilizando GPT para definir la narrativa del anuncio.</span>
-                            <span class="lang-en">Brainstorming and technical script writing using GPT to define the ad's narrative.</span>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="pb-step-h">
-                    <div class="pb-num-h">02</div>
-                    <div class="pb-content-h">
-                        <h3>
-                            <span class="lang-es">Storyboard IA</span>
-                            <span class="lang-en">AI Storyboard</span>
-                        </h3>
-                        <p>
-                            <span class="lang-es">Generación de cada frame mediante prompts específicos en Freepik Spaces y Gemini.</span>
-                            <span class="lang-en">Generation of each frame using specific prompts in Freepik Spaces and Gemini.</span>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="pb-step-h">
-                    <div class="pb-num-h">03</div>
-                    <div class="pb-content-h">
-                        <h3>
-                            <span class="lang-es">Refinamiento</span>
-                            <span class="lang-en">Refinement</span>
-                        </h3>
-                        <p>
-                            <span class="lang-es">Corrección de detalles visuales, coherencia y retoque de frames en Adobe Photoshop.</span>
-                            <span class="lang-en">Correction of visual details, consistency, and frame retouching in Adobe Photoshop.</span>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="pb-step-h">
-                    <div class="pb-num-h">04</div>
-                    <div class="pb-content-h">
-                        <h3>
-                            <span class="lang-es">Animación</span>
-                            <span class="lang-en">Animation</span>
-                        </h3>
-                        <p>
-                            <span class="lang-es">Generación de prompts de movimiento con GPT y animación de los frames estáticos en Flow.</span>
-                            <span class="lang-en">Generation of motion prompts with GPT and animation of static frames in Flow.</span>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="pb-step-h">
-                    <div class="pb-num-h">05</div>
-                    <div class="pb-content-h">
-                        <h3>
-                            <span class="lang-es">Edición Final</span>
-                            <span class="lang-en">Final Edit</span>
-                        </h3>
-                        <p>
-                            <span class="lang-es">Montaje audiovisual, diseño sonoro y exportación final en Adobe Premiere.</span>
-                            <span class="lang-en">Audiovisual assembly, sound design, and final export in Adobe Premiere.</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+  <main>
+  <article class="case" data-case="labufarra-social">
+    <header class="c-hero">
+      <h1 class="rv"><span class="grad">Vuelta a las redes @labufarra</span></h1>
+      <p class="c-lead rv"><span class="lang-es">Video de 1 minuto generado 100% con IA para anunciar el regreso a la gestión de redes sociales. Un flujo de trabajo integral que combina guionización, storyboard y animación sintética.</span><span class="lang-en" lang="en">1-minute video 100% AI-generated to announce the return to social media management. An integrated workflow combining scripting, storyboard, and synthetic animation.</span></p>
+      <p class="c-meta rv"><span class="lang-es">Abril 2026</span><span class="lang-en" lang="en">April 2026</span></p>
+    </header>
+    <figure class="cover rv-img" id="cover" data-vt style="view-transition-name: case-labufarra-social"><video src="img/works/labufarra-social/reel.mp4" poster="img/works/labufarra-social/reel-portada.avif" muted loop playsinline preload="metadata" data-autoplay controls></video></figure>
+    <dl class="facts rv">
+      <div><dt><span class="lang-es">Cliente</span><span class="lang-en" lang="en">Client</span></dt><dd>La Bufarra</dd></div>
+      <div><dt><span class="lang-es">Año</span><span class="lang-en" lang="en">Year</span></dt><dd>2026</dd></div>
+      <div><dt><span class="lang-es">Qué hice</span><span class="lang-en" lang="en">What I did</span></dt><dd><span class="lang-es">Producción audiovisual con IA</span><span class="lang-en" lang="en">AI-powered audiovisual production</span></dd></div>
+      <div><dt><span class="lang-es">Herramientas</span><span class="lang-en" lang="en">Tools</span></dt><dd>GPT, Gemini, Photoshop, Flow, Premiere, Freepik</dd></div>
+    </dl>
+    <section class="story">
+      <h2 class="rv"><span class="lang-es">Nuevas formas de contar</span><span class="lang-en" lang="en">New ways of storytelling</span></h2>
+      <div class="rv"><p><span class="lang-es">El reto consistió en crear una pieza de alto impacto visual y emocional para anunciar la vuelta a la gestión de redes de @labufarra, utilizando exclusivamente herramientas de inteligencia artificial generativa. Desde el guion hasta el movimiento, cada elemento fue curado para mantener la esencia de la marca.</span><span class="lang-en" lang="en">The challenge was to create a piece of high visual and emotional impact to announce the return to social media management for @labufarra, using exclusively generative artificial intelligence tools. From the script to the movement, every element was curated to maintain the brand&#x27;s essence.</span></p></div>
     </section>
+    <ol class="steps">
+      <li class="rv"><span class="n grad" aria-hidden="true">01</span><h3><span class="grad"><span class="lang-es">Guion &amp; estructura</span><span class="lang-en" lang="en">Script &amp; structure</span></span></h3><p><span class="lang-es">Bajada de idea y armado de guion técnico utilizando GPT para definir la narrativa del anuncio.</span><span class="lang-en" lang="en">Brainstorming and technical script writing using GPT to define the ad&#x27;s narrative.</span></p></li>
+      <li class="rv"><span class="n grad" aria-hidden="true">02</span><h3><span class="grad"><span class="lang-es">Storyboard IA</span><span class="lang-en" lang="en">AI storyboard</span></span></h3><p><span class="lang-es">Generación de cada frame mediante prompts específicos en Freepik Spaces y Gemini.</span><span class="lang-en" lang="en">Generation of each frame using specific prompts in Freepik Spaces and Gemini.</span></p></li>
+      <li class="rv"><span class="n grad" aria-hidden="true">03</span><h3><span class="grad"><span class="lang-es">Refinamiento</span><span class="lang-en" lang="en">Refinement</span></span></h3><p><span class="lang-es">Corrección de detalles visuales, coherencia y retoque de frames en Adobe Photoshop.</span><span class="lang-en" lang="en">Correction of visual details, consistency, and frame retouching in Adobe Photoshop.</span></p></li>
+      <li class="rv"><span class="n grad" aria-hidden="true">04</span><h3><span class="grad"><span class="lang-es">Animación</span><span class="lang-en" lang="en">Animation</span></span></h3><p><span class="lang-es">Generación de prompts de movimiento con GPT y animación de los frames estáticos en Flow.</span><span class="lang-en" lang="en">Generation of motion prompts with GPT and animation of static frames in Flow.</span></p></li>
+      <li class="rv"><span class="n grad" aria-hidden="true">05</span><h3><span class="grad"><span class="lang-es">Edición final</span><span class="lang-en" lang="en">Final edit</span></span></h3><p><span class="lang-es">Montaje audiovisual, diseño sonoro y exportación final en Adobe Premiere.</span><span class="lang-en" lang="en">Audiovisual assembly, sound design, and final export in Adobe Premiere.</span></p></li>
+    </ol>
+    <figure class="media-wrap">
+      <h2 class="blk-h rv"><span class="grad"><span class="lang-es">1. Construcción del storyboard (Freepik Spaces)</span><span class="lang-en" lang="en">1. Storyboard construction (Freepik Spaces)</span></span></h2>
+      <div class="media zoomable rv-img" tabindex="0" role="button" aria-label="Ver en grande: Flujo de trabajo en Freepik Spaces" data-en-aria-label="View large: Workflow in Freepik Spaces"><img src="img/works/labufarra-social/workflow-tira.avif" srcset="img/works/labufarra-social/workflow-tira.avif 1000w, img/works/labufarra-social/workflow.avif 2560w" sizes="(min-width: 1280px) 1184px, calc(100vw - 32px)" width="2560" height="1168" alt="Flujo de trabajo en Freepik Spaces" data-en-alt="Workflow in Freepik Spaces" loading="lazy" decoding="async" draggable="false" data-full="img/works/labufarra-social/workflow.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></div>
+    </figure>
+    <div class="gal-block">
+      <h2 class="blk-h rv"><span class="grad"><span class="lang-es">2. Referencias clave para consistencia</span><span class="lang-en" lang="en">2. Key references for consistency</span></span></h2>
+      <div class="rv">
+      <div class="gal-ctrl">
+        <span class="gc-count"><span class="gc-n">1</span> <span class="lang-es">de</span><span class="lang-en" lang="en">of</span> 3</span>
+        <span class="gc-btns"><button type="button" class="gc-prev" aria-label="Foto anterior" data-en-aria-label="Previous photo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4l-6 6 6 6"/></svg></button><button type="button" class="gc-next" aria-label="Foto siguiente" data-en-aria-label="Next photo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 4l6 6-6 6"/></svg></button></span>
+      </div>
+      <div class="gal">
+        <figure tabindex="0" role="button" aria-label="Ver foto 1 de 3 en grande" data-en-aria-label="View photo 1 of 3 large" style="--ar: 1.7500"><img src="img/works/labufarra-social/referencia-1-dispositivo-tira.avif" srcset="img/works/labufarra-social/referencia-1-dispositivo-tira.avif 1000w, img/works/labufarra-social/referencia-1-dispositivo.avif 1344w" sizes="(min-width: 760px) calc(56vh * 1.750), calc(100vw - 32px)" width="1344" height="768" alt="Referencia: dispositivo" data-en-alt="Reference: device" loading="lazy" decoding="async" draggable="false" data-full="img/works/labufarra-social/referencia-1-dispositivo.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 2 de 3 en grande" data-en-aria-label="View photo 2 of 3 large" style="--ar: 1.0000"><img src="img/works/labufarra-social/referencia-2-camiseta-tira.avif" srcset="img/works/labufarra-social/referencia-2-camiseta-tira.avif 1000w, img/works/labufarra-social/referencia-2-camiseta.avif 1024w" sizes="(min-width: 760px) calc(56vh * 1.000), calc(100vw - 32px)" width="1024" height="1024" alt="Referencia: camiseta" data-en-alt="Reference: jersey" loading="lazy" decoding="async" draggable="false" data-full="img/works/labufarra-social/referencia-2-camiseta.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 3 de 3 en grande" data-en-aria-label="View photo 3 of 3 large" style="--ar: 1.7388"><img src="img/works/labufarra-social/referencia-3-spoiler-tira.avif" srcset="img/works/labufarra-social/referencia-3-spoiler-tira.avif 1000w, img/works/labufarra-social/referencia-3-spoiler.avif 2490w" sizes="(min-width: 760px) calc(56vh * 1.739), calc(100vw - 32px)" width="2490" height="1432" alt="Referencia: spoiler" data-en-alt="Reference: spoiler" loading="lazy" decoding="async" draggable="false" data-full="img/works/labufarra-social/referencia-3-spoiler.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+      </div>
+      </div>
+    </div>
+    <div class="gal-block">
+      <h2 class="blk-h rv"><span class="grad"><span class="lang-es">3. Frames y keyframes (el frame 1 como locación)</span><span class="lang-en" lang="en">3. Frames and keyframes (frame 1 as location)</span></span></h2>
+      <div class="rv">
+      <div class="gal-ctrl">
+        <span class="gc-count"><span class="gc-n">1</span> <span class="lang-es">de</span><span class="lang-en" lang="en">of</span> 3</span>
+        <span class="gc-btns"><button type="button" class="gc-prev" aria-label="Foto anterior" data-en-aria-label="Previous photo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4l-6 6 6 6"/></svg></button><button type="button" class="gc-next" aria-label="Foto siguiente" data-en-aria-label="Next photo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 4l6 6-6 6"/></svg></button></span>
+      </div>
+      <div class="gal">
+        <figure tabindex="0" role="button" aria-label="Ver foto 1 de 3 en grande" data-en-aria-label="View photo 1 of 3 large" style="--ar: 1.7500"><img src="img/works/labufarra-social/frame-1-tira.avif" srcset="img/works/labufarra-social/frame-1-tira.avif 1000w, img/works/labufarra-social/frame-1.avif 1344w" sizes="(min-width: 760px) calc(56vh * 1.750), calc(100vw - 32px)" width="1344" height="768" alt="Frame 1" loading="lazy" decoding="async" draggable="false" data-full="img/works/labufarra-social/frame-1.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 2 de 3 en grande" data-en-aria-label="View photo 2 of 3 large" style="--ar: 1.7500"><img src="img/works/labufarra-social/frame-2-tira.avif" srcset="img/works/labufarra-social/frame-2-tira.avif 1000w, img/works/labufarra-social/frame-2.avif 1344w" sizes="(min-width: 760px) calc(56vh * 1.750), calc(100vw - 32px)" width="1344" height="768" alt="Frame 2" loading="lazy" decoding="async" draggable="false" data-full="img/works/labufarra-social/frame-2.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 3 de 3 en grande" data-en-aria-label="View photo 3 of 3 large" style="--ar: 1.7500"><img src="img/works/labufarra-social/frame-4-tira.avif" srcset="img/works/labufarra-social/frame-4-tira.avif 1000w, img/works/labufarra-social/frame-4.avif 1344w" sizes="(min-width: 760px) calc(56vh * 1.750), calc(100vw - 32px)" width="1344" height="768" alt="Frame 4" loading="lazy" decoding="async" draggable="false" data-full="img/works/labufarra-social/frame-4.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+      </div>
+      </div>
+    </div>
+    <section class="prompt solo">
+      <pre class="rv"><b>motion_prompt_flow.prompt</b>
 
-    <section class="project-section">
-        <span class="project-section-label">
-            <span class="lang-es">EL DESAFÍO</span>
-            <span class="lang-en">THE CHALLENGE</span>
-        </span>
-        <h2>
-            <span class="lang-es">Nuevas Formas de Contar</span>
-            <span class="lang-en">New Ways of Storytelling</span>
-        </h2>
-        <p>
-            <span class="lang-es">El reto consistió en crear una pieza de alto impacto visual y emocional para anunciar la vuelta a la gestión de redes de @labufarra, utilizando exclusivamente herramientas de inteligencia artificial generativa. Desde el guion hasta el movimiento, cada elemento fue curado para mantener la esencia de la marca.</span>
-            <span class="lang-en">The challenge was to create a piece of high visual and emotional impact to announce the return to social media management for @labufarra, using exclusively generative artificial intelligence tools. From the script to the movement, every element was curated to maintain the brand's essence.</span>
-        </p>
-    </section>
-
-    <!-- ── Gallery ── -->
-    <section class="project-gallery">
-        <span class="gallery-label">
-            <span class="lang-es">WORKFLOW & FRAMES</span>
-            <span class="lang-en">WORKFLOW & FRAMES</span>
-        </span>
-        
-        <!-- Workflow -->
-        <div style="margin-top: 2rem; margin-bottom: 3rem;">
-            <h3 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; opacity: 0.7;">
-                <span class="lang-es">1. Construcción del Storyboard (Freepik Spaces)</span>
-                <span class="lang-en">1. Storyboard Construction (Freepik Spaces)</span>
-            </h3>
-            <img src="img/works/labufarra-social/workflow.avif" alt="Workflow" loading="lazy" decoding="async" style="width: 100%; border-radius: var(--radius); border: 1px solid var(--border);">
-        </div>
-
-        <!-- Referencias -->
-        <div style="margin-bottom: 3rem;">
-            <h3 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; opacity: 0.7;">
-                <span class="lang-es">2. Referencias clave para consistencia</span>
-                <span class="lang-en">2. Key references for consistency</span>
-            </h3>
-            <div class="gallery-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1rem;">
-                <img src="img/works/labufarra-social/referencia-1-dispositivo.avif" alt="Referencia Dispositivo" loading="lazy" decoding="async" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius);">
-                <img src="img/works/labufarra-social/referencia-2-camiseta.avif" alt="Referencia Camiseta" loading="lazy" decoding="async" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius);">
-                <img src="img/works/labufarra-social/referencia-3-spoiler.avif" alt="Referencia Spoiler" loading="lazy" decoding="async" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius);">
-            </div>
-        </div>
-
-        <!-- Construcción de Escena (Scroll Horizontal) -->
-        <div style="margin-bottom: 3rem;">
-            <h3 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; opacity: 0.7;">
-                <span class="lang-es">3. Frames y Keyframes (El Frame 1 como locación)</span>
-                <span class="lang-en">3. Frames and Keyframes (Frame 1 as location)</span>
-            </h3>
-            <div class="frames-carousel" style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 1rem; padding-bottom: 1.5rem; -webkit-overflow-scrolling: touch;">
-                <img src="img/works/labufarra-social/frame-1.avif" alt="Frame 1" loading="lazy" decoding="async" style="flex: 0 0 100%; width: 100%; scroll-snap-align: start; border-radius: var(--radius);">
-                <img src="img/works/labufarra-social/frame-2.avif" alt="Frame 2" loading="lazy" decoding="async" style="flex: 0 0 100%; width: 100%; scroll-snap-align: start; border-radius: var(--radius);">
-                <img src="img/works/labufarra-social/frame-4.avif" alt="Frame 4" loading="lazy" decoding="async" style="flex: 0 0 100%; width: 100%; scroll-snap-align: start; border-radius: var(--radius);">
-            </div>
-        </div>
-
-        <!-- ── Prompt Terminal Component ── -->
-        <div class="prompt-terminal" style="margin-bottom: 3rem;">
-            <div class="pt-header">
-                <span class="pt-dot pt-dot--red"></span>
-                <span class="pt-dot pt-dot--yellow"></span>
-                <span class="pt-dot pt-dot--green"></span>
-                <span class="pt-title">motion_prompt_flow.prompt</span>
-            </div>
-            <div class="pt-content" id="prompt-terminal-content" style="max-height: 200px; overflow: hidden; position: relative; transition: max-height 0.5s ease;">
-                <div class="pt-line">> /generate_motion --model flow --style cinematic</div>
-                <div class="pt-line" style="color: var(--accent); opacity: 0.8; white-space: pre-wrap;">Between the provided initial and final frames, create a 5–6 second cinematic close-up animation of the device. Keep the composition, camera angle, desk, device and round pastel pink button with the “B” emblem and vertical stripes exactly as shown in the keyframes, without adding or removing objects.
+Between the provided initial and final frames, create a 5–6 second cinematic close-up animation of the device. Keep the composition, camera angle, desk, device and round pastel pink button with the “B” emblem and vertical stripes exactly as shown in the keyframes, without adding or removing objects.
 
 Animate a realistic human hand entering the frame from the side, holding the slim cartridge and sliding it fully into the front slot of the device during the first part of the clip. After the cartridge is fully inserted, animate the hand moving to the top of the circular button and pressing it down until the scene matches the final frame: the button slightly depressed and glowing more intensely. Add a small, natural camera micro-shake and brief increase in button glow at the exact moment of the press, then let the glow settle to match the final image.
 
-Do not modify the design of the device, the button, the desk or the background beyond the natural light response. Keep lighting and colors consistent with the keyframes, with only subtle changes caused by the button glow. No new UI elements, no text or logos, no cartoon or anime style, no exaggerated glitch or VFX.</div>
-                <div class="pt-line">> /status: processing_animation... <span class="pt-cursor">_</span></div>
-                
-                <div class="pt-overlay" id="prompt-overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; background: linear-gradient(transparent, var(--bg-elevated)); pointer-events: none;"></div>
-            </div>
-            <button class="terminal-expand" id="prompt-toggle" style="background: none; border: none; color: var(--accent); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; cursor: pointer; padding: 1rem; width: 100%; letter-spacing: 0.1em; border-top: 1px solid rgba(255,255,255,0.05);">
-                <span class="lang-es">+ Ver prompt completo</span>
-                <span class="lang-en">+ View full prompt</span>
-            </button>
-        </div>
-
-        <!-- Ejemplo de Escena Animada -->
-        <div>
-            <h3 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; opacity: 0.7;">
-                <span class="lang-es">4. Animación Resultante (Flow)</span>
-                <span class="lang-en">4. Resulting Animation (Flow)</span>
-            </h3>
-            <video autoplay muted loop playsinline style="width: 100%; border-radius: var(--radius); border: 1px solid var(--border);">
-                <source src="img/works/labufarra-social/ejemplo-escena.mp4" type="video/mp4">
-            </video>
-        </div>
+Do not modify the design of the device, the button, the desk or the background beyond the natural light response. Keep lighting and colors consistent with the keyframes, with only subtle changes caused by the button glow. No new UI elements, no text or logos, no cartoon or anime style, no exaggerated glitch or VFX.</pre>
     </section>
+    <figure class="media-wrap">
+      <h2 class="blk-h rv"><span class="grad"><span class="lang-es">4. Animación resultante (Flow)</span><span class="lang-en" lang="en">4. Resulting animation (Flow)</span></span></h2>
+      <div class="media rv-img" style="aspect-ratio: 1280 / 720"><video src="img/works/labufarra-social/ejemplo-escena.mp4" poster="img/works/labufarra-social/ejemplo-escena-poster.avif" muted loop playsinline preload="metadata" data-autoplay></video></div>
+    </figure>
+    <a class="ext rv" href="https://www.instagram.com/reel/DVhkQEekWxW/" target="_blank" rel="noopener"><span class="lang-es">Ver en Instagram</span><span class="lang-en" lang="en">View on Instagram</span> <span aria-hidden="true">↗</span><span class="sr-only"><span class="lang-es"> (abre en una pestaña nueva)</span><span class="lang-en" lang="en"> (opens in a new tab)</span></span></a>
+    <a class="next" href="/sport-editorial">
+      <small><span class="lang-es">Siguiente</span><span class="lang-en" lang="en">Next</span></small>
+      <span class="nt"><span class="grad">Sport Editorial</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M3 10h13M11 4l6 6-6 6"/></svg></span>
+      <span class="thumb"><img src="img/works/sport-editorial.avif" width="1200" height="900" alt="" loading="lazy" decoding="async"></span>
+    </a>
+  </article>
+  </main>
 
-    <!-- ── Link ── -->
-    <div style="margin: 6rem auto 8rem; text-align: center; max-width: var(--max-w); padding: 0 var(--pad);">
-        <a href="https://www.instagram.com/reel/DVhkQEekWxW/" target="_blank" style="display: inline-flex; align-items: center; gap: 0.8rem; text-decoration: none; color: #00ff88; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; transition: all 0.3s ease; opacity: 0.7;" onmouseover="this.style.opacity='1'; this.style.gap='1.2rem'" onmouseout="this.style.opacity='0.7'; this.style.gap='0.8rem'">
-            <span class="lang-es">Ver reel en Instagram</span>
-            <span class="lang-en">View reel on Instagram</span>
-            <span style="font-size: 1.1rem; line-height: 0;">↗</span>
-        </a>
-    </div>
-
-    <nav class="project-nav">
-        <div class="project-nav-inner">
-            <a href="final-clasica.html" class="project-nav-link">
-                <span class="project-nav-label">
-                    <span class="lang-es">Anterior</span>
-                    <span class="lang-en">Previous</span>
-                </span>
-                <span class="project-nav-title">Final Clásica</span>
-            </a>
-            <a href="sport-editorial.html" class="project-nav-link">
-                <span class="project-nav-label">
-                    <span class="lang-es">Siguiente</span>
-                    <span class="lang-en">Next</span>
-                </span>
-                <span class="project-nav-title">Sport Editorial HQ</span>
-            </a>
-        </div>
-    </nav>
-
-    <footer class="detail-footer">
-        <span>© 2026 Blanco Grosso. 
-            <span class="lang-es">Basado en Montevideo, Uruguay.</span>
-            <span class="lang-en">Based in Montevideo, Uruguay.</span>
-        </span>
-    </footer>
-
-    <script src="js/project-components.js"></script>
-    <script src="js/lang-switch.js"></script>
-
+  <script src="js/case.js" defer></script>
 </body>
 </html>

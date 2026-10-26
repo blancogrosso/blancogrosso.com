@@ -7,7 +7,7 @@ Los trabajos destacados quedan escritos en el HTML (los leen Google y las vistas
 de links, que no ejecutan JS). Los demás van en un <template>: js/home.js los agrega a la
 grilla junto con los filtros. Sin JS se ven los destacados.
 """
-import html, json, os, urllib.parse
+import html, json, os, re, urllib.parse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "index.html")
@@ -305,5 +305,13 @@ page = f'''<!DOCTYPE html>
 </body>
 </html>
 '''
+# si al lado de una foto hay una copia <nombre>-limpio.avif (sin la línea clara que dejó una mala
+# exportación en el borde), se usa esa, como en scripts/build-cases.py. El original no se toca.
+def limpio(m):
+    src = m.group(0)
+    c = src[:-5] + "-limpio.avif"
+    return c if not src.endswith("-limpio.avif") and os.path.exists(os.path.join(ROOT, c)) else src
+page = re.sub(r"img/[^\"'\s,)]+?\.avif", limpio, page)
+
 open(OUT, "w", encoding="utf-8").write(page)
 print("ok", OUT, len(page), "bytes ·", len(featured), "destacados en el HTML,", len(others), "en el template")

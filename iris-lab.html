@@ -1,251 +1,118 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iris Lab | Blanco Grosso</title>
-    <!-- Open Graph / canonical -->
-    <link rel="canonical" href="https://www.blancogrosso.com/iris-lab">
-    <meta property="og:type" content="article">
-    <meta property="og:site_name" content="Blanco Grosso">
-    <meta property="og:locale" content="es_UY">
-    <meta property="og:url" content="https://www.blancogrosso.com/iris-lab">
-    <meta property="og:title" content="Iris Lab | Blanco Grosso">
-    <meta property="og:description" content="Captura de identidad a través de fotografía macro. Curaduría visual y producción fine-art que transforma el iris humano en una pieza de diseño tangible.">
-    <meta property="og:image" content="https://www.blancogrosso.com/img/og/iris-lab.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Portada del proyecto Iris Lab: fotografía macro de un iris con el logo de la marca">
-    <meta name="twitter:card" content="summary_large_image">
-    <!-- /Open Graph -->
-    <link rel="icon" type="image/png" href="img/icons/logo-verde.png">
-    <link rel="stylesheet" href="css/project-detail.css">
-    <link rel="stylesheet" href="css/view-transitions.css">
-    <script src="js/lang-switch.js" defer></script>
-    <script src="js/project-components.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Iris Lab | Blanco Grosso</title>
+  <meta name="description" content="Captura de identidad a través de fotografía macro. Curaduría visual y producción fine-art que transforma el iris humano en una pieza de diseño tangible.">
+  <meta name="theme-color" content="#0a0a0a">
+  <!-- Open Graph / canonical -->
+  <link rel="canonical" href="https://www.blancogrosso.com/iris-lab">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Blanco Grosso">
+  <meta property="og:locale" content="es_UY">
+  <meta property="og:url" content="https://www.blancogrosso.com/iris-lab">
+  <meta property="og:title" content="Iris Lab | Blanco Grosso">
+  <meta property="og:description" content="Captura de identidad a través de fotografía macro. Curaduría visual y producción fine-art que transforma el iris humano en una pieza de diseño tangible.">
+  <meta property="og:image" content="https://www.blancogrosso.com/img/og/iris-lab.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Portada del proyecto Iris Lab: fotografía macro de un iris con el logo de la marca">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- /Open Graph -->
+  <link rel="icon" type="image/png" href="img/icons/logo-verde.png">
+  <link rel="preload" href="fonts/archivo-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/case.css">
+  <link rel="stylesheet" href="css/view-transitions.css">
+  <!-- la transición desde la home espera a que exista la imagen principal -->
+  <link rel="expect" href="#cover" blocking="render">
+  <script>
+    /* Antes de pintar: idioma guardado y si hay JS (evita parpadeos) */
+    (function () {
+      var d = document.documentElement; d.classList.add('js');
+      try { if (localStorage.getItem('bg-lang') === 'en') { d.classList.add('lang-en-active'); d.lang = 'en'; } } catch (e) {}
+      /* si se llega con la transición desde la home, la imagen principal ya está destapada */
+      window.addEventListener('pagereveal', function (e) {
+        var cover = document.querySelector('[data-vt]');
+        if (e.viewTransition && cover) cover.classList.add('in', 'no-anim');
+      });
+    })();
+  </script>
 </head>
 <body>
+  <header class="bar">
+    <span class="count"><span class="lang-es">8 de 10</span><span class="lang-en" lang="en">8 of 10</span></span>
+    <div class="bar-end">
+      <div class="lang" role="group" aria-label="Idioma / Language">
+        <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="close" href="/#works"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg><span class="lang-es">Cerrar</span><span class="lang-en" lang="en">Close</span></a>
+    </div>
+  </header>
 
-    <nav class="detail-nav">
-        <a href="portfolio.html" class="detail-nav-brand">BLANCO GROSSO</a>
-        <div style="display: flex; align-items: center; gap: 1.5rem;">
-            <div class="lang-switcher">
-                <span class="lang-toggle" data-lang="es">ES</span>
-                <span>/</span>
-                <span class="lang-toggle" data-lang="en">EN</span>
-            </div>
-            <a href="portfolio.html#works" class="detail-nav-back">
-                <span class="lang-es">← Volver al Portfolio</span>
-                <span class="lang-en">← Back to Portfolio</span>
-            </a>
-        </div>
-    </nav>
-
-    <header class="project-hero">
-        <div class="project-meta">
-            <span class="project-category">Macro Photography</span>
-            <span class="project-category">Digital Art</span>
-            <span class="project-category">Fine Art</span>
-            <span class="project-date">Feb 2026</span>
-        </div>
-        <h1>Iris Lab</h1>
-        <p class="project-hero-sub">
-            <span class="lang-es">Captura de identidad a través de fotografía macro. Curaduría visual y producción fine-art que transforma el iris humano en una pieza de diseño tangible y eterna.</span>
-            <span class="lang-en">Capturing identity through macro photography. Visual curation and fine-art production transforming the human iris into a tangible and eternal design piece.</span>
-        </p>
-        <div class="project-stack">
-            <span class="stack-tag">Lr</span>
-            <span class="stack-tag">Ps</span>
-        </div>
+  <main>
+  <article class="case" data-case="iris-lab">
+    <header class="c-hero">
+      <h1 class="rv"><span class="grad">Iris Lab</span></h1>
+      <p class="c-lead rv"><span class="lang-es">Captura de identidad a través de fotografía macro. Curaduría visual y producción fine-art que transforma el iris humano en una pieza de diseño tangible y eterna.</span><span class="lang-en" lang="en">Capturing identity through macro photography. Visual curation and fine-art production transforming the human iris into a tangible and eternal design piece.</span></p>
+      <p class="c-meta rv"><span class="lang-es">Febrero 2026</span><span class="lang-en" lang="en">February 2026</span></p>
     </header>
+    <div class="ba rv ba-cover" id="cover" data-vt style="--ar: 1620 / 1080">
+      <div class="ba-box" style="view-transition-name: case-iris-lab">
+        <img src="img/works/iris-lab/raw-comparar.avif" width="1620" height="1080" alt="Captura macro del iris, sin editar" data-en-alt="Raw macro capture of the iris" fetchpriority="high">
+        <img src="img/works/iris-lab/final-comparar.avif" width="1620" height="1080" alt="Pieza final" data-en-alt="Final piece" fetchpriority="high" class="after">
+        <span class="ba-line"></span>
+        <span class="ba-knob" aria-hidden="true"><svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 6l-5 5 5 5M14 6l5 5-5 5"/></svg></span>
+        <span class="ba-tag l" aria-hidden="true">Raw</span><span class="ba-tag r" aria-hidden="true">Final</span>
+        <input type="range" min="0" max="100" value="50" aria-label="Comparar Raw y Final" data-en-aria-label="Compare Raw and Final">
+      </div>
+    </div>
+    <dl class="facts rv">
+      <div><dt><span class="lang-es">Año</span><span class="lang-en" lang="en">Year</span></dt><dd>2026</dd></div>
+      <div><dt><span class="lang-es">Qué hice</span><span class="lang-en" lang="en">What I did</span></dt><dd><span class="lang-es">Fotografía macro, arte digital y fine art</span><span class="lang-en" lang="en">Macro photography, digital art and fine art</span></dd></div>
+      <div><dt><span class="lang-es">Herramientas</span><span class="lang-en" lang="en">Tools</span></dt><dd>Lightroom, Photoshop</dd></div>
+    </dl>
+    <ol class="steps">
+      <li class="rv"><span class="n grad" aria-hidden="true">01</span><h2><span class="grad"><span class="lang-es">Foto macro del iris</span><span class="lang-en" lang="en">Macro iris photography</span></span></h2><p><span class="lang-es">Captura de alta resolución revelando detalles microscópicos.</span><span class="lang-en" lang="en">High-resolution capture revealing microscopic details.</span></p></li>
+      <li class="rv"><span class="n grad" aria-hidden="true">02</span><h2><span class="grad"><span class="lang-es">Corrección de color</span><span class="lang-en" lang="en">Color correction</span></span></h2><p><span class="lang-es">Revelado digital resaltando la paleta cromática natural.</span><span class="lang-en" lang="en">Digital processing highlighting the natural chromatic palette.</span></p></li>
+      <li class="rv"><span class="n grad" aria-hidden="true">03</span><h2><span class="grad"><span class="lang-es">Diseño a medida según cliente</span><span class="lang-en" lang="en">Custom design per client</span></span></h2><p><span class="lang-es">Curaduría visual adaptada al espacio y gusto del coleccionista.</span><span class="lang-en" lang="en">Visual curation tailored to the collector&#x27;s space and taste.</span></p></li>
+      <li class="rv"><span class="n grad" aria-hidden="true">04</span><h2><span class="grad"><span class="lang-es">Impresión en alta calidad</span><span class="lang-en" lang="en">High-quality printing</span></span></h2><p><span class="lang-es">Producción fine-art con pigmentos minerales en algodón.</span><span class="lang-en" lang="en">Fine-art production with mineral pigments on cotton.</span></p></li>
+      <li class="rv"><span class="n grad" aria-hidden="true">05</span><h2><span class="grad"><span class="lang-es">Armado y entrega del cuadro</span><span class="lang-en" lang="en">Framing and delivery</span></span></h2><p><span class="lang-es">Montaje artesanal con marcos de diseño listo para exhibir.</span><span class="lang-en" lang="en">Artisanal mounting with designer frames ready for exhibition.</span></p></li>
+    </ol>
+    <div class="gal-block">
+      <p class="gal-intro rv"><span class="lang-es">Selección de obras en diversos formatos, estilos y diseños adaptados a cada visión.</span><span class="lang-en" lang="en">Selection of works in various formats, styles, and designs tailored to each vision.</span></p>
+      <div class="rv">
+      <div class="gal-ctrl">
+        <span class="gc-count"><span class="gc-n">1</span> <span class="lang-es">de</span><span class="lang-en" lang="en">of</span> 10</span>
+        <span class="gc-btns"><button type="button" class="gc-prev" aria-label="Foto anterior" data-en-aria-label="Previous photo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4l-6 6 6 6"/></svg></button><button type="button" class="gc-next" aria-label="Foto siguiente" data-en-aria-label="Next photo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 4l6 6-6 6"/></svg></button></span>
+      </div>
+      <div class="gal">
+        <figure tabindex="0" role="button" aria-label="Ver foto 1 de 10 en grande" data-en-aria-label="View photo 1 of 10 large" style="--ar: 1.5006"><img src="img/works/iris-lab/60x90-tira.avif" srcset="img/works/iris-lab/60x90-tira.avif 1000w, img/works/iris-lab/60x90.avif 2560w" sizes="(min-width: 760px) calc(56vh * 1.501), calc(100vw - 32px)" width="2560" height="1706" alt="Obra 1" data-en-alt="Work 1" loading="lazy" decoding="async" draggable="false" data-full="img/works/iris-lab/60x90.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 2 de 10 en grande" data-en-aria-label="View photo 2 of 10 large" style="--ar: 1.3330"><img src="img/works/iris-lab/cuadro-ojos-azules-tira.avif" srcset="img/works/iris-lab/cuadro-ojos-azules-tira.avif 1000w, img/works/iris-lab/cuadro-ojos-azules.avif 2362w" sizes="(min-width: 760px) calc(56vh * 1.333), calc(100vw - 32px)" width="2362" height="1772" alt="Obra 2" data-en-alt="Work 2" loading="lazy" decoding="async" draggable="false" data-full="img/works/iris-lab/cuadro-ojos-azules.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 3 de 10 en grande" data-en-aria-label="View photo 3 of 10 large" style="--ar: 1.5006"><img src="img/works/iris-lab/ojos-ella-tira.avif" srcset="img/works/iris-lab/ojos-ella-tira.avif 1000w, img/works/iris-lab/ojos-ella.avif 2560w" sizes="(min-width: 760px) calc(56vh * 1.501), calc(100vw - 32px)" width="2560" height="1706" alt="Obra 3" data-en-alt="Work 3" loading="lazy" decoding="async" draggable="false" data-full="img/works/iris-lab/ojos-ella.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 4 de 10 en grande" data-en-aria-label="View photo 4 of 10 large" style="--ar: 0.7502"><img src="img/works/iris-lab/daiana-tira.avif" srcset="img/works/iris-lab/daiana-tira.avif 1000w, img/works/iris-lab/daiana.avif 1772w" sizes="(min-width: 760px) calc(56vh * 0.750), calc((100vw - 32px) * 0.780)" width="1772" height="2362" alt="Obra 4" data-en-alt="Work 4" loading="lazy" decoding="async" draggable="false" data-full="img/works/iris-lab/daiana.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 5 de 10 en grande" data-en-aria-label="View photo 5 of 10 large" style="--ar: 1.0000"><img src="img/works/iris-lab/diagonal-tira.avif" srcset="img/works/iris-lab/diagonal-tira.avif 1000w, img/works/iris-lab/diagonal.avif 2560w" sizes="(min-width: 760px) calc(56vh * 1.000), calc(100vw - 32px)" width="2560" height="2560" alt="Obra 5" data-en-alt="Work 5" loading="lazy" decoding="async" draggable="false" data-full="img/works/iris-lab/diagonal.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 6 de 10 en grande" data-en-aria-label="View photo 6 of 10 large" style="--ar: 1.0000"><img src="img/works/iris-lab/iris-luxemburgo-limpio-tira.avif" srcset="img/works/iris-lab/iris-luxemburgo-limpio-tira.avif 1000w, img/works/iris-lab/iris-luxemburgo-limpio.avif 2560w" sizes="(min-width: 760px) calc(56vh * 1.000), calc(100vw - 32px)" width="2560" height="2560" alt="Obra 6" data-en-alt="Work 6" loading="lazy" decoding="async" draggable="false" data-full="img/works/iris-lab/iris-luxemburgo-limpio.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 7 de 10 en grande" data-en-aria-label="View photo 7 of 10 large" style="--ar: 1.5006"><img src="img/works/iris-lab/laura-mvd-tira.avif" srcset="img/works/iris-lab/laura-mvd-tira.avif 1000w, img/works/iris-lab/laura-mvd.avif 2560w" sizes="(min-width: 760px) calc(56vh * 1.501), calc(100vw - 32px)" width="2560" height="1706" alt="Obra 7" data-en-alt="Work 7" loading="lazy" decoding="async" draggable="false" data-full="img/works/iris-lab/laura-mvd.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 8 de 10 en grande" data-en-aria-label="View photo 8 of 10 large" style="--ar: 1.5006"><img src="img/works/iris-lab/hantony-tira.avif" srcset="img/works/iris-lab/hantony-tira.avif 1000w, img/works/iris-lab/hantony.avif 2560w" sizes="(min-width: 760px) calc(56vh * 1.501), calc(100vw - 32px)" width="2560" height="1706" alt="Obra 8" data-en-alt="Work 8" loading="lazy" decoding="async" draggable="false" data-full="img/works/iris-lab/hantony.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 9 de 10 en grande" data-en-aria-label="View photo 9 of 10 large" style="--ar: 0.7502"><img src="img/works/iris-lab/susana-tira.avif" srcset="img/works/iris-lab/susana-tira.avif 1000w, img/works/iris-lab/susana.avif 1772w" sizes="(min-width: 760px) calc(56vh * 0.750), calc((100vw - 32px) * 0.780)" width="1772" height="2362" alt="Obra 9" data-en-alt="Work 9" loading="lazy" decoding="async" draggable="false" data-full="img/works/iris-lab/susana.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 10 de 10 en grande" data-en-aria-label="View photo 10 of 10 large" style="--ar: 1.0000"><img src="img/works/iris-lab/walmar-tira.avif" srcset="img/works/iris-lab/walmar-tira.avif 1000w, img/works/iris-lab/walmar.avif 2560w" sizes="(min-width: 760px) calc(56vh * 1.000), calc(100vw - 32px)" width="2560" height="2560" alt="Obra 10" data-en-alt="Work 10" loading="lazy" decoding="async" draggable="false" data-full="img/works/iris-lab/walmar.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+      </div>
+      </div>
+    </div>
+    <figure class="media-wrap">
+      <div class="media zoomable rv-img" tabindex="0" role="button" aria-label="Ver en grande: Obra destacada: Familia Brasil" data-en-aria-label="View large: Featured work: Familia Brasil"><img src="img/works/iris-lab/familia-brasil-limpio-tira.avif" srcset="img/works/iris-lab/familia-brasil-limpio-tira.avif 1000w, img/works/iris-lab/familia-brasil-limpio.avif 2560w" sizes="(min-width: 1280px) 1184px, calc(100vw - 32px)" width="2560" height="1280" alt="Obra destacada: Familia Brasil" data-en-alt="Featured work: Familia Brasil" loading="lazy" decoding="async" draggable="false" data-full="img/works/iris-lab/familia-brasil-limpio.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></div>
+    </figure>
+    <a class="ext rv" href="https://www.instagram.com/irislab.uy" target="_blank" rel="noopener"><span class="lang-es">Ver en Instagram</span><span class="lang-en" lang="en">View on Instagram</span> <span aria-hidden="true">↗</span><span class="sr-only"><span class="lang-es"> (abre en una pestaña nueva)</span><span class="lang-en" lang="en"> (opens in a new tab)</span></span></a>
+    <a class="next" href="/final-clasica">
+      <small><span class="lang-es">Siguiente</span><span class="lang-en" lang="en">Next</span></small>
+      <span class="nt"><span class="grad">Final Clásica Fútbol Uruguayo</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M3 10h13M11 4l6 6-6 6"/></svg></span>
+      <span class="thumb"><img src="img/works/final-clasica.avif" width="1200" height="900" alt="" loading="lazy" decoding="async"></span>
+    </a>
+  </article>
+  </main>
 
-    <!-- Cover removed as requested -->
-
-    <!-- ── Comparison Slider First ── -->
-    <!-- ── Comparison Slider Hero ── -->
-    <section class="project-section" style="padding-bottom: 0;">
-        <div class="comparison-slider" data-handle-pos="50" style="view-transition-name: case-iris-lab; margin-top: 2rem;">
-            <div class="cs-underlay">
-                <img src="img/works/iris-lab/final.avif" loading="lazy" decoding="async" alt="Final Result">
-                <span class="cs-label cs-label--after">FINAL</span>
-            </div>
-            <div class="cs-overlay">
-                <div class="cs-overlay-inner">
-                    <img src="img/works/iris-lab/raw.avif" loading="lazy" decoding="async" alt="Raw Capture">
-                </div>
-                <span class="cs-label cs-label--before">RAW</span>
-            </div>
-            <div class="cs-handle">
-                <div class="cs-handle-inner">
-                    <div class="cs-handle-circle">↔</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ── Playbook Style Process ── -->
-    <section class="project-section">
-        <span class="project-section-label">
-            <span class="lang-es">PROCESO</span>
-            <span class="lang-en">PROCESS</span>
-        </span>
-        <div class="process-scroll-wrapper" style="margin-top: 4rem; overflow-x: auto; padding-bottom: 2rem; -webkit-overflow-scrolling: touch;">
-            <div class="playbook-horizontal" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem; min-width: 900px;">
-                <style>
-                    .process-scroll-wrapper::-webkit-scrollbar { height: 4px; }
-                    .process-scroll-wrapper::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
-                    .process-scroll-wrapper::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
-                    
-                    .pb-step-h { display: flex; flex-direction: column; gap: 1rem; }
-                    .pb-num-h { font-size: 0.75rem; font-weight: 800; color: var(--accent); opacity: 0.6; font-family: monospace; }
-                    .pb-content-h h3 { font-size: 0.9rem; margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: #fff; line-height: 1.3; }
-                    .pb-content-h p { font-size: 0.75rem; opacity: 0.5; line-height: 1.5; }
-                    
-                    @media (max-width: 768px) {
-                        .playbook-horizontal { min-width: 800px; gap: 1rem; }
-                    }
-                </style>
-
-                <div class="pb-step-h">
-                    <div class="pb-num-h">01</div>
-                    <div class="pb-content-h">
-                        <h3>
-                            <span class="lang-es">Foto macro del iris</span>
-                            <span class="lang-en">Macro iris photography</span>
-                        </h3>
-                        <p>
-                            <span class="lang-es">Captura de alta resolución revelando detalles microscópicos.</span>
-                            <span class="lang-en">High-resolution capture revealing microscopic details.</span>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="pb-step-h">
-                    <div class="pb-num-h">02</div>
-                    <div class="pb-content-h">
-                        <h3>
-                            <span class="lang-es">Corrección de color</span>
-                            <span class="lang-en">Color correction</span>
-                        </h3>
-                        <p>
-                            <span class="lang-es">Revelado digital resaltando la paleta cromática natural.</span>
-                            <span class="lang-en">Digital processing highlighting the natural chromatic palette.</span>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="pb-step-h">
-                    <div class="pb-num-h">03</div>
-                    <div class="pb-content-h">
-                        <h3>
-                            <span class="lang-es">Diseño a medida según cliente</span>
-                            <span class="lang-en">Custom design per client</span>
-                        </h3>
-                        <p>
-                            <span class="lang-es">Curaduría visual adaptada al espacio y gusto del coleccionista.</span>
-                            <span class="lang-en">Visual curation tailored to the collector's space and taste.</span>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="pb-step-h">
-                    <div class="pb-num-h">04</div>
-                    <div class="pb-content-h">
-                        <h3>
-                            <span class="lang-es">Impresión en alta calidad</span>
-                            <span class="lang-en">High-quality printing</span>
-                        </h3>
-                        <p>
-                            <span class="lang-es">Producción fine-art con pigmentos minerales en algodón.</span>
-                            <span class="lang-en">Fine-art production with mineral pigments on cotton.</span>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="pb-step-h">
-                    <div class="pb-num-h">05</div>
-                    <div class="pb-content-h">
-                        <h3>
-                            <span class="lang-es">Armado y entrega del cuadro</span>
-                            <span class="lang-en">Framing and delivery</span>
-                        </h3>
-                        <p>
-                            <span class="lang-es">Montaje artesanal con marcos de diseño listo para exhibir.</span>
-                            <span class="lang-en">Artisanal mounting with designer frames ready for exhibition.</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    </section>
-    </section>
-
-    <section class="project-gallery">
-        <span class="gallery-label">
-            <span class="lang-es">OBRAS SELECCIONADAS</span>
-            <span class="lang-en">SELECTED WORKS</span>
-        </span>
-        
-        <p style="max-width: 600px; margin-bottom: 3rem; opacity: 0.6; font-size: 0.85rem;">
-            <span class="lang-es">Selección de obras en diversos formatos, estilos y diseños adaptados a cada visión.</span>
-            <span class="lang-en">Selection of works in various formats, styles, and designs tailored to each vision.</span>
-        </p>
-
-        <!-- Masonry-like grid using columns for 'many sizes' interpretation -->
-        <div class="gallery-columns" style="column-count: 2; column-gap: 1.5rem;">
-            <div style="margin-bottom: 1.5rem;"><img src="img/works/iris-lab/60x90.avif" loading="lazy" decoding="async" alt="Work 1" style="width: 100%; border-radius: var(--radius);"></div>
-            <div style="margin-bottom: 1.5rem;"><img src="img/works/iris-lab/cuadro-ojos-azules.avif" loading="lazy" decoding="async" alt="Work 2" style="width: 100%; border-radius: var(--radius);"></div>
-            <div style="margin-bottom: 1.5rem;"><img src="img/works/iris-lab/ojos-ella.avif" loading="lazy" decoding="async" alt="Work 3" style="width: 100%; border-radius: var(--radius);"></div>
-            <div style="margin-bottom: 1.5rem;"><img src="img/works/iris-lab/daiana.avif" loading="lazy" decoding="async" alt="Work 4" style="width: 100%; border-radius: var(--radius);"></div>
-            <div style="margin-bottom: 1.5rem;"><img src="img/works/iris-lab/diagonal.avif" loading="lazy" decoding="async" alt="Work 5" style="width: 100%; border-radius: var(--radius);"></div>
-            <div style="margin-bottom: 1.5rem;"><img src="img/works/iris-lab/iris-luxemburgo.avif" loading="lazy" decoding="async" alt="Work 7" style="width: 100%; border-radius: var(--radius);"></div>
-            <div style="margin-bottom: 1.5rem;"><img src="img/works/iris-lab/laura-mvd.avif" loading="lazy" decoding="async" alt="Work 8" style="width: 100%; border-radius: var(--radius);"></div>
-            <div style="margin-bottom: 1.5rem;"><img src="img/works/iris-lab/hantony.avif" loading="lazy" decoding="async" alt="Work 9" style="width: 100%; border-radius: var(--radius);"></div>
-            <div style="margin-bottom: 1.5rem;"><img src="img/works/iris-lab/susana.avif" loading="lazy" decoding="async" alt="Work 10" style="width: 100%; border-radius: var(--radius);"></div>
-            <div style="margin-bottom: 1.5rem;"><img src="img/works/iris-lab/walmar.avif" loading="lazy" decoding="async" alt="Work 11" style="width: 100%; border-radius: var(--radius);"></div>
-        </div>
-
-        <!-- Full-width feature work at the end -->
-        <div class="feature-work" style="margin-top: 1.5rem;">
-            <img src="img/works/iris-lab/familia-brasil.avif" loading="lazy" decoding="async" alt="Featured Work - Familia Brasil" style="width: 100%; border-radius: var(--radius);">
-        </div>
-
-        <!-- Instagram Link -->
-        <div style="margin: 6rem auto 2rem; text-align: center;">
-            <a href="https://www.instagram.com/irislab.uy" target="_blank" style="display: inline-flex; align-items: center; gap: 0.8rem; text-decoration: none; color: #00ff88; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; transition: all 0.3s ease; opacity: 0.7;" onmouseover="this.style.opacity='1'; this.style.gap='1.2rem'" onmouseout="this.style.opacity='0.7'; this.style.gap='0.8rem'">
-                <span class="lang-es">Ver procesos en Instagram</span>
-                <span class="lang-en">View processes on Instagram</span>
-                <span style="font-size: 1.1rem; line-height: 0;">↗</span>
-            </a>
-        </div>
-    </section>
-
-    <nav class="project-nav">
-        <div class="project-nav-inner">
-            <a href="serie-rio-plata.html" class="project-nav-link">
-                <span class="project-nav-label">
-                    <span class="lang-es">Anterior</span>
-                    <span class="lang-en">Previous</span>
-                </span>
-                <span class="project-nav-title">Serie Río de la Plata</span>
-            </a>
-            <a href="final-clasica.html" class="project-nav-link">
-                <span class="project-nav-label">
-                    <span class="lang-es">Siguiente</span>
-                    <span class="lang-en">Next</span>
-                </span>
-                <span class="project-nav-title">Final Clásica</span>
-            </a>
-        </div>
-    </nav>
-
-    <footer class="detail-footer">
-        <span>© 2026 Blanco Grosso. 
-            <span class="lang-es">Basado en Montevideo, Uruguay.</span>
-            <span class="lang-en">Based in Montevideo, Uruguay.</span>
-        </span>
-    </footer>
-
+  <script src="js/case.js" defer></script>
 </body>
 </html>

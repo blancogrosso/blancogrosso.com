@@ -1,144 +1,124 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda Nacional | Blanco Grosso</title>
-    <!-- Open Graph / canonical -->
-    <link rel="canonical" href="https://www.blancogrosso.com/tienda-nacional">
-    <meta property="og:type" content="article">
-    <meta property="og:site_name" content="Blanco Grosso">
-    <meta property="og:locale" content="es_UY">
-    <meta property="og:url" content="https://www.blancogrosso.com/tienda-nacional">
-    <meta property="og:title" content="Tienda Nacional | Blanco Grosso">
-    <meta property="og:description" content="Desarrollo integral de piezas gráficas para la campaña &quot;Las Fiestas del Campeón&quot;. Un sistema visual multi-formato para todas las necesidades digitales del club.">
-    <meta property="og:image" content="https://www.blancogrosso.com/img/og/tienda-nacional.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Portada del proyecto Tienda Nacional: pieza de la campaña IVA OFF con el logo de la tienda">
-    <meta name="twitter:card" content="summary_large_image">
-    <!-- /Open Graph -->
-    <link rel="icon" type="image/png" href="img/icons/logo-verde.png">
-    <link rel="stylesheet" href="css/project-detail.css">
-    <link rel="stylesheet" href="css/view-transitions.css">
-    <script src="js/lang-switch.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tienda Nacional | Blanco Grosso</title>
+  <meta name="description" content="Desarrollo integral de piezas gráficas para la campaña &quot;Las Fiestas del Campeón&quot;. Un sistema visual multi-formato para todas las necesidades digitales del club.">
+  <meta name="theme-color" content="#0a0a0a">
+  <!-- Open Graph / canonical -->
+  <link rel="canonical" href="https://www.blancogrosso.com/tienda-nacional">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Blanco Grosso">
+  <meta property="og:locale" content="es_UY">
+  <meta property="og:url" content="https://www.blancogrosso.com/tienda-nacional">
+  <meta property="og:title" content="Tienda Nacional | Blanco Grosso">
+  <meta property="og:description" content="Desarrollo integral de piezas gráficas para la campaña &quot;Las Fiestas del Campeón&quot;. Un sistema visual multi-formato para todas las necesidades digitales del club.">
+  <meta property="og:image" content="https://www.blancogrosso.com/img/og/tienda-nacional.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Portada del proyecto Tienda Nacional: pieza de la campaña IVA OFF con el logo de la tienda">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- /Open Graph -->
+  <link rel="icon" type="image/png" href="img/icons/logo-verde.png">
+  <link rel="preload" href="fonts/archivo-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/case.css">
+  <link rel="stylesheet" href="css/view-transitions.css">
+  <!-- la transición desde la home espera a que exista la imagen principal -->
+  <link rel="expect" href="#cover" blocking="render">
+  <script>
+    /* Antes de pintar: idioma guardado y si hay JS (evita parpadeos) */
+    (function () {
+      var d = document.documentElement; d.classList.add('js');
+      try { if (localStorage.getItem('bg-lang') === 'en') { d.classList.add('lang-en-active'); d.lang = 'en'; } } catch (e) {}
+      /* si se llega con la transición desde la home, la imagen principal ya está destapada */
+      window.addEventListener('pagereveal', function (e) {
+        var cover = document.querySelector('[data-vt]');
+        if (e.viewTransition && cover) cover.classList.add('in', 'no-anim');
+      });
+    })();
+  </script>
 </head>
 <body>
-
-    <nav class="detail-nav">
-        <a href="portfolio.html" class="detail-nav-brand">BLANCO GROSSO</a>
-        <div style="display: flex; align-items: center; gap: 1.5rem;">
-            <div class="lang-switcher">
-                <span class="lang-toggle" data-lang="es">ES</span>
-                <span>/</span>
-                <span class="lang-toggle" data-lang="en">EN</span>
-            </div>
-            <a href="portfolio.html#works" class="detail-nav-back">
-                <span class="lang-es">← Volver al Portfolio</span>
-                <span class="lang-en">← Back to Portfolio</span>
-            </a>
-        </div>
-    </nav>
-
-    <header class="project-hero">
-        <div class="project-meta">
-            <span class="project-category">Campaign Design</span>
-            <span class="project-category">Retail Marketing</span>
-            <span class="project-category">Digital Advertising</span>
-            <span class="project-date">Dic 2025</span>
-        </div>
-        <h1>Tienda Nacional<br>Las Fiestas del Campeón</h1>
-        <p class="project-hero-sub">
-            <span class="lang-es">Desarrollo integral de piezas gráficas para la campaña "Las Fiestas del Campeón". Un sistema visual multi-formato diseñado para cubrir todas las necesidades digitales del club.</span>
-            <span class="lang-en">Comprehensive development of graphic pieces for the "Las Fiestas del Campeón" campaign. A multi-format visual system designed to cover all the club's digital needs.</span>
-        </p>
-        <div class="project-stack">
-            <span class="stack-tag">Ai</span>
-            <span class="stack-tag">Ps</span>
-        </div>
-    </header>
-
-    <div class="project-cover" style="padding: 0; margin-bottom: 4rem; display: flex; justify-content: center;">
-        <img src="img/works/tienda-nacional/tienda-nacional-home-slider-1920-750.avif" loading="lazy" decoding="async" alt="Las Fiestas del Campeón Home Slider" style="view-transition-name: case-tienda-nacional; border-radius: 12px; max-width: 100%; height: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+  <header class="bar">
+    <span class="count"><span class="lang-es">5 de 10</span><span class="lang-en" lang="en">5 of 10</span></span>
+    <div class="bar-end">
+      <div class="lang" role="group" aria-label="Idioma / Language">
+        <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="close" href="/#works"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg><span class="lang-es">Cerrar</span><span class="lang-en" lang="en">Close</span></a>
     </div>
+  </header>
 
-    <section class="project-section">
-        <span class="project-section-label">
-            <span class="lang-es">LA CAMPAÑA</span>
-            <span class="lang-en">THE CAMPAIGN</span>
-        </span>
-        <h2>
-            <span class="lang-es">Sistema Visual Multi-formato</span>
-            <span class="lang-en">Multi-format Visual System</span>
-        </h2>
-        <p>
-            <span class="lang-es">El reto consistió en mantener la coherencia estética en una campaña de alto volumen, adaptando el concepto visual a cada punto de contacto con el socio: desde el sitio oficial hasta cada red social.</span>
-            <span class="lang-en">The challenge was maintaining aesthetic coherence in a high-volume campaign, adapting the visual concept to each member touchpoint: from the official site to every social network.</span>
-        </p>
+  <main>
+  <article class="case" data-case="tienda-nacional">
+    <header class="c-hero">
+      <h1 class="rv"><span class="grad">Tienda Nacional Las Fiestas del Campeón</span></h1>
+      <p class="c-lead rv"><span class="lang-es">Desarrollo integral de piezas gráficas para la campaña &quot;Las Fiestas del Campeón&quot;. Un sistema visual multi-formato diseñado para cubrir todas las necesidades digitales del club.</span><span class="lang-en" lang="en">Comprehensive development of graphic pieces for the &quot;Las Fiestas del Campeón&quot; campaign. A multi-format visual system designed to cover all the club&#x27;s digital needs.</span></p>
+      <p class="c-meta rv"><span class="lang-es">Diciembre 2025</span><span class="lang-en" lang="en">December 2025</span></p>
+    </header>
+    <figure class="cover rv-img" id="cover" data-vt style="view-transition-name: case-tienda-nacional"><img src="img/works/tienda-nacional/tienda-nacional-home-slider-1920-750.avif" width="2560" height="984" alt="Slider de la home: Las Fiestas del Campeón" data-en-alt="Home slider: Las Fiestas del Campeón" fetchpriority="high"></figure>
+    <dl class="facts rv">
+      <div><dt><span class="lang-es">Cliente</span><span class="lang-en" lang="en">Client</span></dt><dd>Tienda Nacional</dd></div>
+      <div><dt><span class="lang-es">Año</span><span class="lang-en" lang="en">Year</span></dt><dd>2025</dd></div>
+      <div><dt><span class="lang-es">Qué hice</span><span class="lang-en" lang="en">What I did</span></dt><dd><span class="lang-es">Diseño de campaña, marketing retail y publicidad digital</span><span class="lang-en" lang="en">Campaign design, retail marketing and digital advertising</span></dd></div>
+      <div><dt><span class="lang-es">Herramientas</span><span class="lang-en" lang="en">Tools</span></dt><dd>Illustrator, Photoshop</dd></div>
+    </dl>
+    <section class="story">
+      <h2 class="rv"><span class="lang-es">Sistema visual multi-formato</span><span class="lang-en" lang="en">Multi-format visual system</span></h2>
+      <div class="rv"><p><span class="lang-es">El reto consistió en mantener la coherencia estética en una campaña de alto volumen, adaptando el concepto visual a cada punto de contacto con el socio: desde el sitio oficial hasta cada red social.</span><span class="lang-en" lang="en">The challenge was maintaining aesthetic coherence in a high-volume campaign, adapting the visual concept to each member touchpoint: from the official site to every social network.</span></p></div>
     </section>
+    <div class="gal-block">
+      <h2 class="blk-h rv"><span class="grad">Banners web</span></h2>
+      <div class="rv">
+      <div class="gal-ctrl">
+        <span class="gc-count"><span class="gc-n">1</span> <span class="lang-es">de</span><span class="lang-en" lang="en">of</span> 3</span>
+        <span class="gc-btns"><button type="button" class="gc-prev" aria-label="Foto anterior" data-en-aria-label="Previous photo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4l-6 6 6 6"/></svg></button><button type="button" class="gc-next" aria-label="Foto siguiente" data-en-aria-label="Next photo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 4l6 6-6 6"/></svg></button></span>
+      </div>
+      <div class="gal">
+        <figure tabindex="0" role="button" aria-label="Ver foto 1 de 3 en grande" data-en-aria-label="View photo 1 of 3 large" style="--ar: 1.9113"><img src="img/works/tienda-nacional/tienda-nacional-anuncio-1-1200-628-tira.avif" srcset="img/works/tienda-nacional/tienda-nacional-anuncio-1-1200-628-tira.avif 1000w, img/works/tienda-nacional/tienda-nacional-anuncio-1-1200-628.avif 2500w" sizes="(min-width: 760px) calc(56vh * 1.911), calc(100vw - 32px)" width="2500" height="1308" alt="Banner 1" loading="lazy" decoding="async" draggable="false" data-full="img/works/tienda-nacional/tienda-nacional-anuncio-1-1200-628.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 2 de 3 en grande" data-en-aria-label="View photo 2 of 3 large" style="--ar: 1.9113"><img src="img/works/tienda-nacional/tienda-nacional-anuncio-2-1200-628-tira.avif" srcset="img/works/tienda-nacional/tienda-nacional-anuncio-2-1200-628-tira.avif 1000w, img/works/tienda-nacional/tienda-nacional-anuncio-2-1200-628.avif 2500w" sizes="(min-width: 760px) calc(56vh * 1.911), calc(100vw - 32px)" width="2500" height="1308" alt="Banner 2" loading="lazy" decoding="async" draggable="false" data-full="img/works/tienda-nacional/tienda-nacional-anuncio-2-1200-628.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 3 de 3 en grande" data-en-aria-label="View photo 3 of 3 large" style="--ar: 1.9113"><img src="img/works/tienda-nacional/tienda-nacional-anuncio-3-1200-628-limpio-tira.avif" srcset="img/works/tienda-nacional/tienda-nacional-anuncio-3-1200-628-limpio-tira.avif 1000w, img/works/tienda-nacional/tienda-nacional-anuncio-3-1200-628-limpio.avif 2500w" sizes="(min-width: 760px) calc(56vh * 1.911), calc(100vw - 32px)" width="2500" height="1308" alt="Banner 3" loading="lazy" decoding="async" draggable="false" data-full="img/works/tienda-nacional/tienda-nacional-anuncio-3-1200-628-limpio.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+      </div>
+      </div>
+    </div>
+    <div class="gal-block">
+      <h2 class="blk-h rv"><span class="grad">Feed</span></h2>
+      <div class="rv">
+      <div class="gal-ctrl">
+        <span class="gc-count"><span class="gc-n">1</span> <span class="lang-es">de</span><span class="lang-en" lang="en">of</span> 3</span>
+        <span class="gc-btns"><button type="button" class="gc-prev" aria-label="Foto anterior" data-en-aria-label="Previous photo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4l-6 6 6 6"/></svg></button><button type="button" class="gc-next" aria-label="Foto siguiente" data-en-aria-label="Next photo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 4l6 6-6 6"/></svg></button></span>
+      </div>
+      <div class="gal">
+        <figure tabindex="0" role="button" aria-label="Ver foto 1 de 3 en grande" data-en-aria-label="View photo 1 of 3 large" style="--ar: 1.0000"><img src="img/works/tienda-nacional/tienda-nacional-anuncio-1-1200-1200-tira.avif" srcset="img/works/tienda-nacional/tienda-nacional-anuncio-1-1200-1200-tira.avif 1000w, img/works/tienda-nacional/tienda-nacional-anuncio-1-1200-1200.avif 2500w" sizes="(min-width: 760px) calc(56vh * 1.000), calc(100vw - 32px)" width="2500" height="2500" alt="Cuadrado 1" data-en-alt="Square 1" loading="lazy" decoding="async" draggable="false" data-full="img/works/tienda-nacional/tienda-nacional-anuncio-1-1200-1200.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 2 de 3 en grande" data-en-aria-label="View photo 2 of 3 large" style="--ar: 1.0000"><img src="img/works/tienda-nacional/tienda-nacional-anuncio-2-1200-1200-tira.avif" srcset="img/works/tienda-nacional/tienda-nacional-anuncio-2-1200-1200-tira.avif 1000w, img/works/tienda-nacional/tienda-nacional-anuncio-2-1200-1200.avif 2500w" sizes="(min-width: 760px) calc(56vh * 1.000), calc(100vw - 32px)" width="2500" height="2500" alt="Cuadrado 2" data-en-alt="Square 2" loading="lazy" decoding="async" draggable="false" data-full="img/works/tienda-nacional/tienda-nacional-anuncio-2-1200-1200.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 3 de 3 en grande" data-en-aria-label="View photo 3 of 3 large" style="--ar: 1.0000"><img src="img/works/tienda-nacional/tienda-nacional-anuncio-3-1200-1200-tira.avif" srcset="img/works/tienda-nacional/tienda-nacional-anuncio-3-1200-1200-tira.avif 1000w, img/works/tienda-nacional/tienda-nacional-anuncio-3-1200-1200.avif 2500w" sizes="(min-width: 760px) calc(56vh * 1.000), calc(100vw - 32px)" width="2500" height="2500" alt="Cuadrado 3" data-en-alt="Square 3" loading="lazy" decoding="async" draggable="false" data-full="img/works/tienda-nacional/tienda-nacional-anuncio-3-1200-1200.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+      </div>
+      </div>
+    </div>
+    <div class="gal-block">
+      <h2 class="blk-h rv"><span class="grad">Stories</span></h2>
+      <div class="rv">
+      <div class="gal-ctrl">
+        <span class="gc-count"><span class="gc-n">1</span> <span class="lang-es">de</span><span class="lang-en" lang="en">of</span> 3</span>
+        <span class="gc-btns"><button type="button" class="gc-prev" aria-label="Foto anterior" data-en-aria-label="Previous photo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4l-6 6 6 6"/></svg></button><button type="button" class="gc-next" aria-label="Foto siguiente" data-en-aria-label="Next photo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 4l6 6-6 6"/></svg></button></span>
+      </div>
+      <div class="gal">
+        <figure tabindex="0" role="button" aria-label="Ver foto 1 de 3 en grande" data-en-aria-label="View photo 1 of 3 large" style="--ar: 0.5625"><img src="img/works/tienda-nacional/tienda-nacional-anuncio-1-1080-1920-tira.avif" srcset="img/works/tienda-nacional/tienda-nacional-anuncio-1-1080-1920-tira.avif 1000w, img/works/tienda-nacional/tienda-nacional-anuncio-1-1080-1920.avif 1440w" sizes="(min-width: 760px) calc(56vh * 0.562), calc((100vw - 32px) * 0.585)" width="1440" height="2560" alt="Story 1" loading="lazy" decoding="async" draggable="false" data-full="img/works/tienda-nacional/tienda-nacional-anuncio-1-1080-1920.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 2 de 3 en grande" data-en-aria-label="View photo 2 of 3 large" style="--ar: 0.5625"><img src="img/works/tienda-nacional/tienda-nacional-anuncio-2-1080-1920-tira.avif" srcset="img/works/tienda-nacional/tienda-nacional-anuncio-2-1080-1920-tira.avif 1000w, img/works/tienda-nacional/tienda-nacional-anuncio-2-1080-1920.avif 1440w" sizes="(min-width: 760px) calc(56vh * 0.562), calc((100vw - 32px) * 0.585)" width="1440" height="2560" alt="Story 2" loading="lazy" decoding="async" draggable="false" data-full="img/works/tienda-nacional/tienda-nacional-anuncio-2-1080-1920.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 3 de 3 en grande" data-en-aria-label="View photo 3 of 3 large" style="--ar: 0.5625"><img src="img/works/tienda-nacional/tienda-nacional-anuncio-3-1080-1920-tira.avif" srcset="img/works/tienda-nacional/tienda-nacional-anuncio-3-1080-1920-tira.avif 1000w, img/works/tienda-nacional/tienda-nacional-anuncio-3-1080-1920.avif 1440w" sizes="(min-width: 760px) calc(56vh * 0.562), calc((100vw - 32px) * 0.585)" width="1440" height="2560" alt="Story 3" loading="lazy" decoding="async" draggable="false" data-full="img/works/tienda-nacional/tienda-nacional-anuncio-3-1080-1920.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+      </div>
+      </div>
+    </div>
+    <a class="next" href="/by-kafuse">
+      <small><span class="lang-es">Siguiente</span><span class="lang-en" lang="en">Next</span></small>
+      <span class="nt"><span class="grad">By Kafuse Alas y Raíces</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M3 10h13M11 4l6 6-6 6"/></svg></span>
+      <span class="thumb"><img src="img/works/by-kafuse.avif" width="1200" height="900" alt="" loading="lazy" decoding="async"></span>
+    </a>
+  </article>
+  </main>
 
-    <section class="project-gallery">
-        <!-- 1. Banners Web -->
-        <span class="gallery-label">
-            <span class="lang-es">BANNERS WEB</span>
-            <span class="lang-en">BANNERS WEB</span>
-        </span>
-        <div class="campaign-grid" style="grid-template-columns: 1fr; gap: 1.5rem; margin: 2rem 0 6rem;">
-            <div class="cg-item"><img src="img/works/tienda-nacional/tienda-nacional-anuncio-1-1200-628.avif" loading="lazy" decoding="async" alt="Banner 1"></div>
-            <div class="cg-item"><img src="img/works/tienda-nacional/tienda-nacional-anuncio-2-1200-628.avif" loading="lazy" decoding="async" alt="Banner 2"></div>
-            <div class="cg-item"><img src="img/works/tienda-nacional/tienda-nacional-anuncio-3-1200-628.avif" loading="lazy" decoding="async" alt="Banner 3"></div>
-        </div>
-
-        <!-- 2. SOCIAL FEED -->
-        <span class="gallery-label">
-            <span class="lang-es">FEED</span>
-            <span class="lang-en">FEED</span>
-        </span>
-        <div class="campaign-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin: 2rem 0 6rem;">
-            <!-- Square & Portrait can go here if we want a mix, but user said "Story o Feed" -->
-            <div class="cg-item"><img src="img/works/tienda-nacional/tienda-nacional-anuncio-1-1200-1200.avif" loading="lazy" decoding="async" alt="Square 1"></div>
-            <div class="cg-item"><img src="img/works/tienda-nacional/tienda-nacional-anuncio-2-1200-1200.avif" loading="lazy" decoding="async" alt="Square 2"></div>
-            <div class="cg-item"><img src="img/works/tienda-nacional/tienda-nacional-anuncio-3-1200-1200.avif" loading="lazy" decoding="async" alt="Square 3"></div>
-        </div>
-
-        <!-- 3. STORIES -->
-        <span class="gallery-label">
-            <span class="lang-es">STORIES</span>
-            <span class="lang-en">STORIES</span>
-        </span>
-        <div class="campaign-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin: 2rem 0 0;">
-            <div class="cg-item"><img src="img/works/tienda-nacional/tienda-nacional-anuncio-1-1080-1920.avif" loading="lazy" decoding="async" alt="Story 1"></div>
-            <div class="cg-item"><img src="img/works/tienda-nacional/tienda-nacional-anuncio-2-1080-1920.avif" loading="lazy" decoding="async" alt="Story 2"></div>
-            <div class="cg-item"><img src="img/works/tienda-nacional/tienda-nacional-anuncio-3-1080-1920.avif" loading="lazy" decoding="async" alt="Story 3"></div>
-        </div>
-    </section>
-    </section>
-
-    <nav class="project-nav">
-        <div class="project-nav-inner">
-            <a href="bufarra-kithome.html" class="project-nav-link">
-                <span class="project-nav-label">
-                    <span class="lang-es">Anterior</span>
-                    <span class="lang-en">Previous</span>
-                </span>
-                <span class="project-nav-title">Bufarra KitHome</span>
-            </a>
-            <a href="by-kafuse.html" class="project-nav-link">
-                <span class="project-nav-label">
-                    <span class="lang-es">Siguiente</span>
-                    <span class="lang-en">Next</span>
-                </span>
-                <span class="project-nav-title">By Kafuse</span>
-            </a>
-        </div>
-    </nav>
-
-    <footer class="detail-footer">
-        <span>© 2026 Blanco Grosso. 
-            <span class="lang-es">Basado en Montevideo, Uruguay.</span>
-            <span class="lang-en">Based in Montevideo, Uruguay.</span>
-        </span>
-    </footer>
-
+  <script src="js/case.js" defer></script>
 </body>
 </html>

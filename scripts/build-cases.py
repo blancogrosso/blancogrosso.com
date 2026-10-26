@@ -6,14 +6,19 @@ Uso (desde la raíz del repo):  python3 scripts/build-cases.py
 
 Cada caso es una lista de bloques en orden. Tipos de bloque:
   hero          título, bajada (lead) y fecha
-  cover         imagen principal (src, alt); lleva el view-transition-name de la tarjeta de la home
+  cover         imagen o video principal (src, alt; poster y "controls": true si el video tiene sonido);
+                lleva el view-transition-name de la tarjeta de la home
   facts         ficha: items = [[clave, valor], …] con clave client | for | year | did | tools
   story         frase grande (heading) + párrafos (paras)
   split-video   video vertical en marco (src, poster) + heading y paras; "controls": true si tiene sonido
-  video-pair    dos videos verticales con sonido, cruzados en diagonal (items = [{src, poster, heading}])
+  video-pair    dos videos verticales con sonido, lado a lado (items = [{src, poster, heading}])
+  media         imagen o video ancho (src, alt; poster si es video; heading y caption opcionales)
+  garment       prendas en percha que abren su diseño técnico en el visor
+                (items = [{src, alt, full, full_alt, caption, video opcional {src, poster}}], heading opcional)
   sheet         pieza sobre plano claro (src, alt, caption y heading opcionales)
-  gallery       tira de fotos que se desliza, con visor a pantalla completa (items = [{src, alt}], heading opcional)
-  before-after  comparador arrastrable (before, after); "cover": true si hace de imagen principal
+  gallery       tira de fotos que se desliza, con visor a pantalla completa (items = [{src, alt}], heading e intro opcionales)
+  before-after  comparador arrastrable (before, after); "cover": true si hace de imagen principal;
+                "labels": {before, after} para cambiar los rótulos "Generada" / "Terminada"
   steps         pasos numerados (items = [{title, text}])
   prompt        texto de prompt (label, text) + imagen resultado opcional (src, alt)
   video-embed   video de YouTube (id, title)
@@ -33,6 +38,24 @@ CASES = json.load(open(os.path.join(ROOT, "data", "cases.json"), encoding="utf-8
 WORKS = json.load(open(os.path.join(ROOT, "data", "works.json"), encoding="utf-8"))["works"]
 SEQUENCE = [w for w in WORKS if not w.get("external")]  # casos con página propia, en el orden de la home
 
+def limpio(src):
+    """Si al lado de una foto hay una copia <nombre>-limpio.avif (sin la línea clara que dejó una mala
+    exportación en el borde), se usa esa. El original no se toca."""
+    if isinstance(src, str) and src.endswith(".avif") and not src.endswith("-limpio.avif"):
+        c = src[:-5] + "-limpio.avif"
+        if os.path.exists(os.path.join(ROOT, c)): return c
+    return src
+
+def usar_limpias(x):
+    """Recorre los datos y cambia cada foto (src, poster, full) por su copia limpia si existe."""
+    if isinstance(x, dict):
+        for k, v in x.items():
+            if k in ("src", "poster", "full") and isinstance(v, str): x[k] = limpio(v)
+            else: usar_limpias(v)
+    elif isinstance(x, list):
+        for v in x: usar_limpias(v)
+usar_limpias(CASES)
+
 FACT_LABELS = {
     "client": ("Cliente", "Client"),
     "for": ("Para", "For"),
@@ -49,6 +72,11 @@ def bi(t, tag="span"):
     a, b = E(es(t)), E(en(t))
     if a == b: return a
     return f'<{tag} class="lang-es">{a}</{tag}><{tag} class="lang-en" lang="en">{b}</{tag}>'
+
+def grad(t):
+    """Título con el degradado verde de la marca (como el de "Siguiente"). Va en un span en línea:
+    el degradado se recorta por la caja de la letra, que incluye acentos y descendentes."""
+    return f'<span class="grad">{bi(t)}</span>'
 
 def alt_attrs(t):
     a, b = es(t), en(t)
@@ -98,14 +126,15 @@ def vt(slug): return f' style="view-transition-name: case-{slug}"'
 
 def b_hero(b, c):
     return f'''    <header class="c-hero">
-      <h1 class="rv">{bi(b["title"])}</h1>
+      <h1 class="rv">{grad(b["title"])}</h1>
       <p class="c-lead rv">{bi(b["lead"])}</p>
       <p class="c-meta rv">{bi(b["date"])}</p>
     </header>'''
 
 def b_cover(b, c):
     if b["src"].endswith(".mp4"):
-        media = f'<video src="{E(b["src"])}" poster="{E(b.get("poster", ""))}" muted loop playsinline preload="metadata" data-autoplay></video>'
+        ctrl = " controls" if b.get("controls") else ""  # con sonido: arranca muda y se puede subir el volumen
+        media = f'<video src="{E(b["src"])}" poster="{E(b.get("poster", ""))}" muted loop playsinline preload="metadata" data-autoplay{ctrl}></video>'
     else:
         media = img(b["src"], b["alt"], lazy=False)
     return f'    <figure class="cover rv-img" id="cover" data-vt{vt(c["slug"])}>{media}</figure>'
@@ -116,7 +145,7 @@ def b_facts(b, c):
 
 def block_heading(b):
     """Título opcional de un bloque (galería, pieza sobre plano claro)."""
-    return f'\n      <h2 class="blk-h rv">{bi(b["heading"])}</h2>' if b.get("heading") else ""
+    return f'\n      <h2 class="blk-h rv">{grad(b["heading"])}</h2>' if b.get("heading") else ""
 
 def paras(b):
     return "".join(f"<p>{bi(p)}</p>" for p in b.get("paras", []))
@@ -133,19 +162,55 @@ def b_split_video(b, c):
     return f'''    <section class="split">
       <div class="phone rv-img"><video src="{E(b["src"])}" poster="{E(b["poster"])}" {attrs} preload="metadata"></video></div>
       <div class="rv">
-        <h2>{bi(b["heading"])}</h2>{paras(b)}
+        <h2>{grad(b["heading"])}</h2>{paras(b)}
       </div>
     </section>'''
 
 def b_video_pair(b, c):
-    """Dos videos verticales con sonido, cruzados: el primero arriba a la izquierda y el segundo
-    más abajo a la derecha. Se reproducen con los controles (no arrancan solos)."""
+    """Dos videos verticales con sonido, lado a lado a la misma altura (en celular, uno debajo del otro).
+    Se reproducen con los controles (no arrancan solos)."""
     items = "\n".join(
         f'''      <figure class="vp-item">
-        <h2 class="blk-h rv">{bi(v["heading"])}</h2>
+        <h2 class="blk-h rv">{grad(v["heading"])}</h2>
         <div class="phone rv-img"><video src="{E(v["src"])}" poster="{E(v["poster"])}" controls playsinline preload="metadata"></video></div>
       </figure>''' for v in b["items"])
     return f'    <section class="vpair">\n{items}\n    </section>'
+
+def b_media(b, c):
+    """Imagen o video ancho a todo el ancho del caso, con título y pie opcionales.
+    La imagen se abre en el visor (lleva el ícono de ampliar); el video se reproduce solo mientras se ve."""
+    cap = f'\n      <figcaption class="cap">{bi(b["caption"])}</figcaption>' if b.get("caption") else ""
+    if b["src"].endswith(".mp4"):
+        size = img_size(b["poster"]) if b.get("poster") else None
+        ar = f' style="aspect-ratio: {size[0]} / {size[1]}"' if size else ""
+        inner = f'<div class="media rv-img"{ar}><video src="{E(b["src"])}" poster="{E(b.get("poster", ""))}" muted loop playsinline preload="metadata" data-autoplay></video></div>'
+    else:
+        im = img(b["src"], b["alt"], sizes="(min-width: 1280px) 1184px, calc(100vw - 32px)", extra=f' draggable="false" data-full="{E(b["src"])}"', small_suffix="-tira")
+        inner = (f'<div class="media zoomable rv-img" tabindex="0" role="button" aria-label="Ver en grande: {E(es(b["alt"]))}" '
+                 f'data-en-aria-label="View large: {E(en(b["alt"]))}">{im}{ZOOM}</div>')
+    return f'''    <figure class="media-wrap">{block_heading(b)}
+      {inner}{cap}
+    </figure>'''
+
+def b_garment(b, c):
+    """Prenda en percha (foto, o "video": {src, poster} cuando esté) con un acercamiento muy lento
+    mientras se ve. Al tocarla se abre en el visor el diseño técnico (full). Con dos prendas van lado a lado."""
+    items = []
+    for i in b["items"]:
+        fa = i.get("full_alt", i["alt"])
+        data = (f' data-full="{E(i["full"])}" data-full-alt="{E(es(fa))}" data-en-full-alt="{E(en(fa))}"')
+        if i.get("video"):
+            v = i["video"]
+            media = f'<video src="{E(v["src"])}" poster="{E(v["poster"])}" muted loop playsinline preload="metadata" data-autoplay aria-label="{E(es(i["alt"]))}"></video>'
+        else:
+            media = img(i["src"], i["alt"], sizes="(min-width: 760px) 520px, calc(100vw - 32px)", extra=' draggable="false"', small_suffix="-tira")
+        cap = f'<figcaption class="cap">{bi(i["caption"])}</figcaption>' if i.get("caption") else ""
+        items.append(
+            f'''      <figure class="garment-wrap rv">
+        <div class="garment zoomable" tabindex="0" role="button" aria-label="Ver el diseño técnico en grande: {E(es(fa))}" data-en-aria-label="View the technical design large: {E(en(fa))}"{data}>{media}{ZOOM}</div>{cap}
+      </figure>''')
+    two = " two" if len(items) == 2 else ""
+    return f'    <section class="garments{two}">{block_heading(b)}\n' + "\n".join(items) + "\n    </section>"
 
 def b_sheet(b, c):
     cap = f'\n      <figcaption class="cap">{bi(b["caption"])}</figcaption>' if b.get("caption") else ""
@@ -158,21 +223,31 @@ def b_gallery(b, c):
     flechas y contador; tocar una foto la abre en el visor (lo arma js/case.js).
     La tira usa <nombre>-tira.avif (1000 px de ancho); el original (data-full) lo carga el visor al abrirse."""
     n = len(b["items"])
-    sizes = "(min-width: 760px) 460px, 85vw"  # el alto manda: una foto vertical nunca pasa de ~460 px de ancho
+    def sizes(ar):
+        # el alto manda (56 % del alto de pantalla en escritorio, ~1,04 del ancho útil en celular);
+        # una foto horizontal no pasa del ancho útil
+        movil = "calc(100vw - 32px)" if ar >= 0.96 else f"calc((100vw - 32px) * {1.04 * ar:.3f})"
+        return f"(min-width: 760px) calc(56vh * {ar:.3f}), {movil}"
+    def ar(src):
+        w, h = img_size(src) or (4, 5)
+        return w / h
     nodrag = ' draggable="false"'
     full = lambda src: f' data-full="{E(src)}"'
     figs = "\n".join(
-        f'        <figure tabindex="0" role="button" aria-label="Ver foto {k + 1} de {n} en grande" data-en-aria-label="View photo {k + 1} of {n} large">'
-        f'{img(i["src"], i["alt"], sizes=sizes, extra=nodrag + full(i["src"]), small_suffix="-tira")}{ZOOM}</figure>'
+        f'        <figure tabindex="0" role="button" aria-label="Ver foto {k + 1} de {n} en grande" data-en-aria-label="View photo {k + 1} of {n} large" style="--ar: {ar(i["src"]):.4f}">'
+        f'{img(i["src"], i["alt"], sizes=sizes(ar(i["src"])), extra=nodrag + full(i["src"]), small_suffix="-tira")}{ZOOM}</figure>'
         for k, i in enumerate(b["items"]))
     prev = svg('<path d="M12 4l-6 6 6 6"/>')
     nxt = svg('<path d="M8 4l6 6-6 6"/>')
-    return f'''    <div class="gal-block">{block_heading(b)}
-      <div class="rv">
+    intro = f'\n      <p class="gal-intro rv">{bi(b["intro"])}</p>' if b.get("intro") else ""
+    # flechas y contador solo si hay más de una foto
+    ctrl = f'''
       <div class="gal-ctrl">
         <span class="gc-count"><span class="gc-n">1</span> {bi({"es": "de", "en": "of"})} {n}</span>
         <span class="gc-btns"><button type="button" class="gc-prev" aria-label="Foto anterior" data-en-aria-label="Previous photo">{prev}</button><button type="button" class="gc-next" aria-label="Foto siguiente" data-en-aria-label="Next photo">{nxt}</button></span>
-      </div>
+      </div>''' if n > 1 else ""
+    return f'''    <div class="gal-block">{block_heading(b)}{intro}
+      <div class="rv">{ctrl}
       <div class="gal">
 {figs}
       </div>
@@ -186,20 +261,31 @@ def b_before_after(b, c):
     lazy = not cover
     sizes = "(min-width: 760px) 720px, 100vw"  # el comparador mide como mucho 720 px
     w, h = img_size(b["after"]["src"]) or (3, 4)  # la caja toma la proporción de las fotos (las dos miden igual)
+    # rótulos: por defecto "Generada" y "Terminada"; un caso puede traer los suyos en "labels"
+    lab = b.get("labels", {})
+    antes = lab.get("before", {"es": "Generada", "en": "Generated"}); despues = lab.get("after", {"es": "Terminada", "en": "Finished"})
+    if lab:
+        aria_es, aria_en = f"Comparar {es(antes)} y {es(despues)}", f"Compare {en(antes)} and {en(despues)}"
+    else:
+        aria_es, aria_en = "Comparar foto generada y pieza terminada", "Compare generated photo and finished piece"
     return f'''    <div class="ba rv{" ba-cover" if cover else ""}"{wrap} style="--ar: {w} / {h}">
       <div class="ba-box"{name}>
         {img(b["before"]["src"], b["before"]["alt"], lazy, sizes=sizes)}
         {img(b["after"]["src"], b["after"]["alt"], lazy, ' class="after"', sizes)}
         <span class="ba-line"></span>
         <span class="ba-knob" aria-hidden="true">{KNOB}</span>
-        <span class="ba-tag l" aria-hidden="true">{bi({"es": "Generada", "en": "Generated"})}</span><span class="ba-tag r" aria-hidden="true">{bi({"es": "Terminada", "en": "Finished"})}</span>
-        <input type="range" min="0" max="100" value="50" aria-label="Comparar foto generada y pieza terminada" data-en-aria-label="Compare generated photo and finished piece">
+        <span class="ba-tag l" aria-hidden="true">{bi(antes)}</span><span class="ba-tag r" aria-hidden="true">{bi(despues)}</span>
+        <input type="range" min="0" max="100" value="50" aria-label="{E(aria_es)}" data-en-aria-label="{E(aria_en)}">
       </div>
     </div>'''
 
 def b_steps(b, c):
+    # los títulos de los pasos cuelgan del último h2; si todavía no hubo ninguno, son h2 (sin saltear niveles)
+    antes = c["blocks"][:c["blocks"].index(b)]
+    hay_h2 = any(x["type"] in ("story", "split-video", "video-pair") or x.get("heading") for x in antes)
+    h = "h3" if hay_h2 else "h2"
     items = "\n".join(
-        f'      <li class="rv"><span class="n grad" aria-hidden="true">{k + 1:02d}</span><h3>{bi(s["title"])}</h3><p>{bi(s["text"])}</p></li>'
+        f'      <li class="rv"><span class="n grad" aria-hidden="true">{k + 1:02d}</span><{h}>{grad(s["title"])}</{h}><p>{bi(s["text"])}</p></li>'
         for k, s in enumerate(b["items"]))
     four = " four" if len(b["items"]) == 4 else ""  # 4 pasos: de a dos en tablet, los cuatro juntos en escritorio
     return f'    <ol class="steps{four}">\n{items}\n    </ol>'
@@ -222,7 +308,7 @@ def b_ext_link(b, c):
 def b_next(b, c):
     i = next(k for k, w in enumerate(SEQUENCE) if w["slug"] == c["slug"])
     w = SEQUENCE[(i + 1) % len(SEQUENCE)]
-    thumb = f'img/works/{w["slug"]}.avif'
+    thumb = limpio(f'img/works/{w["slug"]}.avif')
     return f'''    <a class="next" href="{E(w["href"])}">
       <small>{bi({"es": "Siguiente", "en": "Next"})}</small>
       <span class="nt"><span class="grad">{E(w["title"])}</span>{ARROW}</span>
@@ -231,7 +317,7 @@ def b_next(b, c):
 
 BLOCKS = {
     "hero": b_hero, "cover": b_cover, "facts": b_facts, "story": b_story, "split-video": b_split_video,
-    "video-pair": b_video_pair, "sheet": b_sheet, "gallery": b_gallery, "before-after": b_before_after, "steps": b_steps,
+    "video-pair": b_video_pair, "media": b_media, "garment": b_garment, "sheet": b_sheet, "gallery": b_gallery, "before-after": b_before_after, "steps": b_steps,
     "prompt": b_prompt, "video-embed": b_video_embed, "ext-link": b_ext_link, "next": b_next,
 }
 

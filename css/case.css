@@ -56,6 +56,12 @@ a { color: inherit; }
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   animation: flow 8s ease infinite;
 }
+/* títulos con degradado: el espaciado negativo deja la punta de la última letra fuera de la caja
+   y el degradado la cortaría; un margen interno en cada línea (compensado, no mueve el texto) la cubre */
+h1 > .grad, h2 > .grad, h3 > .grad {
+  padding: 0.06em 0.1em; margin: 0 -0.1em;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
 
 /* ── Barra: posición en la serie, idioma y Cerrar (vuelve a los trabajos de la home) ── */
 .bar {
@@ -124,16 +130,33 @@ a { color: inherit; }
 .split p { margin: 0 0 16px; color: var(--soft); max-width: 52ch; }
 .split p:last-child { margin-bottom: 0; }
 
-/* Dos videos cruzados: en escritorio el primero en las columnas 1-6 y el segundo en las 7-12,
-   bajado un cuarto de su alto (el marco es 9:16, como mucho 380 px de ancho) */
+/* Dos videos lado a lado en escritorio (columnas 1-6 y 7-12, a la misma altura); en celular, uno debajo del otro */
 .vpair { display: grid; gap: clamp(48px, 8vw, 72px); margin: var(--block) 0; }
 .vp-item { margin: 0; }
 .vp-item .blk-h { text-align: center; }
 @media (min-width: 760px) {
   .vpair { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 16px; align-items: start; }
   .vp-item:nth-child(odd) { grid-column: 1 / 7; }
-  .vp-item:nth-child(even) { grid-column: 7 / 13; margin-top: calc(min(380px, 100%) * 16 / 9 / 4); }
+  .vp-item:nth-child(even) { grid-column: 7 / 13; }
 }
+
+/* Imagen o video ancho */
+.media-wrap { margin: var(--block) 0; }
+.media { position: relative; border-radius: var(--radius); overflow: hidden; background: #111; }
+.media img, .media video { width: 100%; height: auto; display: block; }
+.media video { height: 100%; object-fit: cover; }
+.media img { -webkit-user-drag: none; user-select: none; -webkit-user-select: none; }
+
+/* Prendas en percha: acercamiento muy lento mientras se ven; al tocarlas, el diseño técnico */
+.garments { display: grid; gap: clamp(32px, 6vw, 48px); margin: var(--block) 0; justify-items: center; }
+.garments > .blk-h { justify-self: start; margin-bottom: 0; }
+@media (min-width: 760px) { .garments.two { grid-template-columns: 1fr 1fr; column-gap: 16px; } .garments.two > .blk-h { grid-column: 1 / -1; } }
+.garment-wrap { margin: 0; width: 100%; max-width: 520px; }
+.garment { position: relative; border-radius: var(--radius); overflow: hidden; background: #e9e7e4; aspect-ratio: 4 / 5; }
+.garment img, .garment video { width: 100%; height: 100%; object-fit: cover; display: block; -webkit-user-drag: none; user-select: none; -webkit-user-select: none; }
+@keyframes acercar { from { transform: scale(1); } to { transform: scale(1.04); } }
+.garment img, .garment video { animation: acercar 12s ease-in-out infinite alternate; animation-play-state: paused; }
+.garment.visible img, .garment.visible video { animation-play-state: running; }
 
 /* Pieza técnica sobre plano claro */
 .sheet-wrap { margin: var(--block) 0; }
@@ -152,16 +175,19 @@ a { color: inherit; }
   user-select: none; -webkit-user-select: none;
 }
 .gal figure {
-  flex: 0 0 auto; margin: 0; scroll-snap-align: start; cursor: zoom-in;
-  height: min(46svh, calc((100vw - 2 * var(--gutter)) * 1.04));
+  flex: 0 0 auto; margin: 0; scroll-snap-align: start;
+  /* --ar (ancho/alto) lo pone el script: una foto horizontal baja de alto para entrar entera en el ancho útil */
+  height: min(46svh, calc((100vw - 2 * var(--gutter)) * 1.04), calc((100vw - 2 * var(--gutter)) / var(--ar, 0.8)));
   border-radius: var(--radius); transition: transform 0.5s var(--ease-out);
 }
 .gal img {
   height: 100%; width: auto; max-width: none; border-radius: var(--radius); background: #111;
   -webkit-user-drag: none; transition: box-shadow 0.5s var(--ease-out);
 }
+.gal-intro { margin: 0 0 clamp(20px, 3vw, 32px); max-width: 58ch; color: var(--soft); text-wrap: pretty; }
 /* ícono de ampliar: siempre visible con el dedo; con mouse, tenue hasta pasar por la foto */
 .gal figure { position: relative; }
+.zoomable, .gal figure { cursor: zoom-in; }
 .zoom {
   position: absolute; right: 10px; bottom: 10px; width: 34px; height: 34px; border-radius: 50%;
   display: grid; place-items: center; background: rgba(5, 5, 5, 0.6); color: #f0f0f0; pointer-events: none;
@@ -186,7 +212,7 @@ a { color: inherit; }
 
 @media (min-width: 760px) {
   .gal { gap: 16px; }
-  .gal figure { height: clamp(320px, 56svh, 560px); }
+  .gal figure { height: min(clamp(320px, 56svh, 560px), calc((min(100vw, var(--max)) - 2 * var(--gutter)) / var(--ar, 0.8))); }
 }
 @media (hover: hover) and (pointer: fine) {
   .gal-ctrl { display: flex; }
@@ -194,11 +220,16 @@ a { color: inherit; }
   .gal.dragging { cursor: grabbing; scroll-snap-type: none; }
   .gal.dragging figure { pointer-events: none; }
   .zoom { opacity: 0.6; }
-  .gal figure:hover .zoom { opacity: 1; background: var(--accent); color: var(--on-accent); }
+  .gal figure:hover .zoom, .zoomable:hover .zoom { opacity: 1; background: var(--accent); color: var(--on-accent); }
   .gal figure:hover { transform: scale(1.035); z-index: 1; }
   .gal figure:hover img { box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(0, 255, 136, 0.35); }
 }
 .gal figure:focus-visible { outline-offset: 4px; }
+
+/* tira fijada con scroll horizontal (escritorio, 4 fotos o más; lo activa js/case.js) */
+.gal-block.hscroll .gal { overflow-x: hidden; scroll-snap-type: none; cursor: default; }
+.gal-progress { height: 2px; margin-top: 2px; background: var(--line); border-radius: 1px; overflow: hidden; }
+.gal-progress span { display: block; height: 100%; background: var(--accent); transform-origin: left center; transform: scaleX(0); }
 
 /* Visor a pantalla completa (lo agrega js/case.js al body) */
 .lb {
@@ -243,7 +274,9 @@ a { color: inherit; }
 .ba-tag { position: absolute; bottom: 14px; padding: 6px 10px; border-radius: 4px; background: rgba(5, 5, 5, 0.72); font-size: 13px; font-weight: 600; }
 .ba-tag.l { left: 14px; } .ba-tag.r { right: 14px; }
 .ba input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; margin: 0; }
-.ba-box:focus-within { outline: 2px solid var(--accent); outline-offset: 3px; }
+/* foco visible solo con teclado: con mouse o dedo nunca aparece el trazo verde */
+.ba input:focus { outline: none; }
+.ba-box:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 /* Proceso: pasos con número grande */
 .steps { list-style: none; padding: 0; margin: var(--block) 0; display: grid; gap: 36px; }
@@ -251,7 +284,7 @@ a { color: inherit; }
 @media (min-width: 760px) { .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; } .steps.four { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1100px) { .steps.four { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .steps .n { display: block; font-weight: 800; font-stretch: 118%; font-size: clamp(56px, 7vw, 96px); line-height: 0.9; letter-spacing: -0.04em; margin-bottom: 16px; }
-.steps h3 { margin: 0 0 8px; font-size: 20px; font-weight: 700; }
+.steps h3, .steps h2 { margin: 0 0 8px; font-size: 20px; font-weight: 700; }
 .steps p { margin: 0; color: var(--soft); }
 
 /* Prompt contra resultado */

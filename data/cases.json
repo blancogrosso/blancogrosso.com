@@ -72,16 +72,25 @@
           ]
         },
         {
-          "type": "sheet",
-          "src": "img/works/by-kafuse/mockup.avif",
-          "alt": {
-            "es": "Diseño técnico de la prenda",
-            "en": "Technical design of the garment"
-          },
-          "caption": {
-            "es": "Diseño técnico",
-            "en": "Technical mockup"
-          }
+          "type": "garment",
+          "items": [
+            {
+              "src": "img/works/by-kafuse/kafuse-percha.avif",
+              "alt": {
+                "es": "Prenda Alas y Raíces en una percha",
+                "en": "Alas y Raíces garment on a hanger"
+              },
+              "full": "img/works/by-kafuse/mockup.avif",
+              "full_alt": {
+                "es": "Diseño técnico de la prenda",
+                "en": "Technical design of the garment"
+              },
+              "caption": {
+                "es": "Diseño técnico",
+                "en": "Technical mockup"
+              }
+            }
+          ]
         },
         {
           "type": "split-video",
@@ -439,16 +448,25 @@
           "text": "Ultra-realistic football campaign portrait photo of [PLAYER], using the provided face reference for identity (high similarity) and the provided jersey reference for the exact jersey design and logos.\n\nSCENE (VERY IMPORTANT)\nProfessional photo studio campaign portrait in front of a seamless paper backdrop color #FCDAD9 (pastel pink).\nThe studio must be slightly visible at the edges ONLY (campaign look, not backstage):\n- show the crossbar holding the paper roll at the top,\n- show partial softbox/light modifier edges on left and right borders (cropped, slightly out of focus),\n- show faint studio wall corners and a bit of concrete floor outside the paper at the very bottom edges.\nKeep it minimal, premium, clean.\n\nSUBJECT PLACEMENT (ABSOLUTE ANCHORS — DO NOT DEVIATE)\n- The player must stand centered on the pink paper sweep (not on the gray floor).\n- Head center at X = 50% of the frame.\n- Torso center at X = 50% of the frame.\n- Shoe soles must touch the pink paper floor at Y = 90% of the frame height.\n- Subject height must occupy 72–80% of the frame height (poster scale).\nIf you can’t satisfy these anchors, do not generate.\n\nCAMERA / POV (CAMPAIGN LIKE PEÑAROL)\n3:4 vertical.\n24–28mm wide-angle campaign portrait, close distance.\nSlightly high angle / mild top-down (picado suave) BUT keep the subject large and centered.\nSubtle barrel distortion and lens hood vignette on corners (campaign feel), not extreme fisheye.\n\nCOMPOSITION\nTight poster crop: head to mid-torso or head to upper-hips.\nSubject dominates the frame. Studio elements only peripheral hints.\n\nLIGHTING\nProfessional studio strobe look, crisp highlights, clean shadows, editorial contrast.\nNatural skin texture with pores, minimal grain. No HDR.\n\nPOSE / EXPRESSION\nSerious expression (no smile), calm, confident.\nArms variation: choose ONE:\n- hands clasped at chest\n- one hand on hip, other relaxed\n- adjusting collar/neckline WITHOUT covering the crest\nDO NOT grab or cover the badge/crest.\n\nWARDROBE\nOnly the club jersey. Keep jersey readable and undistorted.\n\nSTRICT\nNo text, no typography, no watermarks, no UI, no extra/invented logos.\nDo NOT turn this into a wide behind-the-scenes shot.\nDo NOT make the subject small.\nDo NOT relocate the subject off the pink paper.\n\nOUTPUT\n4K, ultra sharp, magazine cover realism.\n\nNEGATIVE PROMPT\ntiny subject, full studio wide shot, documentary backstage, cluttered cables/props, chairs, visible tripods everywhere,\nsubject on gray floor, subject off-center, wrong jersey design/colors, face mismatch, smile,\nhand covering crest, extra fingers, deformed hands, CGI, plastic skin, blur, HDR, text, watermark"
         },
         {
-          "type": "sheet",
-          "src": "img/works/bufarra-kithome/mockup.avif",
-          "alt": {
-            "es": "Diseño técnico de la camiseta",
-            "en": "Technical design of the jersey"
-          },
-          "caption": {
-            "es": "Diseño técnico",
-            "en": "Technical mockup"
-          }
+          "type": "garment",
+          "items": [
+            {
+              "src": "img/works/bufarra-kithome/kithome-percha.avif",
+              "alt": {
+                "es": "Camiseta KitHome 24/25 en una percha",
+                "en": "KitHome 24/25 jersey on a hanger"
+              },
+              "full": "img/works/bufarra-kithome/mockup.avif",
+              "full_alt": {
+                "es": "Diseño técnico de la camiseta",
+                "en": "Technical design of the jersey"
+              },
+              "caption": {
+                "es": "Diseño técnico",
+                "en": "Technical mockup"
+              }
+            }
+          ]
         },
         {
           "type": "gallery",
@@ -787,26 +805,39 @@
           ]
         },
         {
-          "type": "sheet",
+          "type": "garment",
           "heading": {
             "es": "Diseño de jugador & golero",
             "en": "Player & goalkeeper design"
           },
-          "src": "img/works/bufarra-umbro/mockup/jugador-camiseta.avif",
-          "alt": {
-            "es": "Diseño de la camiseta de jugador",
-            "en": "Player jersey design"
-          },
-          "caption": "Home Kit (Player)"
-        },
-        {
-          "type": "sheet",
-          "src": "img/works/bufarra-umbro/mockup/golero-camiseta.avif",
-          "alt": {
-            "es": "Diseño de la camiseta de golero",
-            "en": "Goalkeeper jersey design"
-          },
-          "caption": "GK Kit (Goalkeeper)"
+          "items": [
+            {
+              "src": "img/works/bufarra-umbro/umbro-jugador-percha.avif",
+              "alt": {
+                "es": "Camiseta de jugador en una percha",
+                "en": "Player jersey on a hanger"
+              },
+              "full": "img/works/bufarra-umbro/mockup/jugador-camiseta.avif",
+              "full_alt": {
+                "es": "Diseño de la camiseta de jugador",
+                "en": "Player jersey design"
+              },
+              "caption": "Home Kit (Player)"
+            },
+            {
+              "src": "img/works/bufarra-umbro/umbro-golero-percha.avif",
+              "alt": {
+                "es": "Camiseta de golero en una percha",
+                "en": "Goalkeeper jersey on a hanger"
+              },
+              "full": "img/works/bufarra-umbro/mockup/golero-camiseta.avif",
+              "full_alt": {
+                "es": "Diseño de la camiseta de golero",
+                "en": "Goalkeeper jersey design"
+              },
+              "caption": "GK Kit (Goalkeeper)"
+            }
+          ]
         },
         {
           "type": "gallery",
@@ -937,6 +968,695 @@
             "es": "Ver en Instagram",
             "en": "View on Instagram"
           }
+        },
+        {
+          "type": "next"
+        }
+      ]
+    },
+    {
+      "slug": "iris-lab",
+      "meta": {
+        "title": "Iris Lab | Blanco Grosso",
+        "og_title": "Iris Lab | Blanco Grosso",
+        "description": "Captura de identidad a través de fotografía macro. Curaduría visual y producción fine-art que transforma el iris humano en una pieza de diseño tangible.",
+        "og_image_alt": "Portada del proyecto Iris Lab: fotografía macro de un iris con el logo de la marca"
+      },
+      "blocks": [
+        {
+          "type": "hero",
+          "title": "Iris Lab",
+          "lead": {
+            "es": "Captura de identidad a través de fotografía macro. Curaduría visual y producción fine-art que transforma el iris humano en una pieza de diseño tangible y eterna.",
+            "en": "Capturing identity through macro photography. Visual curation and fine-art production transforming the human iris into a tangible and eternal design piece."
+          },
+          "date": {
+            "es": "Febrero 2026",
+            "en": "February 2026"
+          }
+        },
+        {
+          "type": "before-after",
+          "cover": true,
+          "labels": {
+            "before": "Raw",
+            "after": "Final"
+          },
+          "before": {
+            "src": "img/works/iris-lab/raw-comparar.avif",
+            "alt": {
+              "es": "Captura macro del iris, sin editar",
+              "en": "Raw macro capture of the iris"
+            }
+          },
+          "after": {
+            "src": "img/works/iris-lab/final-comparar.avif",
+            "alt": {
+              "es": "Pieza final",
+              "en": "Final piece"
+            }
+          }
+        },
+        {
+          "type": "facts",
+          "items": [
+            [
+              "year",
+              "2026"
+            ],
+            [
+              "did",
+              {
+                "es": "Fotografía macro, arte digital y fine art",
+                "en": "Macro photography, digital art and fine art"
+              }
+            ],
+            [
+              "tools",
+              "Lightroom, Photoshop"
+            ]
+          ]
+        },
+        {
+          "type": "steps",
+          "items": [
+            {
+              "title": {
+                "es": "Foto macro del iris",
+                "en": "Macro iris photography"
+              },
+              "text": {
+                "es": "Captura de alta resolución revelando detalles microscópicos.",
+                "en": "High-resolution capture revealing microscopic details."
+              }
+            },
+            {
+              "title": {
+                "es": "Corrección de color",
+                "en": "Color correction"
+              },
+              "text": {
+                "es": "Revelado digital resaltando la paleta cromática natural.",
+                "en": "Digital processing highlighting the natural chromatic palette."
+              }
+            },
+            {
+              "title": {
+                "es": "Diseño a medida según cliente",
+                "en": "Custom design per client"
+              },
+              "text": {
+                "es": "Curaduría visual adaptada al espacio y gusto del coleccionista.",
+                "en": "Visual curation tailored to the collector's space and taste."
+              }
+            },
+            {
+              "title": {
+                "es": "Impresión en alta calidad",
+                "en": "High-quality printing"
+              },
+              "text": {
+                "es": "Producción fine-art con pigmentos minerales en algodón.",
+                "en": "Fine-art production with mineral pigments on cotton."
+              }
+            },
+            {
+              "title": {
+                "es": "Armado y entrega del cuadro",
+                "en": "Framing and delivery"
+              },
+              "text": {
+                "es": "Montaje artesanal con marcos de diseño listo para exhibir.",
+                "en": "Artisanal mounting with designer frames ready for exhibition."
+              }
+            }
+          ]
+        },
+        {
+          "type": "gallery",
+          "intro": {
+            "es": "Selección de obras en diversos formatos, estilos y diseños adaptados a cada visión.",
+            "en": "Selection of works in various formats, styles, and designs tailored to each vision."
+          },
+          "items": [
+            {
+              "src": "img/works/iris-lab/60x90.avif",
+              "alt": {
+                "es": "Obra 1",
+                "en": "Work 1"
+              }
+            },
+            {
+              "src": "img/works/iris-lab/cuadro-ojos-azules.avif",
+              "alt": {
+                "es": "Obra 2",
+                "en": "Work 2"
+              }
+            },
+            {
+              "src": "img/works/iris-lab/ojos-ella.avif",
+              "alt": {
+                "es": "Obra 3",
+                "en": "Work 3"
+              }
+            },
+            {
+              "src": "img/works/iris-lab/daiana.avif",
+              "alt": {
+                "es": "Obra 4",
+                "en": "Work 4"
+              }
+            },
+            {
+              "src": "img/works/iris-lab/diagonal.avif",
+              "alt": {
+                "es": "Obra 5",
+                "en": "Work 5"
+              }
+            },
+            {
+              "src": "img/works/iris-lab/iris-luxemburgo.avif",
+              "alt": {
+                "es": "Obra 6",
+                "en": "Work 6"
+              }
+            },
+            {
+              "src": "img/works/iris-lab/laura-mvd.avif",
+              "alt": {
+                "es": "Obra 7",
+                "en": "Work 7"
+              }
+            },
+            {
+              "src": "img/works/iris-lab/hantony.avif",
+              "alt": {
+                "es": "Obra 8",
+                "en": "Work 8"
+              }
+            },
+            {
+              "src": "img/works/iris-lab/susana.avif",
+              "alt": {
+                "es": "Obra 9",
+                "en": "Work 9"
+              }
+            },
+            {
+              "src": "img/works/iris-lab/walmar.avif",
+              "alt": {
+                "es": "Obra 10",
+                "en": "Work 10"
+              }
+            }
+          ]
+        },
+        {
+          "type": "media",
+          "src": "img/works/iris-lab/familia-brasil.avif",
+          "alt": {
+            "es": "Obra destacada: Familia Brasil",
+            "en": "Featured work: Familia Brasil"
+          }
+        },
+        {
+          "type": "ext-link",
+          "href": "https://www.instagram.com/irislab.uy",
+          "label": {
+            "es": "Ver en Instagram",
+            "en": "View on Instagram"
+          }
+        },
+        {
+          "type": "next"
+        }
+      ]
+    },
+    {
+      "slug": "labufarra-social",
+      "meta": {
+        "title": "Vuelta a las redes @labufarra | Blanco Grosso",
+        "og_title": "Vuelta a las redes @labufarra | Blanco Grosso",
+        "description": "Video de 1 minuto generado 100% con IA para anunciar el regreso a la gestión de redes sociales: guionización, storyboard y animación sintética.",
+        "og_image_alt": "Portada del proyecto Vuelta a las redes de La Bufarra: texto La vuelta del CM sobre un escritorio a oscuras"
+      },
+      "blocks": [
+        {
+          "type": "hero",
+          "title": "Vuelta a las redes @labufarra",
+          "lead": {
+            "es": "Video de 1 minuto generado 100% con IA para anunciar el regreso a la gestión de redes sociales. Un flujo de trabajo integral que combina guionización, storyboard y animación sintética.",
+            "en": "1-minute video 100% AI-generated to announce the return to social media management. An integrated workflow combining scripting, storyboard, and synthetic animation."
+          },
+          "date": {
+            "es": "Abril 2026",
+            "en": "April 2026"
+          }
+        },
+        {
+          "type": "cover",
+          "src": "img/works/labufarra-social/reel.mp4",
+          "poster": "img/works/labufarra-social/reel-portada.avif",
+          "controls": true,
+          "alt": {
+            "es": "Reel Vuelta a las redes",
+            "en": "Back on social media reel"
+          }
+        },
+        {
+          "type": "facts",
+          "items": [
+            [
+              "client",
+              "La Bufarra"
+            ],
+            [
+              "year",
+              "2026"
+            ],
+            [
+              "did",
+              {
+                "es": "Producción audiovisual con IA",
+                "en": "AI-powered audiovisual production"
+              }
+            ],
+            [
+              "tools",
+              "GPT, Gemini, Photoshop, Flow, Premiere, Freepik"
+            ]
+          ]
+        },
+        {
+          "type": "story",
+          "heading": {
+            "es": "Nuevas formas de contar",
+            "en": "New ways of storytelling"
+          },
+          "paras": [
+            {
+              "es": "El reto consistió en crear una pieza de alto impacto visual y emocional para anunciar la vuelta a la gestión de redes de @labufarra, utilizando exclusivamente herramientas de inteligencia artificial generativa. Desde el guion hasta el movimiento, cada elemento fue curado para mantener la esencia de la marca.",
+              "en": "The challenge was to create a piece of high visual and emotional impact to announce the return to social media management for @labufarra, using exclusively generative artificial intelligence tools. From the script to the movement, every element was curated to maintain the brand's essence."
+            }
+          ]
+        },
+        {
+          "type": "steps",
+          "items": [
+            {
+              "title": {
+                "es": "Guion & estructura",
+                "en": "Script & structure"
+              },
+              "text": {
+                "es": "Bajada de idea y armado de guion técnico utilizando GPT para definir la narrativa del anuncio.",
+                "en": "Brainstorming and technical script writing using GPT to define the ad's narrative."
+              }
+            },
+            {
+              "title": {
+                "es": "Storyboard IA",
+                "en": "AI storyboard"
+              },
+              "text": {
+                "es": "Generación de cada frame mediante prompts específicos en Freepik Spaces y Gemini.",
+                "en": "Generation of each frame using specific prompts in Freepik Spaces and Gemini."
+              }
+            },
+            {
+              "title": {
+                "es": "Refinamiento",
+                "en": "Refinement"
+              },
+              "text": {
+                "es": "Corrección de detalles visuales, coherencia y retoque de frames en Adobe Photoshop.",
+                "en": "Correction of visual details, consistency, and frame retouching in Adobe Photoshop."
+              }
+            },
+            {
+              "title": {
+                "es": "Animación",
+                "en": "Animation"
+              },
+              "text": {
+                "es": "Generación de prompts de movimiento con GPT y animación de los frames estáticos en Flow.",
+                "en": "Generation of motion prompts with GPT and animation of static frames in Flow."
+              }
+            },
+            {
+              "title": {
+                "es": "Edición final",
+                "en": "Final edit"
+              },
+              "text": {
+                "es": "Montaje audiovisual, diseño sonoro y exportación final en Adobe Premiere.",
+                "en": "Audiovisual assembly, sound design, and final export in Adobe Premiere."
+              }
+            }
+          ]
+        },
+        {
+          "type": "media",
+          "heading": {
+            "es": "1. Construcción del storyboard (Freepik Spaces)",
+            "en": "1. Storyboard construction (Freepik Spaces)"
+          },
+          "src": "img/works/labufarra-social/workflow.avif",
+          "alt": {
+            "es": "Flujo de trabajo en Freepik Spaces",
+            "en": "Workflow in Freepik Spaces"
+          }
+        },
+        {
+          "type": "gallery",
+          "heading": {
+            "es": "2. Referencias clave para consistencia",
+            "en": "2. Key references for consistency"
+          },
+          "items": [
+            {
+              "src": "img/works/labufarra-social/referencia-1-dispositivo.avif",
+              "alt": {
+                "es": "Referencia: dispositivo",
+                "en": "Reference: device"
+              }
+            },
+            {
+              "src": "img/works/labufarra-social/referencia-2-camiseta.avif",
+              "alt": {
+                "es": "Referencia: camiseta",
+                "en": "Reference: jersey"
+              }
+            },
+            {
+              "src": "img/works/labufarra-social/referencia-3-spoiler.avif",
+              "alt": {
+                "es": "Referencia: spoiler",
+                "en": "Reference: spoiler"
+              }
+            }
+          ]
+        },
+        {
+          "type": "gallery",
+          "heading": {
+            "es": "3. Frames y keyframes (el frame 1 como locación)",
+            "en": "3. Frames and keyframes (frame 1 as location)"
+          },
+          "items": [
+            {
+              "src": "img/works/labufarra-social/frame-1.avif",
+              "alt": "Frame 1"
+            },
+            {
+              "src": "img/works/labufarra-social/frame-2.avif",
+              "alt": "Frame 2"
+            },
+            {
+              "src": "img/works/labufarra-social/frame-4.avif",
+              "alt": "Frame 4"
+            }
+          ]
+        },
+        {
+          "type": "prompt",
+          "label": "motion_prompt_flow.prompt",
+          "text": "Between the provided initial and final frames, create a 5–6 second cinematic close-up animation of the device. Keep the composition, camera angle, desk, device and round pastel pink button with the “B” emblem and vertical stripes exactly as shown in the keyframes, without adding or removing objects.\n\nAnimate a realistic human hand entering the frame from the side, holding the slim cartridge and sliding it fully into the front slot of the device during the first part of the clip. After the cartridge is fully inserted, animate the hand moving to the top of the circular button and pressing it down until the scene matches the final frame: the button slightly depressed and glowing more intensely. Add a small, natural camera micro-shake and brief increase in button glow at the exact moment of the press, then let the glow settle to match the final image.\n\nDo not modify the design of the device, the button, the desk or the background beyond the natural light response. Keep lighting and colors consistent with the keyframes, with only subtle changes caused by the button glow. No new UI elements, no text or logos, no cartoon or anime style, no exaggerated glitch or VFX."
+        },
+        {
+          "type": "media",
+          "heading": {
+            "es": "4. Animación resultante (Flow)",
+            "en": "4. Resulting animation (Flow)"
+          },
+          "src": "img/works/labufarra-social/ejemplo-escena.mp4",
+          "poster": "img/works/labufarra-social/ejemplo-escena-poster.avif",
+          "alt": {
+            "es": "Escena animada en Flow",
+            "en": "Scene animated in Flow"
+          }
+        },
+        {
+          "type": "ext-link",
+          "href": "https://www.instagram.com/reel/DVhkQEekWxW/",
+          "label": {
+            "es": "Ver en Instagram",
+            "en": "View on Instagram"
+          }
+        },
+        {
+          "type": "next"
+        }
+      ]
+    },
+    {
+      "slug": "serie-rio-plata",
+      "meta": {
+        "title": "Serie Río de la Plata | Blanco Grosso Portfolio",
+        "og_title": "Serie Río de la Plata | Blanco Grosso",
+        "description": "Diseño de piezas de comunicación (Matchday) para el torneo de verano Serie Río de la Plata. Foco en la inmediatez y el impacto visual para redes sociales.",
+        "og_image_alt": "Portada del proyecto Serie Río de la Plata: piezas de matchday con el logo del torneo"
+      },
+      "blocks": [
+        {
+          "type": "hero",
+          "title": "Serie Río de la Plata 2026",
+          "lead": {
+            "es": "Diseño de piezas de comunicación (Matchday) para el torneo de verano Serie Río de la Plata. Foco en la inmediatez y el impacto visual para redes sociales.",
+            "en": "Communication assets design (Matchday) for the summer tournament Serie Río de la Plata. Focused on immediacy and visual impact for social media."
+          },
+          "date": {
+            "es": "Enero 2026",
+            "en": "January 2026"
+          }
+        },
+        {
+          "type": "facts",
+          "items": [
+            [
+              "client",
+              "Serie Río de la Plata"
+            ],
+            [
+              "year",
+              "2026"
+            ],
+            [
+              "did",
+              {
+                "es": "Sport Design y contenido digital",
+                "en": "Sport design and digital content"
+              }
+            ],
+            [
+              "tools",
+              "Photoshop, Lightroom"
+            ]
+          ]
+        },
+        {
+          "type": "story",
+          "heading": {
+            "es": "Sport Design en tiempo real",
+            "en": "Real-time sport design"
+          },
+          "paras": [
+            {
+              "es": "La Serie Río de la Plata es el evento futbolístico más importante del verano en la región. El desafío fue crear gráficas de anuncio de partido que capturaran la emoción del hincha.",
+              "en": "The Serie Río de la Plata is the most important football event of the summer in the region. The challenge was to create match announcement graphics that captured the fans' excitement."
+            }
+          ]
+        },
+        {
+          "type": "gallery",
+          "items": [
+            {
+              "src": "img/works/serie-rio-plata/1.avif",
+              "alt": "Matchday 1"
+            },
+            {
+              "src": "img/works/serie-rio-plata/2.avif",
+              "alt": "Matchday 2"
+            },
+            {
+              "src": "img/works/serie-rio-plata/3.avif",
+              "alt": "Matchday 3"
+            },
+            {
+              "src": "img/works/serie-rio-plata/4.avif",
+              "alt": "Matchday 4"
+            },
+            {
+              "src": "img/works/serie-rio-plata/5.avif",
+              "alt": "Matchday 5"
+            },
+            {
+              "src": "img/works/serie-rio-plata/6.avif",
+              "alt": "Matchday 6"
+            },
+            {
+              "src": "img/works/serie-rio-plata/7.avif",
+              "alt": "Matchday 7"
+            },
+            {
+              "src": "img/works/serie-rio-plata/8.avif",
+              "alt": "Matchday 8"
+            }
+          ]
+        },
+        {
+          "type": "media",
+          "heading": {
+            "es": "Exploración y pruebas",
+            "en": "Exploration & tests"
+          },
+          "src": "img/works/serie-rio-plata/pruebas.avif",
+          "alt": {
+            "es": "Pruebas del proceso",
+            "en": "Process tests"
+          }
+        },
+        {
+          "type": "ext-link",
+          "href": "https://www.instagram.com/serierdelp/",
+          "label": {
+            "es": "Ver en Instagram",
+            "en": "View on Instagram"
+          }
+        },
+        {
+          "type": "next"
+        }
+      ]
+    },
+    {
+      "slug": "tienda-nacional",
+      "meta": {
+        "title": "Tienda Nacional | Blanco Grosso",
+        "og_title": "Tienda Nacional | Blanco Grosso",
+        "description": "Desarrollo integral de piezas gráficas para la campaña \"Las Fiestas del Campeón\". Un sistema visual multi-formato para todas las necesidades digitales del club.",
+        "og_image_alt": "Portada del proyecto Tienda Nacional: pieza de la campaña IVA OFF con el logo de la tienda"
+      },
+      "blocks": [
+        {
+          "type": "hero",
+          "title": "Tienda Nacional Las Fiestas del Campeón",
+          "lead": {
+            "es": "Desarrollo integral de piezas gráficas para la campaña \"Las Fiestas del Campeón\". Un sistema visual multi-formato diseñado para cubrir todas las necesidades digitales del club.",
+            "en": "Comprehensive development of graphic pieces for the \"Las Fiestas del Campeón\" campaign. A multi-format visual system designed to cover all the club's digital needs."
+          },
+          "date": {
+            "es": "Diciembre 2025",
+            "en": "December 2025"
+          }
+        },
+        {
+          "type": "cover",
+          "src": "img/works/tienda-nacional/tienda-nacional-home-slider-1920-750.avif",
+          "alt": {
+            "es": "Slider de la home: Las Fiestas del Campeón",
+            "en": "Home slider: Las Fiestas del Campeón"
+          }
+        },
+        {
+          "type": "facts",
+          "items": [
+            [
+              "client",
+              "Tienda Nacional"
+            ],
+            [
+              "year",
+              "2025"
+            ],
+            [
+              "did",
+              {
+                "es": "Diseño de campaña, marketing retail y publicidad digital",
+                "en": "Campaign design, retail marketing and digital advertising"
+              }
+            ],
+            [
+              "tools",
+              "Illustrator, Photoshop"
+            ]
+          ]
+        },
+        {
+          "type": "story",
+          "heading": {
+            "es": "Sistema visual multi-formato",
+            "en": "Multi-format visual system"
+          },
+          "paras": [
+            {
+              "es": "El reto consistió en mantener la coherencia estética en una campaña de alto volumen, adaptando el concepto visual a cada punto de contacto con el socio: desde el sitio oficial hasta cada red social.",
+              "en": "The challenge was maintaining aesthetic coherence in a high-volume campaign, adapting the visual concept to each member touchpoint: from the official site to every social network."
+            }
+          ]
+        },
+        {
+          "type": "gallery",
+          "heading": "Banners web",
+          "items": [
+            {
+              "src": "img/works/tienda-nacional/tienda-nacional-anuncio-1-1200-628.avif",
+              "alt": "Banner 1"
+            },
+            {
+              "src": "img/works/tienda-nacional/tienda-nacional-anuncio-2-1200-628.avif",
+              "alt": "Banner 2"
+            },
+            {
+              "src": "img/works/tienda-nacional/tienda-nacional-anuncio-3-1200-628-limpio.avif",
+              "alt": "Banner 3"
+            }
+          ]
+        },
+        {
+          "type": "gallery",
+          "heading": "Feed",
+          "items": [
+            {
+              "src": "img/works/tienda-nacional/tienda-nacional-anuncio-1-1200-1200.avif",
+              "alt": {
+                "es": "Cuadrado 1",
+                "en": "Square 1"
+              }
+            },
+            {
+              "src": "img/works/tienda-nacional/tienda-nacional-anuncio-2-1200-1200.avif",
+              "alt": {
+                "es": "Cuadrado 2",
+                "en": "Square 2"
+              }
+            },
+            {
+              "src": "img/works/tienda-nacional/tienda-nacional-anuncio-3-1200-1200.avif",
+              "alt": {
+                "es": "Cuadrado 3",
+                "en": "Square 3"
+              }
+            }
+          ]
+        },
+        {
+          "type": "gallery",
+          "heading": "Stories",
+          "items": [
+            {
+              "src": "img/works/tienda-nacional/tienda-nacional-anuncio-1-1080-1920.avif",
+              "alt": "Story 1"
+            },
+            {
+              "src": "img/works/tienda-nacional/tienda-nacional-anuncio-2-1080-1920.avif",
+              "alt": "Story 2"
+            },
+            {
+              "src": "img/works/tienda-nacional/tienda-nacional-anuncio-3-1080-1920.avif",
+              "alt": "Story 3"
+            }
+          ]
         },
         {
           "type": "next"
