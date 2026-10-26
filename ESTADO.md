@@ -1,6 +1,49 @@
 # Estado de blancogrosso.com
 
-_Última actualización: 2026-10-26. Etapa 10 (plantilla única de casos) y portada liviana del reel hechas en `v2/redesign`, sin merge a main (subido hasta `4b13e58`; la portada del reel y este estado, sin push). El panel sobre la home está en la rama `v2/panel`, sin probar._
+_Última actualización: 2026-10-26. La rama `v2/panel` (logo v8, panel sobre la home, entrada, cinta, showreel y NIDO como caso) está unida a `v2/redesign` y subida (`f9e9de2`). Sin merge a main: `main` sigue en `22612d6`. Ver "Hoy, 26 de octubre" más abajo._
+
+## Hoy, 26 de octubre: unión de `v2/panel` en `v2/redesign`
+
+Commits: `0e0d521` (los cambios), `f8f4781` (cinta de herramientas con `translate3d`), `426c153` (páginas
+regeneradas: home, los 9 casos y nido-identidad) y `f9e9de2` (unión en `v2/redesign`, subida).
+
+**Vista previa:** https://blancogrosso-o0z6nufki-tomasblancogrosso-6137s-projects.vercel.app
+(tiene la protección de Vercel activada: pide login).
+
+- **Logo v8** en la home: letra por letra, con degradado de lava y reacción al mouse. Al bajar viaja al
+  menú como marca en dos filas. Está centrado por tinta, no por caja.
+- **Entrada de la home:** coreografía de fondo, logo, frase y menú. Sale solo la primera vez por sesión
+  (`sessionStorage`), con CLS 0.
+- **Cinta de herramientas** entre Servicios y Contacto, sin título. Sale de `data/tools.json` (íconos en
+  `img/icons/stack/`). Se pausa con el mouse encima y fuera de pantalla; con movimiento reducido queda
+  quieta y se desliza a mano.
+- **Panel sobre la home:** el caso se abre siempre arriba. La barra muestra "← Trabajos", el nombre del caso
+  (aparece a los 40 px de scroll y se oculta debajo de 360 px) y una X redonda. En celular se cierra
+  arrastrando hacia abajo más de 120 px. En la página suelta del caso, "← Trabajos" lleva a `/#works`.
+- **Scroll horizontal** en todas las galerías que desbordan, en escritorio con mouse (900 px o más), tanto
+  en la página como en el panel.
+- **Showreel** en la sección del reel (`img/reel/showreel.mp4`; debajo de 900 px, `showreel-720.mp4`).
+  Carga recién a los 2 s, con póster, y se pausa fuera de pantalla.
+- **NIDO como caso** en `/nido-identidad`, con los textos originales en ES y EN. Portada en
+  `img/works/nido/portada.avif`, tarjeta en `img/works/nido-identidad.avif` e imagen OG en
+  `img/og/nido-identidad.jpg`. Tiene un link discreto a la presentación original. `nido.html` no se tocó.
+- **Fluidez** (scroll de escritorio, mediana de 4 rondas contra la versión anterior): antes 58,2 fps;
+  con la cinta y el showreel andando, 57,0 fps. Con cualquiera de los dos apagado queda igual que antes, así
+  que la diferencia se toma como ruido.
+- **Lighthouse en celular (home):** rendimiento 96 de mediana, LCP 2,2–2,4 s y CLS 0.
+- **Pruebas:** 860 chequeos, 0 fallas, en los 10 casos, el panel, las galerías, el logo, la cinta y el reel.
+
+**Pendientes:**
+- [ ] **Pasar a main y publicar en blancogrosso.com:** espera el OK de Tomás tras revisar la vista previa.
+- [ ] **Perchero 3D en Kafuse, KitHome y Umbro:** espera los PNG de Illustrator. El prototipo está en
+  `_ref/perchero/perchero-3d.html`.
+- [ ] **Toma de la web en el showreel:** espera la grabación de Tomás de labufarra.com y del panel.
+- [ ] **Cinta en una sola capa** (opcional, por rendimiento): hoy son tres pistas animadas por separado.
+- [ ] **Limpieza**, cada borrado con OK de Tomás:
+  - la rama `v2/panel`;
+  - la carpeta `../preview-panel`;
+  - los videos sin uso de `img/reel/` (`montaje-provisorio*` y `reel-servicios*`, sin commitear);
+  - los servidores de prueba en :3002 y :3003.
 
 ## Hecho
 
@@ -151,10 +194,10 @@ completo (7,6 MB) con audio y controles. Lighthouse en celular: de 3,4 MB a 1,0 
 - [ ] **Videos de las prendas, el mes que viene:** el bloque garment ya tiene el campo `"video"`
   (`{src, poster}`) para reemplazar la foto en percha. No usar los `.mp4` de `_ref/remeras/video/`:
   tienen las prendas cortadas.
-- [ ] **NIDO:** armar su página de caso con la plantilla. En celular se desborda hacia el costado
+- [x] **NIDO** (hecho el 26/10, ver arriba): armar su página de caso con la plantilla. En celular se desborda hacia el costado
   (413 px de ancho en una pantalla de 375): eso cancela la transición al entrar. Por ahora `nido.html`
   solo cambió `viewport-fit=cover` y las rutas de sus 3 historias a las copias limpias.
-- [ ] **Casos como panel sobre la home** (Parte 3 de la etapa 8): hecho en la rama **`v2/panel`**
+- [x] **Casos como panel sobre la home** (probado y unido el 26/10, ver arriba; lo que sigue es histórico): hecho en la rama **`v2/panel`**
   (commit `bec9026`, "WIP", sin push), **pendiente de que Tomás lo pruebe**. Click en una tarjeta de caso:
   el caso sube como panel con el `<article>` de su página; la URL cambia a la del caso; se cierra con
   Cerrar, Escape, "atrás" o tocando el fondo. Pasó 35 de 35 pruebas automáticas (escritorio y celular).
@@ -180,7 +223,7 @@ completo (7,6 MB) con audio y controles. Lighthouse en celular: de 3,4 MB a 1,0 
 
   Si se aprueba: en `v2/panel`, correr `python3 scripts/build-cases.py` y `python3 scripts/build-home.py`
   (sin `--out`), commitear esas páginas y pasar la rama a `v2/redesign`.
-- [ ] **Logo de la versión 8 del prototipo.**
+- [x] **Logo de la versión 8 del prototipo** (hecho el 26/10).
 - [ ] **Lighthouse final.**
 
 **Pendientes de la etapa 7.1:**
