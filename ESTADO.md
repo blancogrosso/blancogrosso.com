@@ -1,6 +1,6 @@
 # Estado de blancogrosso.com
 
-_Última actualización: 2026-10-19. Etapa 8 (rendimiento del scroll + casos en panel), Parte 1 hecha en la rama `v2/redesign`._
+_Última actualización: 2026-10-25. Etapa 10 (plantilla única de casos) hecha en la rama `v2/redesign`, sin push ni merge._
 
 ## Hecho
 
@@ -50,6 +50,44 @@ No borrar ninguno de los dos.
 - [ ] **(e)** El fallback de íconos en `js/project-components.js` y `js/portfolio.js` busca
   `img/icons/<nombre>.svg` / `.png` para etiquetas que no están en `iconMap`. Hoy todas están
   mapeadas, pero una nueva sin mapear daría 404.
+
+## Etapa 10: plantilla única de casos (rama `v2/redesign`, sin push ni merge)
+
+Commits: `10bb227` (pilotos By Kafuse y Sport Editorial), `bc86717` (KitHome, Umbro y Final Clásica),
+`6122650` (los 9 casos, títulos con degradado, prendas, bloque media, scroll horizontal y fotos limpias).
+
+- **Los 9 casos salen de una sola plantilla.** Mismas URLs (`/by-kafuse`, etc.), mismas etiquetas
+  Open Graph y la misma transición desde la home. Se fueron las etiquetas en mayúscula, las pastillas,
+  "← Volver al Portfolio" (ahora "Cerrar", a `/#works`) y el pie.
+- **Archivos:** `data/cases.json` (contenido), `scripts/build-cases.py` (genera las páginas),
+  `css/case.css` y `js/case.js` (compartidos). Los textos son los originales de cada caso, en ES y EN.
+- **Bloques:** hero, cover (imagen o video), facts, story, split-video, video-pair, sheet, media,
+  garment, gallery, before-after, steps, prompt, video-embed, ext-link y next. Cada uno está explicado
+  al principio de `scripts/build-cases.py`.
+- **Galería:** tira deslizable con visor a pantalla completa. En escritorio con mouse o trackpad
+  (900 px o más) y con 4 fotos o más, la galería se fija y el scroll vertical la mueve hacia el costado
+  (GSAP ScrollTrigger + Lenis, de `js/vendor/`). La tira usa `<nombre>-tira.avif` (1000 px) y el visor
+  carga el original recién cuando se abre.
+- **Títulos** con el degradado verde de la marca (la frase grande queda blanca). Medidos: ninguna letra
+  se corta ni se toca entre líneas.
+- **Comparadores** con las dos fotos alineadas (`*-comparar.avif`). Iris Lab solo se pudo alinear por
+  pupila y tamaño del iris: la pieza final no es la foto cruda transformada.
+- **Prendas en percha** (bloque garment): al tocarlas abren el diseño técnico en el visor.
+- **Fotos limpias:** 34 fotos traían una línea clara en algún borde por una mala exportación. Tienen una
+  copia `<nombre>-limpio.avif` (los originales no se tocaron). `build-cases.py` y `build-home.py` usan
+  solas la copia limpia cuando existe. Láminas y lista en `_ref/capturas/lineas-blancas-v2/`.
+- **Pruebas** (Playwright headless, scripts en el scratchpad de la sesión, no en el repo): 518 de 518 en
+  los 9 casos y 79 de 79 en el scroll horizontal. Lighthouse en celular: by-kafuse 95, sport-editorial 85,
+  bufarra-umbro 84, iris-lab 89, labufarra-social 99 (accesibilidad, buenas prácticas y SEO en 100).
+
+**Cómo agregar un caso:**
+1. Poner las fotos en `img/works/<slug>/` (AVIF) y sumar el trabajo en `data/works.json` (tarjeta de la
+   home, orden y "Siguiente").
+2. Agregar el caso en `data/cases.json`: `slug`, `meta` (título, título OG, descripción, texto
+   alternativo de la imagen OG) y la lista de bloques. Textos como `{"es": …, "en": …}`.
+3. Para las fotos de galería, generar `<nombre>-tira.avif` de 1000 px de ancho.
+4. Correr `python3 scripts/build-cases.py` (escribe `<slug>.html`) y `python3 scripts/build-home.py`
+   si cambió la home. No editar los HTML a mano.
 
 ## Etapa 7.1: home v2 (rama `v2/redesign`, sin merge a main)
 
@@ -102,15 +140,24 @@ Los scripts de medición quedaron en el scratchpad de la sesión (no en el repo)
 
 ## Próxima sesión: arrancar por acá
 
-El prompt completo de la etapa 8 sigue vigente. Orden:
+**Etapa 8, Parte 2 hecha** (`0f22bd6`): el fondo usa manchas ya desenfocadas en imagen, sin `filter`
+en vivo. Scroll de la home: escritorio de 5,3 a 59,9 fps, celular de 9,9 a 60,0 fps.
 
-1. **Parte 2:** fondo más liviano con el mismo look (a: degradados ya suaves sin `filter`, animando solo
-   transform y opacity; b: pausar fuera de pantalla y sin parallax al scrollear; c: solo proponer canvas/WebGL).
-   Medir cada intento con la misma traza y comparar capturas con las de "antes".
-2. **Parte 3:** casos en un panel sobre la home (NIDO sigue como URL aparte).
-3. **Parte 4:** medición "después", prueba a mano en Chrome y Safari y reporte.
-
-**Pendiente aparte:** efecto del logo (lava, sin cortes y viaje al menú), esperando la aprobación del prototipo.
+**Pendientes:**
+- [ ] **Videos de las prendas, el mes que viene:** el bloque garment ya tiene el campo `"video"`
+  (`{src, poster}`) para reemplazar la foto en percha. No usar los `.mp4` de `_ref/remeras/video/`:
+  tienen las prendas cortadas.
+- [ ] **NIDO:** armar su página de caso con la plantilla. En celular se desborda hacia el costado
+  (413 px de ancho en una pantalla de 375): eso cancela la transición al entrar. Por ahora `nido.html`
+  solo cambió `viewport-fit=cover` y las rutas de sus 3 historias a las copias limpias.
+- [ ] **Casos como panel sobre la home** (Parte 3 de la etapa 8): `js/case.js` ya trae
+  `BGCase.init(article, scrollRoot)` para correr dentro de un contenedor con scroll propio. En el panel
+  la galería queda como tira deslizable, sin el scroll horizontal fijado.
+- [ ] **Logo de la versión 8 del prototipo.**
+- [ ] **Lighthouse final.**
+- [ ] **Reel de labufarra-social (7,6 MB):** se pidió una versión de menos de 1,2 MB, pero solo el audio
+  ya pesa unos 850 KB. Con CRF 30 en 720p queda en 6,0 MB. Falta decidir: bajar el audio, bajar a 480p,
+  recortar el video o aceptar un peso mayor.
 
 **Pendientes de la etapa 7.1:**
 - Lighthouse contra la preview de Vercel (tiene la protección activada: pide login).
