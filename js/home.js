@@ -56,14 +56,146 @@
     });
   });
 
-  /* ── Menú: fondo al bajar y marca cuando el logo sale ─── */
+  /* ── Logo (versión 8 del prototipo) ──────────────────────
+     Cada letra muestra su porción de un mismo campo de color: las manchas se mueven lento todo
+     el tiempo (lámpara de lava). Con mouse, una mancha clara sigue al cursor y las letras
+     cercanas se ensanchan y crecen apenas, con un halo detrás. Fuera de pantalla (o ya en el
+     menú) se pausa. Con movimiento reducido el degradado queda quieto. */
   var logo = document.getElementById('logo');
+  var logoWrap = document.getElementById('logoWrap');
+  var halo = logoWrap.querySelector('.halo');
+  var navMark = document.getElementById('navMark');
+  var chars = Array.prototype.slice.call(logo.querySelectorAll('.ch'));
+  var logoSeen = true, logoDocked = false, logoTravel = null;
+
+  // el campo mide lo que el logo entero; cada letra se corre a su lugar dentro de él
+  function logoField() {
+    var pos = chars.map(function (c) { return [c.offsetLeft, c.offsetTop]; }); // (la letra cuelga del logo: position relative)
+    logo.style.setProperty('--fw', logo.offsetWidth + 'px');
+    logo.style.setProperty('--fh', logo.offsetHeight + 'px');
+    chars.forEach(function (c, k) { c.style.setProperty('--ox', -pos[k][0] + 'px'); c.style.setProperty('--oy', -pos[k][1] + 'px'); });
+  }
+  logoField();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(logoField);
+  window.addEventListener('resize', logoField);
+  // terminada la entrada, el renglón deja de recortar
+  // (sin la entrada, porque ya se vio en esta sesión o por movimiento reducido, no hay nada que esperar)
+  setTimeout(function () { logo.classList.add('risen'); logoField(); }, root.classList.contains('intro-play') ? 1500 : 0);
+  // terminada la entrada (~1,8 s) se saca la clase: las animaciones con relleno quedaban aplicadas
+  // (el fondo entero y el menú) y le costaban unos cuadros por segundo al scroll. Todo termina en su
+  // estado normal, así que no se ve ningún cambio.
+  if (root.classList.contains('intro-play')) setTimeout(function () { root.classList.remove('intro-play'); }, Math.max(0, 2000 - performance.now()));
+
+  var BLOBS = [[20, 30, 0.07, 0.05], [70, 60, 0.05, 0.08], [45, 85, 0.06, 0.04], [85, 15, 0.04, 0.06]];
+  var t0 = performance.now(), logoRaf = 0, lavaAt = 0;
+  var hover = false, mxT = -9999, myT = -9999, gx = -9999, gy = -9999, gr = 0, settled = true;
+  var cs = chars.map(function () { return { s: 1, w: 112 }; });
+  function logoFrame(now) {
+    logoRaf = 0;
+    var t = (now - t0) / 1000;
+    // primero se lee todo (sin escrituras en el medio, así no se fuerza el layout dos veces)
+    var near = hover || gr > 0.5 || !settled;
+    var L = near ? logo.getBoundingClientRect() : null;
+    var rects = near ? chars.map(function (c) { return c.getBoundingClientRect(); }) : null;
+    var st = logo.style;
+    // las manchas dan una vuelta cada 12-25 s: se mueven a 30 cuadros por segundo (no se nota y
+    // cada cambio obliga a volver a pintar el logo entero)
+    if (now - lavaAt >= 32) {
+      lavaAt = now;
+      BLOBS.forEach(function (p, i) {
+        st.setProperty('--x' + (i + 1), (p[0] + 18 * Math.sin(t * p[2] * 6.283 + i)).toFixed(2) + '%');
+        st.setProperty('--y' + (i + 1), (p[1] + 22 * Math.cos(t * p[3] * 6.283 + i * 1.7)).toFixed(2) + '%');
+      });
+    }
+    if (near) {
+      // mancha clara que sigue al cursor (en coordenadas del campo: el logo puede estar achicado)
+      var k = L.width / logo.offsetWidth || 1;
+      gx += ((mxT - L.left) / k - gx) * 0.12; gy += ((myT - L.top) / k - gy) * 0.12;
+      gr += ((hover ? Math.max(140, logo.offsetHeight * 0.42) : 0) - gr) * 0.08;
+      st.setProperty('--mx', gx.toFixed(1) + 'px'); st.setProperty('--my', gy.toFixed(1) + 'px'); st.setProperty('--gr', gr.toFixed(1) + 'px');
+      // letras cercanas: se ensanchan con delicadeza (hasta +9) y crecen apenas (hasta 1.06)
+      var R = Math.max(170, L.height * 0.5), changed = false;
+      settled = true;
+      chars.forEach(function (c, i) {
+        var r = rects[i], d = Math.hypot(mxT - (r.left + r.width / 2), myT - (r.top + r.height / 2));
+        var f = hover ? Math.max(0, 1 - d / R) : 0; f = f * f * (3 - 2 * f);
+        var s = cs[i], ts = 1 + 0.06 * f, tw = 112 + 9 * f;
+        s.s += (ts - s.s) * 0.15; s.w += (tw - s.w) * 0.15;
+        if (Math.abs(tw - s.w) > 0.05 || Math.abs(ts - s.s) > 0.0005) { changed = true; settled = false; }
+        else { s.s = ts; s.w = tw; }
+        c.style.scale = s.s.toFixed(4); c.style.fontStretch = s.w.toFixed(2) + '%';
+      });
+      if (changed) logoField();
+      if (hover) { var w = logoWrap.getBoundingClientRect(); halo.style.transform = 'translate(' + (mxT - w.left) + 'px,' + (myT - w.top) + 'px)'; }
+    }
+    logoRun();
+  }
+  function logoRun() { if (!logoRaf && logoSeen && !logoDocked && !reduce) logoRaf = requestAnimationFrame(logoFrame); }
+  if (!reduce) {
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) { logoSeen = es[0].isIntersecting; logoRun(); }).observe(logoWrap);
+    }
+    logoRun();
+    if (finePointer) {
+      logo.addEventListener('pointerenter', function (e) {
+        var L = logo.getBoundingClientRect(), k = L.width / logo.offsetWidth || 1;
+        mxT = e.clientX; myT = e.clientY; gx = (mxT - L.left) / k; gy = (myT - L.top) / k;
+        hover = true; logoWrap.classList.add('glowing'); logoRun();
+      });
+      var unhover = function () { if (!hover) return; hover = false; logoWrap.classList.remove('glowing'); };
+      logo.addEventListener('pointerleave', unhover);
+      logo.addEventListener('pointermove', function (e) {
+        mxT = e.clientX; myT = e.clientY;
+        if (!hover) { hover = true; logoWrap.classList.add('glowing'); logoRun(); } // volvió a moverse sobre el logo después de scrollear
+      }, { passive: true });
+      // al scrollear el logo se va de debajo del cursor (y viaja al menú): el efecto se suelta
+      window.addEventListener('scroll', unhover, { passive: true });
+    }
+  }
+
+  /* ── Menú: fondo al bajar y marca ──────────────────────
+     Sin el viaje del logo (sin JS de movimiento o con movimiento reducido), la marca aparece
+     cuando el logo sale de debajo del menú. Con el viaje, la marca la maneja travelLogo(). */
+  var logoGone = false;
+  function paintNav() {
+    nav.classList.toggle('is-solid', logoGone || logoDocked);
+    nav.classList.toggle('show-mark', logoTravel ? logoDocked : logoGone);
+  }
   if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function (es) {
-      var gone = !es[0].isIntersecting;
-      nav.classList.toggle('is-solid', gone);
-      nav.classList.toggle('show-mark', gone);
-    }, { rootMargin: '-' + (nav.offsetHeight) + 'px 0px 0px 0px' }).observe(logo);
+    new IntersectionObserver(function (es) { logoGone = !es[0].isIntersecting; paintNav(); },
+      { rootMargin: '-' + (nav.offsetHeight) + 'px 0px 0px 0px' }).observe(logoWrap);
+  }
+
+  /* El logo grande viaja al menú al scrollear y se convierte en la marca chica de dos renglones.
+     Se mide de nuevo cuando cargan las letras y al cambiar el ancho de la ventana; si la página
+     carga ya scrolleada, arranca en el punto que corresponde (sin animar desde arriba). */
+  function dock(on) {
+    if (on === logoDocked) return;
+    logoDocked = on;
+    logo.style.visibility = on ? 'hidden' : '';
+    paintNav(); logoRun();
+  }
+  function travelLogo() {
+    if (logoTravel) { logoTravel.kill(); logoTravel = null; }
+    gsap.set(logo, { clearProps: 'transform' });
+    logoDocked = false; logo.style.visibility = '';
+    var L = logo.getBoundingClientRect(), M = navMark.getBoundingClientRect();
+    var top0 = L.top + window.scrollY, dist = Math.max(200, top0 - M.top);
+    var tween = gsap.fromTo(logo, { x: 0, y: 0, scale: 1 }, {
+      x: M.left - L.left, y: M.top - top0 + dist, scale: M.width / L.width, ease: 'none', immediateRender: false,
+      scrollTrigger: { start: 0, end: dist, scrub: 0.35, onUpdate: function (self) { dock(self.progress > 0.985); } }
+    });
+    logoTravel = tween.scrollTrigger;
+    paintNav();
+    return tween;
+  }
+  function startTravel() {
+    var tween = travelLogo();
+    ScrollTrigger.refresh();
+    // cargó ya scrolleada (o se re-midió a mitad de camino): directo a su punto, sin el suavizado
+    var p = logoTravel.progress, sm = logoTravel.getTween && logoTravel.getTween();
+    if (sm) sm.progress(1); else tween.progress(p);
+    dock(p > 0.985);
   }
   // sección actual en el menú
   var navLinks = document.querySelectorAll('.nav-links a');
@@ -98,7 +230,8 @@
   }
   function loadReel() {
     if (!reelVideo.poster && reelVideo.dataset.poster) reelVideo.poster = reelVideo.dataset.poster;
-    if (!reelVideo.src && reelVideo.dataset.src) reelVideo.src = reelVideo.dataset.src;
+    // en pantallas de menos de 900 px, la versión de 720 (pesa menos de la mitad)
+    if (!reelVideo.src && reelVideo.dataset.src) reelVideo.src = reelVideo.dataset.srcChico && window.matchMedia('(max-width: 899px)').matches ? reelVideo.dataset.srcChico : reelVideo.dataset.src;
   }
   function playReel() { loadReel(); var p = reelVideo.play(); if (p && p.catch) p.catch(function () {}); }
   if (reelVideo) {
@@ -120,7 +253,10 @@
           });
         }, { rootMargin: '25% 0px' }).observe(reelBox);
       };
-      var afterLoad = function () { (window.requestIdleCallback || function (f) { setTimeout(f, 200); })(watchReel); };
+      // y nunca antes de los 2 s: así tampoco compite con la entrada de la home ni con su primer pintado
+      var afterLoad = function () {
+        setTimeout(function () { (window.requestIdleCallback || function (f) { setTimeout(f, 200); })(watchReel); }, Math.max(0, 2000 - performance.now()));
+      };
       if (document.readyState === 'complete') afterLoad(); else window.addEventListener('load', afterLoad, { once: true });
     } else { loadReel(); }
     updateReelToggle();
@@ -328,6 +464,12 @@
     });
   }
 
+  /* ── Cinta de herramientas: quieta mientras no se ve ───── */
+  var ribbon = document.getElementById('ribbon');
+  if (ribbon && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) { ribbon.classList.toggle('is-off', !es[0].isIntersecting); }).observe(ribbon);
+  }
+
   /* ── Copiar el mail ──────────────────────────────────── */
   if (mailCopy) {
     var mailText = document.getElementById('mailText');
@@ -377,8 +519,8 @@
       gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
       gsap.ticker.lagSmoothing(0);
     }
-    // la apertura se despide con un desplazamiento suave al salir de pantalla
-    gsap.to('#introInner', {
+    // la apertura se despide con un desplazamiento suave al salir de pantalla (el logo no: viaja al menú)
+    gsap.to('#introInner .intro-foot', {
       y: function () { return -window.innerHeight * 0.12; }, opacity: 0.25, ease: 'none',
       scrollTrigger: { trigger: '#inicio', start: 'center center', end: 'bottom top', scrub: true }
     });
@@ -407,6 +549,15 @@
     gsap.ticker.add(function () {
       var y = window.scrollY;
       if (y !== lastY) { bgGrid.style.transform = 'translate3d(0,' + (-(y * 0.15) % 60).toFixed(2) + 'px,0)'; lastY = y; } // se repite cada 60 px, sin costuras
+    });
+    // el viaje del logo al menú: recién cuando terminó la entrada de las letras (~1,5 s) y cargó la fuente
+    var travelReady = function () { (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(startTravel); };
+    setTimeout(travelReady, Math.max(0, 1550 - performance.now()));
+    var lastW = window.innerWidth, rt = null;
+    window.addEventListener('resize', function () {
+      if (window.innerWidth === lastW) return; // en celular la barra del navegador cambia el alto: no hace falta
+      lastW = window.innerWidth;
+      clearTimeout(rt); rt = setTimeout(function () { if (logoTravel) startTravel(); }, 250);
     });
     ScrollTrigger.refresh();
     // si se llegó con un ancla (ej. /#works desde una página de caso), el pin recién montado
@@ -439,6 +590,8 @@
     var scrim = document.getElementById('cpScrim');
     var cpBody = document.getElementById('cpBody');
     var cpCount = document.getElementById('cpCount');
+    var cpBar = document.getElementById('cpBar');
+    var cpTitle = document.getElementById('cpTitle');
     var cp = { open: false, busy: false, destroy: null, opener: null, y: 0, closeTimer: null };
     var caseCache = {};
     var caseAssets = null;
@@ -476,7 +629,11 @@
       cpCount.innerHTML = data.count ? data.count.innerHTML : '';
       var h1 = art.querySelector('h1');
       panel.setAttribute('aria-label', h1 ? h1.textContent.trim() : 'Caso');
+      // el nombre del caso en el centro de la barra (en los dos idiomas, como el título)
+      var grad = h1 && h1.querySelector('.grad');
+      cpTitle.innerHTML = grad ? grad.innerHTML : (h1 ? h1.innerHTML : '');
       panel.scrollTop = 0;
+      cpBar.classList.remove('scrolled');
       setLang(root.classList.contains('lang-en-active') ? 'en' : 'es'); // textos alternativos y etiquetas en el idioma activo
       cp.destroy = window.BGCase.init(art, panel);
     }
@@ -493,9 +650,15 @@
       window.scrollTo(0, cp.y);
       if (lenis) { lenis.start(); lenis.scrollTo(cp.y, { immediate: true }); }
     }
-    function showPanel() {
+    // el panel se destapa (todavía abajo, fuera de pantalla) antes de cargar el caso: escondido no tiene
+    // caja, así que no se le puede poner el scroll en 0 (y guardaba el del caso anterior) ni se pueden
+    // medir sus galerías
+    function unhidePanel() {
       clearTimeout(cp.closeTimer);
       panel.hidden = false; scrim.hidden = false;
+      panel.scrollTop = 0;
+    }
+    function showPanel() {
       void panel.offsetWidth; // que la transición arranque desde abajo
       panel.classList.add('on'); scrim.classList.add('on');
       document.getElementById('cpClose').focus({ preventScroll: true });
@@ -509,7 +672,7 @@
         var url = '/' + slugOf(href);
         if (!cp.open) {
           cp.open = true; cp.opener = opener || null;
-          lockHome(); render(r[0]); showPanel();
+          lockHome(); unhidePanel(); render(r[0]); showPanel();
           if (push) history.pushState({ casePanel: url }, '', url);
           return;
         }
@@ -539,7 +702,7 @@
     }
 
     cards.forEach(function (card) {
-      if (!card.hasAttribute('data-case')) return; // externos y NIDO siguen como hoy
+      if (!card.hasAttribute('data-case')) return; // los externos abren su sitio en otra pestaña
       var href = card.getAttribute('href');
       var warm = function () { fetchCase(href).catch(function () {}); assets().catch(function () {}); };
       card.addEventListener('mouseenter', warm);
@@ -551,8 +714,46 @@
       });
     });
     document.getElementById('cpClose').addEventListener('click', function () { closeCase(false); });
+    document.getElementById('cpBack').addEventListener('click', function () { closeCase(false); });
     scrim.addEventListener('click', function () { closeCase(false); });
-    // "Siguiente" dentro del panel cambia de caso sin cerrarlo (NIDO, que no es un caso, abre su página)
+    // pasados 40 px, el nombre del caso aparece en la barra (con su borde)
+    panel.addEventListener('scroll', function () { cpBar.classList.toggle('scrolled', panel.scrollTop > 40); }, { passive: true });
+
+    /* Celular y tablet: arrastrar el panel hacia abajo lo cierra (más de 120 px); si no llega, vuelve.
+       Arranca solo desde la barra o con el panel arriba de todo, y solo si el gesto es vertical hacia
+       abajo: no se mete con el scroll del caso ni con el deslizamiento de las galerías. */
+    var drag = null;
+    var dragMq = window.matchMedia('(max-width: 899px)');
+    panel.addEventListener('touchstart', function (e) {
+      if (!cp.open || e.touches.length !== 1 || !dragMq.matches) return;
+      var onBar = !!e.target.closest('.bar');
+      if (!onBar && panel.scrollTop > 0) return;
+      drag = { x: e.touches[0].clientX, y: e.touches[0].clientY, dy: 0, on: false };
+    }, { passive: true });
+    panel.addEventListener('touchmove', function (e) {
+      if (!drag) return;
+      var dx = e.touches[0].clientX - drag.x, dy = e.touches[0].clientY - drag.y;
+      if (!drag.on) {
+        if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+        if (dy <= 0 || Math.abs(dx) > Math.abs(dy) || panel.scrollTop > 0) { drag = null; return; } // es scroll o galería
+        drag.on = true; panel.classList.add('dragging'); scrim.style.transition = 'none';
+      }
+      e.preventDefault();
+      drag.dy = Math.max(0, dy);
+      panel.style.transform = 'translateY(' + drag.dy + 'px)';
+      scrim.style.opacity = String(Math.max(0.2, 1 - drag.dy / 600));
+    }, { passive: false });
+    function endDrag() {
+      if (!drag) return;
+      var d = drag; drag = null;
+      if (!d.on) return;
+      panel.classList.remove('dragging'); scrim.style.transition = ''; scrim.style.opacity = '';
+      panel.style.transform = ''; // sin el arrastre: baja (cierra) o vuelve a su lugar con la transición del panel
+      if (d.dy > 120) closeCase(false);
+    }
+    panel.addEventListener('touchend', endDrag);
+    panel.addEventListener('touchcancel', endDrag);
+    // "Siguiente" dentro del panel cambia de caso sin cerrarlo
     cpBody.addEventListener('click', function (e) {
       var a = e.target.closest('a.next');
       if (!a || !isCase(a.getAttribute('href')) || e.metaKey || e.ctrlKey || e.shiftKey) return;

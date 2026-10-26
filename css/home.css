@@ -192,12 +192,19 @@ html.lenis, html.lenis body { height: auto; }
 .nav-mark {
   margin-right: auto;
   display: inline-flex; align-items: center; min-height: 44px;
-  font-weight: 900; font-stretch: 112%; font-size: 18px; letter-spacing: -0.01em;
   opacity: 0; visibility: hidden;
-  transition: opacity var(--dur-mid) var(--ease-out), visibility var(--dur-mid);
+  transition: opacity 0.25s, visibility 0.25s;
 }
 .nav.show-mark .nav-mark, .nav-mark:focus-visible { opacity: 1; visibility: visible; }
-.mark-short { display: none; }
+/* la marca del menú: el mismo lockup en chico, en dos renglones (el logo grande viaja hasta acá) */
+.mark { display: flex; flex-direction: column; line-height: 0.84; font-weight: 900; font-stretch: 112%; font-size: 15px; letter-spacing: -0.03em; }
+.mark span {
+  padding: 0 0.1em; margin: 0 -0.1em;
+  background: var(--logo-gradient); background-size: 300% 300%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: textGradientFlow 8s ease infinite;
+}
 .nav-links { display: flex; gap: 0 18px; list-style: none; margin: 0; padding: 0; }
 .nav-links a {
   display: inline-flex; align-items: center; min-height: 44px;
@@ -222,12 +229,27 @@ html.lenis, html.lenis body { height: auto; }
 .lang-btn[aria-pressed="true"] { color: var(--fg); text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 2px; text-decoration-color: var(--accent); }
 .lang-btn:hover { color: var(--fg); }
 @media (max-width: 559px) {
-  .mark-long { display: none; }
-  .mark-short { display: inline; }
-  .nav-links { gap: 0 12px; }
-  .nav-links a { font-size: 15px; }
+  /* la marca de dos renglones, los links y el idioma entran en una fila desde 360 px */
+  .nav-row { gap: 8px; }
+  .mark { font-size: 11px; }
+  .nav-links { gap: 0 10px; }
+  .nav-links a { font-size: 14px; }
   .lang { margin-left: 0; }
-  .lang-btn { min-width: 40px; }
+  .lang-btn { min-width: 36px; }
+}
+/* teléfonos angostos: todo entra respetando el margen a 360 px; a 320 px el margen del menú baja a 10 px */
+@media (max-width: 389px) {
+  .nav-row { gap: 6px; }
+  .mark { font-size: 10px; }
+  .nav-links { gap: 0 8px; }
+  .nav-links a { font-size: 13px; }
+  .lang { gap: 0; }
+  .lang-btn { min-width: 32px; padding: 0 4px; font-size: 14px; }
+}
+@media (max-width: 339px) {
+  .nav .wrap { padding-left: max(10px, env(safe-area-inset-left, 0px)); padding-right: max(10px, env(safe-area-inset-right, 0px)); }
+  .nav-links { gap: 0 6px; }
+  .nav-links a { font-size: 12.5px; }
 }
 
 /* =========================================================
@@ -235,25 +257,80 @@ html.lenis, html.lenis body { height: auto; }
    ========================================================= */
 .intro { position: relative; }
 .intro-inner { display: flex; flex-direction: column; gap: 40px; padding-top: calc(var(--nav-h) + 40px); padding-bottom: 72px; }
-.logo {
-  font-weight: 900; font-stretch: 112%;
+/* Logo (versión 8 del prototipo, _ref/logo-v8/). Letra por letra: cada una muestra su porción de un
+   mismo campo de color (lámpara de lava: manchas de verde, cian y menta que se mueven lento).
+   js/home.js mueve las manchas (--x1…--y4), le pasa a cada letra su lugar en el campo (--ox, --oy),
+   sigue al mouse (--mx, --my, --gr) y lo lleva al menú al scrollear. */
+/* Centrado óptico: se centra la tinta de las letras, no las cajas (que llevan el margen de aire).
+   Medido con las letras pintadas y escaneando los píxeles: el centro de la tinta queda a 2,499 em
+   del borde izquierdo de la caja en cualquier ancho (escala con la letra). El contenedor es
+   simétrico, así que su mitad es la mitad de la pantalla. */
+.logo-wrap {
+  position: relative; align-self: flex-start;
   font-size: clamp(64px, 17.5vw, 272px);
+  margin-left: calc(50% - 2.499em);
+}
+.logo {
+  position: relative; transform-origin: 0 0; will-change: transform;
+  font-weight: 900; font-stretch: 112%;
+  font-size: 1em;
   line-height: 0.82; letter-spacing: -0.045em;
   display: flex; flex-direction: column;
+  --fw: 1000px; --fh: 400px;
+  --x1: 20%; --y1: 30%; --x2: 70%; --y2: 60%; --x3: 45%; --y3: 85%; --x4: 85%; --y4: 15%;
+  --mx: -9999px; --my: -9999px; --gr: 0px;
 }
+/* el renglón recorta solo durante la entrada; después, nada corta las letras */
 .logo-row { display: block; overflow: hidden; padding-bottom: 0.05em; margin-bottom: -0.05em; }
-.logo-row > span {
-  display: inline-block;
-  background: var(--logo-gradient);
-  background-size: 300% 300%;
+.logo.risen .logo-row { overflow: visible; }
+.logo-row > span { display: inline-block; white-space: nowrap; }
+.logo .ch {
+  display: inline-block; position: relative;
+  /* aire alrededor de cada letra para que el degradado no corte los bordes del dibujo (compensado: no mueve nada) */
+  padding: 0.06em 0.12em 0.1em; margin: -0.06em -0.12em -0.1em;
+  background-image:
+    radial-gradient(circle var(--gr) at var(--mx) var(--my), rgba(242, 255, 248, 0.96), rgba(140, 255, 214, 0.55) 42%, transparent 72%),
+    radial-gradient(circle calc(var(--fh) * 0.5) at var(--x1) var(--y1), #d8fff0, rgba(170, 255, 225, 0.6) 35%, transparent 70%),
+    radial-gradient(circle calc(var(--fh) * 0.6) at var(--x2) var(--y2), #00d4ff, rgba(0, 212, 255, 0.5) 40%, transparent 72%),
+    radial-gradient(circle calc(var(--fh) * 0.55) at var(--x3) var(--y3), #00a85e, rgba(0, 168, 94, 0.55) 40%, transparent 72%),
+    radial-gradient(circle calc(var(--fh) * 0.45) at var(--x4) var(--y4), #b4ffcf, transparent 70%),
+    linear-gradient(-45deg, #00f585, #00e0a0, #00f5c8, #00c985);
+  background-size: var(--fw) var(--fh); background-repeat: no-repeat;
+  background-position: var(--ox, 0px) var(--oy, 0px);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent; color: transparent;
-  animation: textGradientFlow 8s ease infinite;
+  transform-origin: 50% 85%;
 }
-/* entrada corta del logo al cargar (solo con JS y sin reduced motion) */
-.js .logo-row > span { animation: textGradientFlow 8s ease infinite, logoRise 1.1s var(--ease-out) both; }
-.js .logo-row:nth-child(2) > span { animation-delay: 0s, 0.12s; }
-@keyframes logoRise { from { transform: translateY(38%); opacity: 0.3; } to { transform: none; opacity: 1; } }
+/* kerning óptico del lockup (se suma al margen negativo de la caja de aire) */
+.logo .ch.k-la { margin-left: calc(-0.12em + 0.04em); }
+.logo .ch.k-an { margin-left: calc(-0.12em + 0.015em); }
+.logo .ch.k-gr { margin-left: calc(-0.12em - 0.005em); }
+.logo .ch.k-ro { margin-left: calc(-0.12em + 0.012em); }
+.logo .ch.k-os { margin-left: calc(-0.12em + 0.006em); }
+/* Entrada de la home: solo la primera vez por sesión (clase intro-play, la pone el <head>; nunca con
+   movimiento reducido). Sin pantalla de carga: el contenido está desde el primer pintado y solo se anima.
+   El fondo aparece en 1,4 s; las letras suben una por una (45 ms entre letras, 0,9 s cada una) desde
+   debajo del renglón, que las recorta; después el claim, el texto con los botones y el menú. Termina a
+   los ~1,8 s. El claim y el texto (el LCP en escritorio y en celular) arrancan ya un poco visibles:
+   así el navegador los cuenta como pintados desde el principio. */
+.intro-play .bg { animation: introFade 1.4s var(--ease-out) both; }
+.intro-play .logo .ch { animation: logoRise 0.9s var(--ease-out) both; animation-delay: calc(0.05s + var(--i) * 45ms); }
+.intro-play .claim, .intro-play .tags { animation: introUp 0.85s var(--ease-out) 0.55s both; }
+.intro-play .intro-side { animation: introUp 1s var(--ease-out) 0.7s both; }
+.intro-play .nav-row { animation: introFade 1.1s var(--ease-out) 0.6s both; }
+@keyframes logoRise { from { transform: translateY(110%); } to { transform: none; } }
+@keyframes introFade { from { opacity: 0; } }
+@keyframes introUp { from { opacity: 0.05; transform: translateY(28px); } }
+/* halo suave detrás del cursor (solo con mouse). El prototipo lo desenfocaba con filter: blur(28px) y
+   mix-blend-mode: screen; acá el degradado ya viene más abierto y sin filtro (el mismo aspecto sobre el
+   fondo oscuro, sin recalcular un desenfoque en cada cuadro) */
+.halo {
+  position: absolute; left: 0; top: 0; width: 440px; height: 440px; margin: -220px 0 0 -220px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 255, 136, 0.2), rgba(0, 255, 136, 0.12) 22%, rgba(0, 204, 255, 0.06) 45%, rgba(0, 204, 255, 0.02) 60%, transparent 72%);
+  pointer-events: none; will-change: transform;
+  opacity: 0; visibility: hidden; transition: opacity 0.5s, visibility 0s linear 0.5s;
+}
+.logo-wrap.glowing .halo { opacity: 1; visibility: visible; transition: opacity 0.5s; }
 
 .intro-foot { display: grid; gap: 28px 56px; grid-template-columns: minmax(0, 1fr); }
 @media (min-width: 900px) { .intro-foot { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: end; } }
@@ -460,6 +537,45 @@ html.lenis, html.lenis body { height: auto; }
   .offer { grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) auto; align-items: start; }
 }
 
+/* herramientas: una cinta de borde a borde que se desplaza lento en loop y se pausa con el mouse
+   encima (o fuera de pantalla: js/home.js). La lista va tres veces seguidas (las copias, escondidas para
+   los lectores de pantalla): cada una se corre su propio ancho y el loop no tiene costura. Con mouse,
+   los íconos van en gris y toman su color al pasar por encima; sin mouse se ven a color. Los datos
+   están en data/tools.json. Con movimiento reducido: una fila quieta que se scrollea de costado. */
+.stack { padding-bottom: 104px; }
+.ribbon {
+  display: flex; overflow: hidden; padding-block: 6px;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+.ribbon-track {
+  flex: none; display: flex; gap: 12px; margin: 0; padding: 0 12px 0 0; list-style: none;
+  animation: ribbon 60s linear infinite; will-change: transform;
+}
+.ribbon:hover .ribbon-track, .ribbon.is-off .ribbon-track { animation-play-state: paused; }
+@keyframes ribbon { to { transform: translateX(-100%); } }
+.tool {
+  flex: none; display: inline-flex; align-items: center; gap: 10px;
+  padding: 5px 16px 5px 5px; border: 1px solid var(--line); border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.03); color: var(--fg-soft); font-size: 15px; font-weight: 500; white-space: nowrap;
+  transition: border-color var(--dur-ui) var(--ease-out), transform var(--dur-ui) var(--ease-out), color var(--dur-ui);
+}
+.tool-tile { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(255, 255, 255, 0.06); }
+.tool-ic { width: 28px; height: 28px; transition: filter var(--dur-mid) var(--ease-out), opacity var(--dur-mid); }
+.tool-ic.invert { filter: invert(1); }
+@media (hover: hover) {
+  .tool-ic { filter: grayscale(1); opacity: 0.8; }
+  .tool-ic.invert { filter: grayscale(1) invert(1); }
+  .tool:hover { border-color: rgba(0, 255, 136, 0.45); color: var(--fg); transform: translateY(-2px); }
+  .tool:hover .tool-ic { filter: none; opacity: 1; }
+  .tool:hover .tool-ic.invert { filter: invert(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ribbon { overflow-x: auto; -webkit-mask-image: none; mask-image: none; padding-inline: var(--gutter); scrollbar-width: thin; }
+  .ribbon-track { animation: none; }
+  .ribbon-copy { display: none; }
+}
+
 /* contacto */
 .contact { padding-top: 112px; padding-bottom: 112px; scroll-margin-top: var(--nav-h); }
 .contact h2 { font-weight: 900; font-stretch: 108%; font-size: clamp(44px, 8vw, 128px); line-height: 0.92; letter-spacing: -0.04em; text-wrap: balance; max-width: 12ch; }
@@ -541,6 +657,16 @@ html.lenis, html.lenis body { height: auto; }
 @media (min-width: 900px) {
   .case-panel { inset: 16px 16px 0; border-radius: 12px 12px 0 0; }
 }
+/* manija para cerrar arrastrando hacia abajo (solo celular y tablet, donde el panel ocupa toda la pantalla) */
+.cp-handle { display: none; }
+@media (max-width: 899px) {
+  .case-panel .bar { padding-top: calc(18px + env(safe-area-inset-top, 0px)); }
+  .cp-handle {
+    display: block; position: absolute; left: 50%; top: calc(6px + env(safe-area-inset-top, 0px));
+    width: 40px; height: 4px; margin-left: -20px; border-radius: 2px; background: rgba(255, 255, 255, 0.35);
+  }
+}
+.case-panel.dragging { transition: none; }
 .cp-body { transition: opacity 0.25s; }
 .cp-body.is-swapping { opacity: 0; }
 /* mientras está abierto, la home no se mueve */

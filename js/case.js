@@ -31,6 +31,12 @@
   if (document.querySelector('article.case')) {
     langButtons.forEach(function (b) { b.addEventListener('click', function () { setLang(b.dataset.lang); }); });
     setLang(root.classList.contains('lang-en-active') ? 'en' : 'es');
+    // pasados 40 px, el nombre del caso aparece en la barra (con su borde); en el panel lo hace js/home.js
+    var bar = document.querySelector('body > .bar');
+    if (bar) {
+      var marcar = function () { bar.classList.toggle('scrolled', window.scrollY > 40); };
+      window.addEventListener('scroll', marcar, { passive: true }); marcar();
+    }
   }
 
   /* ── Caso ───────────────────────────────────────────────
@@ -151,8 +157,9 @@
   }
 
   /* ── Scroll horizontal integrado al vertical ─────────────
-     Solo en escritorio con mouse o trackpad (900 px o más) y en galerías de 4 fotos o más:
-     la galería se fija y el scroll de la página mueve la tira; al ver la última foto se suelta.
+     Solo en escritorio con mouse o trackpad (900 px o más) y en las galerías cuya tira no entra
+     a lo ancho (sin mínimo de fotos): la galería se fija y el scroll de la página mueve la tira;
+     al ver la última foto se suelta. Se vuelve a mirar qué tiras desbordan al cambiar el ancho.
      gsap, ScrollTrigger y Lenis (js/vendor/, los de la home) se cargan después del evento load. */
   var lenis = null;
   var DESKTOP = '(hover: hover) and (pointer: fine) and (min-width: 900px) and (prefers-reduced-motion: no-preference)';
@@ -162,7 +169,7 @@
   // scroller: null en la página (scroll de la ventana, con Lenis); el panel de la home pasa su contenedor.
   // Devuelve una función que lo desarma.
   function horizontal(article, scroller) {
-    var blocks = Array.prototype.filter.call(article.querySelectorAll('.gal-block'), function (b) { return b.querySelectorAll('.gal figure').length >= 4; });
+    var blocks = Array.prototype.slice.call(article.querySelectorAll('.gal-block'));
     var off = false, mm = null;
     var stop = function () { off = true; if (mm) mm.revert(); };
     if (!blocks.length || reduce || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return stop;
@@ -192,43 +199,70 @@
         gsap.ticker.lagSmoothing(0);
       }
       var refresh = (function () { var id; return function () { clearTimeout(id); id = setTimeout(function () { ScrollTrigger.refresh(); }, 120); }; })();
-      blocks.forEach(function (block) {
-        var g = block.querySelector('.gal');
-        var max = function () { return g.scrollWidth - g.clientWidth; };
-        block.classList.add('hscroll');
-        var bar = document.createElement('div'); bar.className = 'gal-progress'; bar.setAttribute('aria-hidden', 'true'); bar.innerHTML = '<span></span>';
-        g.parentNode.insertBefore(bar, g.nextSibling); block._bar = bar.firstChild;
-        // la distancia de scroll es el ancho que le falta mostrar a la tira (1 px de página = 1 px de tira)
-        var tw = gsap.fromTo(g, { scrollLeft: 0 }, {
-          scrollLeft: max, ease: 'none',
-          scrollTrigger: {
-            trigger: block, pin: true, anticipatePin: 1, scrub: 0.6, invalidateOnRefresh: true, scroller: scroller || window,
-            start: function () { return block.offsetHeight > alto() ? 'top top' : 'center center'; },
-            end: function () { return '+=' + max(); }
-          }
+      // una tira desborda si no entra a lo ancho (los anchos de las fotos ya están reservados por sus medidas)
+      var desborda = function (b) { var g = b.querySelector('.gal'); return g.scrollWidth > g.clientWidth + 1; };
+      var activas = [], ctx = null;
+      function armar(lista) {
+        activas = lista;
+        ctx = gsap.context(function () {
+          lista.forEach(function (block) {
+            var g = block.querySelector('.gal');
+            var max = function () { return g.scrollWidth - g.clientWidth; };
+            block.classList.add('hscroll');
+            var bar = document.createElement('div'); bar.className = 'gal-progress'; bar.setAttribute('aria-hidden', 'true'); bar.innerHTML = '<span></span>';
+            g.parentNode.insertBefore(bar, g.nextSibling); block._bar = bar.firstChild;
+            // la distancia de scroll es el ancho que le falta mostrar a la tira (1 px de página = 1 px de tira)
+            var tw = gsap.fromTo(g, { scrollLeft: 0 }, {
+              scrollLeft: max, ease: 'none',
+              scrollTrigger: {
+                trigger: block, pin: true, anticipatePin: 1, scrub: 0.6, invalidateOnRefresh: true, scroller: scroller || window,
+                start: function () { return block.offsetHeight > alto() ? 'top top' : 'center center'; },
+                end: function () { return '+=' + max(); }
+              }
+            });
+            var st = tw.scrollTrigger;
+            block._hs = function (x) {
+              var y = st.start + Math.max(0, Math.min(max(), x));
+              if (scroller) scroller.scrollTo({ top: y, behavior: 'smooth' });
+              else if (lenis) lenis.scrollTo(y, { duration: 0.9 }); else window.scrollTo({ top: y, behavior: 'smooth' });
+            };
+            g.querySelectorAll('img').forEach(function (im) { if (!im.complete) im.addEventListener('load', refresh, { once: true }); });
+            if (block._update) block._update();
+          });
         });
-        var st = tw.scrollTrigger;
-        block._hs = function (x) {
-          var y = st.start + Math.max(0, Math.min(max(), x));
-          if (scroller) scroller.scrollTo({ top: y, behavior: 'smooth' });
-          else if (lenis) lenis.scrollTo(y, { duration: 0.9 }); else window.scrollTo({ top: y, behavior: 'smooth' });
-        };
-        g.querySelectorAll('img').forEach(function (im) { if (!im.complete) im.addEventListener('load', refresh, { once: true }); });
-        if (block._update) block._update();
-      });
+      }
+      function desarmar() {
+        if (ctx) { ctx.revert(); ctx = null; }
+        activas.forEach(function (b) {
+          b.classList.remove('hscroll'); b._hs = null;
+          if (b._bar) { b._bar.parentNode.remove(); b._bar = null; }
+          var g = b.querySelector('.gal'); g.scrollLeft = 0;
+          if (b._update) b._update();
+        });
+        activas = [];
+      }
+      armar(blocks.filter(desborda));
+      // al cambiar el ancho, una tira puede pasar a entrar (o dejar de entrar): se rearma solo si cambió cuál desborda
+      var rt = null;
+      var alCambiar = function () {
+        clearTimeout(rt);
+        rt = setTimeout(function () {
+          var ahora = blocks.filter(desborda);
+          if (ahora.length === activas.length && ahora.every(function (b, k) { return b === activas[k]; })) return;
+          desarmar(); armar(blocks.filter(desborda)); ScrollTrigger.refresh();
+        }, 200);
+      };
+      window.addEventListener('resize', alCambiar);
       // Lenis vuelve a medir la página cada vez que ScrollTrigger rearma los pin (si no, al volver
       // de una ventana angosta se queda con un alto viejo y no termina nunca de llegar al destino)
       var remedir = function () { if (lenis) lenis.resize(); };
       ScrollTrigger.addEventListener('refresh', remedir);
       ScrollTrigger.refresh();
       return function () {
+        clearTimeout(rt);
+        window.removeEventListener('resize', alCambiar);
         ScrollTrigger.removeEventListener('refresh', remedir);
-        blocks.forEach(function (b) {
-          b.classList.remove('hscroll'); b._hs = null;
-          if (b._bar) { b._bar.parentNode.remove(); b._bar = null; }
-          var g = b.querySelector('.gal'); g.scrollLeft = 0;
-          if (b._update) b._update();
-        });
+        desarmar();
         if (tick) { gsap.ticker.remove(tick); lenis.destroy(); lenis = null; }
       };
     });

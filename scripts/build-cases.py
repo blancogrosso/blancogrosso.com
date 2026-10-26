@@ -18,18 +18,23 @@ Cada caso es una lista de bloques en orden. Tipos de bloque:
                 (items = [{src, alt, full, full_alt, caption, video opcional {src, poster}}], heading opcional)
   sheet         pieza sobre plano claro (src, alt, caption y heading opcionales)
   gallery       tira de fotos que se desliza, con visor a pantalla completa (items = [{src, alt}], heading e intro opcionales)
+  brand         sistema de marca: grilla de variantes del logo, cada una sobre su fondo
+                (items = [{src, alt, label}], heading opcional; src puede ser SVG)
+  palette       paleta de color (items = [{name, hex, tier}]; tier "primary" va grande) y, opcional,
+                "fonts" = [{name, role}] con las tipografías de la marca; heading opcional
   before-after  comparador arrastrable (before, after); "cover": true si hace de imagen principal;
                 "labels": {before, after} para cambiar los rótulos "Generada" / "Terminada"
   steps         pasos numerados (items = [{title, text}])
   prompt        texto de prompt (label, text) + imagen resultado opcional (src, alt)
   video-embed   video de YouTube (id, title)
-  ext-link      link externo (href, label)
+  ext-link      link externo (href, label); "quiet": true para un link discreto en la misma pestaña
   next          siguiente caso (sale del orden de data/works.json)
 
 Textos: {"es": …, "en": …} o un texto solo si es igual en los dos idiomas.
 El orden de los casos (contador "2 de 10" y "Siguiente") es el de data/works.json.
+meta.og_image: nombre de la imagen de img/og/ si no es <slug>.jpg.
 """
-import html, json, os, struct, sys
+import html, json, os, re, struct, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 E = lambda s: html.escape(s, quote=True)
@@ -63,6 +68,8 @@ FACT_LABELS = {
     "year": ("Año", "Year"),
     "did": ("Qué hice", "What I did"),
     "tools": ("Herramientas", "Tools"),
+    "audience": ("Público", "Audience"),
+    "tone": ("Tono", "Tone"),
 }
 
 def es(t): return t["es"] if isinstance(t, dict) else t
@@ -85,7 +92,15 @@ def alt_attrs(t):
 
 def img_size(src):
     """Ancho y alto de un AVIF (cajas 'ispe'), para reservar el lugar y que no salte el layout.
-    Los AVIF grandes vienen en mosaico: hay una caja por mosaico y otra para la imagen entera (la mayor)."""
+    Los AVIF grandes vienen en mosaico: hay una caja por mosaico y otra para la imagen entera (la mayor).
+    De un SVG, su viewBox."""
+    if src.endswith(".svg"):
+        try:
+            head = open(os.path.join(ROOT, src), encoding="utf-8").read(2000)
+        except OSError:
+            return None
+        m = re.search(r'viewBox="[\d.\-]+[ ,]+[\d.\-]+[ ,]+([\d.]+)[ ,]+([\d.]+)"', head)
+        return (round(float(m.group(1))), round(float(m.group(2)))) if m else None
     try:
         data = open(os.path.join(ROOT, src), "rb").read(8192)
     except OSError:
@@ -116,6 +131,7 @@ def svg(path, sw="2", box="0 0 20 20", cls=""):
 
 ARROW = svg('<path d="M3 10h13M11 4l6 6-6 6"/>', "2.4")
 CLOSE = svg('<path d="M2 2l10 10M12 2L2 12"/>', "1.8", "0 0 14 14")
+BACK = svg('<path d="M16 10H4M9 4l-6 6 6 6"/>', "2")
 KNOB = svg('<path d="M8 6l-5 5 5 5M14 6l5 5-5 5"/>', "2", "0 0 22 22")
 # ícono de ampliar en cada foto de la galería (decorativo: la foto ya dice "Ver foto 2 de 6 en grande")
 ZOOM = '<span class="zoom" aria-hidden="true">' + svg('<path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/>', "1.8", "0 0 16 16") + '</span>'
@@ -261,6 +277,37 @@ def b_gallery(b, c):
       </div>
     </div>'''
 
+def b_brand(b, c):
+    """Sistema de marca: las variantes del logo en grilla (dos columnas en celular, cuatro en escritorio),
+    cada una sobre su propio fondo, con su rótulo abajo."""
+    items = "\n".join(
+        f'''      <figure class="brand-item rv">
+        <div class="brand-tile">{img(i["src"], i["alt"], sizes="(min-width: 900px) 300px, 45vw")}</div>
+        <figcaption class="cap">{bi(i["label"])}</figcaption>
+      </figure>''' for i in b["items"])
+    return f'''    <section class="brand">{block_heading(b)}
+      <div class="brand-grid">
+{items}
+      </div>
+    </section>'''
+
+def b_palette(b, c):
+    """Paleta de color: los primarios grandes y los secundarios más chicos, con nombre y código.
+    Las tipografías ("fonts") van como lista de nombre y uso."""
+    def sw(i):
+        big = " big" if i.get("tier") == "primary" else ""
+        return (f'        <li class="swatch{big}"><span class="sw-color" style="background: {E(i["hex"])}" aria-hidden="true"></span>'
+                f'<span class="sw-name">{bi(i["name"])}</span><span class="sw-hex">{E(i["hex"])}</span></li>')
+    prim = [i for i in b["items"] if i.get("tier") == "primary"]
+    sec = [i for i in b["items"] if i.get("tier") != "primary"]
+    lists = "".join(f'\n      <ul class="swatches{" big" if g is prim else ""}">\n' + "\n".join(sw(i) for i in g) + "\n      </ul>" for g in (prim, sec) if g)
+    types = ""
+    if b.get("fonts"):
+        rows = "\n".join(f'        <div><dt>{bi(t["role"])}</dt><dd>{E(t["name"])}</dd></div>' for t in b["fonts"])
+        types = f'\n      <dl class="facts type rv">\n{rows}\n      </dl>'
+    return f'''    <section class="palette rv">{block_heading(b)}{lists}{types}
+    </section>'''
+
 def b_before_after(b, c):
     cover = b.get("cover")
     wrap = ' id="cover" data-vt' if cover else ""
@@ -310,12 +357,14 @@ def b_video_embed(b, c):
     return f'''    <div class="embed rv-img"><iframe src="https://www.youtube-nocookie.com/embed/{E(b["id"])}" title="{E(es(b["title"]))}" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>'''
 
 def b_ext_link(b, c):
+    if b.get("quiet"):  # link discreto, en la misma pestaña (ej. la presentación original de un caso)
+        return f'    <a class="ext quiet rv" href="{E(b["href"])}">{bi(b["label"])} <span aria-hidden="true">→</span></a>'
     return f'    <a class="ext rv" href="{E(b["href"])}" target="_blank" rel="noopener">{bi(b["label"])} <span aria-hidden="true">↗</span>{NEW_TAB}</a>'
 
 def b_next(b, c):
     i = next(k for k, w in enumerate(SEQUENCE) if w["slug"] == c["slug"])
     w = SEQUENCE[(i + 1) % len(SEQUENCE)]
-    thumb = limpio(f'img/works/{w["slug"]}.avif')
+    thumb = limpio(w.get("img", f'img/works/{w["slug"]}.avif'))
     return f'''    <a class="next" href="{E(w["href"])}">
       <small>{bi({"es": "Siguiente", "en": "Next"})}</small>
       <span class="nt"><span class="grad">{E(w["title"])}</span>{ARROW}</span>
@@ -326,6 +375,7 @@ BLOCKS = {
     "hero": b_hero, "cover": b_cover, "facts": b_facts, "story": b_story, "split-video": b_split_video,
     "video-pair": b_video_pair, "media": b_media, "garment": b_garment, "sheet": b_sheet, "gallery": b_gallery, "before-after": b_before_after, "steps": b_steps,
     "prompt": b_prompt, "video-embed": b_video_embed, "ext-link": b_ext_link, "next": b_next,
+    "brand": b_brand, "palette": b_palette,
 }
 
 # ── Página ───────────────────────────────────────────────
@@ -335,6 +385,7 @@ def page(c):
     pos = next(k for k, w in enumerate(SEQUENCE) if w["slug"] == slug) + 1
     url = f"{SITE}/{slug}"
     body = "\n".join(BLOCKS[b["type"]](b, c) for b in c["blocks"])
+    title = next(b["title"] for b in c["blocks"] if b["type"] == "hero")  # el nombre que aparece en la barra al bajar
     return f'''<!DOCTYPE html>
 <html lang="es" class="case-tokens">
 <head>
@@ -351,7 +402,7 @@ def page(c):
   <meta property="og:url" content="{url}">
   <meta property="og:title" content="{E(m["og_title"])}">
   <meta property="og:description" content="{E(m["description"])}">
-  <meta property="og:image" content="{SITE}/img/og/{slug}.jpg">
+  <meta property="og:image" content="{SITE}/img/og/{m.get("og_image", slug)}.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="{E(m["og_image_alt"])}">
@@ -379,13 +430,17 @@ def page(c):
 </head>
 <body>
   <header class="bar">
-    <span class="count">{bi({"es": f"{pos} de {len(SEQUENCE)}", "en": f"{pos} of {len(SEQUENCE)}"})}</span>
+    <div class="bar-start">
+      <a class="back" href="/#works">{BACK}{bi({"es": "Trabajos", "en": "Work"})}</a>
+      <span class="count">{bi({"es": f"{pos} de {len(SEQUENCE)}", "en": f"{pos} of {len(SEQUENCE)}"})}</span>
+    </div>
+    <span class="bar-title" aria-hidden="true">{bi(title)}</span>
     <div class="bar-end">
       <div class="lang" role="group" aria-label="Idioma / Language">
         <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
         <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
       </div>
-      <a class="close" href="/#works">{CLOSE}{bi({"es": "Cerrar", "en": "Close"})}</a>
+      <a class="close x" href="/#works" aria-label="Cerrar" data-en-aria-label="Close">{CLOSE}</a>
     </div>
   </header>
 

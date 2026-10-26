@@ -42,15 +42,46 @@ h1 > .grad, h2 > .grad, h3 > .grad {
   -webkit-box-decoration-break: clone; box-decoration-break: clone;
 }
 
-/* ── Barra: posición en la serie, idioma y Cerrar (vuelve a los trabajos de la home) ── */
+/* ── Barra: "← Trabajos" a la izquierda, el nombre del caso al centro (aparece al bajar más de 40 px,
+   con un borde sutil), idioma y la X redonda a la derecha. Las dos vuelven a los trabajos de la home
+   (en el panel lo cierran). Fija arriba, sobre fondo oscuro translúcido. ── */
 .case-tokens .bar {
   position: sticky; top: 0; z-index: 5;
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 12px;
   padding: calc(10px + env(safe-area-inset-top, 0px)) var(--gutter) 10px;
-  background: linear-gradient(to bottom, rgba(10, 10, 10, 0.92) 60%, rgba(10, 10, 10, 0));
+  background: rgba(10, 10, 10, 0.92);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s var(--ease-out);
 }
-.case-tokens .bar .count { color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
-.case-tokens .bar-end { display: flex; align-items: center; gap: 8px; }
+.case-tokens .bar.scrolled { border-bottom-color: var(--line); }
+.case-tokens .bar-start { display: flex; align-items: center; gap: 14px; min-width: 0; justify-self: start; }
+.case-tokens .bar .count { color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+@media (max-width: 899px) { .case-tokens .bar .count { display: none; } }
+.case-tokens .bar-title {
+  min-width: 0; max-width: min(46vw, 520px); overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  font-weight: 700; font-size: 15px; text-align: center;
+  opacity: 0; transform: translateY(6px); transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+}
+.case-tokens .bar.scrolled .bar-title { opacity: 1; transform: none; }
+.case-tokens .bar-end { display: flex; align-items: center; gap: 8px; justify-self: end; }
+.case-tokens .back {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px 0 12px;
+  border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.3); background: rgba(10, 10, 10, 0.6);
+  font-size: 15px; font-weight: 600; text-decoration: none; white-space: nowrap; cursor: pointer;
+  transition: background 0.3s var(--ease-out), color 0.3s, border-color 0.3s;
+}
+.case-tokens .back svg { width: 16px; height: 16px; flex: none; transition: transform 0.35s var(--ease-out); }
+.case-tokens .back:hover, .case-tokens .back:focus-visible { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.case-tokens .back:hover svg { transform: translateX(-3px); }
+@media (max-width: 559px) {
+  /* el nombre toma el espacio entre los botones (y se corta con …) en vez de quedar centrado en la pantalla */
+  .case-tokens .bar { gap: 8px; grid-template-columns: auto minmax(0, 1fr) auto; }
+  .case-tokens .bar-title { max-width: none; }
+  .case-tokens .back { padding: 0 12px 0 10px; font-size: 14px; }
+  .case-tokens .lang-btn { min-width: 34px; }
+}
+/* en las pantallas más angostas no hay lugar para el nombre del caso */
+@media (max-width: 359px) { .case-tokens .bar-title { display: none; } }
 .case-tokens .lang { display: flex; gap: 2px; }
 .case-tokens .lang-btn {
   min-width: 40px; min-height: 44px; padding: 0 6px;
@@ -67,6 +98,7 @@ h1 > .grad, h2 > .grad, h3 > .grad {
 }
 .case-tokens .close:hover, .case-tokens .close:focus-visible { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 .case-tokens .close svg { width: 14px; height: 14px; }
+.case-tokens .close.x { width: 44px; height: 44px; padding: 0; justify-content: center; border-radius: 50%; cursor: pointer; }
 
 /* ── Caso ── */
 .case { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
@@ -215,7 +247,27 @@ h1 > .grad, h2 > .grad, h3 > .grad {
 }
 .gal figure:focus-visible { outline-offset: 4px; }
 
-/* tira fijada con scroll horizontal (escritorio, 4 fotos o más; lo activa js/case.js) */
+/* Sistema de marca: variantes del logo en grilla, cada una sobre su propio fondo */
+.brand { margin: var(--block) 0; }
+.brand-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 12px; }
+@media (min-width: 900px) { .brand-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 36px 16px; } }
+.brand-item { margin: 0; }
+.brand-tile { border-radius: var(--radius); overflow: hidden; aspect-ratio: 1; background: #f3eee3; }
+.brand-tile img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Paleta: los primarios grandes, los secundarios más chicos; con nombre y código */
+.palette { margin: var(--block) 0; }
+.swatches { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.swatches.big { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 12px; }
+@media (min-width: 760px) { .swatches, .swatches.big { gap: 16px; } .swatches.big { margin-bottom: 16px; } }
+.swatch { display: flex; flex-direction: column; gap: 2px; }
+.sw-color { display: block; aspect-ratio: 16 / 9; border-radius: var(--radius); margin-bottom: 10px; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08); }
+.swatch.big .sw-color { aspect-ratio: 16 / 7; }
+.sw-name { font-weight: 600; }
+.sw-hex { color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+.palette .facts.type { margin: clamp(32px, 4vw, 48px) 0 0; }
+
+/* tira fijada con scroll horizontal (escritorio, cuando la tira no entra a lo ancho; lo activa js/case.js) */
 .gal-block.hscroll .gal { overflow-x: hidden; scroll-snap-type: none; cursor: default; }
 .gal-progress { height: 2px; margin-top: 2px; background: var(--line); border-radius: 1px; overflow: hidden; }
 .gal-progress span { display: block; height: 100%; background: var(--accent); transform-origin: left center; transform: scaleX(0); }
@@ -300,6 +352,10 @@ h1 > .grad, h2 > .grad, h3 > .grad {
   transition: gap 0.35s var(--ease-out), border-color 0.3s;
 }
 .ext:hover { gap: 16px; border-color: var(--accent); }
+.ext + .ext { margin-left: 28px; }
+/* link discreto (ej. la presentación original de un caso): en su propia línea, gris */
+.ext.quiet { display: flex; width: fit-content; margin: 20px 0 0; color: var(--muted); font-weight: 500; font-size: 15px; border-bottom-color: rgba(255, 255, 255, 0.2); }
+.ext.quiet:hover, .ext.quiet:focus-visible { color: var(--text); border-color: var(--text); }
 
 /* Siguiente caso: bloque grande al final */
 .next {
