@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="case-tokens">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -22,6 +22,7 @@
   <!-- /Open Graph -->
   <link rel="icon" type="image/png" href="img/icons/logo-verde.png">
   <link rel="preload" href="fonts/archivo-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/case-base.css">
   <link rel="stylesheet" href="css/case.css">
   <link rel="stylesheet" href="css/view-transitions.css">
   <!-- la transición desde la home espera a que exista la imagen principal -->
@@ -41,13 +42,17 @@
 </head>
 <body>
   <header class="bar">
-    <span class="count"><span class="lang-es">6 de 10</span><span class="lang-en" lang="en">6 of 10</span></span>
+    <div class="bar-start">
+      <a class="back" href="/#works"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M16 10H4M9 4l-6 6 6 6"/></svg><span class="lang-es">Trabajos</span><span class="lang-en" lang="en">Work</span></a>
+      <span class="count"><span class="lang-es">6 de 10</span><span class="lang-en" lang="en">6 of 10</span></span>
+    </div>
+    <span class="bar-title" aria-hidden="true">By Kafuse Alas y Raíces</span>
     <div class="bar-end">
       <div class="lang" role="group" aria-label="Idioma / Language">
         <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
         <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
       </div>
-      <a class="close" href="/#works"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg><span class="lang-es">Cerrar</span><span class="lang-en" lang="en">Close</span></a>
+      <a class="close x" href="/#works" aria-label="Cerrar" data-en-aria-label="Close"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg></a>
     </div>
   </header>
 

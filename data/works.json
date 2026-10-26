@@ -1,5 +1,5 @@
 {
-  "_leeme": "Trabajos de la home. Sumar un trabajo = agregar una entrada y correr: python3 scripts/build-home.py. featured: aparece en Destacados (en este orden) y queda escrito en el HTML; el resto lo agrega el JS. filters: branding | sport | web | motion | campaigns. preview: tiene img/works/<slug>-preview.mp4. external: abre en pestaña nueva. fit contain + bg: la portada se muestra entera sobre ese color.",
+  "_leeme": "Trabajos de la home. Sumar un trabajo = agregar una entrada y correr: python3 scripts/build-home.py. featured: aparece en Destacados (en este orden) y queda escrito en el HTML; el resto lo agrega el JS. filters: branding | sport | web | motion | campaigns. preview: tiene img/works/<slug>-preview.mp4. external: abre en pestaña nueva. fit contain + bg: la portada se muestra entera sobre ese color. img: portada si no es img/works/<slug>.avif.",
   "works": [
     { "slug": "labufarra-social", "title": "Vuelta a las redes @labufarra", "cat": "AI-Powered · Audiovisual Production",
       "desc": { "es": "Video 100% IA para anunciar la vuelta a la conducción de redes.", "en": "100% AI video to announce the return to social media management." },
@@ -28,10 +28,10 @@
     { "slug": "final-clasica", "title": "Final Clásica Fútbol Uruguayo", "cat": "Sport Design",
       "desc": { "es": "Anuncio de cobertura de partido final clásica para las redes de Fix.", "en": "Classic final match coverage announcement for Fix networks." },
       "tools": "Photoshop, Lightroom", "href": "/final-clasica", "featured": true, "filters": ["sport"] },
-    { "slug": "nido", "title": "NIDO", "cat": "Brand Systems",
+    { "slug": "nido-identidad", "title": "NIDO", "cat": "Brand Systems",
       "desc": { "es": "Identidad visual completa para nido, marca de diseño para el hogar: ícono, paleta, tipografía, fotografía y piezas para Instagram.",
                 "en": "Complete visual identity for nido, a home design brand: icon, palette, typography, photography and Instagram pieces." },
-      "tools": "GPT, Gemini, Photoshop", "fit": "contain", "bg": "#f3eee3", "href": "/nido", "featured": true, "filters": ["branding"] },
+      "tools": "GPT, Gemini, Photoshop", "href": "/nido-identidad", "featured": true, "filters": ["branding"] },
     { "slug": "navaja-barber", "title": "Navaja Barber", "cat": "Web Design · Development",
       "desc": { "es": "Sitio de una página para una barbería en Uruguay, con reservas online integradas.", "en": "One-page site for a barbershop in Uruguay, with built-in online booking." },
       "tools": "Antigravity, HTML, CSS, JavaScript", "href": "https://www.navajabarber.com", "external": true, "featured": false, "filters": ["web"] },

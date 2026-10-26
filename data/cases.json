@@ -1,5 +1,5 @@
 {
-  "_leeme": "Páginas de caso. Cada caso genera <slug>.html con: python3 scripts/build-cases.py. Los textos van como {\"es\": …, \"en\": …} o como texto solo si es igual en los dos idiomas. Los bloques se muestran en el orden de la lista; tipos: hero, cover, facts, story, split-video, sheet, gallery, before-after, steps, prompt, video-embed, ext-link, next. El orden de los casos (contador y 'siguiente') es el de data/works.json. Explicación de cada bloque en scripts/build-cases.py.",
+  "_leeme": "Páginas de caso. Cada caso genera <slug>.html con: python3 scripts/build-cases.py. Los textos van como {\"es\": …, \"en\": …} o como texto solo si es igual en los dos idiomas. Los bloques se muestran en el orden de la lista; tipos: hero, cover, facts, story, split-video, sheet, gallery, brand, palette, before-after, steps, prompt, video-embed, ext-link, next. El orden de los casos (contador y 'siguiente') es el de data/works.json. Explicación de cada bloque en scripts/build-cases.py.",
   "cases": [
     {
       "slug": "by-kafuse",
@@ -1657,6 +1657,353 @@
               "alt": "Story 3"
             }
           ]
+        },
+        {
+          "type": "next"
+        }
+      ]
+    },
+    {
+      "slug": "nido-identidad",
+      "meta": {
+        "title": "NIDO, identidad de marca | Blanco Grosso",
+        "og_title": "NIDO, identidad de marca | Blanco Grosso",
+        "description": "Case study de branding: identidad visual completa para NIDO, marca de diseño para el hogar. Ícono, paleta, tipografía, fotografía y piezas para Instagram.",
+        "og_image_alt": "Logo de nido en blanco sobre una foto de tejidos de lana color arena"
+      },
+      "blocks": [
+        {
+          "type": "hero",
+          "title": "NIDO",
+          "lead": {
+            "es": "Diseño para el hogar. Muebles, iluminación, objetos y textiles — piezas que transforman una casa en un lugar donde quedarse.",
+            "en": "Home design. Furniture, lighting, objects and textiles — pieces that turn a house into a place to stay."
+          },
+          "date": "2026"
+        },
+        {
+          "type": "cover",
+          "src": "img/works/nido/portada.avif",
+          "alt": {
+            "es": "Logo de nido en blanco sobre una foto de tejidos de lana color arena",
+            "en": "White nido logo over a photo of sand-colored wool knits"
+          }
+        },
+        {
+          "type": "facts",
+          "items": [
+            [
+              "for",
+              {
+                "es": "Prueba técnica · Diseñador Gráfico · Dendra",
+                "en": "Technical test · Graphic Designer · Dendra"
+              }
+            ],
+            [
+              "year",
+              "2026"
+            ],
+            [
+              "did",
+              {
+                "es": "Identidad visual completa: ícono, lockup, paleta, tipografía, fotografía y piezas para Instagram",
+                "en": "Complete visual identity: icon, lockup, palette, typography, photography and Instagram pieces"
+              }
+            ],
+            [
+              "tools",
+              "GPT, Gemini, Photoshop, Illustrator, Lightroom, Claude"
+            ],
+            [
+              "audience",
+              {
+                "es": "Pocitos, Montevideo · 25–40 años",
+                "en": "Pocitos, Montevideo · ages 25–40"
+              }
+            ],
+            [
+              "tone",
+              {
+                "es": "Cálido · Sereno · Con criterio · Nórdico cálido",
+                "en": "Warm · Serene · Discerning · Warm Nordic"
+              }
+            ]
+          ]
+        },
+        {
+          "type": "story",
+          "heading": {
+            "es": "nido no vende muebles, acompaña el criterio de armar un lugar propio.",
+            "en": "nido doesn't sell furniture: it supports the judgment behind making a place your own."
+          },
+          "paras": [
+            {
+              "es": "El nombre remite al nido literal: un objeto antiguo, armado a mano, ramita por ramita, con lo que hay cerca. No responde a un plano sino a un instinto que se ajusta con el tiempo y con quien lo habita. nido vive en esa misma tensión — la del living real — donde el ruido de mil opciones se decanta, pieza por pieza, hasta el criterio de lo esencial.",
+              "en": "The name refers to the literal nest: an ancient object, built by hand, twig by twig, with whatever is close by. It doesn't follow a plan but an instinct that adjusts over time and to whoever lives in it. nido lives in that same tension — the real living room — where the noise of a thousand options settles, piece by piece, into a sense of what is essential."
+            }
+          ]
+        },
+        {
+          "type": "brand",
+          "heading": {
+            "es": "Sistema de marca",
+            "en": "Brand system"
+          },
+          "items": [
+            {
+              "src": "img/works/nido/marca/nido-icono-positivo-color-bg.svg",
+              "alt": {
+                "es": "Ícono NIDO, variante positiva a color",
+                "en": "NIDO icon, positive color version"
+              },
+              "label": {
+                "es": "Icono · Positivo · Color",
+                "en": "Icon · Positive · Color"
+              }
+            },
+            {
+              "src": "img/works/nido/marca/nido-icono-negativo-mono-bg.svg",
+              "alt": {
+                "es": "Ícono NIDO, variante positiva monocromática",
+                "en": "NIDO icon, positive monochrome version"
+              },
+              "label": {
+                "es": "Icono · Positivo · ByN",
+                "en": "Icon · Positive · B&W"
+              }
+            },
+            {
+              "src": "img/works/nido/marca/nido-icono-negativo-color-bg.svg",
+              "alt": {
+                "es": "Ícono NIDO, variante negativa a color",
+                "en": "NIDO icon, negative color version"
+              },
+              "label": {
+                "es": "Icono · Negativo · Color",
+                "en": "Icon · Negative · Color"
+              }
+            },
+            {
+              "src": "img/works/nido/marca/nido-icono-positivo-mono-bg.svg",
+              "alt": {
+                "es": "Ícono NIDO, variante negativa monocromática",
+                "en": "NIDO icon, negative monochrome version"
+              },
+              "label": {
+                "es": "Icono · Negativo · ByN",
+                "en": "Icon · Negative · B&W"
+              }
+            },
+            {
+              "src": "img/works/nido/marca/nido-lockup-positivo-color-bg.svg",
+              "alt": {
+                "es": "Lockup NIDO, variante positiva a color",
+                "en": "NIDO lockup, positive color version"
+              },
+              "label": {
+                "es": "Lockup · Positivo · Color",
+                "en": "Lockup · Positive · Color"
+              }
+            },
+            {
+              "src": "img/works/nido/marca/nido-lockup-positivo-mono-bg.svg",
+              "alt": {
+                "es": "Lockup NIDO, variante positiva monocromática",
+                "en": "NIDO lockup, positive monochrome version"
+              },
+              "label": {
+                "es": "Lockup · Positivo · ByN",
+                "en": "Lockup · Positive · B&W"
+              }
+            },
+            {
+              "src": "img/works/nido/marca/nido-lockup-negativo-color-bg.svg",
+              "alt": {
+                "es": "Lockup NIDO, variante negativa a color",
+                "en": "NIDO lockup, negative color version"
+              },
+              "label": {
+                "es": "Lockup · Negativo · Color",
+                "en": "Lockup · Negative · Color"
+              }
+            },
+            {
+              "src": "img/works/nido/marca/nido-lockup-negativo-mono-bg.svg",
+              "alt": {
+                "es": "Lockup NIDO, variante negativa monocromática",
+                "en": "NIDO lockup, negative monochrome version"
+              },
+              "label": {
+                "es": "Lockup · Negativo · ByN",
+                "en": "Lockup · Negative · B&W"
+              }
+            }
+          ]
+        },
+        {
+          "heading": {
+            "es": "Paleta y tipografía",
+            "en": "Palette and typography"
+          },
+          "items": [
+            {
+              "name": {
+                "es": "Lino",
+                "en": "Linen"
+              },
+              "hex": "#F3EEE4",
+              "tier": "primary"
+            },
+            {
+              "name": "Espresso",
+              "hex": "#2B211A",
+              "tier": "primary"
+            },
+            {
+              "name": {
+                "es": "Terracota",
+                "en": "Terracotta"
+              },
+              "hex": "#C17A54"
+            },
+            {
+              "name": {
+                "es": "Salvia",
+                "en": "Sage"
+              },
+              "hex": "#8A9A7E"
+            },
+            {
+              "name": {
+                "es": "Arena",
+                "en": "Sand"
+              },
+              "hex": "#D9CBB8"
+            }
+          ],
+          "fonts": [
+            {
+              "name": "Fraunces",
+              "role": {
+                "es": "Títulos",
+                "en": "Display"
+              }
+            },
+            {
+              "name": "Karla",
+              "role": {
+                "es": "Texto",
+                "en": "Body"
+              }
+            }
+          ],
+          "type": "palette"
+        },
+        {
+          "type": "gallery",
+          "heading": {
+            "es": "Fotografía",
+            "en": "Photography"
+          },
+          "intro": {
+            "es": "Cuatro escenas, un mismo ecosistema tonal.",
+            "en": "Four scenes, one tonal ecosystem."
+          },
+          "items": [
+            {
+              "src": "img/works/nido/fotos/01-living.avif",
+              "alt": {
+                "es": "Living ambientado con piezas NIDO",
+                "en": "Living room styled with NIDO pieces"
+              }
+            },
+            {
+              "src": "img/works/nido/fotos/02-mueble.avif",
+              "alt": {
+                "es": "Mueble de diseño NIDO",
+                "en": "NIDO design furniture"
+              }
+            },
+            {
+              "src": "img/works/nido/fotos/03-ceramic.avif",
+              "alt": {
+                "es": "Cerámica y objetos NIDO",
+                "en": "NIDO ceramics and objects"
+              }
+            },
+            {
+              "src": "img/works/nido/fotos/04-wool-texture.avif",
+              "alt": {
+                "es": "Detalle de textura y textiles NIDO",
+                "en": "Detail of NIDO textures and textiles"
+              }
+            }
+          ]
+        },
+        {
+          "type": "gallery",
+          "heading": "Instagram",
+          "items": [
+            {
+              "src": "img/works/nido/feed/post-01-apertura.avif",
+              "alt": {
+                "es": "Post de Instagram NIDO 1",
+                "en": "NIDO Instagram post 1"
+              }
+            },
+            {
+              "src": "img/works/nido/feed/post-02-living.avif",
+              "alt": {
+                "es": "Post de Instagram NIDO 2",
+                "en": "NIDO Instagram post 2"
+              }
+            },
+            {
+              "src": "img/works/nido/feed/post-03-objetos.avif",
+              "alt": {
+                "es": "Post de Instagram NIDO 3",
+                "en": "NIDO Instagram post 3"
+              }
+            },
+            {
+              "src": "img/works/nido/feed/historia-01-limpio.avif",
+              "alt": {
+                "es": "Historia de Instagram NIDO 1",
+                "en": "NIDO Instagram story 1"
+              }
+            },
+            {
+              "src": "img/works/nido/feed/historia-02-limpio.avif",
+              "alt": {
+                "es": "Historia de Instagram NIDO 2",
+                "en": "NIDO Instagram story 2"
+              }
+            },
+            {
+              "src": "img/works/nido/feed/historia-03-limpio.avif",
+              "alt": {
+                "es": "Historia de Instagram NIDO 3",
+                "en": "NIDO Instagram story 3"
+              }
+            }
+          ]
+        },
+        {
+          "type": "ext-link",
+          "href": "img/works/nido/nido-documentacion-prompts.pdf",
+          "label": {
+            "es": "Ver proceso completo (PDF)",
+            "en": "See the full process (PDF)"
+          }
+        },
+        {
+          "type": "ext-link",
+          "quiet": true,
+          "href": "/nido",
+          "label": {
+            "es": "Ver presentación original",
+            "en": "View the original presentation"
+          }
         },
         {
           "type": "next"

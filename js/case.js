@@ -28,8 +28,16 @@
     localize(document);
     try { localStorage.setItem('bg-lang', lang); } catch (e) {}
   }
-  langButtons.forEach(function (b) { b.addEventListener('click', function () { setLang(b.dataset.lang); }); });
-  setLang(root.classList.contains('lang-en-active') ? 'en' : 'es');
+  if (document.querySelector('article.case')) {
+    langButtons.forEach(function (b) { b.addEventListener('click', function () { setLang(b.dataset.lang); }); });
+    setLang(root.classList.contains('lang-en-active') ? 'en' : 'es');
+    // pasados 40 px, el nombre del caso aparece en la barra (con su borde); en el panel lo hace js/home.js
+    var bar = document.querySelector('body > .bar');
+    if (bar) {
+      var marcar = function () { bar.classList.toggle('scrolled', window.scrollY > 40); };
+      window.addEventListener('scroll', marcar, { passive: true }); marcar();
+    }
+  }
 
   /* ── Caso ───────────────────────────────────────────────
      init(article, scrollRoot): scrollRoot es null en la página propia; el panel sobre la
@@ -90,7 +98,7 @@
     });
     var cleanups = [];
     article.querySelectorAll('.gal-block').forEach(function (block) { cleanups.push(gallery(block)); });
-    if (!scrollRoot) horizontal(article); // en el panel sobre la home (etapa 8) la tira queda deslizable
+    var stopHorizontal = horizontal(article, scrollRoot); // en el panel, con el scroll propio del panel
 
     // imagen ancha y prendas: se abren en el visor (las prendas de un mismo bloque, juntas)
     article.querySelectorAll('.media.zoomable').forEach(function (m) { zoomable([m], 0); });
@@ -109,6 +117,7 @@
     }
 
     return function destroy() {
+      stopHorizontal();
       observers.forEach(function (o) { o.disconnect(); });
       cleanups.forEach(function (f) { f(); });
       lbClose(false);
@@ -148,30 +157,41 @@
   }
 
   /* ── Scroll horizontal integrado al vertical ─────────────
-     Solo en escritorio con mouse o trackpad (900 px o más) y en galerías de 4 fotos o más:
-     la galería se fija y el scroll de la página mueve la tira; al ver la última foto se suelta.
+     Solo en escritorio con mouse o trackpad (900 px o más) y en las galerías cuya tira no entra
+     a lo ancho (sin mínimo de fotos): la galería se fija y el scroll de la página mueve la tira;
+     al ver la última foto se suelta. Se vuelve a mirar qué tiras desbordan al cambiar el ancho.
      gsap, ScrollTrigger y Lenis (js/vendor/, los de la home) se cargan después del evento load. */
   var lenis = null;
   var DESKTOP = '(hover: hover) and (pointer: fine) and (min-width: 900px) and (prefers-reduced-motion: no-preference)';
   function loadScript(src) {
     return new Promise(function (ok, fail) { var s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = fail; document.head.appendChild(s); });
   }
-  function horizontal(article) {
-    var blocks = Array.prototype.filter.call(article.querySelectorAll('.gal-block'), function (b) { return b.querySelectorAll('.gal figure').length >= 4; });
-    if (!blocks.length || reduce || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  // scroller: null en la página (scroll de la ventana, con Lenis); el panel de la home pasa su contenedor.
+  // Devuelve una función que lo desarma.
+  function horizontal(article, scroller) {
+    var blocks = Array.prototype.slice.call(article.querySelectorAll('.gal-block'));
+    var off = false, mm = null;
+    var stop = function () { off = true; if (mm) mm.revert(); };
+    if (!blocks.length || reduce || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return stop;
+    var listo = function () { if (!off) mm = setupHorizontal(blocks, scroller); };
+    // la home ya tiene gsap y ScrollTrigger cargados (y su propio Lenis): no se vuelven a pedir
+    if (window.gsap && window.ScrollTrigger && (scroller || window.Lenis)) { listo(); return stop; }
     var start = function () {
       loadScript('js/vendor/gsap.min.js')
         .then(function () { return Promise.all([loadScript('js/vendor/ScrollTrigger.min.js'), loadScript('js/vendor/lenis.min.js')]); })
-        .then(function () { setupHorizontal(blocks); }, function () {});
+        .then(listo, function () {});
     };
     if (document.readyState === 'complete') start(); else window.addEventListener('load', start, { once: true });
+    return stop;
   }
-  function setupHorizontal(blocks) {
-    if (!window.gsap || !window.ScrollTrigger) return;
+  function setupHorizontal(blocks, scroller) {
+    if (!window.gsap || !window.ScrollTrigger) return null;
     gsap.registerPlugin(ScrollTrigger);
-    gsap.matchMedia().add(DESKTOP, function () {
+    var mm = gsap.matchMedia();
+    mm.add(DESKTOP, function () {
       var tick = null;
-      if (window.Lenis) {
+      var alto = function () { return scroller ? scroller.clientHeight : window.innerHeight; };
+      if (window.Lenis && !scroller) {
         lenis = new Lenis({ lerp: 0.09 });
         lenis.on('scroll', ScrollTrigger.update);
         tick = function (t) { lenis.raf(t * 1000); };
@@ -179,45 +199,74 @@
         gsap.ticker.lagSmoothing(0);
       }
       var refresh = (function () { var id; return function () { clearTimeout(id); id = setTimeout(function () { ScrollTrigger.refresh(); }, 120); }; })();
-      blocks.forEach(function (block) {
-        var g = block.querySelector('.gal');
-        var max = function () { return g.scrollWidth - g.clientWidth; };
-        block.classList.add('hscroll');
-        var bar = document.createElement('div'); bar.className = 'gal-progress'; bar.setAttribute('aria-hidden', 'true'); bar.innerHTML = '<span></span>';
-        g.parentNode.insertBefore(bar, g.nextSibling); block._bar = bar.firstChild;
-        // la distancia de scroll es el ancho que le falta mostrar a la tira (1 px de página = 1 px de tira)
-        var tw = gsap.fromTo(g, { scrollLeft: 0 }, {
-          scrollLeft: max, ease: 'none',
-          scrollTrigger: {
-            trigger: block, pin: true, anticipatePin: 1, scrub: 0.6, invalidateOnRefresh: true,
-            start: function () { return block.offsetHeight > window.innerHeight ? 'top top' : 'center center'; },
-            end: function () { return '+=' + max(); }
-          }
+      // una tira desborda si no entra a lo ancho (los anchos de las fotos ya están reservados por sus medidas)
+      var desborda = function (b) { var g = b.querySelector('.gal'); return g.scrollWidth > g.clientWidth + 1; };
+      var activas = [], ctx = null;
+      function armar(lista) {
+        activas = lista;
+        ctx = gsap.context(function () {
+          lista.forEach(function (block) {
+            var g = block.querySelector('.gal');
+            var max = function () { return g.scrollWidth - g.clientWidth; };
+            block.classList.add('hscroll');
+            var bar = document.createElement('div'); bar.className = 'gal-progress'; bar.setAttribute('aria-hidden', 'true'); bar.innerHTML = '<span></span>';
+            g.parentNode.insertBefore(bar, g.nextSibling); block._bar = bar.firstChild;
+            // la distancia de scroll es el ancho que le falta mostrar a la tira (1 px de página = 1 px de tira)
+            var tw = gsap.fromTo(g, { scrollLeft: 0 }, {
+              scrollLeft: max, ease: 'none',
+              scrollTrigger: {
+                trigger: block, pin: true, anticipatePin: 1, scrub: 0.6, invalidateOnRefresh: true, scroller: scroller || window,
+                start: function () { return block.offsetHeight > alto() ? 'top top' : 'center center'; },
+                end: function () { return '+=' + max(); }
+              }
+            });
+            var st = tw.scrollTrigger;
+            block._hs = function (x) {
+              var y = st.start + Math.max(0, Math.min(max(), x));
+              if (scroller) scroller.scrollTo({ top: y, behavior: 'smooth' });
+              else if (lenis) lenis.scrollTo(y, { duration: 0.9 }); else window.scrollTo({ top: y, behavior: 'smooth' });
+            };
+            g.querySelectorAll('img').forEach(function (im) { if (!im.complete) im.addEventListener('load', refresh, { once: true }); });
+            if (block._update) block._update();
+          });
         });
-        var st = tw.scrollTrigger;
-        block._hs = function (x) {
-          var y = st.start + Math.max(0, Math.min(max(), x));
-          if (lenis) lenis.scrollTo(y, { duration: 0.9 }); else window.scrollTo({ top: y, behavior: 'smooth' });
-        };
-        g.querySelectorAll('img').forEach(function (im) { if (!im.complete) im.addEventListener('load', refresh, { once: true }); });
-        if (block._update) block._update();
-      });
+      }
+      function desarmar() {
+        if (ctx) { ctx.revert(); ctx = null; }
+        activas.forEach(function (b) {
+          b.classList.remove('hscroll'); b._hs = null;
+          if (b._bar) { b._bar.parentNode.remove(); b._bar = null; }
+          var g = b.querySelector('.gal'); g.scrollLeft = 0;
+          if (b._update) b._update();
+        });
+        activas = [];
+      }
+      armar(blocks.filter(desborda));
+      // al cambiar el ancho, una tira puede pasar a entrar (o dejar de entrar): se rearma solo si cambió cuál desborda
+      var rt = null;
+      var alCambiar = function () {
+        clearTimeout(rt);
+        rt = setTimeout(function () {
+          var ahora = blocks.filter(desborda);
+          if (ahora.length === activas.length && ahora.every(function (b, k) { return b === activas[k]; })) return;
+          desarmar(); armar(blocks.filter(desborda)); ScrollTrigger.refresh();
+        }, 200);
+      };
+      window.addEventListener('resize', alCambiar);
       // Lenis vuelve a medir la página cada vez que ScrollTrigger rearma los pin (si no, al volver
       // de una ventana angosta se queda con un alto viejo y no termina nunca de llegar al destino)
       var remedir = function () { if (lenis) lenis.resize(); };
       ScrollTrigger.addEventListener('refresh', remedir);
       ScrollTrigger.refresh();
       return function () {
+        clearTimeout(rt);
+        window.removeEventListener('resize', alCambiar);
         ScrollTrigger.removeEventListener('refresh', remedir);
-        blocks.forEach(function (b) {
-          b.classList.remove('hscroll'); b._hs = null;
-          if (b._bar) { b._bar.parentNode.remove(); b._bar = null; }
-          var g = b.querySelector('.gal'); g.scrollLeft = 0;
-          if (b._update) b._update();
-        });
-        if (lenis) { gsap.ticker.remove(tick); lenis.destroy(); lenis = null; }
+        desarmar();
+        if (tick) { gsap.ticker.remove(tick); lenis.destroy(); lenis = null; }
       };
     });
+    return mm;
   }
 
   /* abre el visor al tocar o con Enter / espacio */
@@ -317,7 +366,7 @@
     var PREV = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4l-6 6 6 6"/></svg>';
     var NEXT = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 4l6 6-6 6"/></svg>';
     lb = document.createElement('div');
-    lb.className = 'lb';
+    lb.className = 'lb case-tokens'; // en la home el visor cuelga del body: necesita las variables del caso
     lb.setAttribute('role', 'dialog'); lb.setAttribute('aria-modal', 'true');
     lb.setAttribute('aria-label', 'Foto ampliada'); lb.dataset.enAriaLabel = 'Enlarged photo';
     lb.innerHTML =
