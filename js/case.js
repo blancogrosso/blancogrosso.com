@@ -65,7 +65,8 @@
     } else {
       var vio = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
-          if (e.isIntersecting) { var p = e.target.play(); if (p) p.catch(function () {}); }
+          // una pieza con sonido que eligió la persona no arranca sola al volver a verse
+          if (e.isIntersecting) { if (e.target.dataset.conSonido) return; var p = e.target.play(); if (p) p.catch(function () {}); }
           else e.target.pause();
         });
       }, { root: scrollRoot, threshold: 0.3 });
@@ -74,6 +75,19 @@
     }
 
     article.querySelectorAll('.ba-box').forEach(function (box) { slider(box, scrollRoot, observers); });
+
+    // portada: "Ver con sonido" carga recién ahora la pieza completa y la pone en el lugar del fragmento
+    article.querySelectorAll('.sound-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var v = btn.parentNode.querySelector('video');
+        v.dataset.conSonido = '1';
+        v.loop = false; v.muted = false; v.controls = true;
+        v.src = btn.dataset.sound;
+        var p = v.play(); if (p) p.catch(function () {});
+        btn.remove();
+        v.focus({ preventScroll: true });
+      });
+    });
     var cleanups = [];
     article.querySelectorAll('.gal-block').forEach(function (block) { cleanups.push(gallery(block)); });
     if (!scrollRoot) horizontal(article); // en el panel sobre la home (etapa 8) la tira queda deslizable

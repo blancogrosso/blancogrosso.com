@@ -6,7 +6,8 @@ Uso (desde la raíz del repo):  python3 scripts/build-cases.py
 
 Cada caso es una lista de bloques en orden. Tipos de bloque:
   hero          título, bajada (lead) y fecha
-  cover         imagen o video principal (src, alt; poster y "controls": true si el video tiene sonido);
+  cover         imagen o video principal (src, alt; poster y "controls": true si el video tiene sonido;
+                "sound": ruta de la pieza completa con audio si src es un fragmento liviano sin sonido);
                 lleva el view-transition-name de la tarjeta de la home
   facts         ficha: items = [[clave, valor], …] con clave client | for | year | did | tools
   story         frase grande (heading) + párrafos (paras)
@@ -118,6 +119,7 @@ CLOSE = svg('<path d="M2 2l10 10M12 2L2 12"/>', "1.8", "0 0 14 14")
 KNOB = svg('<path d="M8 6l-5 5 5 5M14 6l5 5-5 5"/>', "2", "0 0 22 22")
 # ícono de ampliar en cada foto de la galería (decorativo: la foto ya dice "Ver foto 2 de 6 en grande")
 ZOOM = '<span class="zoom" aria-hidden="true">' + svg('<path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/>', "1.8", "0 0 16 16") + '</span>'
+SPEAKER = svg('<path d="M3 8v4h3l4 3V5L6 8H3z"/><path d="M13.5 7.5a3.5 3.5 0 0 1 0 5M15.5 5a7 7 0 0 1 0 10"/>', "1.8")
 NEW_TAB = '<span class="sr-only">' + bi({"es": " (abre en una pestaña nueva)", "en": " (opens in a new tab)"}) + '</span>'
 
 def vt(slug): return f' style="view-transition-name: case-{slug}"'
@@ -132,12 +134,17 @@ def b_hero(b, c):
     </header>'''
 
 def b_cover(b, c):
+    extra = ""
     if b["src"].endswith(".mp4"):
         ctrl = " controls" if b.get("controls") else ""  # con sonido: arranca muda y se puede subir el volumen
         media = f'<video src="{E(b["src"])}" poster="{E(b.get("poster", ""))}" muted loop playsinline preload="metadata" data-autoplay{ctrl}></video>'
+        # "sound": fragmento liviano sin audio en loop; el botón carga recién ahí la pieza completa con sonido
+        if b.get("sound"):
+            extra = (f'<button type="button" class="sound-btn" data-sound="{E(b["sound"])}">{SPEAKER}'
+                     f'{bi({"es": "Ver con sonido", "en": "Watch with sound"})}</button>')
     else:
         media = img(b["src"], b["alt"], lazy=False)
-    return f'    <figure class="cover rv-img" id="cover" data-vt{vt(c["slug"])}>{media}</figure>'
+    return f'    <figure class="cover rv-img" id="cover" data-vt{vt(c["slug"])}>{media}{extra}</figure>'
 
 def b_facts(b, c):
     rows = "\n".join(f'      <div><dt>{bi(dict(zip(("es", "en"), FACT_LABELS[k])))}</dt><dd>{bi(v)}</dd></div>' for k, v in b["items"])

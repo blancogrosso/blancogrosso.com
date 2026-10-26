@@ -1215,13 +1215,13 @@
         },
         {
           "type": "cover",
-          "src": "img/works/labufarra-social/reel.mp4",
+          "src": "img/works/labufarra-social/reel-portada.mp4",
           "poster": "img/works/labufarra-social/reel-portada.avif",
-          "controls": true,
           "alt": {
             "es": "Reel Vuelta a las redes",
             "en": "Back on social media reel"
-          }
+          },
+          "sound": "img/works/labufarra-social/reel.mp4"
         },
         {
           "type": "facts",
