@@ -1,6 +1,6 @@
 # Estado de blancogrosso.com
 
-_Última actualización: 2026-10-25. Etapa 10 (plantilla única de casos) hecha en la rama `v2/redesign`, sin push ni merge._
+_Última actualización: 2026-10-26. Etapa 10 (plantilla única de casos) y portada liviana del reel hechas en `v2/redesign`, sin merge a main (subido hasta `4b13e58`; la portada del reel y este estado, sin push). El panel sobre la home está en la rama `v2/panel`, sin probar._
 
 ## Hecho
 
@@ -143,6 +143,10 @@ Los scripts de medición quedaron en el scratchpad de la sesión (no en el repo)
 **Etapa 8, Parte 2 hecha** (`0f22bd6`): el fondo usa manchas ya desenfocadas en imagen, sin `filter`
 en vivo. Scroll de la home: escritorio de 5,3 a 59,9 fps, celular de 9,9 a 60,0 fps.
 
+**Portada liviana del reel de labufarra-social, hecha** (`c6dcd57`): la portada es un fragmento de 9 s
+sin audio en loop (`reel-portada.mp4`, 726 KB) y el botón "Ver con sonido" carga recién ahí el reel
+completo (7,6 MB) con audio y controles. Lighthouse en celular: de 3,4 MB a 1,0 MB de peso.
+
 **Pendientes:**
 - [ ] **Videos de las prendas, el mes que viene:** el bloque garment ya tiene el campo `"video"`
   (`{src, poster}`) para reemplazar la foto en percha. No usar los `.mp4` de `_ref/remeras/video/`:
@@ -150,14 +154,34 @@ en vivo. Scroll de la home: escritorio de 5,3 a 59,9 fps, celular de 9,9 a 60,0 
 - [ ] **NIDO:** armar su página de caso con la plantilla. En celular se desborda hacia el costado
   (413 px de ancho en una pantalla de 375): eso cancela la transición al entrar. Por ahora `nido.html`
   solo cambió `viewport-fit=cover` y las rutas de sus 3 historias a las copias limpias.
-- [ ] **Casos como panel sobre la home** (Parte 3 de la etapa 8): `js/case.js` ya trae
-  `BGCase.init(article, scrollRoot)` para correr dentro de un contenedor con scroll propio. En el panel
-  la galería queda como tira deslizable, sin el scroll horizontal fijado.
+- [ ] **Casos como panel sobre la home** (Parte 3 de la etapa 8): hecho en la rama **`v2/panel`**
+  (commit `bec9026`, "WIP", sin push), **pendiente de que Tomás lo pruebe**. Click en una tarjeta de caso:
+  el caso sube como panel con el `<article>` de su página; la URL cambia a la del caso; se cierra con
+  Cerrar, Escape, "atrás" o tocando el fondo. Pasó 35 de 35 pruebas automáticas (escritorio y celular).
+  En esa rama `case.css` quedó separado en `css/case-base.css` (lo de página) y `css/case.css` (bloques).
+  El `index.html` y las 9 páginas del repo **todavía no se regeneraron** con esa versión.
+
+  Para probarlo en `:3002` (desde la raíz del repo, en una terminal):
+  ```
+  git switch v2/panel
+  P=../preview-panel; mkdir -p $P
+  for f in *; do case "$f" in index.html|by-kafuse.html|sport-editorial.html|bufarra-kithome.html|bufarra-umbro.html|final-clasica.html|iris-lab.html|labufarra-social.html|serie-rio-plata.html|tienda-nacional.html) ;; *) [ -e "$P/$f" ] || ln -s "$PWD/$f" "$P/$f";; esac; done
+  python3 scripts/build-cases.py --out $P
+  python3 scripts/build-home.py --out $P
+  npx serve $P -l 3002 --symlinks
+  ```
+  - `git switch v2/panel`: pasa a la rama del panel.
+  - `mkdir` y el `for`: arman una carpeta de prueba al lado del repo, con accesos directos a todo el
+    sitio menos la home y las 9 páginas de caso, que se generan ahí.
+  - Los dos `python3 … --out`: generan la home y los casos en esa carpeta, sin tocar los del repo
+    (los scripts se niegan a escribir a través de un acceso directo).
+  - `npx serve`: la sirve en http://127.0.0.1:3002 (Ctrl+C para apagarla).
+  - Para volver: `git switch v2/redesign`.
+
+  Si se aprueba: en `v2/panel`, correr `python3 scripts/build-cases.py` y `python3 scripts/build-home.py`
+  (sin `--out`), commitear esas páginas y pasar la rama a `v2/redesign`.
 - [ ] **Logo de la versión 8 del prototipo.**
 - [ ] **Lighthouse final.**
-- [ ] **Reel de labufarra-social (7,6 MB):** se pidió una versión de menos de 1,2 MB, pero solo el audio
-  ya pesa unos 850 KB. Con CRF 30 en 720p queda en 6,0 MB. Falta decidir: bajar el audio, bajar a 480p,
-  recortar el video o aceptar un peso mayor.
 
 **Pendientes de la etapa 7.1:**
 - Lighthouse contra la preview de Vercel (tiene la protección activada: pide login).
