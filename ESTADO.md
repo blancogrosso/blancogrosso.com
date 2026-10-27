@@ -1,8 +1,51 @@
 # Estado de blancogrosso.com
 
-_Última actualización: 2026-10-26. La rama `v2/panel` (logo v8, panel sobre la home, entrada, cinta, showreel y NIDO como caso) está unida a `v2/redesign` y subida (`f9e9de2`). Sin merge a main: `main` sigue en `22612d6`. Ver "Hoy, 26 de octubre" más abajo._
+_Última actualización: 2026-10-27. El muro de trabajos reemplazó al showreel en la home (rama `v2/muro`, unida a `v2/redesign` y subida en `1dbe7b0`). Sin merge a main: `main` sigue en `22612d6`. Ver "27 de octubre" más abajo._
 
-## Hoy, 26 de octubre: unión de `v2/panel` en `v2/redesign`
+## 27 de octubre: muro de trabajos en lugar del showreel
+
+Commits: `a198fcc` (el muro, en `v2/muro`) y `1dbe7b0` (unión en `v2/redesign`, subida).
+
+**Vista previa:** https://blancogrosso-hs7uaeapk-tomasblancogrosso-6137s-projects.vercel.app
+(tiene la protección de Vercel activada: pide login).
+
+- **Muro de trabajos** entre la portada y Trabajos, copiado de `_ref/muro/muro.html`:
+  - 24 miniaturas cuadradas de 420 px en `img/muro/`. La lista está en `data/muro.json` y las genera
+    `scripts/media/miniaturas-muro.py`; cinco salen de su copia `-limpio`.
+  - Queda fijo unas 3,4 pantallas. Grilla de 6×4 en escritorio y de 4×6 debajo de 700 px.
+  - Las piezas aparecen del centro hacia afuera y la grilla pasa de 2,1× a 1×. Al final se oscurece y
+    Trabajos sube por encima con el degradado a negro.
+  - Va atado al scroll y es reversible (GSAP ScrollTrigger con Lenis).
+  - Con movimiento reducido queda completo y quieto. Sin JavaScript no se muestra.
+  - Las miniaturas cargan después de la primera pintada.
+- GSAP y Lenis ahora se piden cuando el navegador queda libre después de la carga, para no competir
+  con el LCP.
+- **Videos del reel:** salieron de la home, pero siguen en `img/reel/`, sin uso.
+- **Fluidez** (scroll de escritorio, mediana de 4 rondas alternadas contra el showreel):
+  - por software: 59,7 → 58,8 fps;
+  - con placa de video: 60,0 → 59,55 fps.
+
+  Es una baja chica pero constante. El costo está en dibujar las 24 imágenes agrandadas mientras el muro
+  está fijo.
+- **Lighthouse en celular (home),** mediana de 6 corridas alternadas:
+  - rendimiento: 99 en las dos versiones;
+  - LCP: 2,19 s con el muro y 2,185 s con el showreel;
+  - CLS: 0;
+  - peso: 694 KB con el muro y 1967 KB con el showreel.
+- **Pruebas:** 900 chequeos, 0 fallas. Las del showreel se reemplazaron por 44 del muro.
+
+**Pendientes:**
+- [ ] **Revisar la vista previa y publicar en main:** espera el OK de Tomás.
+- [ ] **Perchero 3D en Kafuse, KitHome y Umbro:** espera los PNG de Illustrator. El prototipo está en
+  `_ref/perchero/perchero-3d.html`.
+- [ ] **Limpieza**, cada borrado con OK de Tomás:
+  - ramas: `v2/panel` y `v2/muro`;
+  - carpetas: `../preview-panel`;
+  - videos sin uso de `img/reel/`: los del showreel, que ya no se usan, y `montaje-provisorio*` y
+    `reel-servicios*`, que nunca se commitearon;
+  - scripts y datos de prueba del scratchpad de la sesión.
+
+## 26 de octubre: unión de `v2/panel` en `v2/redesign`
 
 Commits: `0e0d521` (los cambios), `f8f4781` (cinta de herramientas con `translate3d`), `426c153` (páginas
 regeneradas: home, los 9 casos y nido-identidad) y `f9e9de2` (unión en `v2/redesign`, subida).
@@ -33,17 +76,9 @@ regeneradas: home, los 9 casos y nido-identidad) y `f9e9de2` (unión en `v2/rede
 - **Lighthouse en celular (home):** rendimiento 96 de mediana, LCP 2,2–2,4 s y CLS 0.
 - **Pruebas:** 860 chequeos, 0 fallas, en los 10 casos, el panel, las galerías, el logo, la cinta y el reel.
 
-**Pendientes:**
-- [ ] **Pasar a main y publicar en blancogrosso.com:** espera el OK de Tomás tras revisar la vista previa.
-- [ ] **Perchero 3D en Kafuse, KitHome y Umbro:** espera los PNG de Illustrator. El prototipo está en
-  `_ref/perchero/perchero-3d.html`.
-- [ ] **Toma de la web en el showreel:** espera la grabación de Tomás de labufarra.com y del panel.
-- [ ] **Cinta en una sola capa** (opcional, por rendimiento): hoy son tres pistas animadas por separado.
-- [ ] **Limpieza**, cada borrado con OK de Tomás:
-  - la rama `v2/panel`;
-  - la carpeta `../preview-panel`;
-  - los videos sin uso de `img/reel/` (`montaje-provisorio*` y `reel-servicios*`, sin commitear);
-  - los servidores de prueba en :3002 y :3003.
+Los pendientes de ese día pasaron al 27 de octubre. El showreel ya no está en la home (lo reemplazó el
+muro), así que la toma de la web para el showreel quedó sin efecto. La cinta en una sola capa sigue como
+mejora opcional.
 
 ## Hecho
 
