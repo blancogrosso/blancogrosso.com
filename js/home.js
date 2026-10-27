@@ -35,7 +35,6 @@
       if (!img.dataset.esAlt) img.dataset.esAlt = img.alt;
       img.alt = en ? img.dataset.enAlt : img.dataset.esAlt;
     });
-    updateReelToggle();
     try { localStorage.setItem('bg-lang', lang); } catch (e) {}
   }
   langButtons.forEach(function (b) { b.addEventListener('click', function () { setLang(b.dataset.lang); }); });
@@ -213,53 +212,22 @@
     ['trabajos', 'servicios', 'contacto'].forEach(function (id) { var s = document.getElementById(id); if (s) secIO.observe(s); });
   }
 
-  /* ── Apertura y escena del reel ──────────────────────── */
-  var reelBox = document.getElementById('reel');
-  var reelVideo = document.getElementById('reelVideo');
-  var reelToggle = document.getElementById('reelToggle');
-  var reelPausedByUser = reduce; // con movimiento reducido no arranca solo
-
-  function updateReelToggle() {
-    if (!reelToggle) return;
-    var playing = reelVideo && !reelVideo.paused;
-    var en = root.classList.contains('lang-en-active');
-    reelToggle.setAttribute('aria-pressed', String(!playing));
-    reelToggle.querySelector('.lang-es').textContent = playing ? 'Pausar' : 'Reproducir';
-    reelToggle.querySelector('.lang-en').textContent = playing ? 'Pause' : 'Play';
-    reelToggle.setAttribute('aria-label', en ? (playing ? 'Pause showreel' : 'Play showreel') : (playing ? 'Pausar showreel' : 'Reproducir showreel'));
-  }
-  function loadReel() {
-    if (!reelVideo.poster && reelVideo.dataset.poster) reelVideo.poster = reelVideo.dataset.poster;
-    // en pantallas de menos de 900 px, la versión de 720 (pesa menos de la mitad)
-    if (!reelVideo.src && reelVideo.dataset.src) reelVideo.src = reelVideo.dataset.srcChico && window.matchMedia('(max-width: 899px)').matches ? reelVideo.dataset.srcChico : reelVideo.dataset.src;
-  }
-  function playReel() { loadReel(); var p = reelVideo.play(); if (p && p.catch) p.catch(function () {}); }
-  if (reelVideo) {
-    reelVideo.addEventListener('play', updateReelToggle);
-    reelVideo.addEventListener('pause', updateReelToggle);
-    reelToggle.addEventListener('click', function () {
-      if (reelVideo.paused) { reelPausedByUser = false; playReel(); }
-      else { reelPausedByUser = true; reelVideo.pause(); }
-    });
-    if ('IntersectionObserver' in window) {
-      // carga recién al acercarse y reproduce solo mientras se ve. Se empieza a observar
-      // después del evento load: así el video (2,9 MB) no le quita ancho de banda a la
-      // fuente del logo en la primera carga.
-      var watchReel = function () {
-        new IntersectionObserver(function (es) {
-          es.forEach(function (e) {
-            if (e.isIntersecting) { loadReel(); if (!reelPausedByUser) playReel(); }
-            else if (!reelVideo.paused) reelVideo.pause();
-          });
-        }, { rootMargin: '25% 0px' }).observe(reelBox);
-      };
-      // y nunca antes de los 2 s: así tampoco compite con la entrada de la home ni con su primer pintado
-      var afterLoad = function () {
-        setTimeout(function () { (window.requestIdleCallback || function (f) { setTimeout(f, 200); })(watchReel); }, Math.max(0, 2000 - performance.now()));
-      };
-      if (document.readyState === 'complete') afterLoad(); else window.addEventListener('load', afterLoad, { once: true });
-    } else { loadReel(); }
-    updateReelToggle();
+  /* ── Muro de trabajos: carga diferida de las miniaturas ──
+     Las 24 miniaturas (img/muro/, ~390 KB) se piden recién al primer scroll o, si no hay scroll,
+     a los 2 s de la carga: así no compiten con la fuente del logo ni con el primer pintado. */
+  var muroTiles = document.getElementById('muroTiles');
+  if (muroTiles) {
+    var muroLoaded = false;
+    var loadMuro = function () {
+      if (muroLoaded) return; muroLoaded = true;
+      window.removeEventListener('scroll', loadMuro);
+      muroTiles.querySelectorAll('img[data-src]').forEach(function (img) { img.src = img.dataset.src; img.removeAttribute('data-src'); });
+    };
+    var muroAfterLoad = function () {
+      window.addEventListener('scroll', loadMuro, { passive: true });
+      setTimeout(function () { (window.requestIdleCallback || function (f) { setTimeout(f, 200); })(loadMuro); }, Math.max(0, 2000 - performance.now()));
+    };
+    if (document.readyState === 'complete') muroAfterLoad(); else window.addEventListener('load', muroAfterLoad, { once: true });
   }
 
   /* ══ Trabajos ═══════════════════════════════════════════
@@ -497,10 +465,10 @@
     });
   }
 
-  /* ── Movimiento (scroll suave, pin del reel, salida de la apertura, fondo) ──
+  /* ── Movimiento (scroll suave, muro, salida de la apertura, fondo) ──
      Las librerías (gsap, ScrollTrigger, Lenis: 140 KB) se cargan después del
      evento load para no competir con la fuente del logo en la primera carga.
-     El layout del pin ya está en CSS (clase .motion), así que no hay saltos. */
+     El layout del muro ya está en CSS (clase .motion), así que no hay saltos. */
   function initMotion() {
     hasGsap = !!(window.gsap && window.ScrollTrigger);
     if (!hasGsap) { root.classList.remove('motion'); return; }
@@ -524,13 +492,31 @@
       y: function () { return -window.innerHeight * 0.12; }, opacity: 0.25, ease: 'none',
       scrollTrigger: { trigger: '#inicio', start: 'center center', end: 'bottom top', scrub: true }
     });
-    // el reel se fija y crece desde ~40 % hasta casi toda la pantalla; después se suelta
-    gsap.set(reelBox, { xPercent: -50, yPercent: -50, scale: 0.42 });
-    gsap.timeline({
-      scrollTrigger: { trigger: '#reelStage', start: 'top top', end: '+=120%', scrub: 0.6, pin: true, pinSpacing: false, anticipatePin: 1, invalidateOnRefresh: true }
-    })
-      .fromTo(reelBox, { scale: 0.42, borderRadius: 16 }, { scale: 1, borderRadius: 6, ease: 'power2.inOut', duration: 1 })
-      .to(reelBox, { scale: 1, duration: 0.25 });
+    // muro: la sección queda fija (sticky, en CSS) mientras dura su recorrido (340vh). Las piezas aparecen
+    // del centro hacia afuera mientras la grilla se aleja de 2,1 a 1; al final se oscurece y Trabajos sube
+    // encima. Todo atado al scroll y reversible. Tiempos y proporciones de _ref/muro/muro.html.
+    if (muroTiles) {
+      gsap.matchMedia().add({ cel: '(max-width: 699px)', esc: '(min-width: 700px)' }, function (c) {
+        var tiles = gsap.utils.toArray(muroTiles.children), n = tiles.length;
+        var cols = c.conditions.cel ? 4 : 6, rows = Math.ceil(n / cols), seed = 7;
+        var rnd = function () { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+        // desvío inicial de cada pieza (desplazamiento y giro) y orden de aparición: del centro hacia afuera
+        var R = tiles.map(function () { return { x: (rnd() - 0.5) * 120, y: 60 + rnd() * 80, rotation: (rnd() - 0.5) * 10 }; });
+        var cx = (cols - 1) / 2, cy = (rows - 1) / 2;
+        var order = tiles.map(function (_, i) { return { i: i, d: Math.hypot(i % cols - cx, (Math.floor(i / cols) - cy) * 1.15) + rnd() * 0.35 }; })
+          .sort(function (a, b) { return a.d - b.d; });
+        // la línea de tiempo dura 1 = todo el recorrido. 0–0,62: aparecen las piezas; 0–0,7: la grilla se aleja;
+        // 0,72–1: se oscurece (Trabajos ya viene subiendo desde ~0,58, por el margen negativo en CSS)
+        var tl = gsap.timeline({ scrollTrigger: { trigger: '#muro', start: 'top top', end: 'bottom bottom', scrub: 0.4 } });
+        order.forEach(function (o, k) {
+          var r = R[o.i];
+          tl.fromTo(tiles[o.i], { opacity: 0, x: r.x, y: r.y, scale: 0.72, rotation: r.rotation },
+            { opacity: 1, x: 0, y: 0, scale: 1, rotation: 0, ease: 'power2.out', duration: 0.22 * 0.62 }, k / n * 0.78 * 0.62);
+        });
+        tl.fromTo(muroTiles, { scale: 2.1 }, { scale: 1, ease: 'power2.inOut', duration: 0.7 }, 0)
+          .to(muroTiles, { scale: 0.92, opacity: 0.45, ease: 'none', duration: 0.28 }, 0.72);
+      });
+    }
 
     // fondo: el mesh sigue levemente al mouse y la grilla avanza al 15 % del scroll
     var bgRoot = document.querySelector('.bg');
@@ -560,8 +546,8 @@
       clearTimeout(rt); rt = setTimeout(function () { if (logoTravel) startTravel(); }, 250);
     });
     ScrollTrigger.refresh();
-    // si se llegó con un ancla (ej. /#works desde una página de caso), el pin recién montado
-    // corrió el contenido hacia abajo: volver a ubicar el destino
+    // si se llegó con un ancla (ej. /#works desde una página de caso), volver a ubicar el destino
+    // una vez montado el movimiento (Lenis y las animaciones de scroll)
     var hashTarget = location.hash.length > 1 && document.getElementById(location.hash.slice(1));
     if (hashTarget) {
       var y = hashTarget.getBoundingClientRect().top + window.scrollY - (nav.offsetHeight - 1);
@@ -577,7 +563,10 @@
         .then(function () { return Promise.all([loadScript('js/vendor/ScrollTrigger.min.js'), loadScript('js/vendor/lenis.min.js'), loadScript('js/vendor/Flip.min.js')]); })
         .then(initMotion, function () { root.classList.remove('motion'); });
     };
-    if (document.readyState === 'complete') startMotion(); else window.addEventListener('load', startMotion, { once: true });
+    // y recién cuando el navegador queda libre después del load: así se piden después del primer
+    // pintado de la apertura (el LCP) y no compiten con él
+    var idleMotion = function () { (window.requestIdleCallback || function (f) { setTimeout(f, 50); })(startMotion, { timeout: 500 }); };
+    if (document.readyState === 'complete') idleMotion(); else window.addEventListener('load', idleMotion, { once: true });
   }
 
   /* ── Caso como panel sobre la home (etapa 8, Parte 3) ────

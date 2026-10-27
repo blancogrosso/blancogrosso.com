@@ -1,0 +1,29 @@
+{
+  "_leeme": "Muro de trabajos de la home (entre la apertura y Trabajos). Cada pieza es una imagen de img/works/ (ruta sin .avif). En escritorio la grilla es de 6 x 4 y en celular de 4 x 6: conviene que sean 24. Para cambiarlas: editar la lista, correr python3 scripts/media/miniaturas-muro.py (genera img/muro/<nombre>.avif, cuadradas de 420 px) y después python3 scripts/build-home.py.",
+  "tiles": [
+    "bufarra-kithome/final-edit",
+    "bufarra-umbro/hero",
+    "by-kafuse/estudio-1",
+    "iris-lab/final",
+    "nido/feed/post-01-apertura",
+    "sport-editorial/toni",
+    "serie-rio-plata/1",
+    "bufarra-kithome/foto-estudio-hype",
+    "iris-lab/iris-luxemburgo",
+    "by-kafuse/detalle-1",
+    "bufarra-umbro/juego/carrusel-03",
+    "nido/feed/post-02-living",
+    "sport-editorial/dts",
+    "bufarra-umbro/frames/mesa-de-trabajo-1",
+    "bufarra-kithome/foto-estudio-seba",
+    "serie-rio-plata/3",
+    "sport-editorial/enzo",
+    "iris-lab/cuadro-ojos-azules",
+    "by-kafuse/estudio-2",
+    "nido/feed/post-03-objetos",
+    "bufarra-umbro/reel-final-poster",
+    "sport-editorial/pepo",
+    "labufarra-social/frame-1",
+    "bufarra-kithome/caratula-campana"
+  ]
+}

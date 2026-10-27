@@ -92,13 +92,34 @@
       </div>
     </section>
 
-    <section class="reel-sec" id="reelSec" aria-label="Showreel">
-      <div class="reel-stage" id="reelStage">
-        <div class="reel" id="reel">
-          <!-- showreel de trabajos (_ref/showreel/): 1080p y, en pantallas de menos de 900 px, la versión de 720
-               (la elige js/home.js al cargarlo). Los anteriores (reel-provisorio, montaje-provisorio, reel-servicios) siguen en img/reel/. -->
-          <video id="reelVideo" muted loop playsinline preload="none" data-poster="img/reel/showreel-poster.avif" data-src="img/reel/showreel.mp4" data-src-chico="img/reel/showreel-720.mp4" width="1920" height="1080" aria-label="Showreel de trabajos de Blanco Grosso" data-en-aria-label="Blanco Grosso showreel of projects"></video>
-          <button type="button" class="reel-toggle" id="reelToggle" aria-pressed="false"><span class="lang-es">Pausar</span><span class="lang-en" lang="en">Pause</span></button>
+    <!-- muro de trabajos (_ref/muro/): reemplaza al showreel, cuyos videos siguen en img/reel/ -->
+    <section class="muro" id="muro" aria-label="Muro de trabajos de Blanco Grosso" data-en-aria-label="Blanco Grosso work wall">
+      <div class="muro-stage">
+        <div class="muro-tiles" id="muroTiles" aria-hidden="true">
+          <div class="muro-tile"><img data-src="img/muro/bufarra-kithome-final-edit.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/bufarra-umbro-hero.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/by-kafuse-estudio-1.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/iris-lab-final.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/nido-feed-post-01-apertura.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/sport-editorial-toni.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/serie-rio-plata-1.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/bufarra-kithome-foto-estudio-hype.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/iris-lab-iris-luxemburgo.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/by-kafuse-detalle-1.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/bufarra-umbro-juego-carrusel-03.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/nido-feed-post-02-living.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/sport-editorial-dts.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/bufarra-umbro-frames-mesa-de-trabajo-1.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/bufarra-kithome-foto-estudio-seba.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/serie-rio-plata-3.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/sport-editorial-enzo.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/iris-lab-cuadro-ojos-azules.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/by-kafuse-estudio-2.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/nido-feed-post-03-objetos.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/bufarra-umbro-reel-final-poster.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/sport-editorial-pepo.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/labufarra-social-frame-1.avif" width="420" height="420" alt="" decoding="async"></div>
+          <div class="muro-tile"><img data-src="img/muro/bufarra-kithome-caratula-campana.avif" width="420" height="420" alt="" decoding="async"></div>
         </div>
       </div>
     </section>
