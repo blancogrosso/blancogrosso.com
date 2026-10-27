@@ -176,6 +176,16 @@ def tool(t):
             f'width="28" height="28" alt="" decoding="async" fetchpriority="low"></span><span class="tool-name">{E(t["name"])}</span></li>')
 TOOL_ITEMS = "\n".join("          " + tool(t) for g in TOOLS for t in g["items"])
 
+# Muro de trabajos (data/muro.json): miniaturas cuadradas de img/muro/, hechas con
+# scripts/media/miniaturas-muro.py. Son solo visuales. La imagen va en data-src: la pone js/home.js
+# después de la carga, para que no compita con la apertura (sin JS el muro no se muestra).
+MURO_TILES = json.load(open(os.path.join(ROOT, "data", "muro.json"), encoding="utf-8"))["tiles"]
+for _t in MURO_TILES:
+    if not os.path.exists(os.path.join(ROOT, "img", "muro", _t.replace("/", "-") + ".avif")):
+        sys.exit(f"falta img/muro/{_t.replace('/', '-')}.avif: correr python3 scripts/media/miniaturas-muro.py")
+MURO_ITEMS = "\n".join(f'          <div class="muro-tile"><img data-src="img/muro/{E(t.replace("/", "-"))}.avif" width="420" height="420" alt="" decoding="async"></div>'
+                       for t in MURO_TILES)
+
 WA_ES = WA + urllib.parse.quote("Hola Tomás, vi tu portfolio y me gustaría hablar sobre un proyecto.")
 WA_EN = WA + urllib.parse.quote("Hi Tomás, I saw your portfolio and I'd like to talk about a project.")
 
@@ -273,13 +283,11 @@ page = f'''<!DOCTYPE html>
       </div>
     </section>
 
-    <section class="reel-sec" id="reelSec" aria-label="Showreel">
-      <div class="reel-stage" id="reelStage">
-        <div class="reel" id="reel">
-          <!-- showreel de trabajos (_ref/showreel/): 1080p y, en pantallas de menos de 900 px, la versión de 720
-               (la elige js/home.js al cargarlo). Los anteriores (reel-provisorio, montaje-provisorio, reel-servicios) siguen en img/reel/. -->
-          <video id="reelVideo" muted loop playsinline preload="none" data-poster="img/reel/showreel-poster.avif" data-src="img/reel/showreel.mp4" data-src-chico="img/reel/showreel-720.mp4" width="1920" height="1080" aria-label="Showreel de trabajos de Blanco Grosso" data-en-aria-label="Blanco Grosso showreel of projects"></video>
-          <button type="button" class="reel-toggle" id="reelToggle" aria-pressed="false">{bi("Pausar", "Pause")}</button>
+    <!-- muro de trabajos (_ref/muro/): reemplaza al showreel, cuyos videos siguen en img/reel/ -->
+    <section class="muro" id="muro" aria-label="Muro de trabajos de Blanco Grosso" data-en-aria-label="Blanco Grosso work wall">
+      <div class="muro-stage">
+        <div class="muro-tiles" id="muroTiles" aria-hidden="true">
+{MURO_ITEMS}
         </div>
       </div>
     </section>

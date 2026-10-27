@@ -376,41 +376,39 @@ html.lenis, html.lenis body { height: auto; }
 .btn-lg svg { width: 20px; height: 20px; }
 
 /* =========================================================
-   Escena del reel
-   Sin JS (o con reduced motion) es un bloque más; con JS se
-   fija y el video crece desde ~40 % hasta casi toda la pantalla.
+   Muro de trabajos (reemplaza al showreel; prototipo en _ref/muro/)
+   Sin movimiento (JS apagado, movimiento reducido o GSAP que no cargó) es
+   una grilla quieta. Con .motion la sección dura 340vh y el escenario queda
+   fijo con sticky; js/home.js anima las piezas atadas al scroll.
+   El tamaño del cuadro sale del ancho y del alto de la pantalla: entra
+   siempre entero (6 x 4 en escritorio, 4 x 6 debajo de 700 px).
    ========================================================= */
-.reel-sec { padding: 8px var(--gutter) 48px; }
-.reel {
-  position: relative;
-  width: min(100%, 1280px);
-  margin: 0 auto;
-  aspect-ratio: 16 / 9;
-  border-radius: var(--radius);
-  overflow: hidden;
-  background: var(--surface);
+.muro {
+  --cols: 6; --rows: 4; --g: 14px; --w: 90vw;
+  --t: min((var(--w) - (var(--cols) - 1) * var(--g)) / var(--cols), (86svh - (var(--rows) - 1) * var(--g)) / var(--rows));
+  padding: 80px 0;
 }
-.reel video { width: 100%; height: 100%; object-fit: cover; }
-.reel-toggle {
-  position: absolute; right: 12px; bottom: 12px;
-  min-height: 44px; padding: 0 16px;
-  border-radius: var(--radius-pill); border: 1px solid rgba(255, 255, 255, 0.35);
-  background: rgba(5, 5, 5, 0.6); font-size: 14px; cursor: pointer;
-}
-.reel-toggle:hover { border-color: var(--fg); }
-/* .motion se aplica en el <head> (JS activo y sin movimiento reducido): el layout del pin
-   existe desde el primer pintado y GSAP solo anima la escala, sin saltos de layout */
-.motion .reel-sec { padding-bottom: 120vh; } /* reserva el recorrido del pin (end: +=120%) desde el primer pintado:
-   el pin no agrega espaciador (pinSpacing: false), así el layout no cambia al montarlo y el
-   navegador restaura bien el scroll al volver de un caso. */
-.motion .reel-stage { position: relative; height: 100svh; }
-.motion .reel {
-  position: absolute; left: 50%; top: 50%;
-  width: min(100vw - 2 * var(--gutter), 1600px, (100svh - var(--nav-h) - 32px) * 16 / 9);
-  margin: 0;
-  transform: translate(-50%, -50%) scale(0.42);
-  border-radius: 16px;
-  will-change: transform;
+@media (max-width: 699px) { .muro { --cols: 4; --rows: 6; --g: 8px; --w: 94vw; } }
+:root:not(.js) .muro { display: none; } /* las imágenes las pone el JS */
+.muro-stage { display: grid; place-items: center; }
+.muro-tiles { display: grid; grid-template-columns: repeat(var(--cols), var(--t)); grid-auto-rows: var(--t); gap: var(--g); }
+.muro-tile { border-radius: 10px; overflow: hidden; background: var(--surface); }
+.muro-tile img { width: 100%; height: 100%; object-fit: cover; }
+.motion .muro { height: 340vh; padding: 0; }
+.motion .muro-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+/* estado inicial (el mismo que pone GSAP), así no hay salto cuando carga */
+.motion .muro-tiles { transform: scale(2.1); will-change: transform, opacity; }
+.motion .muro-tile { opacity: 0; will-change: transform, opacity; }
+/* Trabajos sube por encima del muro: su degradado a negro empieza una pantalla antes de que el muro
+   termine y el título llega 28vh más abajo (como en el prototipo). El degradado tapa el muro
+   (oscurecido) hasta que se va de pantalla y después se vuelve transparente, para que siga viéndose el
+   fondo con grilla. Los 28vh van en el degradado y no en la sección: así los links a #trabajos y
+   /#works siguen dejando el título justo debajo del menú. */
+.motion .works { position: relative; z-index: 0; margin-top: calc(28vh - 72px - 100svh); }
+.motion .works::before {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  top: calc(72px - 28vh); left: calc(50% - 50vw); right: calc(50% - 50vw); height: 120svh;
+  background: linear-gradient(to bottom, transparent 0, rgba(5, 5, 5, 0.86) 22vh, var(--bg) 40vh, var(--bg) 100svh, rgba(5, 5, 5, 0) 120svh);
 }
 
 /* =========================================================
