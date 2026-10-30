@@ -29,8 +29,9 @@
       var d = document.documentElement; d.classList.add('js');
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         d.classList.add('motion');
-        /* la entrada (fondo, letras, claim, botones y menú) corre solo la primera vez por sesión */
-        try { if (!sessionStorage.getItem('bg-entrada')) { d.classList.add('intro-play'); sessionStorage.setItem('bg-entrada', '1'); } } catch (e) { d.classList.add('intro-play'); }
+        /* la entrada (fondo, letras, claim, botones y menú) corre solo la primera vez por sesión.
+           Acá solo se lee: la marca la guarda js/home.js cuando la entrada terminó de verse */
+        try { if (!sessionStorage.getItem('bg-entrada')) d.classList.add('intro-play'); } catch (e) { d.classList.add('intro-play'); }
       }
       try { if (localStorage.getItem('bg-lang') === 'en') { d.classList.add('lang-en-active'); d.lang = 'en'; } } catch (e) {}
       /* Al volver de un caso: la imagen de su tarjeta recibe el mismo nombre que la imagen

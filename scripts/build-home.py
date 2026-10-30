@@ -177,8 +177,9 @@ def tool(t):
 TOOL_ITEMS = "\n".join("          " + tool(t) for g in TOOLS for t in g["items"])
 
 # Muro de trabajos (data/muro.json): miniaturas cuadradas de img/muro/, hechas con
-# scripts/media/miniaturas-muro.py. Son solo visuales. La imagen va en data-src: la pone js/home.js
-# después de la carga, para que no compita con la apertura (sin JS el muro no se muestra).
+# scripts/media/miniaturas-muro.py. Son solo visuales. La imagen va en data-src: la pone js/home.js, las de
+# la fila que asoma apenas se pinta la apertura y el resto más tarde, para que no compitan con el LCP
+# (sin JS el muro no se muestra).
 MURO_TILES = json.load(open(os.path.join(ROOT, "data", "muro.json"), encoding="utf-8"))["tiles"]
 for _t in MURO_TILES:
     if not os.path.exists(os.path.join(ROOT, "img", "muro", _t.replace("/", "-") + ".avif")):
@@ -220,8 +221,9 @@ page = f'''<!DOCTYPE html>
       var d = document.documentElement; d.classList.add('js');
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {{
         d.classList.add('motion');
-        /* la entrada (fondo, letras, claim, botones y menú) corre solo la primera vez por sesión */
-        try {{ if (!sessionStorage.getItem('bg-entrada')) {{ d.classList.add('intro-play'); sessionStorage.setItem('bg-entrada', '1'); }} }} catch (e) {{ d.classList.add('intro-play'); }}
+        /* la entrada (fondo, letras, claim, botones y menú) corre solo la primera vez por sesión.
+           Acá solo se lee: la marca la guarda js/home.js cuando la entrada terminó de verse */
+        try {{ if (!sessionStorage.getItem('bg-entrada')) d.classList.add('intro-play'); }} catch (e) {{ d.classList.add('intro-play'); }}
       }}
       try {{ if (localStorage.getItem('bg-lang') === 'en') {{ d.classList.add('lang-en-active'); d.lang = 'en'; }} }} catch (e) {{}}
       /* Al volver de un caso: la imagen de su tarjeta recibe el mismo nombre que la imagen

@@ -1,6 +1,49 @@
 # Estado de blancogrosso.com
 
-_Última actualización: 2026-10-27. El muro de trabajos reemplazó al showreel en la home (rama `v2/muro`, unida a `v2/redesign` y subida en `1dbe7b0`). Sin merge a main: `main` sigue en `22612d6`. Ver "27 de octubre" más abajo._
+_Última actualización: 2026-10-30. Entrada corregida y fila que asoma bajo la apertura, unidas en `v2/redesign` y subidas para revisar en la vista previa. `main` sigue en `22612d6`. Ver "30 de octubre" más abajo._
+
+## 30 de octubre: entrada corregida y fila del muro que asoma
+
+Hecho en `v2/entrada-muro` y unido en `v2/redesign`.
+
+- **Entrada que no se veía.** Causa: `js/home.js` sacaba `intro-play` a los 2 s desde el inicio de la
+  navegación, que incluye las redirecciones del login de Vercel. Con 2 s o más de demora la entrada duraba
+  2 cuadros, y la marca de sesión, escrita en el `<head>`, impedía verla al recargar. No fue el muro: viene
+  de `0e0d521`. Ahora los tiempos cuentan desde el primer cuadro y la marca se guarda al terminar.
+- **Fila que asoma**, copiada de `_ref/muro/muro-asoma.html`:
+  - La apertura flota sobre el muro, que arranca en el tope y dura 420vh. Mide la pantalla menos 92 px
+    (74 px en celular). Asoma la fila 2 de 4 en escritorio y la 3 de 6 en celular.
+  - A los 1,2 s, y nunca antes de que termine la entrada, dos saltitos de 14 px. Scrollear los cancela.
+  - La fila sube mientras la apertura se va, el resto se arma por distancia a ella y la grilla va de ~1,18
+    a 1. El final quedó como estaba: se oscurece a 0,45 y Trabajos sube encima. La referencia cortaba ese
+    fundido antes, así que ahí se priorizó "el final queda igual".
+  - Con movimiento reducido el muro queda completo y quieto, sin saltitos.
+- **Pantallas bajas:** el logo se achica por alto para que entre la apertura. En celular apaisado y en
+  320 x 568 igual no entra: la fila queda debajo de la apertura, sin pisarla, y no asoma al cargar.
+- **Fila y LCP:** la fila se pide apenas el navegador presenta el primer pintado (Paint Timing API). Escrita
+  en el HTML sumaba 0,4 s al LCP en celular, y `fetchpriority="low"` no alcanzaba.
+- **Fila y entrada:** la fila entra con el mismo fundido que el menú (agregado, no estaba pedido).
+- **Imágenes de la fila:** cada una aparece con un fundido de 300 ms recién decodificada (`img.decode()`), y
+  con `.motion` las piezas no tienen fondo, así no se ven cajas vacías. Con movimiento reducido no hay fundido.
+- **Fluidez** (scroll de escritorio, mediana de 4 rondas alternadas contra `v2/redesign`):
+  - por software: 58,6 → 58,75 fps;
+  - con placa de video: 59,4 → 59,4 fps.
+- **Lighthouse en celular (home),** mediana de 6 corridas alternadas contra `v2/redesign`:
+  - rendimiento: 98 en las dos versiones;
+  - LCP: 2,33 → 2,48 s;
+  - CLS: 0;
+  - peso: 692 → 694 KB.
+- **Pruebas:** 1000 chequeos, 999 OK en la corrida completa. La falla fue un umbral de cuadros de
+  `entrada.mjs` con la máquina cargada; esa suite dio 41 de 41 en 3 rondas seguidas.
+  - La batería de 900 se reconstruyó desde las transcripciones y dio 900 de 900 contra `v2/redesign`.
+  - Prueba nueva: `entrada.mjs` (41). `muro.mjs` se reescribió (103). Contra `v2/redesign`, `entrada.mjs`
+    falla 23 de 41: detecta el error original.
+  - Las pruebas quedan en `_ref/pruebas/` (fuera de git).
+
+**Pendientes:**
+- [ ] **Revisar y unir `v2/entrada-muro` a `v2/redesign`:** espera el OK de Tomás.
+- [ ] Los pendientes del 27 de octubre siguen vigentes. Se suma la rama `v2/entrada-muro` a la limpieza,
+  cuando se una.
 
 ## 27 de octubre: muro de trabajos en lugar del showreel
 

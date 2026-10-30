@@ -77,13 +77,31 @@
   logoField();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(logoField);
   window.addEventListener('resize', logoField);
-  // terminada la entrada, el renglón deja de recortar
-  // (sin la entrada, porque ya se vio en esta sesión o por movimiento reducido, no hay nada que esperar)
-  setTimeout(function () { logo.classList.add('risen'); logoField(); }, root.classList.contains('intro-play') ? 1500 : 0);
-  // terminada la entrada (~1,8 s) se saca la clase: las animaciones con relleno quedaban aplicadas
-  // (el fondo entero y el menú) y le costaban unos cuadros por segundo al scroll. Todo termina en su
-  // estado normal, así que no se ve ningún cambio.
-  if (root.classList.contains('intro-play')) setTimeout(function () { root.classList.remove('intro-play'); }, Math.max(0, 2000 - performance.now()));
+  /* Los tiempos de la entrada se cuentan desde el primer cuadro y no desde performance.now(), que arranca
+     con la navegación e incluye las redirecciones: con 2 s de login o de red la entrada se cortaba al
+     nacer. Sin cuadros (pestaña en segundo plano) no corre nada, y la marca de sesión se guarda recién
+     al terminar: una entrada que no se vio no cuenta como vista.
+     Sin entrada (ya se vio en esta sesión o movimiento reducido) no hay nada que esperar. */
+  var firstFrame = 0;
+  var entranceOn = root.classList.contains('intro-play');
+  var lettersDone, entranceDone;
+  var lettersReady = new Promise(function (ok) { lettersDone = ok; });
+  var entranceReady = new Promise(function (ok) { entranceDone = ok; });
+  requestAnimationFrame(function (now) {
+    firstFrame = now;
+    // subieron las letras: el renglón deja de recortar
+    setTimeout(function () { logo.classList.add('risen'); logoField(); lettersDone(); }, entranceOn ? 1500 : 0);
+    // terminada la entrada (~1,8 s) se saca la clase: las animaciones con relleno quedaban aplicadas
+    // (el fondo entero y el menú) y le costaban unos cuadros por segundo al scroll. Todo termina en su
+    // estado normal, así que no se ve ningún cambio.
+    setTimeout(function () {
+      if (entranceOn) {
+        root.classList.remove('intro-play');
+        try { sessionStorage.setItem('bg-entrada', '1'); } catch (e) {}
+      }
+      entranceDone();
+    }, entranceOn ? 1900 : 0);
+  });
 
   var BLOBS = [[20, 30, 0.07, 0.05], [70, 60, 0.05, 0.08], [45, 85, 0.06, 0.04], [85, 15, 0.04, 0.06]];
   var t0 = performance.now(), logoRaf = 0, lavaAt = 0;
@@ -213,10 +231,32 @@
   }
 
   /* ── Muro de trabajos: carga diferida de las miniaturas ──
-     Las 24 miniaturas (img/muro/, ~390 KB) se piden recién al primer scroll o, si no hay scroll,
-     a los 2 s de la carga: así no compiten con la fuente del logo ni con el primer pintado. */
+     La fila que asoma (la 2 de 4 en escritorio, la 3 de 6 en celular) se pide apenas el navegador presenta
+     el primer pintado, que es el que da el LCP: en el HTML sumaba 0,4 s al LCP en celular y un fetchpriority
+     bajo no alcanzaba. Sin pintado (pestaña oculta) entra con las demás. Cada imagen de la fila aparece con
+     un fundido recién decodificada (css/home.css); sin .motion no lo hay. Las otras (img/muro/, ~300 KB) se piden recién al primer scroll o, si no hay scroll, a los 2 s de la carga. */
   var muroTiles = document.getElementById('muroTiles');
+  var inicio = document.getElementById('inicio');
+  // la fila arranca justo debajo de la apertura: si en esta pantalla su contenido no entra en el alto
+  // pensado (celular apaisado, 320 px), se mide y la fila queda más abajo en lugar de pisarlo
+  function fitMuro() { muroTiles.style.setProperty('--hero-h', inicio.offsetHeight + 'px'); }
   if (muroTiles) {
+    fitMuro();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitMuro);
+    if (root.classList.contains('motion')) {
+      var loadPeek = function () {
+        var from = window.matchMedia('(max-width: 699px)').matches ? 8 : 6;
+        Array.prototype.slice.call(muroTiles.children, from, 12).forEach(function (t) {
+          var img = t.firstElementChild;
+          img.classList.add('is-wait');
+          showImg(img);
+          img.decode().catch(function () {}).then(function () { img.classList.remove('is-wait'); });
+        });
+      };
+      var paints = window.PerformanceObserver && PerformanceObserver.supportedEntryTypes;
+      if (paints && paints.indexOf('paint') !== -1) new PerformanceObserver(function (_, o) { o.disconnect(); loadPeek(); }).observe({ type: 'paint', buffered: true });
+      else loadPeek();
+    }
     var muroLoaded = false;
     var loadMuro = function () {
       if (muroLoaded) return; muroLoaded = true;
@@ -492,29 +532,96 @@
       y: function () { return -window.innerHeight * 0.12; }, opacity: 0.25, ease: 'none',
       scrollTrigger: { trigger: '#inicio', start: 'center center', end: 'bottom top', scrub: true }
     });
-    // muro: la sección queda fija (sticky, en CSS) mientras dura su recorrido (340vh). Las piezas aparecen
-    // del centro hacia afuera mientras la grilla se aleja de 2,1 a 1; al final se oscurece y Trabajos sube
-    // encima. Todo atado al scroll y reversible. Tiempos y proporciones de _ref/muro/muro.html.
+    // muro: arranca en el tope de la página, detrás de la apertura, y el escenario queda fijo (sticky, en CSS)
+    // mientras dura su recorrido. Al cargar asoma la fila central. Mientras la apertura se va, esa fila sube
+    // a su lugar; después el resto aparece arriba y abajo de ella, por distancia, y la grilla pasa de 1,18 a 1.
+    // Al final se oscurece y Trabajos sube encima. Todo atado al scroll y reversible.
+    // Tiempos y proporciones de _ref/muro/muro-asoma.html.
     if (muroTiles) {
+      var muroSection = document.getElementById('muro'), muroStage = muroTiles.parentNode, hopsPlayed = false;
       gsap.matchMedia().add({ cel: '(max-width: 699px)', esc: '(min-width: 700px)' }, function (c) {
-        var tiles = gsap.utils.toArray(muroTiles.children), n = tiles.length;
-        var cols = c.conditions.cel ? 4 : 6, rows = Math.ceil(n / cols), seed = 7;
+        var tiles = gsap.utils.toArray(muroTiles.children);
+        var cols = c.conditions.cel ? 4 : 6, rows = Math.ceil(tiles.length / cols), seed = 7;
+        var seedRow = Math.floor((rows - 1) / 2), cx = (cols - 1) / 2;
+        var rowOf = function (i) { return Math.floor(i / cols); };
         var rnd = function () { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
-        // desvío inicial de cada pieza (desplazamiento y giro) y orden de aparición: del centro hacia afuera
+        // desvío inicial de cada pieza (desplazamiento y giro) y orden de aparición: por distancia a la fila
         var R = tiles.map(function () { return { x: (rnd() - 0.5) * 120, y: 60 + rnd() * 80, rotation: (rnd() - 0.5) * 10 }; });
-        var cx = (cols - 1) / 2, cy = (rows - 1) / 2;
-        var order = tiles.map(function (_, i) { return { i: i, d: Math.hypot(i % cols - cx, (Math.floor(i / cols) - cy) * 1.15) + rnd() * 0.35 }; })
+        var order = tiles.map(function (_, i) { return { i: i, d: Math.abs(rowOf(i) - seedRow) * 1.2 + Math.abs(i % cols - cx) * 0.35 + rnd() * 0.4 }; })
+          .filter(function (o) { return rowOf(o.i) !== seedRow; })
           .sort(function (a, b) { return a.d - b.d; });
-        // la línea de tiempo dura 1 = todo el recorrido. 0–0,62: aparecen las piezas; 0–0,7: la grilla se aleja;
-        // 0,72–1: se oscurece (Trabajos ya viene subiendo desde ~0,58, por el margen negativo en CSS)
-        var tl = gsap.timeline({ scrollTrigger: { trigger: '#muro', start: 'top top', end: 'bottom bottom', scrub: 0.4 } });
-        order.forEach(function (o, k) {
-          var r = R[o.i];
-          tl.fromTo(tiles[o.i], { opacity: 0, x: r.x, y: r.y, scale: 0.72, rotation: r.rotation },
-            { opacity: 1, x: 0, y: 0, scale: 1, rotation: 0, ease: 'power2.out', duration: 0.22 * 0.62 }, k / n * 0.78 * 0.62);
+        var seedTiles = tiles.filter(function (_, i) { return rowOf(i) === seedRow; });
+        var tl = null;
+        // (al cruzar el corte de 700 px, gsap.matchMedia ya mató lo que se armó dentro de su contexto)
+        function clear() {
+          if (!tl) return;
+          if (tl.scrollTrigger) tl.scrollTrigger.kill();
+          tl.kill();
+          gsap.set(tiles.concat(muroTiles), { clearProps: 'transform,opacity' });
+        }
+
+        // la línea de tiempo se mide en píxeles de scroll: dura todo el recorrido del muro
+        function build() {
+          clear();
+          fitMuro();
+          var H = muroStage.offsetHeight, total = muroSection.offsetHeight - H, heroH = inicio.offsetHeight;
+          var g = parseFloat(getComputedStyle(muroTiles).rowGap) || 0, t = (muroTiles.offsetHeight - (rows - 1) * g) / rows;
+          var shift = heroH - H / 2 + t + g / 2 + 6; // de su lugar en el muro a asomar 6 px debajo de la apertura
+          var from = heroH * 0.85, span = total * 0.55, n = order.length, end = from + span;
+          tl = gsap.timeline({ scrollTrigger: { start: 0, end: total, scrub: 0.4 } });
+          tl.fromTo(muroTiles, { y: shift }, { y: 0, ease: 'power2.inOut', duration: heroH }, 0)
+            .fromTo(muroTiles, { scale: 1 }, { scale: 1.18, ease: 'power2.inOut', duration: heroH }, 0)
+            .to(muroTiles, { scale: 1, ease: 'power2.inOut', duration: end - heroH }, heroH);
+          order.forEach(function (o, k) {
+            var r = R[o.i];
+            tl.fromTo(tiles[o.i], { opacity: 0, x: r.x, y: rowOf(o.i) < seedRow ? -r.y : r.y, scale: 0.72, rotation: r.rotation },
+              { opacity: 1, x: 0, y: 0, scale: 1, rotation: 0, ease: 'power2.out', duration: span * 0.25 }, from + span * (k / n) * 0.75);
+          });
+          // el final, como antes del cambio: en las últimas 0,67 pantallas se oscurece (Trabajos ya viene subiendo)
+          var fade = Math.max(end, total - H * 0.67);
+          tl.to(muroTiles, { scale: 0.92, opacity: 0.45, ease: 'none', duration: total - fade }, fade);
+          // cargó ya scrolleada o se volvió a armar a mitad de camino: directo a su punto, sin el suavizado
+          var sm = tl.scrollTrigger.getTween && tl.scrollTrigger.getTween();
+          if (sm) sm.progress(1);
+        }
+        build();
+        var lastH = muroStage.offsetHeight, lastWide = window.innerWidth, wait = null;
+        var onResize = function () {
+          if (muroStage.offsetHeight === lastH && window.innerWidth === lastWide) return; // la barra del navegador en celular no cambia nada
+          lastH = muroStage.offsetHeight; lastWide = window.innerWidth;
+          clearTimeout(wait); wait = setTimeout(function () { build(); ScrollTrigger.refresh(); }, 250);
+        };
+        window.addEventListener('resize', onResize);
+
+        // a los 1,2 s, si nadie scrolleó, la fila da dos saltitos de 14 px y se queda quieta. Se mueven sus
+        // piezas, que la línea de tiempo no toca, y nunca antes de que termine la entrada
+        var hops = gsap.timeline({ paused: true, onComplete: function () { gsap.set(seedTiles, { clearProps: 'transform' }); } });
+        [0, 2.6].forEach(function (at) {
+          hops.to(seedTiles, { y: -14, ease: 'sine.out', duration: 0.52 }, at).to(seedTiles, { y: 0, ease: 'sine.in', duration: 0.52 }, at + 0.52);
         });
-        tl.fromTo(muroTiles, { scale: 2.1 }, { scale: 1, ease: 'power2.inOut', duration: 0.7 }, 0)
-          .to(muroTiles, { scale: 0.92, opacity: 0.45, ease: 'none', duration: 0.28 }, 0.72);
+        var hopWait = null;
+        var stopHops = function () {
+          if (window.scrollY < 2) return;
+          window.removeEventListener('scroll', stopHops);
+          clearTimeout(hopWait); hops.kill();
+          gsap.to(seedTiles, { y: 0, duration: 0.2, ease: 'power2.out', overwrite: true });
+        };
+        window.addEventListener('scroll', stopHops, { passive: true });
+        stopHops();
+        entranceReady.then(function () {
+          hopWait = setTimeout(function () {
+            if (hopsPlayed || window.scrollY >= 2) return;
+            hopsPlayed = true; hops.play();
+          }, Math.max(0, 1200 - (performance.now() - firstFrame)));
+        });
+
+        return function () {
+          clearTimeout(hopWait); clearTimeout(wait);
+          window.removeEventListener('resize', onResize);
+          window.removeEventListener('scroll', stopHops);
+          hops.kill();
+          clear();
+        };
       });
     }
 
@@ -537,8 +644,7 @@
       if (y !== lastY) { bgGrid.style.transform = 'translate3d(0,' + (-(y * 0.15) % 60).toFixed(2) + 'px,0)'; lastY = y; } // se repite cada 60 px, sin costuras
     });
     // el viaje del logo al menú: recién cuando terminó la entrada de las letras (~1,5 s) y cargó la fuente
-    var travelReady = function () { (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(startTravel); };
-    setTimeout(travelReady, Math.max(0, 1550 - performance.now()));
+    lettersReady.then(function () { return document.fonts && document.fonts.ready; }).then(startTravel);
     var lastW = window.innerWidth, rt = null;
     window.addEventListener('resize', function () {
       if (window.innerWidth === lastW) return; // en celular la barra del navegador cambia el alto: no hace falta
