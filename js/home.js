@@ -233,8 +233,8 @@
   /* ── Muro de trabajos: carga diferida de las miniaturas ──
      La fila que asoma (la 2 de 4 en escritorio, la 3 de 6 en celular) se pide apenas el navegador presenta
      el primer pintado, que es el que da el LCP: en el HTML sumaba 0,4 s al LCP en celular y un fetchpriority
-     bajo no alcanzaba. Sin pintado (pestaña oculta) entra con las demás. Las otras (img/muro/,
-     ~300 KB) se piden recién al primer scroll o, si no hay scroll, a los 2 s de la carga. */
+     bajo no alcanzaba. Sin pintado (pestaña oculta) entra con las demás. Cada imagen de la fila aparece con
+     un fundido recién decodificada (css/home.css); sin .motion no lo hay. Las otras (img/muro/, ~300 KB) se piden recién al primer scroll o, si no hay scroll, a los 2 s de la carga. */
   var muroTiles = document.getElementById('muroTiles');
   var inicio = document.getElementById('inicio');
   // la fila arranca justo debajo de la apertura: si en esta pantalla su contenido no entra en el alto
@@ -246,7 +246,12 @@
     if (root.classList.contains('motion')) {
       var loadPeek = function () {
         var from = window.matchMedia('(max-width: 699px)').matches ? 8 : 6;
-        Array.prototype.slice.call(muroTiles.children, from, 12).forEach(function (t) { showImg(t.firstElementChild); });
+        Array.prototype.slice.call(muroTiles.children, from, 12).forEach(function (t) {
+          var img = t.firstElementChild;
+          img.classList.add('is-wait');
+          showImg(img);
+          img.decode().catch(function () {}).then(function () { img.classList.remove('is-wait'); });
+        });
       };
       var paints = window.PerformanceObserver && PerformanceObserver.supportedEntryTypes;
       if (paints && paints.indexOf('paint') !== -1) new PerformanceObserver(function (_, o) { o.disconnect(); loadPeek(); }).observe({ type: 'paint', buffered: true });

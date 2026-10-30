@@ -1,10 +1,10 @@
 # Estado de blancogrosso.com
 
-_Última actualización: 2026-10-30. Entrada corregida y fila que asoma bajo la apertura en la rama `v2/entrada-muro`, sin unir ni subir: espera el OK de Tomás. `main` sigue en `22612d6`. Ver "30 de octubre" más abajo._
+_Última actualización: 2026-10-30. Entrada corregida y fila que asoma bajo la apertura, unidas en `v2/redesign` y subidas para revisar en la vista previa. `main` sigue en `22612d6`. Ver "30 de octubre" más abajo._
 
 ## 30 de octubre: entrada corregida y fila del muro que asoma
 
-Rama `v2/entrada-muro`, creada desde `v2/redesign`. Sin unir, sin push.
+Hecho en `v2/entrada-muro` y unido en `v2/redesign`.
 
 - **Entrada que no se veía.** Causa: `js/home.js` sacaba `intro-play` a los 2 s desde el inicio de la
   navegación, que incluye las redirecciones del login de Vercel. Con 2 s o más de demora la entrada duraba
@@ -23,6 +23,8 @@ Rama `v2/entrada-muro`, creada desde `v2/redesign`. Sin unir, sin push.
 - **Fila y LCP:** la fila se pide apenas el navegador presenta el primer pintado (Paint Timing API). Escrita
   en el HTML sumaba 0,4 s al LCP en celular, y `fetchpriority="low"` no alcanzaba.
 - **Fila y entrada:** la fila entra con el mismo fundido que el menú (agregado, no estaba pedido).
+- **Imágenes de la fila:** cada una aparece con un fundido de 300 ms recién decodificada (`img.decode()`), y
+  con `.motion` las piezas no tienen fondo, así no se ven cajas vacías. Con movimiento reducido no hay fundido.
 - **Fluidez** (scroll de escritorio, mediana de 4 rondas alternadas contra `v2/redesign`):
   - por software: 58,6 → 58,75 fps;
   - con placa de video: 59,4 → 59,4 fps.

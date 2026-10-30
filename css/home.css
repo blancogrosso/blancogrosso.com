@@ -417,7 +417,11 @@ html.lenis, html.lenis body { height: auto; }
   transform: translate3d(0, calc(var(--hero-h, 100svh - var(--peek)) - 50svh + var(--t) + var(--g) / 2 + 6px), 0);
   will-change: transform, opacity;
 }
-.motion .muro-tile { opacity: 0; will-change: transform, opacity; }
+/* sin fondo: la pieza no se ve como caja vacía mientras llega su imagen, que la fila muestra con un
+   fundido cuando ya está decodificada */
+.motion .muro-tile { opacity: 0; will-change: transform, opacity; background: none; }
+.motion .muro-tile img { transition: opacity 0.3s; }
+.motion .muro-tile img.is-wait { opacity: 0; }
 .motion .muro-tile:nth-child(n+7):nth-child(-n+12) { opacity: 1; }
 @media (max-width: 699px) { .motion .muro-tile:nth-child(n+7):nth-child(-n+8) { opacity: 0; } }
 /* Trabajos sube por encima del muro: su degradado a negro empieza una pantalla antes de que el muro
