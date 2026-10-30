@@ -324,16 +324,10 @@ html.lenis, html.lenis body { height: auto; }
 @keyframes introFade { from { opacity: 0; } }
 @keyframes introUp { from { opacity: 0.05; transform: translateY(28px); } }
 /* Con movimiento la apertura flota sobre el muro, que arranca en el tope de la página (como en
-   _ref/muro/muro-asoma.html): mide la pantalla menos --peek y su contenido va centrado. En pantallas
-   bajas el logo cede: lo que queda de alto, sacando menú, aire y pie (--foot), dividido por los dos
-   renglones (1,64 em). Si aun así no entra (celular apaisado), la apertura crece y js/home.js baja la fila. */
+   _ref/muro/muro-asoma.html): mide la pantalla menos --peek y su contenido va centrado. El logo no
+   cede: en pantallas bajas la apertura crece y js/home.js baja la fila, que asoma menos o no asoma. */
 .motion .intro { position: absolute; top: 0; left: 0; right: 0; z-index: 2; }
 .motion .intro-inner { min-height: calc(100svh - var(--peek)); justify-content: center; padding-bottom: 28px; }
-@media (min-width: 700px) {
-  .motion .intro-inner { --foot: 245px; }
-  .motion .logo-wrap { font-size: clamp(64px, min(17.5vw, (100svh - var(--peek) - var(--nav-h) - 112px - var(--foot)) / 1.64), 272px); }
-}
-@media (min-width: 900px) { .motion .intro-inner { --foot: 137px; } }
 /* halo suave detrás del cursor (solo con mouse). El prototipo lo desenfocaba con filter: blur(28px) y
    mix-blend-mode: screen; acá el degradado ya viene más abierto y sin filtro (el mismo aspecto sobre el
    fondo oscuro, sin recalcular un desenfoque en cada cuadro) */
