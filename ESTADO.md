@@ -1,6 +1,6 @@
 # Estado de blancogrosso.com
 
-_Última actualización: 2026-10-30. Entrada corregida y fila que asoma bajo la apertura, unidas en `v2/redesign` y subidas para revisar en la vista previa. `main` sigue en `22612d6`. Ver "30 de octubre" más abajo._
+_Última actualización: 2026-10-30. `v2/redesign` unida en `main` y publicada, con la entrada corregida y la fila que asoma bajo la apertura. Ver "30 de octubre" más abajo._
 
 ## 30 de octubre: entrada corregida y fila del muro que asoma
 
@@ -8,10 +8,11 @@ Hecho en `v2/entrada-muro` y unido en `v2/redesign`.
 
 **Vista previa:** https://blancogrosso-72itsnbka-tomasblancogrosso-6137s-projects.vercel.app (commit `520b469`).
 
-**Decisión pendiente, logo en pantallas bajas:** la rama local `v2/logo-normal`, sin subir, deja el logo de
-tamaño normal. La fila asoma 61 px en 1366 x 768, 43 px en 1280 x 720 y nada en 1280 x 600 y 800 x 600.
-Con 600 px de alto los botones quedan cortados. Para aplicarla, unirla en `v2/redesign` y ajustar las 6
-pruebas de muro que fallan: casi todas son de pantallas bajas que esperaban los 92 px.
+**Logo en pantallas bajas, decidido:** queda achicado, para que la fila asome. La alternativa de logo normal,
+en la rama local `v2/logo-normal`, se descartó. Esa rama se borra con la limpieza, que espera el OK de Tomás.
+
+**Lighthouse en celular antes de publicar** (home, con el fundido, mediana de 6 corridas locales): rendimiento
+98, LCP 2,48 s, CLS 0, peso 697 KB, a11y/BP/SEO 100.
 
 - **Entrada que no se veía.** Causa: `js/home.js` sacaba `intro-play` a los 2 s desde el inicio de la
   navegación, que incluye las redirecciones del login de Vercel. Con 2 s o más de demora la entrada duraba
