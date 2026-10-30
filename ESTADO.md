@@ -6,6 +6,13 @@ _Última actualización: 2026-10-30. Entrada corregida y fila que asoma bajo la 
 
 Hecho en `v2/entrada-muro` y unido en `v2/redesign`.
 
+**Vista previa:** https://blancogrosso-72itsnbka-tomasblancogrosso-6137s-projects.vercel.app (commit `520b469`).
+
+**Decisión pendiente, logo en pantallas bajas:** la rama local `v2/logo-normal`, sin subir, deja el logo de
+tamaño normal. La fila asoma 61 px en 1366 x 768, 43 px en 1280 x 720 y nada en 1280 x 600 y 800 x 600.
+Con 600 px de alto los botones quedan cortados. Para aplicarla, unirla en `v2/redesign` y ajustar las 6
+pruebas de muro que fallan: casi todas son de pantallas bajas que esperaban los 92 px.
+
 - **Entrada que no se veía.** Causa: `js/home.js` sacaba `intro-play` a los 2 s desde el inicio de la
   navegación, que incluye las redirecciones del login de Vercel. Con 2 s o más de demora la entrada duraba
   2 cuadros, y la marca de sesión, escrita en el `<head>`, impedía verla al recargar. No fue el muro: viene
