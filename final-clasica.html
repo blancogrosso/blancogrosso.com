@@ -1,115 +1,100 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="case-tokens">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Final Clásica Fútbol Uruguayo | Blanco Grosso</title>
-    <link rel="icon" type="image/png" href="img/icons/logo-verde.png">
-    <link rel="stylesheet" href="css/project-detail.css">
-    <script src="js/lang-switch.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Final Clásica Fútbol Uruguayo | Blanco Grosso</title>
+  <meta name="description" content="Diseño de pauta oficial e identidad visual para la cobertura de FIX en la final clásica del fútbol uruguayo.">
+  <meta name="theme-color" content="#0a0a0a">
+  <!-- Open Graph / canonical -->
+  <link rel="canonical" href="https://www.blancogrosso.com/final-clasica">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Blanco Grosso">
+  <meta property="og:locale" content="es_UY">
+  <meta property="og:url" content="https://www.blancogrosso.com/final-clasica">
+  <meta property="og:title" content="Final Clásica Fútbol Uruguayo | Blanco Grosso">
+  <meta property="og:description" content="Diseño de pauta oficial e identidad visual para la cobertura de FIX en la final clásica del fútbol uruguayo.">
+  <meta property="og:image" content="https://www.blancogrosso.com/img/og/final-clasica.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Portada del proyecto Final Clásica: jugadores y el título de la final con el logo de FIX">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- /Open Graph -->
+  <link rel="icon" type="image/png" href="img/icons/logo-verde.png">
+  <link rel="preload" href="fonts/archivo-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/case-base.css">
+  <link rel="stylesheet" href="css/case.css">
+  <link rel="stylesheet" href="css/view-transitions.css">
+  <!-- la transición desde la home espera a que exista la imagen principal -->
+  <link rel="expect" href="#cover" blocking="render">
+  <script>
+    /* Antes de pintar: idioma guardado y si hay JS (evita parpadeos) */
+    (function () {
+      var d = document.documentElement; d.classList.add('js');
+      try { if (localStorage.getItem('bg-lang') === 'en') { d.classList.add('lang-en-active'); d.lang = 'en'; } } catch (e) {}
+      /* si se llega con la transición desde la home, la imagen principal ya está destapada */
+      window.addEventListener('pagereveal', function (e) {
+        var cover = document.querySelector('[data-vt]');
+        if (e.viewTransition && cover) cover.classList.add('in', 'no-anim');
+      });
+    })();
+  </script>
 </head>
-<body data-theme="sport">
-
-    <nav class="detail-nav">
-        <a href="portfolio.html" class="detail-nav-brand">BLANCO GROSSO</a>
-        <div style="display: flex; align-items: center; gap: 1.5rem;">
-            <div class="lang-switcher">
-                <span class="lang-toggle" data-lang="es">ES</span>
-                <span style="color: var(--text-dim);">/</span>
-                <span class="lang-toggle" data-lang="en">EN</span>
-            </div>
-            <a href="portfolio.html#works" class="detail-nav-back">
-                <span class="lang-es">Cerrar</span>
-                <span class="lang-en">Close</span>
-            </a>
-        </div>
-    </nav>
-
-    <header class="project-hero">
-        <div class="project-meta">
-            <span class="project-category">Sport Design</span>
-            <span class="project-category">Art Direction</span>
-            <span class="project-date">Nov 2025</span>
-        </div>
-        <h1>Final Clásica<br>Fútbol Uruguayo</h1>
-        <p class="project-hero-sub">
-            <span class="lang-es">Diseño de pauta oficial para la cobertura de la final clásica del fútbol uruguayo.</span>
-            <span class="lang-en">Official ad design for the coverage of the classic final of Uruguayan football.</span>
-        </p>
-        <div class="project-stack">
-            <span class="stack-tag">Ps</span>
-            <span class="stack-tag">Lr</span>
-        </div>
-    </header>
-
-    <div class="project-cover" style="padding: 0; margin-bottom: 4rem; display: flex; justify-content: center;">
-        <img src="img/works/final-clasica/youtube.avif" loading="lazy" decoding="async" alt="Final Clásica YouTube Cover" data-zoomable style="border-radius: 12px; max-width: 100%; height: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+<body>
+  <header class="bar">
+    <div class="bar-start">
+      <a class="back" href="/#works"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M16 10H4M9 4l-6 6 6 6"/></svg><span class="lang-es">Trabajos</span><span class="lang-en" lang="en">Work</span></a>
+      <span class="count"><span class="lang-es">9 de 10</span><span class="lang-en" lang="en">9 of 10</span></span>
     </div>
+    <span class="bar-title" aria-hidden="true">Final Clásica Fútbol Uruguayo</span>
+    <div class="bar-end">
+      <div class="lang" role="group" aria-label="Idioma / Language">
+        <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="close x" href="/#works" aria-label="Cerrar" data-en-aria-label="Close"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12"/></svg></a>
+    </div>
+  </header>
 
-    <section class="project-section">
-        <span class="project-section-label">
-            <span class="lang-es">EL PROYECTO</span>
-            <span class="lang-en">THE PROJECT</span>
-        </span>
-        <h2>
-            <span class="lang-es">Peñarol vs Nacional — El Clásico</span>
-            <span class="lang-en">Peñarol vs Nacional — The Classic</span>
-        </h2>
-        <p>
-            <span class="lang-es">Identidad visual para la cobertura de FIX en la final del Campeonato Uruguayo. El sistema visual se diseñó para capturar la intensidad del clásico más importante del país.</span>
-            <span class="lang-en">Visual identity for FIX coverage in the Uruguayan Championship final. The visual system was designed to capture the intensity of the country's most important classic.</span>
-        </p>
-        <div style="margin-top: 2rem;">
-            <a href="https://www.instagram.com/p/DRkphWXD9p0/" target="_blank" class="detail-nav-back" style="text-decoration: none; border: 1px solid rgba(255,255,255,0.1); padding: 0.8rem 1.5rem; border-radius: 100px; display: inline-flex; align-items: center; gap: 0.8rem; font-size: 0.8rem; color: var(--accent);">
-                <span>Ver post en Instagram</span>
-                <span style="font-size: 1.2rem;">↗</span>
-            </a>
-        </div>
+  <main>
+  <article class="case" data-case="final-clasica">
+    <header class="c-hero">
+      <h1 class="rv"><span class="grad">Final Clásica Fútbol Uruguayo</span></h1>
+      <p class="c-lead rv"><span class="lang-es">Diseño de pauta oficial para la cobertura de la final clásica del fútbol uruguayo.</span><span class="lang-en" lang="en">Official ad design for the coverage of the classic final of Uruguayan football.</span></p>
+      <p class="c-meta rv"><span class="lang-es">Noviembre 2025</span><span class="lang-en" lang="en">November 2025</span></p>
+    </header>
+    <figure class="cover rv-img" id="cover" data-vt style="view-transition-name: case-final-clasica"><img src="img/works/final-clasica/youtube.avif" width="2560" height="1440" alt="Portada de YouTube de la Final Clásica" data-en-alt="Final Clásica YouTube cover" fetchpriority="high"></figure>
+    <dl class="facts rv">
+      <div><dt><span class="lang-es">Cliente</span><span class="lang-en" lang="en">Client</span></dt><dd>FIX</dd></div>
+      <div><dt><span class="lang-es">Año</span><span class="lang-en" lang="en">Year</span></dt><dd>2025</dd></div>
+      <div><dt><span class="lang-es">Qué hice</span><span class="lang-en" lang="en">What I did</span></dt><dd><span class="lang-es">Sport Design y dirección de arte</span><span class="lang-en" lang="en">Sport design and art direction</span></dd></div>
+      <div><dt><span class="lang-es">Herramientas</span><span class="lang-en" lang="en">Tools</span></dt><dd>Photoshop, Lightroom</dd></div>
+    </dl>
+    <section class="story">
+      <h2 class="rv"><span class="lang-es">Peñarol vs Nacional — El Clásico</span><span class="lang-en" lang="en">Peñarol vs Nacional — The Classic</span></h2>
+      <div class="rv"><p><span class="lang-es">Identidad visual para la cobertura de FIX en la final del Campeonato Uruguayo. El sistema visual se diseñó para capturar la intensidad del clásico más importante del país.</span><span class="lang-en" lang="en">Visual identity for FIX coverage in the Uruguayan Championship final. The visual system was designed to capture the intensity of the country&#x27;s most important classic.</span></p></div>
     </section>
+    <div class="gal-block">
+      <div class="rv">
+      <div class="gal-ctrl">
+        <span class="gc-count"><span class="gc-n">1</span> <span class="lang-es">de</span><span class="lang-en" lang="en">of</span> 2</span>
+        <span class="gc-btns"><button type="button" class="gc-prev" aria-label="Foto anterior" data-en-aria-label="Previous photo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4l-6 6 6 6"/></svg></button><button type="button" class="gc-next" aria-label="Foto siguiente" data-en-aria-label="Next photo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 4l6 6-6 6"/></svg></button></span>
+      </div>
+      <div class="gal">
+        <figure tabindex="0" role="button" aria-label="Ver foto 1 de 2 en grande" data-en-aria-label="View photo 1 of 2 large" style="--ar: 0.7500"><img src="img/works/final-clasica/ejemplo-1-tira.avif" srcset="img/works/final-clasica/ejemplo-1-tira.avif 1000w, img/works/final-clasica/ejemplo-1.avif 1920w" sizes="(min-width: 760px) calc(56vh * 0.750), calc((100vw - 32px) * 0.780)" width="1920" height="2560" alt="Idea 01" loading="lazy" decoding="async" draggable="false" data-full="img/works/final-clasica/ejemplo-1.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+        <figure tabindex="0" role="button" aria-label="Ver foto 2 de 2 en grande" data-en-aria-label="View photo 2 of 2 large" style="--ar: 0.7500"><img src="img/works/final-clasica/ejemplo-2-tira.avif" srcset="img/works/final-clasica/ejemplo-2-tira.avif 1000w, img/works/final-clasica/ejemplo-2.avif 1920w" sizes="(min-width: 760px) calc(56vh * 0.750), calc((100vw - 32px) * 0.780)" width="1920" height="2560" alt="Idea 02" loading="lazy" decoding="async" draggable="false" data-full="img/works/final-clasica/ejemplo-2.avif"><span class="zoom" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></span></figure>
+      </div>
+      </div>
+    </div>
+    <a class="ext rv" href="https://www.instagram.com/p/DRkphWXD9p0/" target="_blank" rel="noopener"><span class="lang-es">Ver en Instagram</span><span class="lang-en" lang="en">View on Instagram</span> <span aria-hidden="true">↗</span><span class="sr-only"><span class="lang-es"> (abre en una pestaña nueva)</span><span class="lang-en" lang="en"> (opens in a new tab)</span></span></a>
+    <a class="next" href="/nido-identidad">
+      <small><span class="lang-es">Siguiente</span><span class="lang-en" lang="en">Next</span></small>
+      <span class="nt"><span class="grad">NIDO</span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M3 10h13M11 4l6 6-6 6"/></svg></span>
+      <span class="thumb"><img src="img/works/nido-identidad.avif" width="1200" height="900" alt="" loading="lazy" decoding="async"></span>
+    </a>
+  </article>
+  </main>
 
-    <section class="project-gallery">
-        <span class="gallery-label">
-            <span class="lang-es">CONCEPTOS CREATIVOS</span>
-            <span class="lang-en">CREATIVE CONCEPTS</span>
-        </span>
-        <div class="gallery-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.5rem; margin-top: 2rem;">
-            <div class="gallery-item">
-                <h3 style="font-size: 0.75rem; opacity: 0.5; margin-bottom: 1.5rem; letter-spacing: 0.1em; text-transform: uppercase;">Idea 01</h3>
-                <img src="img/works/final-clasica/ejemplo-1.avif" loading="lazy" decoding="async" alt="Idea 01" data-zoomable style="border-radius: 12px; transition: transform 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-            </div>
-
-            <div class="gallery-item">
-                <h3 style="font-size: 0.75rem; opacity: 0.5; margin-bottom: 1.5rem; letter-spacing: 0.1em; text-transform: uppercase;">Idea 02</h3>
-                <img src="img/works/final-clasica/ejemplo-2.avif" loading="lazy" decoding="async" alt="Idea 02" data-zoomable style="border-radius: 12px; transition: transform 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-            </div>
-        </div>
-    </section>
-
-    <nav class="project-nav">
-        <div class="project-nav-inner">
-            <a href="iris-lab.html" class="project-nav-link">
-                <span class="project-nav-label">
-                    <span class="lang-es">Anterior</span>
-                    <span class="lang-en">Previous</span>
-                </span>
-                <span class="project-nav-title">Iris Lab</span>
-            </a>
-            <a href="labufarra-social.html" class="project-nav-link">
-                <span class="project-nav-label">
-                    <span class="lang-es">Siguiente</span>
-                    <span class="lang-en">Next</span>
-                </span>
-                <span class="project-nav-title">Vuelta a las redes</span>
-            </a>
-        </div>
-    </nav>
-
-    <footer class="detail-footer">
-        <span>© 2026 Blanco Grosso. 
-            <span class="lang-es">Basado en Montevideo, Uruguay.</span>
-            <span class="lang-en">Based in Montevideo, Uruguay.</span>
-        </span>
-    </footer>
-
+  <script src="js/case.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,699 @@
+/* =========================================================
+   Blanco Grosso: home one-page (v2)
+   Un solo juego de variables para toda la home.
+   ========================================================= */
+
+/* Archivo variable (Google Fonts, licencia OFL en fonts/OFL-Archivo.txt), servida desde el sitio:
+   un solo archivo con ancho 62–125 % y peso 400–900, subset latino (incluye ñ y tildes). */
+@font-face {
+  font-family: 'Archivo';
+  src: url('../fonts/archivo-variable-latin.woff2') format('woff2');
+  font-weight: 400 900;
+  font-stretch: 62% 125%;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  /* color */
+  --bg: #050505;
+  --bg-mesh-base: #040404;
+  --fg: #f0f0f0;
+  --fg-soft: #d4d4d4;
+  --muted: #a8a8a8;
+  --line: rgba(255, 255, 255, 0.1);
+  --surface: #0e0f0e;
+  --accent: #00ff88;
+  --accent-hover: #7dffc0; /* menta: hover de los botones verdes */
+  --on-accent: #03140b;    /* texto oscuro sobre verde (14,1:1) y sobre menta (15,3:1) */
+  /* colores del fondo de marca (solo mesh y degradados de identidad) */
+  --mesh-green: #00ff88;
+  --mesh-cyan: #00ccff;
+  --mesh-violet: #8b00ff;
+  --mesh-orange: #ff5e00;
+  --logo-gradient: linear-gradient(-45deg, #00ff88, #00ffa2, #00ffcc, #00cc88, #00ff88);
+  --claim-gradient: linear-gradient(-45deg, var(--mesh-cyan), var(--mesh-green), var(--mesh-orange), var(--mesh-violet), var(--mesh-cyan));
+
+  /* tipo */
+  --font: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --fs-body: 17px;
+  --fs-small: 15px;
+
+  /* espacio y forma */
+  --gutter: 16px;
+  --radius: 6px;
+  --radius-pill: 999px;
+  --nav-h: 68px;
+  --peek: 92px;  /* lo que la apertura le deja al muro debajo */
+
+  /* movimiento: un solo ritmo para todo el sitio (calibrado con motion-reference-language:
+     entradas que frenan sin rebote 0,35-0,7 s, salidas que aceleran 0,3 s, desplazamientos de UI ~0,5 s) */
+  --ease-out: cubic-bezier(0.19, 1, 0.22, 1);   /* entradas: frena sin rebote */
+  --ease-in: cubic-bezier(0.55, 0, 1, 0.45);    /* salidas: acelera al irse */
+  --ease-io: cubic-bezier(0.65, 0, 0.35, 1);    /* desplazamientos y transición entre páginas */
+  --dur-fast: 0.2s;
+  --dur-ui: 0.35s;
+  --dur-mid: 0.45s;
+  --dur-sweep: 0.5s;
+  --dur-slow: 0.9s;
+
+  color-scheme: dark;
+}
+
+@media (max-width: 699px) { :root { --peek: 74px; } }
+@media (min-width: 700px) {
+  :root { --gutter: 40px; --fs-body: 18px; }
+}
+
+/* ── base ── */
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: transparent;
+  color: var(--fg);
+  font-family: var(--font);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: 1.5;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+img, video { display: block; max-width: 100%; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip {
+  position: absolute; left: var(--gutter); top: -100px; z-index: 100;
+  padding: 12px 18px; background: var(--fg); color: var(--bg); border-radius: var(--radius);
+}
+.skip:focus { top: 12px; }
+
+/* idioma: el contenido está en los dos idiomas y se muestra uno */
+/* (especificidad alta a propósito: tiene que ganarle a .btn y a cualquier display de componente) */
+:root:not(.lang-en-active) .lang-en { display: none; }
+:root.lang-en-active .lang-es { display: none; }
+
+.wrap {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
+}
+
+/* lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* =========================================================
+   Fondo de marca: mesh animado + grilla de 60 px
+   Mismo dibujo y mismas animaciones que la home en producción
+   (brand-core.css + keyframes de styles.css). Agregado: la capa
+   entera se desplaza levemente con el mouse y la grilla avanza
+   al 15 % del scroll, para dar profundidad.
+   ========================================================= */
+.bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; background: var(--bg-mesh-base); }
+.bg-mesh {
+  position: absolute; inset: -6%;
+  transform: translate3d(calc(var(--mx, 0) * 2.5vmax), calc(var(--my, 0) * 2.5vmax), 0);
+  will-change: transform;
+}
+.bg-mesh::before, .bg-mesh::after {
+  content: '';
+  position: absolute;
+  /* Las dos manchas ya vienen desenfocadas en una imagen (img/mesh-*.webp, generada una vez
+     con el mismo blur(140px) de antes). Antes el navegador recalculaba ese desenfoque gigante
+     en cada cuadro y el scroll bajaba a ~5 fps; ahora solo mueve una imagen ya pintada.
+     Tamaño: 140vmax del círculo + el borde que agrega el desenfoque (198.33 = 140 × 2856/2016). */
+  width: 198.33vmax; height: 198.33vmax;
+  margin: -29.17vmax;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  opacity: 0.12;
+  will-change: transform;
+}
+.bg-mesh::before {
+  background-image: url('../img/mesh-verde.webp');
+  top: -30%; left: -30%;
+  animation: meshFloat1 20s ease-in-out infinite;
+}
+.bg-mesh::after {
+  background-image: url('../img/mesh-violeta.webp');
+  bottom: -30%; right: -30%;
+  animation: meshFloat2 25s ease-in-out infinite;
+}
+/* recorridos escalados × 0.706: la capa es más grande y el % se mide sobre ella; así el movimiento es el mismo que antes */
+@keyframes meshFloat1 {
+  0% { transform: translate(-3.53%, -3.53%) scale(1); }
+  33% { transform: translate(7.06%, 3.53%) scale(1.2); }
+  66% { transform: translate(-3.53%, 10.59%) scale(0.9); }
+  100% { transform: translate(-3.53%, -3.53%) scale(1); }
+}
+@keyframes meshFloat2 {
+  0% { transform: translate(3.53%, 3.53%) scale(1.1); }
+  33% { transform: translate(-7.06%, -3.53%) scale(0.8); }
+  66% { transform: translate(3.53%, -10.59%) scale(1.2); }
+  100% { transform: translate(3.53%, 3.53%) scale(1.1); }
+}
+.bg-grid {
+  position: absolute; left: 0; right: 0; top: -60px; height: calc(100% + 120px);
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  will-change: transform; /* el desplazamiento lo pone js/home.js directo en transform */
+}
+
+/* degradados de identidad que fluyen (logo y claim) */
+@keyframes textGradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* =========================================================
+   Menú
+   ========================================================= */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 30;
+  padding-top: env(safe-area-inset-top, 0px);
+  transition: background-color var(--dur-mid) var(--ease-out), border-color var(--dur-mid);
+  border-bottom: 1px solid transparent;
+}
+.nav.is-solid {
+  background: rgba(5, 5, 5, 0.82);
+  border-bottom-color: var(--line);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.nav-row { display: flex; align-items: center; gap: 12px; min-height: var(--nav-h); }
+.nav-mark {
+  margin-right: auto;
+  display: inline-flex; align-items: center; min-height: 44px;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.25s, visibility 0.25s;
+}
+.nav.show-mark .nav-mark, .nav-mark:focus-visible { opacity: 1; visibility: visible; }
+/* la marca del menú: el mismo lockup en chico, en dos renglones (el logo grande viaja hasta acá) */
+.mark { display: flex; flex-direction: column; line-height: 0.84; font-weight: 900; font-stretch: 112%; font-size: 15px; letter-spacing: -0.03em; }
+.mark span {
+  padding: 0 0.1em; margin: 0 -0.1em;
+  background: var(--logo-gradient); background-size: 300% 300%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: textGradientFlow 8s ease infinite;
+}
+.nav-links { display: flex; gap: 0 18px; list-style: none; margin: 0; padding: 0; }
+.nav-links a {
+  display: inline-flex; align-items: center; min-height: 44px;
+  color: var(--muted); font-size: 16px;
+  transition: color var(--dur-fast);
+}
+.nav-links a:hover, .nav-links a.is-current { color: var(--fg); }
+.nav-links a { position: relative; }
+.nav-links a::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 9px; height: 1px;
+  background: currentColor;
+  transform: scaleX(0); transform-origin: right center;
+  transition: transform var(--dur-ui) var(--ease-out);
+}
+.nav-links a:hover::after, .nav-links a:focus-visible::after { transform: scaleX(1); transform-origin: left center; }
+.lang { display: flex; gap: 2px; margin-left: 8px; }
+.lang-btn {
+  min-width: 44px; min-height: 44px; padding: 0 6px;
+  background: none; border: 0; border-radius: var(--radius);
+  color: var(--muted); font-size: 15px; font-weight: 600; cursor: pointer;
+}
+.lang-btn[aria-pressed="true"] { color: var(--fg); text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 2px; text-decoration-color: var(--accent); }
+.lang-btn:hover { color: var(--fg); }
+@media (max-width: 559px) {
+  /* la marca de dos renglones, los links y el idioma entran en una fila desde 360 px */
+  .nav-row { gap: 8px; }
+  .mark { font-size: 11px; }
+  .nav-links { gap: 0 10px; }
+  .nav-links a { font-size: 14px; }
+  .lang { margin-left: 0; }
+  .lang-btn { min-width: 36px; }
+}
+/* teléfonos angostos: todo entra respetando el margen a 360 px; a 320 px el margen del menú baja a 10 px */
+@media (max-width: 389px) {
+  .nav-row { gap: 6px; }
+  .mark { font-size: 10px; }
+  .nav-links { gap: 0 8px; }
+  .nav-links a { font-size: 13px; }
+  .lang { gap: 0; }
+  .lang-btn { min-width: 32px; padding: 0 4px; font-size: 14px; }
+}
+@media (max-width: 339px) {
+  .nav .wrap { padding-left: max(10px, env(safe-area-inset-left, 0px)); padding-right: max(10px, env(safe-area-inset-right, 0px)); }
+  .nav-links { gap: 0 6px; }
+  .nav-links a { font-size: 12.5px; }
+}
+
+/* =========================================================
+   Apertura
+   ========================================================= */
+.intro { position: relative; }
+.intro-inner { display: flex; flex-direction: column; gap: 40px; padding-top: calc(var(--nav-h) + 40px); padding-bottom: 72px; }
+/* Logo (versión 8 del prototipo, _ref/logo-v8/). Letra por letra: cada una muestra su porción de un
+   mismo campo de color (lámpara de lava: manchas de verde, cian y menta que se mueven lento).
+   js/home.js mueve las manchas (--x1…--y4), le pasa a cada letra su lugar en el campo (--ox, --oy),
+   sigue al mouse (--mx, --my, --gr) y lo lleva al menú al scrollear. */
+/* Centrado óptico: se centra la tinta de las letras, no las cajas (que llevan el margen de aire).
+   Medido con las letras pintadas y escaneando los píxeles: el centro de la tinta queda a 2,499 em
+   del borde izquierdo de la caja en cualquier ancho (escala con la letra). El contenedor es
+   simétrico, así que su mitad es la mitad de la pantalla. */
+.logo-wrap {
+  position: relative; align-self: flex-start;
+  font-size: clamp(64px, 17.5vw, 272px);
+  margin-left: calc(50% - 2.499em);
+}
+.logo {
+  position: relative; transform-origin: 0 0; will-change: transform;
+  font-weight: 900; font-stretch: 112%;
+  font-size: 1em;
+  line-height: 0.82; letter-spacing: -0.045em;
+  display: flex; flex-direction: column;
+  --fw: 1000px; --fh: 400px;
+  --x1: 20%; --y1: 30%; --x2: 70%; --y2: 60%; --x3: 45%; --y3: 85%; --x4: 85%; --y4: 15%;
+  --mx: -9999px; --my: -9999px; --gr: 0px;
+}
+/* el renglón recorta solo durante la entrada; después, nada corta las letras */
+.logo-row { display: block; overflow: hidden; padding-bottom: 0.05em; margin-bottom: -0.05em; }
+.logo.risen .logo-row { overflow: visible; }
+.logo-row > span { display: inline-block; white-space: nowrap; }
+.logo .ch {
+  display: inline-block; position: relative;
+  /* aire alrededor de cada letra para que el degradado no corte los bordes del dibujo (compensado: no mueve nada) */
+  padding: 0.06em 0.12em 0.1em; margin: -0.06em -0.12em -0.1em;
+  background-image:
+    radial-gradient(circle var(--gr) at var(--mx) var(--my), rgba(242, 255, 248, 0.96), rgba(140, 255, 214, 0.55) 42%, transparent 72%),
+    radial-gradient(circle calc(var(--fh) * 0.5) at var(--x1) var(--y1), #d8fff0, rgba(170, 255, 225, 0.6) 35%, transparent 70%),
+    radial-gradient(circle calc(var(--fh) * 0.6) at var(--x2) var(--y2), #00d4ff, rgba(0, 212, 255, 0.5) 40%, transparent 72%),
+    radial-gradient(circle calc(var(--fh) * 0.55) at var(--x3) var(--y3), #00a85e, rgba(0, 168, 94, 0.55) 40%, transparent 72%),
+    radial-gradient(circle calc(var(--fh) * 0.45) at var(--x4) var(--y4), #b4ffcf, transparent 70%),
+    linear-gradient(-45deg, #00f585, #00e0a0, #00f5c8, #00c985);
+  background-size: var(--fw) var(--fh); background-repeat: no-repeat;
+  background-position: var(--ox, 0px) var(--oy, 0px);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  transform-origin: 50% 85%;
+}
+/* kerning óptico del lockup (se suma al margen negativo de la caja de aire) */
+.logo .ch.k-la { margin-left: calc(-0.12em + 0.04em); }
+.logo .ch.k-an { margin-left: calc(-0.12em + 0.015em); }
+.logo .ch.k-gr { margin-left: calc(-0.12em - 0.005em); }
+.logo .ch.k-ro { margin-left: calc(-0.12em + 0.012em); }
+.logo .ch.k-os { margin-left: calc(-0.12em + 0.006em); }
+/* Entrada de la home: solo la primera vez por sesión (clase intro-play, la pone el <head>; nunca con
+   movimiento reducido). Sin pantalla de carga: el contenido está desde el primer pintado y solo se anima.
+   El fondo aparece en 1,4 s; las letras suben una por una (45 ms entre letras, 0,9 s cada una) desde
+   debajo del renglón, que las recorta; después el claim, el texto con los botones y el menú. Termina a
+   los ~1,8 s. El claim y el texto (el LCP en escritorio y en celular) arrancan ya un poco visibles:
+   así el navegador los cuenta como pintados desde el principio. */
+.intro-play .bg { animation: introFade 1.4s var(--ease-out) both; }
+.intro-play .logo .ch { animation: logoRise 0.9s var(--ease-out) both; animation-delay: calc(0.05s + var(--i) * 45ms); }
+.intro-play .claim, .intro-play .tags { animation: introUp 0.85s var(--ease-out) 0.55s both; }
+.intro-play .intro-side { animation: introUp 1s var(--ease-out) 0.7s both; }
+.intro-play .nav-row, .intro-play .muro-stage { animation: introFade 1.1s var(--ease-out) 0.6s both; }
+@keyframes logoRise { from { transform: translateY(110%); } to { transform: none; } }
+@keyframes introFade { from { opacity: 0; } }
+@keyframes introUp { from { opacity: 0.05; transform: translateY(28px); } }
+/* Con movimiento la apertura flota sobre el muro, que arranca en el tope de la página (como en
+   _ref/muro/muro-asoma.html): mide la pantalla menos --peek y su contenido va centrado. En pantallas
+   bajas el logo cede: lo que queda de alto, sacando menú, aire y pie (--foot), dividido por los dos
+   renglones (1,64 em). Si aun así no entra (celular apaisado), la apertura crece y js/home.js baja la fila. */
+.motion .intro { position: absolute; top: 0; left: 0; right: 0; z-index: 2; }
+.motion .intro-inner { min-height: calc(100svh - var(--peek)); justify-content: center; padding-bottom: 28px; }
+@media (min-width: 700px) {
+  .motion .intro-inner { --foot: 245px; }
+  .motion .logo-wrap { font-size: clamp(64px, min(17.5vw, (100svh - var(--peek) - var(--nav-h) - 112px - var(--foot)) / 1.64), 272px); }
+}
+@media (min-width: 900px) { .motion .intro-inner { --foot: 137px; } }
+/* halo suave detrás del cursor (solo con mouse). El prototipo lo desenfocaba con filter: blur(28px) y
+   mix-blend-mode: screen; acá el degradado ya viene más abierto y sin filtro (el mismo aspecto sobre el
+   fondo oscuro, sin recalcular un desenfoque en cada cuadro) */
+.halo {
+  position: absolute; left: 0; top: 0; width: 440px; height: 440px; margin: -220px 0 0 -220px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 255, 136, 0.2), rgba(0, 255, 136, 0.12) 22%, rgba(0, 204, 255, 0.06) 45%, rgba(0, 204, 255, 0.02) 60%, transparent 72%);
+  pointer-events: none; will-change: transform;
+  opacity: 0; visibility: hidden; transition: opacity 0.5s, visibility 0s linear 0.5s;
+}
+.logo-wrap.glowing .halo { opacity: 1; visibility: visible; transition: opacity 0.5s; }
+
+.intro-foot { display: grid; gap: 28px 56px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 900px) { .intro-foot { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: end; } }
+.claim { font-weight: 800; font-size: clamp(30px, 3.6vw, 52px); line-height: 1; letter-spacing: -0.025em; text-wrap: balance; }
+.claim-acc {
+  background: var(--claim-gradient);
+  background-size: 300% 300%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: textGradientFlow 8s ease infinite;
+}
+.tags { margin-top: 14px; color: var(--muted); }
+.intro-side { display: flex; flex-direction: column; gap: 22px; }
+.lead { font-size: clamp(18px, 1.45vw, 21px); color: var(--fg-soft); max-width: 44ch; }
+
+/* botones */
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.btn {
+  position: relative; overflow: hidden; isolation: isolate;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 48px; padding: 0 22px;
+  border-radius: var(--radius-pill);
+  font-size: 16px; font-weight: 600; white-space: nowrap;
+  transition: color var(--dur-ui) var(--ease-out), border-color var(--dur-ui) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+/* el relleno barre de izquierda a derecha al pasar el mouse (o con foco de teclado) */
+.btn::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform var(--dur-sweep) var(--ease-out);
+}
+.btn:hover::before, .btn:focus-visible::before { transform: scaleX(1); }
+.btn:active { transform: scale(0.97); }
+.btn svg { width: 18px; height: 18px; flex: none; transition: transform var(--dur-ui) var(--ease-out); }
+.btn:hover .ar, .btn:focus-visible .ar { transform: translateX(3px); }
+.btn:hover .ar-down, .btn:focus-visible .ar-down { transform: translateY(3px); }
+.btn-primary { background: var(--accent); color: var(--on-accent); }
+.btn-primary::before { background: var(--accent-hover); }
+.btn-ghost { border: 1px solid rgba(255, 255, 255, 0.45); color: var(--fg); }
+.btn-ghost::before { background: var(--accent); }
+.btn-ghost:hover, .btn-ghost:focus-visible { color: var(--on-accent); border-color: var(--accent); }
+.btn-lg { min-height: 54px; padding: 0 24px; }
+.btn-lg svg { width: 20px; height: 20px; }
+
+/* =========================================================
+   Muro de trabajos (reemplaza al showreel; prototipo en _ref/muro/)
+   Sin movimiento (JS apagado, movimiento reducido o GSAP que no cargó) es
+   una grilla quieta. Con .motion la sección dura 420vh desde el tope de la
+   página y el escenario queda fijo con sticky; de entrada solo se ve la fila
+   central, cortada, debajo de la apertura. js/home.js la sube y arma el resto
+   atado al scroll.
+   El tamaño del cuadro sale del ancho y del alto de la pantalla: entra
+   siempre entero (6 x 4 en escritorio, 4 x 6 debajo de 700 px).
+   ========================================================= */
+.muro {
+  --cols: 6; --rows: 4; --g: 14px; --w: 90vw;
+  --t: min((var(--w) - (var(--cols) - 1) * var(--g)) / var(--cols), (86svh - (var(--rows) - 1) * var(--g)) / var(--rows));
+  padding: 80px 0;
+}
+@media (max-width: 699px) { .muro { --cols: 4; --rows: 6; --g: 8px; --w: 94vw; } }
+:root:not(.js) .muro { display: none; } /* las imágenes las pone el JS */
+.muro-stage { display: grid; place-items: center; }
+.muro-tiles { display: grid; grid-template-columns: repeat(var(--cols), var(--t)); grid-auto-rows: var(--t); gap: var(--g); }
+.muro-tile { border-radius: 10px; overflow: hidden; background: var(--surface); }
+.muro-tile img { width: 100%; height: 100%; object-fit: cover; }
+.motion .muro { height: 420vh; padding: 0; }
+.motion .muro-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+/* estado inicial (el mismo que pone GSAP), así no hay salto cuando carga: la grilla se corre para que su
+   fila central quede 6 px debajo de la apertura; --hero-h es su alto medido, si difiere del pensado */
+.motion .muro-tiles {
+  transform: translate3d(0, calc(var(--hero-h, 100svh - var(--peek)) - 50svh + var(--t) + var(--g) / 2 + 6px), 0);
+  will-change: transform, opacity;
+}
+/* sin fondo: la pieza no se ve como caja vacía mientras llega su imagen, que la fila muestra con un
+   fundido cuando ya está decodificada */
+.motion .muro-tile { opacity: 0; will-change: transform, opacity; background: none; }
+.motion .muro-tile img { transition: opacity 0.3s; }
+.motion .muro-tile img.is-wait { opacity: 0; }
+.motion .muro-tile:nth-child(n+7):nth-child(-n+12) { opacity: 1; }
+@media (max-width: 699px) { .motion .muro-tile:nth-child(n+7):nth-child(-n+8) { opacity: 0; } }
+/* Trabajos sube por encima del muro: su degradado a negro empieza una pantalla antes de que el muro
+   termine y el título llega 28vh más abajo (como en el prototipo). El degradado tapa el muro
+   (oscurecido) hasta que se va de pantalla y después se vuelve transparente, para que siga viéndose el
+   fondo con grilla. Los 28vh van en el degradado y no en la sección: así los links a #trabajos y
+   /#works siguen dejando el título justo debajo del menú. */
+.motion .works { position: relative; z-index: 0; margin-top: calc(28vh - 72px - 100svh); }
+.motion .works::before {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  top: calc(72px - 28vh); left: calc(50% - 50vw); right: calc(50% - 50vw); height: 120svh;
+  background: linear-gradient(to bottom, transparent 0, rgba(5, 5, 5, 0.86) 22vh, var(--bg) 40vh, var(--bg) 100svh, rgba(5, 5, 5, 0) 120svh);
+}
+
+/* =========================================================
+   Secciones
+   ========================================================= */
+.sec-head {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px;
+  margin-bottom: 40px;
+}
+.sec-head h2 { font-weight: 800; font-size: clamp(36px, 4.6vw, 68px); line-height: 1; letter-spacing: -0.03em; }
+.sec-head p { color: var(--muted); }
+.anchor-alias { position: relative; top: calc(-1 * var(--nav-h)); }
+
+/* trabajos */
+.works { padding-top: 72px; padding-bottom: 96px; scroll-margin-top: var(--nav-h); }
+.grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px; }
+.card { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.card[hidden] { display: none; }
+.card-media {
+  position: relative; overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--surface);
+  aspect-ratio: 4 / 3;
+}
+.card-media img, .card-media video {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  transition: transform 1.2s var(--ease-out), opacity var(--dur-mid);
+}
+.card-media video { opacity: 0; }
+.card-media img.fit-contain { object-fit: contain; }
+.card.is-playing .card-media video { opacity: 1; }
+.card:hover .card-media img, .card:focus-visible .card-media img, .card.is-playing .card-media video { transform: scale(1.04); }
+.card-meta { display: flex; flex-direction: column; gap: 4px; }
+.card-meta h3 { font-weight: 800; font-size: clamp(22px, 1.8vw, 27px); line-height: 1.15; letter-spacing: -0.015em; }
+.card-cat { color: var(--accent); font-size: var(--fs-small); }
+.card-cat .ext-ic { display: inline-block; width: 14px; height: 14px; vertical-align: -1px; }
+.card:focus-visible { outline-offset: 6px; border-radius: var(--radius); }
+
+/* etiqueta que sigue al mouse: "Ver caso" / "Ver sitio" (solo con mouse; la mueve js/home.js) */
+.cursor-tag { position: fixed; left: 0; top: 0; z-index: 40; pointer-events: none; display: none; }
+.has-cursor-tag .cursor-tag { display: block; }
+.cursor-tag span {
+  display: block; padding: 10px 16px; border-radius: var(--radius-pill);
+  background: var(--fg); color: var(--bg); font-size: 14px; font-weight: 600; white-space: nowrap;
+  transform: translate(-50%, -50%) scale(0); opacity: 0;
+  transition: transform var(--dur-ui) var(--ease-out), opacity var(--dur-fast);
+}
+.cursor-tag.is-on span { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+.card-desc { margin-top: 4px; color: var(--fg-soft); max-width: 52ch; }
+.card-tools { color: var(--muted); font-size: var(--fs-small); }
+
+/* tamaños: los asigna js/home.js (s7/s5, s4, s6, s12 y su alto); celular: una columna */
+@media (min-width: 640px) and (max-width: 899px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px 24px; }
+  .card.two-col-full, .card.s12 { grid-column: span 2; }
+}
+@media (min-width: 900px) {
+  .grid { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 72px 28px; }
+  .s7 { grid-column: span 7; } .s5 { grid-column: span 5; }
+  .s4 { grid-column: span 4; } .s6 { grid-column: span 6; } .s12 { grid-column: span 12; }
+  .h-tall .card-media { aspect-ratio: auto; height: clamp(300px, 34vw, 520px); }
+  .h-mid .card-media { aspect-ratio: auto; height: clamp(240px, 23vw, 360px); }
+  .h-wide .card-media { aspect-ratio: auto; height: clamp(280px, 30vw, 460px); }
+  .h-full .card-media { aspect-ratio: auto; height: clamp(340px, 40vw, 620px); }
+}
+
+/* cabecera de trabajos: título y cantidad, debajo los filtros */
+.works-top { display: flex; flex-direction: column; gap: 24px; margin-bottom: 48px; }
+.works-title { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; }
+.works-title h2 { font-weight: 800; font-size: clamp(36px, 4.6vw, 68px); line-height: 1; letter-spacing: -0.03em; }
+.works-count { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* filtros: las categorías en tamaño de título, con su cantidad en superíndice.
+   Inactivas atenuadas (rgba .45 ≈ 4:1 sobre el fondo, texto grande), más claras al pasar el mouse;
+   la activa con el degradado del logo. Sin JS no hay filtros: se ven los destacados. */
+:root:not(.js) .filters { display: none; }
+.filters { display: flex; flex-wrap: wrap; gap: 2px 28px; }
+.filter {
+  appearance: none; background: none; border: 0; margin: 0; padding: 6px 0; cursor: pointer;
+  min-height: 44px; display: inline-flex; align-items: flex-start;
+  font-weight: 800; font-stretch: 112%; font-size: clamp(26px, 3.6vw, 52px); line-height: 1; letter-spacing: -0.03em;
+  color: rgba(240, 240, 240, 0.45);
+  transition: color var(--dur-ui) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.filter:hover { color: rgba(240, 240, 240, 0.78); }
+.filter:active { transform: scale(0.97); }
+.filter sup {
+  font-size: max(12px, 0.32em); font-weight: 600; letter-spacing: 0; line-height: 1;
+  margin-left: 0.18em; position: relative; top: 0.2em;
+  color: var(--muted); font-variant-numeric: tabular-nums;
+}
+.filter[aria-pressed="true"] { color: var(--accent); }
+.filter[aria-pressed="true"] .filter-label {
+  background: var(--logo-gradient); background-size: 300% 300%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: textGradientFlow 8s ease infinite;
+}
+.filter[aria-pressed="true"] sup { color: var(--accent); }
+
+/* servicios */
+.services { padding-bottom: 104px; scroll-margin-top: var(--nav-h); }
+.offer {
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px 48px;
+  padding-block: 40px;
+}
+.offer h3 {
+  font-weight: 900; font-stretch: 108%; font-size: clamp(30px, 3.4vw, 48px); line-height: 1; letter-spacing: -0.03em;
+  background: var(--logo-gradient); background-size: 300% 300%; background-position: 0% 50%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  transition: background-position 1.2s var(--ease-out);
+}
+.offer:hover h3 { background-position: 100% 50%; }
+.offer-body { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.offer-body p { color: var(--fg-soft); max-width: 58ch; }
+.offer-body .offer-inc { color: var(--muted); }
+.offer-ex { font-size: var(--fs-small); }
+.offer-body .offer-ex { color: var(--muted); }
+.offer-ex a { color: var(--fg); border-bottom: 1px solid rgba(0, 255, 136, 0.55); padding-block: 4px; transition: color var(--dur-ui) var(--ease-out), border-color var(--dur-ui) var(--ease-out); }
+.offer-ex a:hover, .offer-ex a:focus-visible { color: var(--accent); border-bottom-color: var(--accent); }
+.offer-cta { display: flex; }
+@media (min-width: 900px) {
+  .offer { grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) auto; align-items: start; }
+}
+
+/* herramientas: una cinta de borde a borde que se desplaza lento en loop y se pausa con el mouse
+   encima (o fuera de pantalla: js/home.js). La lista va tres veces seguidas (las copias, escondidas para
+   los lectores de pantalla): cada una se corre su propio ancho y el loop no tiene costura. Con mouse,
+   los íconos van en gris y toman su color al pasar por encima; sin mouse se ven a color. Los datos
+   están en data/tools.json. Con movimiento reducido: una fila quieta que se scrollea de costado. */
+.stack { padding-bottom: 104px; }
+.ribbon {
+  display: flex; overflow: hidden; padding-block: 6px;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+.ribbon-track {
+  flex: none; display: flex; gap: 12px; margin: 0; padding: 0 12px 0 0; list-style: none;
+  animation: ribbon 60s linear infinite; will-change: transform;
+}
+.ribbon:hover .ribbon-track, .ribbon.is-off .ribbon-track { animation-play-state: paused; }
+@keyframes ribbon { to { transform: translate3d(-100%, 0, 0); } }
+.tool {
+  flex: none; display: inline-flex; align-items: center; gap: 10px;
+  padding: 5px 16px 5px 5px; border: 1px solid var(--line); border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.03); color: var(--fg-soft); font-size: 15px; font-weight: 500; white-space: nowrap;
+  transition: border-color var(--dur-ui) var(--ease-out), transform var(--dur-ui) var(--ease-out), color var(--dur-ui);
+}
+.tool-tile { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: rgba(255, 255, 255, 0.06); }
+.tool-ic { width: 28px; height: 28px; transition: filter var(--dur-mid) var(--ease-out), opacity var(--dur-mid); }
+.tool-ic.invert { filter: invert(1); }
+@media (hover: hover) {
+  .tool-ic { filter: grayscale(1); opacity: 0.8; }
+  .tool-ic.invert { filter: grayscale(1) invert(1); }
+  .tool:hover { border-color: rgba(0, 255, 136, 0.45); color: var(--fg); transform: translateY(-2px); }
+  .tool:hover .tool-ic { filter: none; opacity: 1; }
+  .tool:hover .tool-ic.invert { filter: invert(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ribbon { overflow-x: auto; -webkit-mask-image: none; mask-image: none; padding-inline: var(--gutter); scrollbar-width: thin; }
+  .ribbon-track { animation: none; }
+  .ribbon-copy { display: none; }
+}
+
+/* contacto */
+.contact { padding-top: 112px; padding-bottom: 112px; scroll-margin-top: var(--nav-h); }
+.contact h2 { font-weight: 900; font-stretch: 108%; font-size: clamp(44px, 8vw, 128px); line-height: 0.92; letter-spacing: -0.04em; text-wrap: balance; max-width: 12ch; }
+.contact .lead { margin-top: 24px; }
+.contact-ctas { margin-top: 36px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+/* el mail: texto seleccionable y Copiar; al copiar, "Copiado" con un tilde que se dibuja */
+.mail {
+  display: inline-flex; align-items: center; gap: 10px; max-width: 100%;
+  min-height: 54px; padding: 6px 6px 6px 22px;
+  border: 1px solid rgba(255, 255, 255, 0.45); border-radius: var(--radius-pill);
+}
+.mail-text { user-select: all; overflow-wrap: anywhere; }
+/* celular: los tres del mismo ancho, apilados; el mail entra en una línea */
+@media (max-width: 559px) {
+  .contact-ctas > .btn, .contact-ctas > .mail { width: 100%; }
+  .mail { justify-content: space-between; padding-left: 18px; }
+  .mail-text { font-size: 15px; overflow-wrap: normal; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+}
+.mail-copy {
+  display: inline-flex; align-items: center; gap: 6px;
+  min-height: 42px; min-width: 44px; padding: 0 16px; border: 0; border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.12); font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: background-color var(--dur-ui) var(--ease-out), color var(--dur-ui) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.mail-copy:hover { background: rgba(0, 255, 136, 0.18); }
+.mail-copy:active { transform: scale(0.97); }
+.mail-copy .tick { width: 0; height: 14px; flex: none; margin-right: -6px; overflow: visible; transition: width var(--dur-ui) var(--ease-out), margin var(--dur-ui) var(--ease-out); }
+.mail-copy .tick path { stroke-dasharray: 24; stroke-dashoffset: 24; transition: stroke-dashoffset 0.4s var(--ease-out) 0.08s; }
+.mail-copy.is-done { background: rgba(0, 255, 136, 0.22); color: var(--accent); }
+.mail-copy.is-done .tick { width: 14px; margin-right: 0; }
+.mail-copy.is-done .tick path { stroke-dashoffset: 0; }
+
+/* footer: fondo sólido (el negro base); el fondo animado se funde hacia él, sin línea */
+.footer { position: relative; background: var(--bg); }
+.footer::before {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 100%; height: 160px;
+  background: linear-gradient(to bottom, rgba(5, 5, 5, 0), var(--bg));
+  pointer-events: none;
+}
+.footer-row {
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px;
+  padding-top: 24px; padding-bottom: max(32px, env(safe-area-inset-bottom, 0px));
+  color: var(--muted); font-size: var(--fs-small);
+}
+.footer-links { display: flex; flex-wrap: wrap; gap: 0 20px; list-style: none; margin: 0; padding: 0; }
+.footer-links a { display: inline-flex; align-items: center; min-height: 44px; }
+.footer-links a:hover { color: var(--fg); }
+
+/* aparición al scrollear (solo lo que arranca fuera de pantalla) */
+.js [data-reveal].is-await { opacity: 0; transform: translateY(40px); }
+.js [data-reveal].is-revealing { transition: opacity var(--dur-slow) var(--ease-out), transform 1.1s var(--ease-out); }
+
+/* =========================================================
+   Movimiento reducido: sin pin, sin scroll suave, sin entradas;
+   el fondo y los degradados quedan quietos, todo visible.
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .js [data-reveal].is-await { opacity: 1; transform: none; }
+  .bg-mesh, .bg-grid { transform: none; }
+}
+
+/* ── Caso como panel sobre la home ──────────────────────────
+   js/home.js lo llena con el <article> de la página del caso; los estilos de los
+   bloques llegan con css/case.css (todo colgado de .case-tokens, no toca la home).
+   Sube en 0,6 s y baja en 0,55 s (power3.inOut). En celular ocupa toda la pantalla. */
+.cp-scrim {
+  position: fixed; inset: 0; z-index: 60; background: rgba(0, 0, 0, 0.6);
+  opacity: 0; transition: opacity 0.55s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+.cp-scrim.on { opacity: 1; transition-duration: 0.6s; }
+.case-panel {
+  position: fixed; inset: 0; z-index: 61; background: var(--bg);
+  overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+  transform: translateY(100%); transition: transform 0.55s cubic-bezier(0.645, 0.045, 0.355, 1);
+  outline: none;
+}
+.case-panel.on { transform: none; transition-duration: 0.6s; }
+@media (min-width: 900px) {
+  .case-panel { inset: 16px 16px 0; border-radius: 12px 12px 0 0; }
+}
+/* manija para cerrar arrastrando hacia abajo (solo celular y tablet, donde el panel ocupa toda la pantalla) */
+.cp-handle { display: none; }
+@media (max-width: 899px) {
+  .case-panel .bar { padding-top: calc(18px + env(safe-area-inset-top, 0px)); }
+  .cp-handle {
+    display: block; position: absolute; left: 50%; top: calc(6px + env(safe-area-inset-top, 0px));
+    width: 40px; height: 4px; margin-left: -20px; border-radius: 2px; background: rgba(255, 255, 255, 0.35);
+  }
+}
+.case-panel.dragging { transition: none; }
+.cp-body { transition: opacity 0.25s; }
+.cp-body.is-swapping { opacity: 0; }
+/* mientras está abierto, la home no se mueve */
+html.cp-open, html.cp-open body { overflow: hidden; }
+@media (prefers-reduced-motion: reduce) {
+  .cp-scrim, .case-panel, .cp-body { transition: none; }
+}

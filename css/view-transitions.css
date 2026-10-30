@@ -1,0 +1,19 @@
+/* Transición entre páginas (View Transitions entre documentos).
+   La imagen de la tarjeta en la home y la imagen principal de cada caso comparten
+   view-transition-name (case-<slug>): al navegar la imagen se expande y al volver regresa.
+   Navegadores sin soporte: navegación normal. Movimiento reducido: sin transición. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}
+
+/* mismo ritmo que el resto del sitio: desplazamiento de 0,5 s con aceleración y frenado suaves */
+::view-transition-group(*) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+}
+/* la tarjeta (4:3) y la imagen del caso tienen otra proporción: recortar en vez de estirar */
+::view-transition-old(*),
+::view-transition-new(*) {
+  height: 100%;
+  object-fit: cover;
+}

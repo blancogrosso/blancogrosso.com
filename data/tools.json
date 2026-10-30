@@ -1,0 +1,28 @@
+{
+  "_leeme": "Herramientas de la home (sección entre Servicios y Contacto). Editar la lista = cambiar este archivo y correr: python3 scripts/build-home.py. icon: nombre del archivo en img/icons/stack/ (AVIF de 56 px, cuadrado, con transparencia). invert: true para los íconos negros, así se ven sobre el fondo oscuro.",
+  "groups": [
+    { "title": { "es": "Diseño", "en": "Design" },
+      "items": [
+        { "name": "Illustrator", "icon": "adobe-illustrator" },
+        { "name": "Photoshop", "icon": "adobe-photoshop" },
+        { "name": "Lightroom", "icon": "adobe-lightroom" }
+      ] },
+    { "title": { "es": "Video y motion", "en": "Video & motion" },
+      "items": [
+        { "name": "Premiere", "icon": "adobe-premiere" },
+        { "name": "CapCut", "icon": "capcut", "invert": true },
+        { "name": "Flow", "icon": "flow" },
+        { "name": "HeyGen", "icon": "heygen" },
+        { "name": "Suno", "icon": "suno" }
+      ] },
+    { "title": { "es": "IA y desarrollo", "en": "AI & development" },
+      "items": [
+        { "name": "Claude", "icon": "claude" },
+        { "name": "ChatGPT", "icon": "chatgpt", "invert": true },
+        { "name": "Gemini", "icon": "gemini" },
+        { "name": "Freepik", "icon": "freepik" },
+        { "name": "Lovable", "icon": "lovable" },
+        { "name": "Antigravity", "icon": "antigravity" }
+      ] }
+  ]
+}

@@ -1,0 +1,2014 @@
+{
+  "_leeme": "Páginas de caso. Cada caso genera <slug>.html con: python3 scripts/build-cases.py. Los textos van como {\"es\": …, \"en\": …} o como texto solo si es igual en los dos idiomas. Los bloques se muestran en el orden de la lista; tipos: hero, cover, facts, story, split-video, sheet, gallery, brand, palette, before-after, steps, prompt, video-embed, ext-link, next. El orden de los casos (contador y 'siguiente') es el de data/works.json. Explicación de cada bloque en scripts/build-cases.py.",
+  "cases": [
+    {
+      "slug": "by-kafuse",
+      "meta": {
+        "title": "By Kafuse | Blanco Grosso",
+        "og_title": "By Kafuse Alas y Raíces | Blanco Grosso",
+        "description": "Drop de media estación (Otoño/Invierno) para By Kafuse. Una prenda híbrida 2 en 1 que fusiona moldería técnica y diseño conceptual.",
+        "og_image_alt": "Portada del proyecto By Kafuse: modelo con la prenda y el título Alas y Raíces"
+      },
+      "blocks": [
+        {
+          "type": "hero",
+          "title": "By Kafuse Alas y Raíces",
+          "lead": {
+            "es": "Drop de media estación (Otoño/Invierno) para By Kafuse. Una prenda híbrida 2 en 1 que fusiona moldería técnica y diseño conceptual.",
+            "en": "Mid-season drop (Autumn/Winter) for By Kafuse. A hybrid 2-in-1 garment merging technical patterning and conceptual design."
+          },
+          "date": {
+            "es": "Junio 2024",
+            "en": "June 2024"
+          }
+        },
+        {
+          "type": "cover",
+          "src": "img/works/by-kafuse/caratula.avif",
+          "alt": {
+            "es": "Campera By Kafuse Alas y Raíces",
+            "en": "By Kafuse Alas y Raíces jacket"
+          }
+        },
+        {
+          "type": "facts",
+          "items": [
+            [
+              "client",
+              "By Kafuse"
+            ],
+            [
+              "year",
+              "2024"
+            ],
+            [
+              "did",
+              {
+                "es": "Diseño de prenda, dirección creativa, producción audiovisual",
+                "en": "Apparel design, creative direction, audiovisual production"
+              }
+            ],
+            [
+              "tools",
+              "Illustrator, Photoshop, Lightroom"
+            ]
+          ]
+        },
+        {
+          "type": "story",
+          "heading": {
+            "es": "Alas y Raíces",
+            "en": "Wings and Roots"
+          },
+          "paras": [
+            {
+              "es": "La colección \"Alas y Raíces\" celebra la historia y el crecimiento de una marca emergente uruguaya fundada por tres amigos de la infancia. Esta entrega encapsula la unión de pasado y futuro, tradición y modernidad, simbolizando cómo los fuertes lazos del pasado se transforman en el motor que impulsa hacia nuevos horizontes.",
+              "en": "The \"Alas y Raíces\" collection celebrates the history and growth of an emerging Uruguayan brand founded by three childhood friends. This release encapsulates the union of past and future, tradition and modernity, symbolizing how the strong bonds of the past transform into the engine that drives toward new horizons."
+            },
+            {
+              "es": "La moldería técnica constituye la base (raíces) y el diseño visual de las mangas se despliega como \"alas\", creando una pieza híbrida 2 en 1 diseñada para la transición de temporadas.",
+              "en": "The technical patterning forms the base (roots) and the visual design of the sleeves unfolds as \"wings,\" creating a hybrid 2-in-1 piece designed for seasonal transition."
+            }
+          ]
+        },
+        {
+          "type": "garment",
+          "items": [
+            {
+              "src": "img/works/by-kafuse/kafuse-percha.avif",
+              "alt": {
+                "es": "Prenda Alas y Raíces en una percha",
+                "en": "Alas y Raíces garment on a hanger"
+              },
+              "full": "img/works/by-kafuse/mockup.avif",
+              "full_alt": {
+                "es": "Diseño técnico de la prenda",
+                "en": "Technical design of the garment"
+              },
+              "caption": {
+                "es": "Diseño técnico",
+                "en": "Technical mockup"
+              }
+            }
+          ]
+        },
+        {
+          "type": "split-video",
+          "src": "img/works/by-kafuse/video.mp4",
+          "poster": "img/works/by-kafuse/video-poster.avif",
+          "heading": {
+            "es": "Producción audiovisual",
+            "en": "Audiovisual production"
+          },
+          "paras": []
+        },
+        {
+          "type": "gallery",
+          "items": [
+            {
+              "src": "img/works/by-kafuse/estudio-1.avif",
+              "alt": {
+                "es": "Estudio 1",
+                "en": "Studio 1"
+              }
+            },
+            {
+              "src": "img/works/by-kafuse/detalle-1.avif",
+              "alt": {
+                "es": "Detalle 1",
+                "en": "Detail 1"
+              }
+            },
+            {
+              "src": "img/works/by-kafuse/estudio-2.avif",
+              "alt": {
+                "es": "Estudio 2",
+                "en": "Studio 2"
+              }
+            },
+            {
+              "src": "img/works/by-kafuse/detalle-2.avif",
+              "alt": {
+                "es": "Detalle 2",
+                "en": "Detail 2"
+              }
+            },
+            {
+              "src": "img/works/by-kafuse/estudio-3.avif",
+              "alt": {
+                "es": "Estudio 3",
+                "en": "Studio 3"
+              }
+            },
+            {
+              "src": "img/works/by-kafuse/detalle-3.avif",
+              "alt": {
+                "es": "Detalle 3",
+                "en": "Detail 3"
+              }
+            }
+          ]
+        },
+        {
+          "type": "ext-link",
+          "href": "https://www.instagram.com/p/C8icrbSs_Xb/?img_index=1",
+          "label": {
+            "es": "Ver en Instagram",
+            "en": "View on Instagram"
+          }
+        },
+        {
+          "type": "next"
+        }
+      ]
+    },
+    {
+      "slug": "sport-editorial",
+      "meta": {
+        "title": "Sport Editorial | Blanco Grosso",
+        "og_title": "Sport Editorial | Blanco Grosso",
+        "description": "Creación de imágenes de alto nivel para Sport Design. Un flujo de trabajo optimizado para lograr resultados fotorrealistas con dirección de arte sintética.",
+        "og_image_alt": "Portada del proyecto Sport Editorial: collage de jugadores de La Bufarra con el escudo del club"
+      },
+      "blocks": [
+        {
+          "type": "hero",
+          "title": "Sport Editorial High Quality",
+          "lead": {
+            "es": "Creación de imágenes de alto nivel para Sport Design. Un flujo de trabajo optimizado para lograr resultados fotorrealistas con dirección de arte sintética.",
+            "en": "High-level image creation for Sport Design. An optimized workflow to achieve photorealistic results with synthetic art direction."
+          },
+          "date": {
+            "es": "Mayo 2026",
+            "en": "May 2026"
+          }
+        },
+        {
+          "type": "before-after",
+          "cover": true,
+          "before": {
+            "src": "img/works/sport-editorial/dts-cruda-comparar.avif",
+            "alt": {
+              "es": "Foto generada, sin terminar",
+              "en": "Generated photo, unfinished"
+            }
+          },
+          "after": {
+            "src": "img/works/sport-editorial/dts-comparar.avif",
+            "alt": {
+              "es": "Pieza terminada",
+              "en": "Finished piece"
+            }
+          }
+        },
+        {
+          "type": "facts",
+          "items": [
+            [
+              "client",
+              "La Bufarra"
+            ],
+            [
+              "year",
+              "2026"
+            ],
+            [
+              "did",
+              {
+                "es": "Sport Design con IA",
+                "en": "AI-powered sport design"
+              }
+            ],
+            [
+              "tools",
+              "GPT, Gemini, Photoshop"
+            ]
+          ]
+        },
+        {
+          "type": "story",
+          "heading": {
+            "es": "Excelencia visual en segundos",
+            "en": "Visual excellence in seconds"
+          },
+          "paras": [
+            {
+              "es": "Este proyecto demuestra la capacidad de la IA para generar contenido editorial de alta calidad que compite con la fotografía tradicional. El foco estuvo en la precisión anatómica, el dinamismo de la acción y la integración impecable de branding deportivo.",
+              "en": "This project demonstrates AI's capability to generate high-quality editorial content that competes with traditional photography. The focus was on anatomical precision, action dynamism, and flawless integration of sports branding."
+            }
+          ]
+        },
+        {
+          "type": "steps",
+          "items": [
+            {
+              "title": {
+                "es": "Curaduría & prompts",
+                "en": "Curation & prompts"
+              },
+              "text": {
+                "es": "Armado de ideas y prompts complejos utilizando referencias visuales y GPT para establecer la base estética.",
+                "en": "Developing complex ideas and prompts using visual references and GPT to establish the aesthetic base."
+              }
+            },
+            {
+              "title": {
+                "es": "Generación HQ",
+                "en": "HQ generation"
+              },
+              "text": {
+                "es": "Creación de imágenes de alta fidelidad en Gemini, enfocadas en texturas, iluminación y composición deportiva.",
+                "en": "Creating high-fidelity images in Gemini, focused on textures, lighting, and sports composition."
+              }
+            },
+            {
+              "title": {
+                "es": "Finalización",
+                "en": "Finalization"
+              },
+              "text": {
+                "es": "Integración de elementos gráficos, retoque de color y acabado profesional en Adobe Photoshop.",
+                "en": "Integration of graphic elements, color retouching, and professional finish in Adobe Photoshop."
+              }
+            }
+          ]
+        },
+        {
+          "type": "prompt",
+          "label": "anzu_raw.prompt",
+          "text": "Ultra-realistic cinematic sports editorial photo of [PLAYER: adult male] portrayed as a field herpetologist / conservation biologist, premium campaign realism, serious attitude.\nMatch the provided face reference for identity (high similarity). The provided club jersey must be visible under wardrobe (open lab coat/tunic, tasteful).\nWardrobe (mandatory): white lab coat/tunic (slightly open), black nitrile gloves, clear laboratory safety glasses...\nOutput: 3:4 vertical, 4K, extremely detailed, magazine cover realism.\nNo text, no logos, no badges, no watermarks, no UI.",
+          "src": "img/works/sport-editorial/anzu-cruda.avif",
+          "alt": {
+            "es": "Resultado del prompt",
+            "en": "Prompt result"
+          }
+        },
+        {
+          "type": "gallery",
+          "items": [
+            {
+              "src": "img/works/sport-editorial/anzu.avif",
+              "alt": "Anzu"
+            },
+            {
+              "src": "img/works/sport-editorial/enzo.avif",
+              "alt": "Enzo"
+            },
+            {
+              "src": "img/works/sport-editorial/pablo.avif",
+              "alt": "Pablo"
+            },
+            {
+              "src": "img/works/sport-editorial/pepo.avif",
+              "alt": "Pepo"
+            },
+            {
+              "src": "img/works/sport-editorial/toni.avif",
+              "alt": "Toni"
+            },
+            {
+              "src": "img/works/sport-editorial/dts.avif",
+              "alt": "DTs"
+            }
+          ]
+        },
+        {
+          "type": "next"
+        }
+      ]
+    },
+    {
+      "slug": "bufarra-kithome",
+      "meta": {
+        "title": "Bufarra Kit Home | Blanco Grosso",
+        "og_title": "Bufarra KitHome 24/25 | Blanco Grosso",
+        "description": "Producción de fotos híbrida y diseño de indumentaria. Explorando la intersección entre el diseño deportivo tradicional y la generación de imágenes con IA.",
+        "og_image_alt": "Portada del proyecto Bufarra KitHome 24/25: jugadores con la camiseta titular y el título Kit Home"
+      },
+      "blocks": [
+        {
+          "type": "hero",
+          "title": "Bufarra KitHome 24/25",
+          "lead": {
+            "es": "Producción de fotos híbrida y diseño de indumentaria. Explorando la intersección entre el diseño deportivo tradicional y la generación de imágenes con IA.",
+            "en": "Hybrid photo production and apparel design. Exploring the intersection between traditional sports design and AI image generation."
+          },
+          "date": {
+            "es": "Marzo 2026",
+            "en": "March 2026"
+          }
+        },
+        {
+          "type": "before-after",
+          "cover": true,
+          "before": {
+            "src": "img/works/bufarra-kithome/raw-ai-comparar.avif",
+            "alt": {
+              "es": "Foto generada con IA, sin retocar",
+              "en": "Raw AI-generated photo"
+            }
+          },
+          "after": {
+            "src": "img/works/bufarra-kithome/final-edit-comparar.avif",
+            "alt": {
+              "es": "Pieza final retocada",
+              "en": "Final retouched piece"
+            }
+          }
+        },
+        {
+          "type": "facts",
+          "items": [
+            [
+              "client",
+              "La Bufarra"
+            ],
+            [
+              "year",
+              "2026"
+            ],
+            [
+              "did",
+              {
+                "es": "Sport Design con IA, producción de fotos y diseño de indumentaria",
+                "en": "AI-powered sport design, photo production and apparel design"
+              }
+            ],
+            [
+              "tools",
+              "GPT, Gemini, Photoshop, Illustrator, Lightroom"
+            ]
+          ]
+        },
+        {
+          "type": "story",
+          "heading": {
+            "es": "Producción remota & visión digital",
+            "en": "Remote production & digital vision"
+          },
+          "paras": [
+            {
+              "es": "Bufarra KitHome nació de la necesidad de mostrar un producto físico (camiseta 2024/25) sin la posibilidad de realizar una sesión de fotos tradicional. Creado a distancia, el proyecto utiliza la IA para simular una producción de estudio de alto nivel, permitiendo el lanzamiento del \"drop\" en 2026 con una estética premium.",
+              "en": "Bufarra KitHome was born from the need to showcase a physical product (2024/25 jersey) without the possibility of a traditional photo shoot. Created remotely, the project uses AI to simulate high-level studio production, allowing for a 2026 \"drop\" launch with a premium aesthetic."
+            },
+            {
+              "es": "En colaboración con By Kafuse, integramos el diseño técnico de la prenda en entornos generados sintéticamente, logrando un realismo que trasciende la fotografía convencional.",
+              "en": "In collaboration with By Kafuse, we integrated the technical garment design into synthetically generated environments, achieving a level of realism that transcends conventional photography."
+            }
+          ]
+        },
+        {
+          "type": "steps",
+          "items": [
+            {
+              "title": {
+                "es": "Concepto & dirección",
+                "en": "Concept & direction"
+              },
+              "text": {
+                "es": "Definición de estética visual, narrativa de marca y dirección de arte para la campaña.",
+                "en": "Definition of visual aesthetics, brand narrative, and art direction for the campaign."
+              }
+            },
+            {
+              "title": {
+                "es": "Arquitectura de prompt",
+                "en": "Prompt architecture"
+              },
+              "text": {
+                "es": "Ingeniería de lenguaje para traducir la visión creativa en parámetros técnicos de IA.",
+                "en": "Language engineering to translate the creative vision into technical AI parameters."
+              }
+            },
+            {
+              "title": {
+                "es": "Generación iterativa",
+                "en": "Iterative generation"
+              },
+              "text": {
+                "es": "Exploración masiva y refinamiento de recursos base mediante modelos generativos.",
+                "en": "Massive exploration and refinement of base assets using generative models."
+              }
+            },
+            {
+              "title": {
+                "es": "Post-producción digital",
+                "en": "Digital post-production"
+              },
+              "text": {
+                "es": "Intervención en Photoshop, retoque de alta gama e integración de branding final.",
+                "en": "Photoshop intervention, high-end retouching, and final branding integration."
+              }
+            }
+          ]
+        },
+        {
+          "type": "prompt",
+          "label": "studio_campaign_v2.prompt",
+          "text": "Ultra-realistic football campaign portrait photo of [PLAYER], using the provided face reference for identity (high similarity) and the provided jersey reference for the exact jersey design and logos.\n\nSCENE (VERY IMPORTANT)\nProfessional photo studio campaign portrait in front of a seamless paper backdrop color #FCDAD9 (pastel pink).\nThe studio must be slightly visible at the edges ONLY (campaign look, not backstage):\n- show the crossbar holding the paper roll at the top,\n- show partial softbox/light modifier edges on left and right borders (cropped, slightly out of focus),\n- show faint studio wall corners and a bit of concrete floor outside the paper at the very bottom edges.\nKeep it minimal, premium, clean.\n\nSUBJECT PLACEMENT (ABSOLUTE ANCHORS — DO NOT DEVIATE)\n- The player must stand centered on the pink paper sweep (not on the gray floor).\n- Head center at X = 50% of the frame.\n- Torso center at X = 50% of the frame.\n- Shoe soles must touch the pink paper floor at Y = 90% of the frame height.\n- Subject height must occupy 72–80% of the frame height (poster scale).\nIf you can’t satisfy these anchors, do not generate.\n\nCAMERA / POV (CAMPAIGN LIKE PEÑAROL)\n3:4 vertical.\n24–28mm wide-angle campaign portrait, close distance.\nSlightly high angle / mild top-down (picado suave) BUT keep the subject large and centered.\nSubtle barrel distortion and lens hood vignette on corners (campaign feel), not extreme fisheye.\n\nCOMPOSITION\nTight poster crop: head to mid-torso or head to upper-hips.\nSubject dominates the frame. Studio elements only peripheral hints.\n\nLIGHTING\nProfessional studio strobe look, crisp highlights, clean shadows, editorial contrast.\nNatural skin texture with pores, minimal grain. No HDR.\n\nPOSE / EXPRESSION\nSerious expression (no smile), calm, confident.\nArms variation: choose ONE:\n- hands clasped at chest\n- one hand on hip, other relaxed\n- adjusting collar/neckline WITHOUT covering the crest\nDO NOT grab or cover the badge/crest.\n\nWARDROBE\nOnly the club jersey. Keep jersey readable and undistorted.\n\nSTRICT\nNo text, no typography, no watermarks, no UI, no extra/invented logos.\nDo NOT turn this into a wide behind-the-scenes shot.\nDo NOT make the subject small.\nDo NOT relocate the subject off the pink paper.\n\nOUTPUT\n4K, ultra sharp, magazine cover realism.\n\nNEGATIVE PROMPT\ntiny subject, full studio wide shot, documentary backstage, cluttered cables/props, chairs, visible tripods everywhere,\nsubject on gray floor, subject off-center, wrong jersey design/colors, face mismatch, smile,\nhand covering crest, extra fingers, deformed hands, CGI, plastic skin, blur, HDR, text, watermark"
+        },
+        {
+          "type": "garment",
+          "items": [
+            {
+              "src": "img/works/bufarra-kithome/kithome-percha.avif",
+              "alt": {
+                "es": "Camiseta KitHome 24/25 en una percha",
+                "en": "KitHome 24/25 jersey on a hanger"
+              },
+              "full": "img/works/bufarra-kithome/mockup.avif",
+              "full_alt": {
+                "es": "Diseño técnico de la camiseta",
+                "en": "Technical design of the jersey"
+              },
+              "caption": {
+                "es": "Diseño técnico",
+                "en": "Technical mockup"
+              }
+            }
+          ]
+        },
+        {
+          "type": "gallery",
+          "items": [
+            {
+              "src": "img/works/bufarra-kithome/caratula-campana.avif",
+              "alt": {
+                "es": "Campaña Bufarra",
+                "en": "Bufarra campaign"
+              }
+            },
+            {
+              "src": "img/works/bufarra-kithome/set-foto-estudio.avif",
+              "alt": {
+                "es": "Set de estudio",
+                "en": "Studio set"
+              }
+            },
+            {
+              "src": "img/works/bufarra-kithome/foto-estudio-fede.avif",
+              "alt": {
+                "es": "Estudio 1",
+                "en": "Studio 1"
+              }
+            },
+            {
+              "src": "img/works/bufarra-kithome/foto-estudio-feli.avif",
+              "alt": {
+                "es": "Estudio 2",
+                "en": "Studio 2"
+              }
+            },
+            {
+              "src": "img/works/bufarra-kithome/foto-estudio-juan.avif",
+              "alt": {
+                "es": "Estudio 3",
+                "en": "Studio 3"
+              }
+            },
+            {
+              "src": "img/works/bufarra-kithome/foto-estudio-justi.avif",
+              "alt": {
+                "es": "Estudio 4",
+                "en": "Studio 4"
+              }
+            },
+            {
+              "src": "img/works/bufarra-kithome/foto-estudio-mencha.avif",
+              "alt": {
+                "es": "Estudio 5",
+                "en": "Studio 5"
+              }
+            },
+            {
+              "src": "img/works/bufarra-kithome/foto-estudio-mique.avif",
+              "alt": {
+                "es": "Estudio 6",
+                "en": "Studio 6"
+              }
+            },
+            {
+              "src": "img/works/bufarra-kithome/foto-estudio-oso.avif",
+              "alt": {
+                "es": "Estudio 7",
+                "en": "Studio 7"
+              }
+            },
+            {
+              "src": "img/works/bufarra-kithome/foto-estudio-seba.avif",
+              "alt": {
+                "es": "Estudio 8",
+                "en": "Studio 8"
+              }
+            },
+            {
+              "src": "img/works/bufarra-kithome/foto-estudio-spark.avif",
+              "alt": {
+                "es": "Estudio 9",
+                "en": "Studio 9"
+              }
+            },
+            {
+              "src": "img/works/bufarra-kithome/foto-estudio-hype.avif",
+              "alt": {
+                "es": "Estudio 10",
+                "en": "Studio 10"
+              }
+            }
+          ]
+        },
+        {
+          "type": "ext-link",
+          "href": "https://www.instagram.com/p/DV_93RekUfz/?img_index=1",
+          "label": {
+            "es": "Ver en Instagram",
+            "en": "View on Instagram"
+          }
+        },
+        {
+          "type": "next"
+        }
+      ]
+    },
+    {
+      "slug": "bufarra-umbro",
+      "meta": {
+        "title": "La Bufarra x Umbro | Blanco Grosso",
+        "og_title": "La Bufarra x Umbro Uruguay | Blanco Grosso",
+        "description": "Diseño de indumentaria y campaña audiovisual express. Un lanzamiento integral que une el diseño técnico tradicional con una producción visual potenciada por IA.",
+        "og_image_alt": "Portada del proyecto La Bufarra x Umbro: jugadores con la camiseta 2026 y el título Pasado Presente"
+      },
+      "blocks": [
+        {
+          "type": "hero",
+          "title": "La Bufarra x Umbro Uruguay",
+          "lead": {
+            "es": "Diseño de indumentaria y campaña audiovisual express. Un lanzamiento integral que une el diseño técnico tradicional con una producción visual potenciada por IA en tiempo récord.",
+            "en": "Apparel design and express audiovisual campaign. A comprehensive launch bridging traditional technical design with AI-powered visual production in record time."
+          },
+          "date": {
+            "es": "Mayo 2026",
+            "en": "May 2026"
+          }
+        },
+        {
+          "type": "cover",
+          "src": "img/works/bufarra-umbro/hero.avif",
+          "alt": {
+            "es": "La Bufarra x Umbro",
+            "en": "La Bufarra x Umbro"
+          }
+        },
+        {
+          "type": "facts",
+          "items": [
+            [
+              "client",
+              "La Bufarra"
+            ],
+            [
+              "year",
+              "2026"
+            ],
+            [
+              "did",
+              {
+                "es": "Diseño de indumentaria y campaña audiovisual con IA",
+                "en": "Apparel design and AI-powered audiovisual campaign"
+              }
+            ],
+            [
+              "tools",
+              "Illustrator, Photoshop, Claude, Gemini, Flow, CapCut"
+            ]
+          ]
+        },
+        {
+          "type": "story",
+          "heading": {
+            "es": "Agilidad & calidad",
+            "en": "Agility & quality"
+          },
+          "paras": [
+            {
+              "es": "El reto fue lanzar el nuevo kit inspirado en los inicios del club en 2018 con su participación en la Federación Uruguaya de Fútbol Virtual (FUFV), donde se consigue el ascenso a la primera división. La temática está inspirada en la experiencia de jugar en la modalidad Clubes Pro del videojuego FIFA. Los colores del kit (negro para jugador y violeta para arquero) hacen honor a las camisetas de juego utilizadas en aquel ascenso.",
+              "en": "The challenge was to launch the new kit inspired by the club's beginnings in 2018 with its participation in the Uruguayan Virtual Football Federation (FUFV), where promotion to the first division was achieved. The theme is inspired by the experience of playing the Pro Clubs mode of the FIFA video game. The colors of the kit (black for player and purple for goalkeeper) honor the match shirts used in that promotion."
+            }
+          ]
+        },
+        {
+          "type": "steps",
+          "items": [
+            {
+              "title": {
+                "es": "Diseño técnico",
+                "en": "Technical design"
+              },
+              "text": {
+                "es": "Creación de la prenda en Illustrator y Photoshop, ajustando detalles en reuniones presenciales con Umbro Uruguay.",
+                "en": "Garment creation in Illustrator and Photoshop, refining details in face-to-face meetings with Umbro Uruguay."
+              }
+            },
+            {
+              "title": {
+                "es": "Campaña express",
+                "en": "Express campaign"
+              },
+              "text": {
+                "es": "Conceptualización, guion y arquitectura de prompts desarrollada en Claude para una ejecución en un solo día.",
+                "en": "Conceptualization, scripting, and prompt architecture developed in Claude for one-day execution."
+              }
+            },
+            {
+              "title": {
+                "es": "Generación IA",
+                "en": "AI generation"
+              },
+              "text": {
+                "es": "Producción de imágenes base en Gemini, integrando la identidad visual de la nueva camiseta.",
+                "en": "Production of base images in Gemini, integrating the visual identity of the new jersey."
+              }
+            },
+            {
+              "title": {
+                "es": "Retoque digital",
+                "en": "Digital retouch"
+              },
+              "text": {
+                "es": "Corrección de imperfecciones y pulido de assets en Photoshop para asegurar calidad editorial.",
+                "en": "Imperfection correction and asset polishing in Photoshop to ensure editorial quality."
+              }
+            },
+            {
+              "title": {
+                "es": "Animación Flow",
+                "en": "Flow animation"
+              },
+              "text": {
+                "es": "Transformación de piezas fijas en video hype dinámico utilizando herramientas de animación IA.",
+                "en": "Transforming static pieces into dynamic hype video using AI animation tools."
+              }
+            },
+            {
+              "title": {
+                "es": "Montaje CapCut",
+                "en": "CapCut assembly"
+              },
+              "text": {
+                "es": "Edición final, ritmo audiovisual y exportación optimizada para plataformas sociales.",
+                "en": "Final editing, audiovisual rhythm, and optimized export for social platforms."
+              }
+            }
+          ]
+        },
+        {
+          "type": "before-after",
+          "before": {
+            "src": "img/works/bufarra-umbro/ai-raw-comparar.avif",
+            "alt": {
+              "es": "Imagen generada con IA, sin retocar",
+              "en": "Raw AI-generated image"
+            }
+          },
+          "after": {
+            "src": "img/works/bufarra-umbro/ps-edit-comparar.avif",
+            "alt": {
+              "es": "Imagen retocada en Photoshop",
+              "en": "Image retouched in Photoshop"
+            }
+          }
+        },
+        {
+          "type": "split-video",
+          "src": "img/works/bufarra-umbro/final-frame.mp4",
+          "poster": "img/works/bufarra-umbro/final-frame-poster.avif",
+          "heading": {
+            "es": "Del concepto IA al frame final",
+            "en": "From AI concept to final frame"
+          },
+          "paras": []
+        },
+        {
+          "type": "video-pair",
+          "items": [
+            {
+              "src": "img/works/bufarra-umbro/reel-hype.mp4",
+              "poster": "img/works/bufarra-umbro/reel-hype-poster.avif",
+              "heading": "Video Hype"
+            },
+            {
+              "src": "img/works/bufarra-umbro/reel-final.mp4",
+              "poster": "img/works/bufarra-umbro/reel-final-poster.avif",
+              "heading": "Video Final"
+            }
+          ]
+        },
+        {
+          "type": "gallery",
+          "items": [
+            {
+              "src": "img/works/bufarra-umbro/frames/mesa-de-trabajo-1-limpio.avif",
+              "alt": "Frame 1"
+            },
+            {
+              "src": "img/works/bufarra-umbro/frames/mesa-de-trabajo-1-2-limpio.avif",
+              "alt": "Frame 2"
+            },
+            {
+              "src": "img/works/bufarra-umbro/frames/mesa-de-trabajo-1-3.avif",
+              "alt": "Frame 3"
+            },
+            {
+              "src": "img/works/bufarra-umbro/frames/mesa-de-trabajo-1-4.avif",
+              "alt": "Frame 4"
+            },
+            {
+              "src": "img/works/bufarra-umbro/frames/mesa-de-trabajo-2-limpio.avif",
+              "alt": "Frame 5"
+            },
+            {
+              "src": "img/works/bufarra-umbro/frames/mesa-de-trabajo-2-2-limpio.avif",
+              "alt": "Frame 6"
+            },
+            {
+              "src": "img/works/bufarra-umbro/frames/mesa-de-trabajo-2-3-limpio.avif",
+              "alt": "Frame 7"
+            },
+            {
+              "src": "img/works/bufarra-umbro/frames/mesa-de-trabajo-2-4-limpio.avif",
+              "alt": "Frame 8"
+            },
+            {
+              "src": "img/works/bufarra-umbro/frames/mesa-de-trabajo-3-limpio.avif",
+              "alt": "Frame 9"
+            },
+            {
+              "src": "img/works/bufarra-umbro/frames/mesa-de-trabajo-3-2-limpio.avif",
+              "alt": "Frame 10"
+            },
+            {
+              "src": "img/works/bufarra-umbro/frames/mesa-de-trabajo-3-3-limpio.avif",
+              "alt": "Frame 11"
+            },
+            {
+              "src": "img/works/bufarra-umbro/frames/mesa-de-trabajo-4-limpio.avif",
+              "alt": "Frame 12"
+            },
+            {
+              "src": "img/works/bufarra-umbro/frames/mesa-de-trabajo-4-2-limpio.avif",
+              "alt": "Frame 13"
+            },
+            {
+              "src": "img/works/bufarra-umbro/frames/mesa-de-trabajo-4-3-limpio.avif",
+              "alt": "Frame 14"
+            }
+          ]
+        },
+        {
+          "type": "garment",
+          "heading": {
+            "es": "Diseño de jugador & golero",
+            "en": "Player & goalkeeper design"
+          },
+          "items": [
+            {
+              "src": "img/works/bufarra-umbro/umbro-jugador-percha.avif",
+              "alt": {
+                "es": "Camiseta de jugador en una percha",
+                "en": "Player jersey on a hanger"
+              },
+              "full": "img/works/bufarra-umbro/mockup/jugador-camiseta.avif",
+              "full_alt": {
+                "es": "Diseño de la camiseta de jugador",
+                "en": "Player jersey design"
+              },
+              "caption": "Home Kit (Player)"
+            },
+            {
+              "src": "img/works/bufarra-umbro/umbro-golero-percha.avif",
+              "alt": {
+                "es": "Camiseta de golero en una percha",
+                "en": "Goalkeeper jersey on a hanger"
+              },
+              "full": "img/works/bufarra-umbro/mockup/golero-camiseta.avif",
+              "full_alt": {
+                "es": "Diseño de la camiseta de golero",
+                "en": "Goalkeeper jersey design"
+              },
+              "caption": "GK Kit (Goalkeeper)"
+            }
+          ]
+        },
+        {
+          "type": "gallery",
+          "heading": {
+            "es": "Fotografía de juego",
+            "en": "In-game action photography"
+          },
+          "items": [
+            {
+              "src": "img/works/bufarra-umbro/juego/mesa-de-trabajo-1.avif",
+              "alt": {
+                "es": "En juego 1",
+                "en": "In-game 1"
+              }
+            },
+            {
+              "src": "img/works/bufarra-umbro/juego/carrusel-03.avif",
+              "alt": {
+                "es": "En juego 2",
+                "en": "In-game 2"
+              }
+            },
+            {
+              "src": "img/works/bufarra-umbro/juego/mesa-de-trabajo-3-copia.avif",
+              "alt": {
+                "es": "En juego 3",
+                "en": "In-game 3"
+              }
+            }
+          ]
+        },
+        {
+          "type": "ext-link",
+          "href": "https://www.instagram.com/reel/DW-mvHiNNMv/",
+          "label": {
+            "es": "Ver en Instagram",
+            "en": "View on Instagram"
+          }
+        },
+        {
+          "type": "next"
+        }
+      ]
+    },
+    {
+      "slug": "final-clasica",
+      "meta": {
+        "title": "Final Clásica Fútbol Uruguayo | Blanco Grosso",
+        "og_title": "Final Clásica Fútbol Uruguayo | Blanco Grosso",
+        "description": "Diseño de pauta oficial e identidad visual para la cobertura de FIX en la final clásica del fútbol uruguayo.",
+        "og_image_alt": "Portada del proyecto Final Clásica: jugadores y el título de la final con el logo de FIX"
+      },
+      "blocks": [
+        {
+          "type": "hero",
+          "title": "Final Clásica Fútbol Uruguayo",
+          "lead": {
+            "es": "Diseño de pauta oficial para la cobertura de la final clásica del fútbol uruguayo.",
+            "en": "Official ad design for the coverage of the classic final of Uruguayan football."
+          },
+          "date": {
+            "es": "Noviembre 2025",
+            "en": "November 2025"
+          }
+        },
+        {
+          "type": "cover",
+          "src": "img/works/final-clasica/youtube.avif",
+          "alt": {
+            "es": "Portada de YouTube de la Final Clásica",
+            "en": "Final Clásica YouTube cover"
+          }
+        },
+        {
+          "type": "facts",
+          "items": [
+            [
+              "client",
+              "FIX"
+            ],
+            [
+              "year",
+              "2025"
+            ],
+            [
+              "did",
+              {
+                "es": "Sport Design y dirección de arte",
+                "en": "Sport design and art direction"
+              }
+            ],
+            [
+              "tools",
+              "Photoshop, Lightroom"
+            ]
+          ]
+        },
+        {
+          "type": "story",
+          "heading": {
+            "es": "Peñarol vs Nacional — El Clásico",
+            "en": "Peñarol vs Nacional — The Classic"
+          },
+          "paras": [
+            {
+              "es": "Identidad visual para la cobertura de FIX en la final del Campeonato Uruguayo. El sistema visual se diseñó para capturar la intensidad del clásico más importante del país.",
+              "en": "Visual identity for FIX coverage in the Uruguayan Championship final. The visual system was designed to capture the intensity of the country's most important classic."
+            }
+          ]
+        },
+        {
+          "type": "gallery",
+          "items": [
+            {
+              "src": "img/works/final-clasica/ejemplo-1.avif",
+              "alt": "Idea 01"
+            },
+            {
+              "src": "img/works/final-clasica/ejemplo-2.avif",
+              "alt": "Idea 02"
+            }
+          ]
+        },
+        {
+          "type": "ext-link",
+          "href": "https://www.instagram.com/p/DRkphWXD9p0/",
+          "label": {
+            "es": "Ver en Instagram",
+            "en": "View on Instagram"
+          }
+        },
+        {
+          "type": "next"
+        }
+      ]
+    },
+    {
+      "slug": "iris-lab",
+      "meta": {
+        "title": "Iris Lab | Blanco Grosso",
+        "og_title": "Iris Lab | Blanco Grosso",
+        "description": "Captura de identidad a través de fotografía macro. Curaduría visual y producción fine-art que transforma el iris humano en una pieza de diseño tangible.",
+        "og_image_alt": "Portada del proyecto Iris Lab: fotografía macro de un iris con el logo de la marca"
+      },
+      "blocks": [
+        {
+          "type": "hero",
+          "title": "Iris Lab",
+          "lead": {
+            "es": "Captura de identidad a través de fotografía macro. Curaduría visual y producción fine-art que transforma el iris humano en una pieza de diseño tangible y eterna.",
+            "en": "Capturing identity through macro photography. Visual curation and fine-art production transforming the human iris into a tangible and eternal design piece."
+          },
+          "date": {
+            "es": "Febrero 2026",
+            "en": "February 2026"
+          }
+        },
+        {
+          "type": "before-after",
+          "cover": true,
+          "labels": {
+            "before": "Raw",
+            "after": "Final"
+          },
+          "before": {
+            "src": "img/works/iris-lab/raw-comparar.avif",
+            "alt": {
+              "es": "Captura macro del iris, sin editar",
+              "en": "Raw macro capture of the iris"
+            }
+          },
+          "after": {
+            "src": "img/works/iris-lab/final-comparar.avif",
+            "alt": {
+              "es": "Pieza final",
+              "en": "Final piece"
+            }
+          }
+        },
+        {
+          "type": "facts",
+          "items": [
+            [
+              "year",
+              "2026"
+            ],
+            [
+              "did",
+              {
+                "es": "Fotografía macro, arte digital y fine art",
+                "en": "Macro photography, digital art and fine art"
+              }
+            ],
+            [
+              "tools",
+              "Lightroom, Photoshop"
+            ]
+          ]
+        },
+        {
+          "type": "steps",
+          "items": [
+            {
+              "title": {
+                "es": "Foto macro del iris",
+                "en": "Macro iris photography"
+              },
+              "text": {
+                "es": "Captura de alta resolución revelando detalles microscópicos.",
+                "en": "High-resolution capture revealing microscopic details."
+              }
+            },
+            {
+              "title": {
+                "es": "Corrección de color",
+                "en": "Color correction"
+              },
+              "text": {
+                "es": "Revelado digital resaltando la paleta cromática natural.",
+                "en": "Digital processing highlighting the natural chromatic palette."
+              }
+            },
+            {
+              "title": {
+                "es": "Diseño a medida según cliente",
+                "en": "Custom design per client"
+              },
+              "text": {
+                "es": "Curaduría visual adaptada al espacio y gusto del coleccionista.",
+                "en": "Visual curation tailored to the collector's space and taste."
+              }
+            },
+            {
+              "title": {
+                "es": "Impresión en alta calidad",
+                "en": "High-quality printing"
+              },
+              "text": {
+                "es": "Producción fine-art con pigmentos minerales en algodón.",
+                "en": "Fine-art production with mineral pigments on cotton."
+              }
+            },
+            {
+              "title": {
+                "es": "Armado y entrega del cuadro",
+                "en": "Framing and delivery"
+              },
+              "text": {
+                "es": "Montaje artesanal con marcos de diseño listo para exhibir.",
+                "en": "Artisanal mounting with designer frames ready for exhibition."
+              }
+            }
+          ]
+        },
+        {
+          "type": "gallery",
+          "intro": {
+            "es": "Selección de obras en diversos formatos, estilos y diseños adaptados a cada visión.",
+            "en": "Selection of works in various formats, styles, and designs tailored to each vision."
+          },
+          "items": [
+            {
+              "src": "img/works/iris-lab/60x90.avif",
+              "alt": {
+                "es": "Obra 1",
+                "en": "Work 1"
+              }
+            },
+            {
+              "src": "img/works/iris-lab/cuadro-ojos-azules.avif",
+              "alt": {
+                "es": "Obra 2",
+                "en": "Work 2"
+              }
+            },
+            {
+              "src": "img/works/iris-lab/ojos-ella.avif",
+              "alt": {
+                "es": "Obra 3",
+                "en": "Work 3"
+              }
+            },
+            {
+              "src": "img/works/iris-lab/daiana.avif",
+              "alt": {
+                "es": "Obra 4",
+                "en": "Work 4"
+              }
+            },
+            {
+              "src": "img/works/iris-lab/diagonal.avif",
+              "alt": {
+                "es": "Obra 5",
+                "en": "Work 5"
+              }
+            },
+            {
+              "src": "img/works/iris-lab/iris-luxemburgo.avif",
+              "alt": {
+                "es": "Obra 6",
+                "en": "Work 6"
+              }
+            },
+            {
+              "src": "img/works/iris-lab/laura-mvd.avif",
+              "alt": {
+                "es": "Obra 7",
+                "en": "Work 7"
+              }
+            },
+            {
+              "src": "img/works/iris-lab/hantony.avif",
+              "alt": {
+                "es": "Obra 8",
+                "en": "Work 8"
+              }
+            },
+            {
+              "src": "img/works/iris-lab/susana.avif",
+              "alt": {
+                "es": "Obra 9",
+                "en": "Work 9"
+              }
+            },
+            {
+              "src": "img/works/iris-lab/walmar.avif",
+              "alt": {
+                "es": "Obra 10",
+                "en": "Work 10"
+              }
+            }
+          ]
+        },
+        {
+          "type": "media",
+          "src": "img/works/iris-lab/familia-brasil.avif",
+          "alt": {
+            "es": "Obra destacada: Familia Brasil",
+            "en": "Featured work: Familia Brasil"
+          }
+        },
+        {
+          "type": "ext-link",
+          "href": "https://www.instagram.com/irislab.uy",
+          "label": {
+            "es": "Ver en Instagram",
+            "en": "View on Instagram"
+          }
+        },
+        {
+          "type": "next"
+        }
+      ]
+    },
+    {
+      "slug": "labufarra-social",
+      "meta": {
+        "title": "Vuelta a las redes @labufarra | Blanco Grosso",
+        "og_title": "Vuelta a las redes @labufarra | Blanco Grosso",
+        "description": "Video de 1 minuto generado 100% con IA para anunciar el regreso a la gestión de redes sociales: guionización, storyboard y animación sintética.",
+        "og_image_alt": "Portada del proyecto Vuelta a las redes de La Bufarra: texto La vuelta del CM sobre un escritorio a oscuras"
+      },
+      "blocks": [
+        {
+          "type": "hero",
+          "title": "Vuelta a las redes @labufarra",
+          "lead": {
+            "es": "Video de 1 minuto generado 100% con IA para anunciar el regreso a la gestión de redes sociales. Un flujo de trabajo integral que combina guionización, storyboard y animación sintética.",
+            "en": "1-minute video 100% AI-generated to announce the return to social media management. An integrated workflow combining scripting, storyboard, and synthetic animation."
+          },
+          "date": {
+            "es": "Abril 2026",
+            "en": "April 2026"
+          }
+        },
+        {
+          "type": "cover",
+          "src": "img/works/labufarra-social/reel-portada.mp4",
+          "poster": "img/works/labufarra-social/reel-portada.avif",
+          "alt": {
+            "es": "Reel Vuelta a las redes",
+            "en": "Back on social media reel"
+          },
+          "sound": "img/works/labufarra-social/reel.mp4"
+        },
+        {
+          "type": "facts",
+          "items": [
+            [
+              "client",
+              "La Bufarra"
+            ],
+            [
+              "year",
+              "2026"
+            ],
+            [
+              "did",
+              {
+                "es": "Producción audiovisual con IA",
+                "en": "AI-powered audiovisual production"
+              }
+            ],
+            [
+              "tools",
+              "GPT, Gemini, Photoshop, Flow, Premiere, Freepik"
+            ]
+          ]
+        },
+        {
+          "type": "story",
+          "heading": {
+            "es": "Nuevas formas de contar",
+            "en": "New ways of storytelling"
+          },
+          "paras": [
+            {
+              "es": "El reto consistió en crear una pieza de alto impacto visual y emocional para anunciar la vuelta a la gestión de redes de @labufarra, utilizando exclusivamente herramientas de inteligencia artificial generativa. Desde el guion hasta el movimiento, cada elemento fue curado para mantener la esencia de la marca.",
+              "en": "The challenge was to create a piece of high visual and emotional impact to announce the return to social media management for @labufarra, using exclusively generative artificial intelligence tools. From the script to the movement, every element was curated to maintain the brand's essence."
+            }
+          ]
+        },
+        {
+          "type": "steps",
+          "items": [
+            {
+              "title": {
+                "es": "Guion & estructura",
+                "en": "Script & structure"
+              },
+              "text": {
+                "es": "Bajada de idea y armado de guion técnico utilizando GPT para definir la narrativa del anuncio.",
+                "en": "Brainstorming and technical script writing using GPT to define the ad's narrative."
+              }
+            },
+            {
+              "title": {
+                "es": "Storyboard IA",
+                "en": "AI storyboard"
+              },
+              "text": {
+                "es": "Generación de cada frame mediante prompts específicos en Freepik Spaces y Gemini.",
+                "en": "Generation of each frame using specific prompts in Freepik Spaces and Gemini."
+              }
+            },
+            {
+              "title": {
+                "es": "Refinamiento",
+                "en": "Refinement"
+              },
+              "text": {
+                "es": "Corrección de detalles visuales, coherencia y retoque de frames en Adobe Photoshop.",
+                "en": "Correction of visual details, consistency, and frame retouching in Adobe Photoshop."
+              }
+            },
+            {
+              "title": {
+                "es": "Animación",
+                "en": "Animation"
+              },
+              "text": {
+                "es": "Generación de prompts de movimiento con GPT y animación de los frames estáticos en Flow.",
+                "en": "Generation of motion prompts with GPT and animation of static frames in Flow."
+              }
+            },
+            {
+              "title": {
+                "es": "Edición final",
+                "en": "Final edit"
+              },
+              "text": {
+                "es": "Montaje audiovisual, diseño sonoro y exportación final en Adobe Premiere.",
+                "en": "Audiovisual assembly, sound design, and final export in Adobe Premiere."
+              }
+            }
+          ]
+        },
+        {
+          "type": "media",
+          "heading": {
+            "es": "1. Construcción del storyboard (Freepik Spaces)",
+            "en": "1. Storyboard construction (Freepik Spaces)"
+          },
+          "src": "img/works/labufarra-social/workflow.avif",
+          "alt": {
+            "es": "Flujo de trabajo en Freepik Spaces",
+            "en": "Workflow in Freepik Spaces"
+          }
+        },
+        {
+          "type": "gallery",
+          "heading": {
+            "es": "2. Referencias clave para consistencia",
+            "en": "2. Key references for consistency"
+          },
+          "items": [
+            {
+              "src": "img/works/labufarra-social/referencia-1-dispositivo.avif",
+              "alt": {
+                "es": "Referencia: dispositivo",
+                "en": "Reference: device"
+              }
+            },
+            {
+              "src": "img/works/labufarra-social/referencia-2-camiseta.avif",
+              "alt": {
+                "es": "Referencia: camiseta",
+                "en": "Reference: jersey"
+              }
+            },
+            {
+              "src": "img/works/labufarra-social/referencia-3-spoiler.avif",
+              "alt": {
+                "es": "Referencia: spoiler",
+                "en": "Reference: spoiler"
+              }
+            }
+          ]
+        },
+        {
+          "type": "gallery",
+          "heading": {
+            "es": "3. Frames y keyframes (el frame 1 como locación)",
+            "en": "3. Frames and keyframes (frame 1 as location)"
+          },
+          "items": [
+            {
+              "src": "img/works/labufarra-social/frame-1.avif",
+              "alt": "Frame 1"
+            },
+            {
+              "src": "img/works/labufarra-social/frame-2.avif",
+              "alt": "Frame 2"
+            },
+            {
+              "src": "img/works/labufarra-social/frame-4.avif",
+              "alt": "Frame 4"
+            }
+          ]
+        },
+        {
+          "type": "prompt",
+          "label": "motion_prompt_flow.prompt",
+          "text": "Between the provided initial and final frames, create a 5–6 second cinematic close-up animation of the device. Keep the composition, camera angle, desk, device and round pastel pink button with the “B” emblem and vertical stripes exactly as shown in the keyframes, without adding or removing objects.\n\nAnimate a realistic human hand entering the frame from the side, holding the slim cartridge and sliding it fully into the front slot of the device during the first part of the clip. After the cartridge is fully inserted, animate the hand moving to the top of the circular button and pressing it down until the scene matches the final frame: the button slightly depressed and glowing more intensely. Add a small, natural camera micro-shake and brief increase in button glow at the exact moment of the press, then let the glow settle to match the final image.\n\nDo not modify the design of the device, the button, the desk or the background beyond the natural light response. Keep lighting and colors consistent with the keyframes, with only subtle changes caused by the button glow. No new UI elements, no text or logos, no cartoon or anime style, no exaggerated glitch or VFX."
+        },
+        {
+          "type": "media",
+          "heading": {
+            "es": "4. Animación resultante (Flow)",
+            "en": "4. Resulting animation (Flow)"
+          },
+          "src": "img/works/labufarra-social/ejemplo-escena.mp4",
+          "poster": "img/works/labufarra-social/ejemplo-escena-poster.avif",
+          "alt": {
+            "es": "Escena animada en Flow",
+            "en": "Scene animated in Flow"
+          }
+        },
+        {
+          "type": "ext-link",
+          "href": "https://www.instagram.com/reel/DVhkQEekWxW/",
+          "label": {
+            "es": "Ver en Instagram",
+            "en": "View on Instagram"
+          }
+        },
+        {
+          "type": "next"
+        }
+      ]
+    },
+    {
+      "slug": "serie-rio-plata",
+      "meta": {
+        "title": "Serie Río de la Plata | Blanco Grosso Portfolio",
+        "og_title": "Serie Río de la Plata | Blanco Grosso",
+        "description": "Diseño de piezas de comunicación (Matchday) para el torneo de verano Serie Río de la Plata. Foco en la inmediatez y el impacto visual para redes sociales.",
+        "og_image_alt": "Portada del proyecto Serie Río de la Plata: piezas de matchday con el logo del torneo"
+      },
+      "blocks": [
+        {
+          "type": "hero",
+          "title": "Serie Río de la Plata 2026",
+          "lead": {
+            "es": "Diseño de piezas de comunicación (Matchday) para el torneo de verano Serie Río de la Plata. Foco en la inmediatez y el impacto visual para redes sociales.",
+            "en": "Communication assets design (Matchday) for the summer tournament Serie Río de la Plata. Focused on immediacy and visual impact for social media."
+          },
+          "date": {
+            "es": "Enero 2026",
+            "en": "January 2026"
+          }
+        },
+        {
+          "type": "facts",
+          "items": [
+            [
+              "client",
+              "Serie Río de la Plata"
+            ],
+            [
+              "year",
+              "2026"
+            ],
+            [
+              "did",
+              {
+                "es": "Sport Design y contenido digital",
+                "en": "Sport design and digital content"
+              }
+            ],
+            [
+              "tools",
+              "Photoshop, Lightroom"
+            ]
+          ]
+        },
+        {
+          "type": "story",
+          "heading": {
+            "es": "Sport Design en tiempo real",
+            "en": "Real-time sport design"
+          },
+          "paras": [
+            {
+              "es": "La Serie Río de la Plata es el evento futbolístico más importante del verano en la región. El desafío fue crear gráficas de anuncio de partido que capturaran la emoción del hincha.",
+              "en": "The Serie Río de la Plata is the most important football event of the summer in the region. The challenge was to create match announcement graphics that captured the fans' excitement."
+            }
+          ]
+        },
+        {
+          "type": "gallery",
+          "items": [
+            {
+              "src": "img/works/serie-rio-plata/1.avif",
+              "alt": "Matchday 1"
+            },
+            {
+              "src": "img/works/serie-rio-plata/2.avif",
+              "alt": "Matchday 2"
+            },
+            {
+              "src": "img/works/serie-rio-plata/3.avif",
+              "alt": "Matchday 3"
+            },
+            {
+              "src": "img/works/serie-rio-plata/4.avif",
+              "alt": "Matchday 4"
+            },
+            {
+              "src": "img/works/serie-rio-plata/5.avif",
+              "alt": "Matchday 5"
+            },
+            {
+              "src": "img/works/serie-rio-plata/6.avif",
+              "alt": "Matchday 6"
+            },
+            {
+              "src": "img/works/serie-rio-plata/7.avif",
+              "alt": "Matchday 7"
+            },
+            {
+              "src": "img/works/serie-rio-plata/8.avif",
+              "alt": "Matchday 8"
+            }
+          ]
+        },
+        {
+          "type": "media",
+          "heading": {
+            "es": "Exploración y pruebas",
+            "en": "Exploration & tests"
+          },
+          "src": "img/works/serie-rio-plata/pruebas.avif",
+          "alt": {
+            "es": "Pruebas del proceso",
+            "en": "Process tests"
+          }
+        },
+        {
+          "type": "ext-link",
+          "href": "https://www.instagram.com/serierdelp/",
+          "label": {
+            "es": "Ver en Instagram",
+            "en": "View on Instagram"
+          }
+        },
+        {
+          "type": "next"
+        }
+      ]
+    },
+    {
+      "slug": "tienda-nacional",
+      "meta": {
+        "title": "Tienda Nacional | Blanco Grosso",
+        "og_title": "Tienda Nacional | Blanco Grosso",
+        "description": "Desarrollo integral de piezas gráficas para la campaña \"Las Fiestas del Campeón\". Un sistema visual multi-formato para todas las necesidades digitales del club.",
+        "og_image_alt": "Portada del proyecto Tienda Nacional: pieza de la campaña IVA OFF con el logo de la tienda"
+      },
+      "blocks": [
+        {
+          "type": "hero",
+          "title": "Tienda Nacional Las Fiestas del Campeón",
+          "lead": {
+            "es": "Desarrollo integral de piezas gráficas para la campaña \"Las Fiestas del Campeón\". Un sistema visual multi-formato diseñado para cubrir todas las necesidades digitales del club.",
+            "en": "Comprehensive development of graphic pieces for the \"Las Fiestas del Campeón\" campaign. A multi-format visual system designed to cover all the club's digital needs."
+          },
+          "date": {
+            "es": "Diciembre 2025",
+            "en": "December 2025"
+          }
+        },
+        {
+          "type": "cover",
+          "src": "img/works/tienda-nacional/tienda-nacional-home-slider-1920-750.avif",
+          "alt": {
+            "es": "Slider de la home: Las Fiestas del Campeón",
+            "en": "Home slider: Las Fiestas del Campeón"
+          }
+        },
+        {
+          "type": "facts",
+          "items": [
+            [
+              "client",
+              "Tienda Nacional"
+            ],
+            [
+              "year",
+              "2025"
+            ],
+            [
+              "did",
+              {
+                "es": "Diseño de campaña, marketing retail y publicidad digital",
+                "en": "Campaign design, retail marketing and digital advertising"
+              }
+            ],
+            [
+              "tools",
+              "Illustrator, Photoshop"
+            ]
+          ]
+        },
+        {
+          "type": "story",
+          "heading": {
+            "es": "Sistema visual multi-formato",
+            "en": "Multi-format visual system"
+          },
+          "paras": [
+            {
+              "es": "El reto consistió en mantener la coherencia estética en una campaña de alto volumen, adaptando el concepto visual a cada punto de contacto con el socio: desde el sitio oficial hasta cada red social.",
+              "en": "The challenge was maintaining aesthetic coherence in a high-volume campaign, adapting the visual concept to each member touchpoint: from the official site to every social network."
+            }
+          ]
+        },
+        {
+          "type": "gallery",
+          "heading": "Banners web",
+          "items": [
+            {
+              "src": "img/works/tienda-nacional/tienda-nacional-anuncio-1-1200-628.avif",
+              "alt": "Banner 1"
+            },
+            {
+              "src": "img/works/tienda-nacional/tienda-nacional-anuncio-2-1200-628.avif",
+              "alt": "Banner 2"
+            },
+            {
+              "src": "img/works/tienda-nacional/tienda-nacional-anuncio-3-1200-628-limpio.avif",
+              "alt": "Banner 3"
+            }
+          ]
+        },
+        {
+          "type": "gallery",
+          "heading": "Feed",
+          "items": [
+            {
+              "src": "img/works/tienda-nacional/tienda-nacional-anuncio-1-1200-1200.avif",
+              "alt": {
+                "es": "Cuadrado 1",
+                "en": "Square 1"
+              }
+            },
+            {
+              "src": "img/works/tienda-nacional/tienda-nacional-anuncio-2-1200-1200.avif",
+              "alt": {
+                "es": "Cuadrado 2",
+                "en": "Square 2"
+              }
+            },
+            {
+              "src": "img/works/tienda-nacional/tienda-nacional-anuncio-3-1200-1200.avif",
+              "alt": {
+                "es": "Cuadrado 3",
+                "en": "Square 3"
+              }
+            }
+          ]
+        },
+        {
+          "type": "gallery",
+          "heading": "Stories",
+          "items": [
+            {
+              "src": "img/works/tienda-nacional/tienda-nacional-anuncio-1-1080-1920.avif",
+              "alt": "Story 1"
+            },
+            {
+              "src": "img/works/tienda-nacional/tienda-nacional-anuncio-2-1080-1920.avif",
+              "alt": "Story 2"
+            },
+            {
+              "src": "img/works/tienda-nacional/tienda-nacional-anuncio-3-1080-1920.avif",
+              "alt": "Story 3"
+            }
+          ]
+        },
+        {
+          "type": "next"
+        }
+      ]
+    },
+    {
+      "slug": "nido-identidad",
+      "meta": {
+        "title": "NIDO, identidad de marca | Blanco Grosso",
+        "og_title": "NIDO, identidad de marca | Blanco Grosso",
+        "description": "Case study de branding: identidad visual completa para NIDO, marca de diseño para el hogar. Ícono, paleta, tipografía, fotografía y piezas para Instagram.",
+        "og_image_alt": "Logo de nido en blanco sobre una foto de tejidos de lana color arena"
+      },
+      "blocks": [
+        {
+          "type": "hero",
+          "title": "NIDO",
+          "lead": {
+            "es": "Diseño para el hogar. Muebles, iluminación, objetos y textiles — piezas que transforman una casa en un lugar donde quedarse.",
+            "en": "Home design. Furniture, lighting, objects and textiles — pieces that turn a house into a place to stay."
+          },
+          "date": "2026"
+        },
+        {
+          "type": "cover",
+          "src": "img/works/nido/portada.avif",
+          "alt": {
+            "es": "Logo de nido en blanco sobre una foto de tejidos de lana color arena",
+            "en": "White nido logo over a photo of sand-colored wool knits"
+          }
+        },
+        {
+          "type": "facts",
+          "items": [
+            [
+              "for",
+              {
+                "es": "Prueba técnica · Diseñador Gráfico · Dendra",
+                "en": "Technical test · Graphic Designer · Dendra"
+              }
+            ],
+            [
+              "year",
+              "2026"
+            ],
+            [
+              "did",
+              {
+                "es": "Identidad visual completa: ícono, lockup, paleta, tipografía, fotografía y piezas para Instagram",
+                "en": "Complete visual identity: icon, lockup, palette, typography, photography and Instagram pieces"
+              }
+            ],
+            [
+              "tools",
+              "GPT, Gemini, Photoshop, Illustrator, Lightroom, Claude"
+            ],
+            [
+              "audience",
+              {
+                "es": "Pocitos, Montevideo · 25–40 años",
+                "en": "Pocitos, Montevideo · ages 25–40"
+              }
+            ],
+            [
+              "tone",
+              {
+                "es": "Cálido · Sereno · Con criterio · Nórdico cálido",
+                "en": "Warm · Serene · Discerning · Warm Nordic"
+              }
+            ]
+          ]
+        },
+        {
+          "type": "story",
+          "heading": {
+            "es": "nido no vende muebles, acompaña el criterio de armar un lugar propio.",
+            "en": "nido doesn't sell furniture: it supports the judgment behind making a place your own."
+          },
+          "paras": [
+            {
+              "es": "El nombre remite al nido literal: un objeto antiguo, armado a mano, ramita por ramita, con lo que hay cerca. No responde a un plano sino a un instinto que se ajusta con el tiempo y con quien lo habita. nido vive en esa misma tensión — la del living real — donde el ruido de mil opciones se decanta, pieza por pieza, hasta el criterio de lo esencial.",
+              "en": "The name refers to the literal nest: an ancient object, built by hand, twig by twig, with whatever is close by. It doesn't follow a plan but an instinct that adjusts over time and to whoever lives in it. nido lives in that same tension — the real living room — where the noise of a thousand options settles, piece by piece, into a sense of what is essential."
+            }
+          ]
+        },
+        {
+          "type": "brand",
+          "heading": {
+            "es": "Sistema de marca",
+            "en": "Brand system"
+          },
+          "items": [
+            {
+              "src": "img/works/nido/marca/nido-icono-positivo-color-bg.svg",
+              "alt": {
+                "es": "Ícono NIDO, variante positiva a color",
+                "en": "NIDO icon, positive color version"
+              },
+              "label": {
+                "es": "Icono · Positivo · Color",
+                "en": "Icon · Positive · Color"
+              }
+            },
+            {
+              "src": "img/works/nido/marca/nido-icono-negativo-mono-bg.svg",
+              "alt": {
+                "es": "Ícono NIDO, variante positiva monocromática",
+                "en": "NIDO icon, positive monochrome version"
+              },
+              "label": {
+                "es": "Icono · Positivo · ByN",
+                "en": "Icon · Positive · B&W"
+              }
+            },
+            {
+              "src": "img/works/nido/marca/nido-icono-negativo-color-bg.svg",
+              "alt": {
+                "es": "Ícono NIDO, variante negativa a color",
+                "en": "NIDO icon, negative color version"
+              },
+              "label": {
+                "es": "Icono · Negativo · Color",
+                "en": "Icon · Negative · Color"
+              }
+            },
+            {
+              "src": "img/works/nido/marca/nido-icono-positivo-mono-bg.svg",
+              "alt": {
+                "es": "Ícono NIDO, variante negativa monocromática",
+                "en": "NIDO icon, negative monochrome version"
+              },
+              "label": {
+                "es": "Icono · Negativo · ByN",
+                "en": "Icon · Negative · B&W"
+              }
+            },
+            {
+              "src": "img/works/nido/marca/nido-lockup-positivo-color-bg.svg",
+              "alt": {
+                "es": "Lockup NIDO, variante positiva a color",
+                "en": "NIDO lockup, positive color version"
+              },
+              "label": {
+                "es": "Lockup · Positivo · Color",
+                "en": "Lockup · Positive · Color"
+              }
+            },
+            {
+              "src": "img/works/nido/marca/nido-lockup-positivo-mono-bg.svg",
+              "alt": {
+                "es": "Lockup NIDO, variante positiva monocromática",
+                "en": "NIDO lockup, positive monochrome version"
+              },
+              "label": {
+                "es": "Lockup · Positivo · ByN",
+                "en": "Lockup · Positive · B&W"
+              }
+            },
+            {
+              "src": "img/works/nido/marca/nido-lockup-negativo-color-bg.svg",
+              "alt": {
+                "es": "Lockup NIDO, variante negativa a color",
+                "en": "NIDO lockup, negative color version"
+              },
+              "label": {
+                "es": "Lockup · Negativo · Color",
+                "en": "Lockup · Negative · Color"
+              }
+            },
+            {
+              "src": "img/works/nido/marca/nido-lockup-negativo-mono-bg.svg",
+              "alt": {
+                "es": "Lockup NIDO, variante negativa monocromática",
+                "en": "NIDO lockup, negative monochrome version"
+              },
+              "label": {
+                "es": "Lockup · Negativo · ByN",
+                "en": "Lockup · Negative · B&W"
+              }
+            }
+          ]
+        },
+        {
+          "heading": {
+            "es": "Paleta y tipografía",
+            "en": "Palette and typography"
+          },
+          "items": [
+            {
+              "name": {
+                "es": "Lino",
+                "en": "Linen"
+              },
+              "hex": "#F3EEE4",
+              "tier": "primary"
+            },
+            {
+              "name": "Espresso",
+              "hex": "#2B211A",
+              "tier": "primary"
+            },
+            {
+              "name": {
+                "es": "Terracota",
+                "en": "Terracotta"
+              },
+              "hex": "#C17A54"
+            },
+            {
+              "name": {
+                "es": "Salvia",
+                "en": "Sage"
+              },
+              "hex": "#8A9A7E"
+            },
+            {
+              "name": {
+                "es": "Arena",
+                "en": "Sand"
+              },
+              "hex": "#D9CBB8"
+            }
+          ],
+          "fonts": [
+            {
+              "name": "Fraunces",
+              "role": {
+                "es": "Títulos",
+                "en": "Display"
+              }
+            },
+            {
+              "name": "Karla",
+              "role": {
+                "es": "Texto",
+                "en": "Body"
+              }
+            }
+          ],
+          "type": "palette"
+        },
+        {
+          "type": "gallery",
+          "heading": {
+            "es": "Fotografía",
+            "en": "Photography"
+          },
+          "intro": {
+            "es": "Cuatro escenas, un mismo ecosistema tonal.",
+            "en": "Four scenes, one tonal ecosystem."
+          },
+          "items": [
+            {
+              "src": "img/works/nido/fotos/01-living.avif",
+              "alt": {
+                "es": "Living ambientado con piezas NIDO",
+                "en": "Living room styled with NIDO pieces"
+              }
+            },
+            {
+              "src": "img/works/nido/fotos/02-mueble.avif",
+              "alt": {
+                "es": "Mueble de diseño NIDO",
+                "en": "NIDO design furniture"
+              }
+            },
+            {
+              "src": "img/works/nido/fotos/03-ceramic.avif",
+              "alt": {
+                "es": "Cerámica y objetos NIDO",
+                "en": "NIDO ceramics and objects"
+              }
+            },
+            {
+              "src": "img/works/nido/fotos/04-wool-texture.avif",
+              "alt": {
+                "es": "Detalle de textura y textiles NIDO",
+                "en": "Detail of NIDO textures and textiles"
+              }
+            }
+          ]
+        },
+        {
+          "type": "gallery",
+          "heading": "Instagram",
+          "items": [
+            {
+              "src": "img/works/nido/feed/post-01-apertura.avif",
+              "alt": {
+                "es": "Post de Instagram NIDO 1",
+                "en": "NIDO Instagram post 1"
+              }
+            },
+            {
+              "src": "img/works/nido/feed/post-02-living.avif",
+              "alt": {
+                "es": "Post de Instagram NIDO 2",
+                "en": "NIDO Instagram post 2"
+              }
+            },
+            {
+              "src": "img/works/nido/feed/post-03-objetos.avif",
+              "alt": {
+                "es": "Post de Instagram NIDO 3",
+                "en": "NIDO Instagram post 3"
+              }
+            },
+            {
+              "src": "img/works/nido/feed/historia-01-limpio.avif",
+              "alt": {
+                "es": "Historia de Instagram NIDO 1",
+                "en": "NIDO Instagram story 1"
+              }
+            },
+            {
+              "src": "img/works/nido/feed/historia-02-limpio.avif",
+              "alt": {
+                "es": "Historia de Instagram NIDO 2",
+                "en": "NIDO Instagram story 2"
+              }
+            },
+            {
+              "src": "img/works/nido/feed/historia-03-limpio.avif",
+              "alt": {
+                "es": "Historia de Instagram NIDO 3",
+                "en": "NIDO Instagram story 3"
+              }
+            }
+          ]
+        },
+        {
+          "type": "ext-link",
+          "href": "img/works/nido/nido-documentacion-prompts.pdf",
+          "label": {
+            "es": "Ver proceso completo (PDF)",
+            "en": "See the full process (PDF)"
+          }
+        },
+        {
+          "type": "ext-link",
+          "quiet": true,
+          "href": "/nido",
+          "label": {
+            "es": "Ver presentación original",
+            "en": "View the original presentation"
+          }
+        },
+        {
+          "type": "next"
+        }
+      ]
+    }
+  ]
+}
