@@ -1997,12 +1997,282 @@
           }
         },
         {
+          "type": "next"
+        }
+      ]
+    },
+    {
+      "slug": "the-bridge",
+      "meta": {
+        "title": "The Bridge | Blanco Grosso",
+        "og_title": "The Bridge | Blanco Grosso",
+        "description": "Sitio bilingüe para The Bridge Systems, que arma sistemas con IA para negocios locales del Eastside de Seattle: demo interactiva, calculadora de ROI, diseño, desarrollo y redacción.",
+        "og_image_alt": "Inicio del sitio de The Bridge en un marco de navegador, con el chat de demo, sobre fondo oscuro con grilla"
+      },
+      "blocks": [
+        {
+          "type": "hero",
+          "title": "The Bridge",
+          "lead": {
+            "es": "Que ningún cliente quede del otro lado.",
+            "en": "No customer left on the other side."
+          },
+          "date": "2026"
+        },
+        {
+          "type": "cover",
+          "src": "img/works/the-bridge/portada.avif",
+          "alt": {
+            "es": "Inicio del sitio de The Bridge en un marco de navegador",
+            "en": "The Bridge site home in a browser frame"
+          }
+        },
+        {
+          "type": "facts",
+          "items": [
+            [
+              "client",
+              {
+                "es": "The Bridge Systems · Bellevue, WA, EE.UU.",
+                "en": "The Bridge Systems · Bellevue, WA, USA"
+              }
+            ],
+            [
+              "year",
+              "2026"
+            ],
+            [
+              "role",
+              {
+                "es": "Diseño, desarrollo y redacción web",
+                "en": "Web design, development and copy"
+              }
+            ],
+            [
+              "deliverables",
+              {
+                "es": "Sitio bilingüe, demo interactiva, calculadora de ROI",
+                "en": "Bilingual site, interactive demo, ROI calculator"
+              }
+            ]
+          ]
+        },
+        {
+          "type": "story",
+          "paras": [
+            {
+              "es": "The Bridge arma sistemas con IA para negocios locales del Eastside de Seattle: recepción por mensaje que responde sola, CRM, reservas, anuncios y reseñas. El desafío era vender algo invisible a dueños de talleres, gimnasios y restaurantes que no tienen tiempo para leer sobre IA. Por eso la web no lo explica: lo muestra funcionando. Un chat de demo que el visitante puede usar, la línea de tiempo de un mensaje que se convierte en reserva en 38 segundos, el tablero del CRM y una calculadora que traduce los mensajes perdidos en plata perdida por mes. Todo en inglés y en español, porque así habla el Eastside.",
+              "en": "The Bridge builds AI systems for local businesses in Seattle's Eastside: a text front desk that answers on its own, CRM, bookings, ads and reviews. The challenge was selling something invisible to owners of auto shops, gyms and restaurants who have no time to read about AI. So the site doesn't explain it: it shows it working. A demo chat visitors can try, the timeline of a message turning into a booking in 38 seconds, the CRM board, and a calculator that turns missed messages into lost money per month. All in English and Spanish, because that's how the Eastside talks."
+            }
+          ]
+        },
+        {
+          "type": "media",
+          "src": "img/works/the-bridge/scroll.mp4",
+          "poster": "img/works/the-bridge/scroll-poster.avif",
+          "alt": {
+            "es": "Recorrido por la home de The Bridge",
+            "en": "Scroll through The Bridge home"
+          }
+        },
+        {
+          "type": "gallery",
+          "items": [
+            {
+              "src": "img/works/the-bridge/escritorio/hero.avif",
+              "alt": {
+                "es": "Inicio del sitio de The Bridge con el título y el chat de demo, en escritorio",
+                "en": "The Bridge site home with the headline and the demo chat, on desktop"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/escritorio/demo.avif",
+              "alt": {
+                "es": "Chat de demo respondiendo el precio de un cambio de aceite, en escritorio",
+                "en": "Demo chat answering the price of an oil change, on desktop"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/escritorio/problema.avif",
+              "alt": {
+                "es": "Línea de tiempo: sin recepción el cliente se pierde; con The Bridge reserva en 38 segundos, en escritorio",
+                "en": "Timeline: without a front desk the customer is lost; with The Bridge they book in 38 seconds, on desktop"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/escritorio/paso-1.avif",
+              "alt": {
+                "es": "Paso 1 del recorrido: te encuentran, en escritorio",
+                "en": "Step 1 of the path: they find you, on desktop"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/escritorio/paso-2.avif",
+              "alt": {
+                "es": "Paso 2 del recorrido: cada mensaje recibe respuesta, en escritorio",
+                "en": "Step 2 of the path: every lead gets a reply, on desktop"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/escritorio/paso-3.avif",
+              "alt": {
+                "es": "Paso 3 del recorrido: la visita queda en el calendario, en escritorio",
+                "en": "Step 3 of the path: the visit is on your calendar, on desktop"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/escritorio/paso-4.avif",
+              "alt": {
+                "es": "Paso 4 del recorrido: vuelven y recomiendan, en escritorio",
+                "en": "Step 4 of the path: they come back and tell others, on desktop"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/escritorio/linea-0-00.avif",
+              "alt": {
+                "es": "Línea del primer mensaje a la reserva, en 0:00, en escritorio",
+                "en": "Timeline from first message to booking, at 0:00, on desktop"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/escritorio/linea-0-38.avif",
+              "alt": {
+                "es": "Línea del primer mensaje a la reserva, en 0:38, en escritorio",
+                "en": "Timeline from first message to booking, at 0:38, on desktop"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/escritorio/crm.avif",
+              "alt": {
+                "es": "Tablero del CRM con clientes por etapa, en escritorio",
+                "en": "CRM board with customers by stage, on desktop"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/escritorio/calculadora.avif",
+              "alt": {
+                "es": "Calculadora de ROI con lo que se pierde por mes, en escritorio",
+                "en": "ROI calculator showing what is lost per month, on desktop"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/escritorio/servicios.avif",
+              "alt": {
+                "es": "Tarjetas de servicios: recepción con IA y CRM, en escritorio",
+                "en": "Service cards: AI front desk and CRM, on desktop"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/escritorio/faq.avif",
+              "alt": {
+                "es": "Preguntas frecuentes, con una abierta, en escritorio",
+                "en": "FAQ with one question open, on desktop"
+              }
+            }
+          ]
+        },
+        {
+          "type": "gallery",
+          "items": [
+            {
+              "src": "img/works/the-bridge/celular/hero.avif",
+              "alt": {
+                "es": "Inicio del sitio de The Bridge con el título y el chat de demo, en celular",
+                "en": "The Bridge site home with the headline and the demo chat, on mobile"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/celular/demo.avif",
+              "alt": {
+                "es": "Chat de demo respondiendo el precio de un cambio de aceite, en celular",
+                "en": "Demo chat answering the price of an oil change, on mobile"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/celular/problema.avif",
+              "alt": {
+                "es": "Línea de tiempo: sin recepción el cliente se pierde; con The Bridge reserva en 38 segundos, en celular",
+                "en": "Timeline: without a front desk the customer is lost; with The Bridge they book in 38 seconds, on mobile"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/celular/paso-1.avif",
+              "alt": {
+                "es": "Paso 1 del recorrido: te encuentran, en celular",
+                "en": "Step 1 of the path: they find you, on mobile"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/celular/paso-2.avif",
+              "alt": {
+                "es": "Paso 2 del recorrido: cada mensaje recibe respuesta, en celular",
+                "en": "Step 2 of the path: every lead gets a reply, on mobile"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/celular/paso-3.avif",
+              "alt": {
+                "es": "Paso 3 del recorrido: la visita queda en el calendario, en celular",
+                "en": "Step 3 of the path: the visit is on your calendar, on mobile"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/celular/paso-4.avif",
+              "alt": {
+                "es": "Paso 4 del recorrido: vuelven y recomiendan, en celular",
+                "en": "Step 4 of the path: they come back and tell others, on mobile"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/celular/linea-0-00.avif",
+              "alt": {
+                "es": "Línea del primer mensaje a la reserva, en 0:00, en celular",
+                "en": "Timeline from first message to booking, at 0:00, on mobile"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/celular/linea-0-38.avif",
+              "alt": {
+                "es": "Línea del primer mensaje a la reserva, en 0:38, en celular",
+                "en": "Timeline from first message to booking, at 0:38, on mobile"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/celular/crm.avif",
+              "alt": {
+                "es": "Tablero del CRM con clientes por etapa, en celular",
+                "en": "CRM board with customers by stage, on mobile"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/celular/calculadora.avif",
+              "alt": {
+                "es": "Calculadora de ROI con lo que se pierde por mes, en celular",
+                "en": "ROI calculator showing what is lost per month, on mobile"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/celular/servicios.avif",
+              "alt": {
+                "es": "Tarjetas de servicios: recepción con IA y CRM, en celular",
+                "en": "Service cards: AI front desk and CRM, on mobile"
+              }
+            },
+            {
+              "src": "img/works/the-bridge/celular/faq.avif",
+              "alt": {
+                "es": "Preguntas frecuentes, con una abierta, en celular",
+                "en": "FAQ with one question open, on mobile"
+              }
+            }
+          ]
+        },
+        {
           "type": "ext-link",
-          "quiet": true,
-          "href": "/nido",
+          "href": "https://thebridgeaisystems.com",
           "label": {
-            "es": "Ver presentación original",
-            "en": "View the original presentation"
+            "es": "Ver sitio",
+            "en": "Visit site"
           }
         },
         {

@@ -28,6 +28,15 @@
     localize(document);
     try { localStorage.setItem('bg-lang', lang); } catch (e) {}
   }
+  /* Scroll activo (página, panel o tira de galería, incluido el pin): el evento no sube pero se captura
+     en el documento. Los estados de hover de las galerías vuelven 150 ms después de que para. */
+  var scrollQuiet = null;
+  document.addEventListener('scroll', function () {
+    root.classList.add('is-scrolling');
+    clearTimeout(scrollQuiet);
+    scrollQuiet = setTimeout(function () { root.classList.remove('is-scrolling'); }, 150);
+  }, { capture: true, passive: true });
+
   if (document.querySelector('article.case')) {
     langButtons.forEach(function (b) { b.addEventListener('click', function () { setLang(b.dataset.lang); }); });
     setLang(root.classList.contains('lang-en-active') ? 'en' : 'es');
@@ -243,13 +252,18 @@
       }
       armar(blocks.filter(desborda));
       // al cambiar el ancho, una tira puede pasar a entrar (o dejar de entrar): se rearma solo si cambió cuál desborda
+      // al rearmar los pin (también cuando carga una imagen), ScrollTrigger saca la tira de su contenedor y la
+      // vuelve a poner: el navegador suelta el foco y quien navega con Tab volvería al principio
+      var foco = null;
+      var guardarFoco = function () { var a = document.activeElement; if (blocks.some(function (b) { return b.contains(a); })) foco = a; };
+      var devolverFoco = function () { if (foco && document.activeElement !== foco) foco.focus({ preventScroll: true }); foco = null; };
       var rt = null;
       var alCambiar = function () {
         clearTimeout(rt);
         rt = setTimeout(function () {
           var ahora = blocks.filter(desborda);
           if (ahora.length === activas.length && ahora.every(function (b, k) { return b === activas[k]; })) return;
-          desarmar(); armar(blocks.filter(desborda)); ScrollTrigger.refresh();
+          guardarFoco(); desarmar(); armar(blocks.filter(desborda)); ScrollTrigger.refresh();
         }, 200);
       };
       window.addEventListener('resize', alCambiar);
@@ -257,11 +271,15 @@
       // de una ventana angosta se queda con un alto viejo y no termina nunca de llegar al destino)
       var remedir = function () { if (lenis) lenis.resize(); };
       ScrollTrigger.addEventListener('refresh', remedir);
+      ScrollTrigger.addEventListener('refreshInit', guardarFoco);
+      ScrollTrigger.addEventListener('refresh', devolverFoco);
       ScrollTrigger.refresh();
       return function () {
         clearTimeout(rt);
         window.removeEventListener('resize', alCambiar);
         ScrollTrigger.removeEventListener('refresh', remedir);
+        ScrollTrigger.removeEventListener('refreshInit', guardarFoco);
+        ScrollTrigger.removeEventListener('refresh', devolverFoco);
         desarmar();
         if (tick) { gsap.ticker.remove(tick); lenis.destroy(); lenis = null; }
       };
