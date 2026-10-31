@@ -28,7 +28,7 @@ FILTERS = [  # id, etiqueta ES, etiqueta EN
     ("sport", "Sport Design", "Sport Design"),
     ("web", "Web", "Web"),
     ("motion", "Motion", "Motion"),
-    ("campaigns", "Campañas y contenido", "Campaigns &amp; content"),
+    ("campaigns", "Campañas", "Campaigns"),
 ]
 
 # nombre, desc ES, desc EN, incluye ES, incluye EN, ejemplo (texto, url, externo), WA ES, WA EN

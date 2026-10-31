@@ -9,8 +9,8 @@ Cada caso es una lista de bloques en orden. Tipos de bloque:
   cover         imagen o video principal (src, alt; poster y "controls": true si el video tiene sonido;
                 "sound": ruta de la pieza completa con audio si src es un fragmento liviano sin sonido);
                 lleva el view-transition-name de la tarjeta de la home
-  facts         ficha: items = [[clave, valor], …] con clave client | for | year | did | tools
-  story         frase grande (heading) + párrafos (paras)
+  facts         ficha: items = [[clave, valor], …] con clave client | for | year | did | tools | role | deliverables
+  story         frase grande (heading, opcional) + párrafos (paras)
   split-video   video vertical en marco (src, poster) + heading y paras; "controls": true si tiene sonido
   video-pair    dos videos verticales con sonido, lado a lado (items = [{src, poster, heading}])
   media         imagen o video ancho (src, alt; poster si es video; heading y caption opcionales)
@@ -70,6 +70,8 @@ FACT_LABELS = {
     "tools": ("Herramientas", "Tools"),
     "audience": ("Público", "Audience"),
     "tone": ("Tono", "Tone"),
+    "role": ("Rol", "Role"),
+    "deliverables": ("Entregables", "Deliverables"),
 }
 
 def es(t): return t["es"] if isinstance(t, dict) else t
@@ -174,6 +176,10 @@ def paras(b):
     return "".join(f"<p>{bi(p)}</p>" for p in b.get("paras", []))
 
 def b_story(b, c):
+    if not b.get("heading"):  # sin frase grande el texto queda en la columna de siempre
+        return f'''    <section class="story solo">
+      <div class="rv">{paras(b)}</div>
+    </section>'''
     return f'''    <section class="story">
       <h2 class="rv">{bi(b["heading"])}</h2>
       <div class="rv">{paras(b)}</div>
