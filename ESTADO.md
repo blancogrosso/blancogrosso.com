@@ -4,7 +4,7 @@ _Última actualización: 2026-10-31. `main` publicada en `4583a60`. Rama `v2/bri
 
 ## 31 de octubre: ajustes de The Bridge (rama `v2/bridge-ajustes`)
 
-Rama creada desde `main`. Sin unir, sin push.
+Rama creada desde `main`, subida a GitHub para la vista previa. Sin unir.
 
 - **Limpieza hecha:** se borraron `v2/panel`, `v2/muro`, `v2/entrada-muro`, `v2/logo-normal` y `v2/bridge-404`,
   `../preview-panel` y los videos sin commitear de `img/reel/`. La alternativa del logo queda en el tag
@@ -13,6 +13,9 @@ Rama creada desde `main`. Sin unir, sin push.
   `scroll.mp4` pasó a `_ref/the-bridge/`, hasta que llegue el video motion.
 - **Tira cortada:** las fotos se recortaban en el borde de `.gal`, a (ancho − 1280) / 2 del borde de la ventana. La
   tira fijada ahora va de borde a borde (`--bleed`, en `js/case.js`). Vale para todas las galerías con pin.
+- **Contador de galerías:** marcaba las fotos que asomaban por el borde derecho, y arrancaba en 2 o más. Cada foto
+  suma ahora en su punto del recorrido de la tira: empieza en 1 y termina en el total. Si la tira entra entera, indica
+  el total. El error ya estaba en `main`.
 - **Pendiente:** decidir grilla o tira para las 5 y 3 capturas de The Bridge.
 
 ## 31 de octubre: 404, The Bridge y galerías
