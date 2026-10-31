@@ -1,6 +1,26 @@
 # Estado de blancogrosso.com
 
-_Última actualización: 2026-10-30. `v2/redesign` unida en `main` y publicada, con la entrada corregida y la fila que asoma bajo la apertura. Ver "30 de octubre" más abajo._
+_Última actualización: 2026-10-31. Rama `v2/bridge-404` con la página 404, la redirección de `/nido`, el filtro Campañas, el caso The Bridge y las galerías sin desplazamiento en el hover, sin unir ni subir: espera el OK de Tomás. Ver "31 de octubre" más abajo._
+
+## 31 de octubre: 404, The Bridge y galerías
+
+Rama `v2/bridge-404`, creada desde `main`. Sin unir, sin push.
+
+- **404:** `404.html` sale de `_ref/404/404-prototipo.html`, con rutas absolutas y las mismas 10 miniaturas de
+  `img/muro/`. Toma el idioma de `bg-lang`. Con movimiento reducido no anima nada. El `404` se achica por alto
+  para que los botones entren en pantallas apaisadas.
+- **`/nido`:** redirección 301 a `/nido-identidad`. Se sacó el link "Ver presentación original" de
+  `nido-identidad`, que iba a `/nido` y hubiera vuelto a la misma página. `nido.html` queda sin tocar y sin acceso.
+- **The Bridge:** caso destacado con filtro Web. Portada, tarjeta y OG son provisorias. Capturas crudas y
+  scripts en `_ref/the-bridge/`, que bloquean LeadConnector para no sumarle eventos al CRM del cliente.
+  Herramientas de la tarjeta: las que se ven en el código del sitio, a confirmar.
+- **Galerías:** el hover ya no mueve ni escala. La foto activa lleva un contorno de 2 px y los estados de hover
+  se apagan durante el scroll hasta 150 ms después (`is-scrolling`, en `js/case.js`). También se sacó el
+  `translateY` de la cinta de herramientas.
+- **Foco con Tab en galerías con pin:** también pasaba en `main`. Al rearmarse los pin (por ejemplo, cuando carga
+  una imagen) ScrollTrigger saca la tira de su contenedor y el foco caía en `body`. `js/case.js` ahora lo guarda y
+  lo devuelve.
+- **Provisorio:** video y capturas de The Bridge se regraban cuando el sitio esté final.
 
 ## 30 de octubre: entrada corregida y fila del muro que asoma
 

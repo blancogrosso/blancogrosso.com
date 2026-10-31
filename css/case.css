@@ -202,11 +202,11 @@ h1 > .grad, h2 > .grad, h3 > .grad {
   flex: 0 0 auto; margin: 0; scroll-snap-align: start;
   /* --ar (ancho/alto) lo pone el script: una foto horizontal baja de alto para entrar entera en el ancho útil */
   height: min(46svh, calc((100vw - 2 * var(--gutter)) * 1.04), calc((100vw - 2 * var(--gutter)) / var(--ar, 0.8)));
-  border-radius: var(--radius); transition: transform 0.5s var(--ease-out);
+  border-radius: var(--radius);
 }
 .gal img {
   height: 100%; width: auto; max-width: none; border-radius: var(--radius); background: #111;
-  -webkit-user-drag: none; transition: box-shadow 0.5s var(--ease-out);
+  -webkit-user-drag: none;
 }
 .gal-intro { margin: 0 0 clamp(20px, 3vw, 32px); max-width: 58ch; color: var(--soft); text-wrap: pretty; }
 /* ícono de ampliar: siempre visible con el dedo; con mouse, tenue hasta pasar por la foto */
@@ -244,9 +244,14 @@ h1 > .grad, h2 > .grad, h3 > .grad {
   .gal.dragging { cursor: grabbing; scroll-snap-type: none; }
   .gal.dragging figure { pointer-events: none; }
   .zoom { opacity: 0.6; }
-  .gal figure:hover .zoom, .zoomable:hover .zoom { opacity: 1; background: var(--accent); color: var(--on-accent); }
-  .gal figure:hover { transform: scale(1.035); z-index: 1; }
-  .gal figure:hover img { box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(0, 255, 136, 0.35); }
+  /* la foto activa se marca solo con un contorno, que no mueve ni cambia de tamaño nada. Mientras hay
+     scroll (.is-scrolling, de js/case.js) no hay estados de hover: el puntero quieto no dispara nada */
+  .gal figure::after {
+    content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    box-shadow: inset 0 0 0 2px var(--accent); opacity: 0; transition: opacity 0.2s var(--ease-out);
+  }
+  :root:not(.is-scrolling) .gal figure:hover::after { opacity: 1; }
+  :root:not(.is-scrolling) .gal figure:hover .zoom, :root:not(.is-scrolling) .zoomable:hover .zoom { opacity: 1; background: var(--accent); color: var(--on-accent); }
 }
 .gal figure:focus-visible { outline-offset: 4px; }
 
@@ -388,5 +393,5 @@ h1 > .grad, h2 > .grad, h3 > .grad {
   .js .rv { opacity: 1; transform: none; }
   .js .rv-img { clip-path: none; }
   .js .rv-img img, .js .rv-img video { transform: none; }
-  .gal figure:hover, .lb-stage img { transform: none !important; }
+  .lb-stage img { transform: none !important; }
 }
