@@ -1,10 +1,10 @@
 # Estado de blancogrosso.com
 
-_Última actualización: 2026-10-31. Rama `v2/bridge-404` con la página 404, la redirección de `/nido`, el filtro Campañas, el caso The Bridge y las galerías sin desplazamiento en el hover, sin unir ni subir: espera el OK de Tomás. Ver "31 de octubre" más abajo._
+_Última actualización: 2026-10-31. `v2/bridge-404` unida en `main` y publicada: página 404, redirección de `/nido`, filtro Campañas, caso The Bridge y galerías sin desplazamiento en el hover. Ver "31 de octubre" más abajo._
 
 ## 31 de octubre: 404, The Bridge y galerías
 
-Rama `v2/bridge-404`, creada desde `main`. Sin unir, sin push.
+Hecho en `v2/bridge-404` y unido en `main`. Esa rama, `v2/logo-normal` y las anteriores esperan la limpieza, con el OK de Tomás.
 
 - **404:** `404.html` sale de `_ref/404/404-prototipo.html`, con rutas absolutas y las mismas 10 miniaturas de
   `img/muro/`. Toma el idioma de `bg-lang`. Con movimiento reducido no anima nada. El `404` se achica por alto
