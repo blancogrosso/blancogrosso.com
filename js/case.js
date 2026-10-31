@@ -211,8 +211,14 @@
       // una tira desborda si no entra a lo ancho (los anchos de las fotos ya están reservados por sus medidas)
       var desborda = function (b) { var g = b.querySelector('.gal'); return g.scrollWidth > g.clientWidth + 1; };
       var activas = [], ctx = null;
+      var sangrar = function (b) {
+        var ancho = scroller ? scroller.clientWidth : document.documentElement.clientWidth;
+        b.style.setProperty('--bleed', Math.max(0, (ancho - b.offsetWidth) / 2) + 'px');
+      };
+      var sangrarTodas = function () { activas.forEach(sangrar); };
       function armar(lista) {
         activas = lista;
+        lista.forEach(sangrar);
         ctx = gsap.context(function () {
           lista.forEach(function (block) {
             var g = block.querySelector('.gal');
@@ -243,7 +249,7 @@
       function desarmar() {
         if (ctx) { ctx.revert(); ctx = null; }
         activas.forEach(function (b) {
-          b.classList.remove('hscroll'); b._hs = null;
+          b.classList.remove('hscroll'); b._hs = null; b.style.removeProperty('--bleed');
           if (b._bar) { b._bar.parentNode.remove(); b._bar = null; }
           var g = b.querySelector('.gal'); g.scrollLeft = 0;
           if (b._update) b._update();
@@ -272,6 +278,7 @@
       var remedir = function () { if (lenis) lenis.resize(); };
       ScrollTrigger.addEventListener('refresh', remedir);
       ScrollTrigger.addEventListener('refreshInit', guardarFoco);
+      ScrollTrigger.addEventListener('refreshInit', sangrarTodas);
       ScrollTrigger.addEventListener('refresh', devolverFoco);
       ScrollTrigger.refresh();
       return function () {
@@ -279,6 +286,7 @@
         window.removeEventListener('resize', alCambiar);
         ScrollTrigger.removeEventListener('refresh', remedir);
         ScrollTrigger.removeEventListener('refreshInit', guardarFoco);
+        ScrollTrigger.removeEventListener('refreshInit', sangrarTodas);
         ScrollTrigger.removeEventListener('refresh', devolverFoco);
         desarmar();
         if (tick) { gsap.ticker.remove(tick); lenis.destroy(); lenis = null; }

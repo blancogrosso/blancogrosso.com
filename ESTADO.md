@@ -1,10 +1,23 @@
 # Estado de blancogrosso.com
 
-_Última actualización: 2026-10-31. `v2/bridge-404` unida en `main` y publicada: página 404, redirección de `/nido`, filtro Campañas, caso The Bridge y galerías sin desplazamiento en el hover. Ver "31 de octubre" más abajo._
+_Última actualización: 2026-10-31. `main` publicada en `4583a60`. Rama `v2/bridge-ajustes` sin unir ni subir: espera el OK de Tomás._
+
+## 31 de octubre: ajustes de The Bridge (rama `v2/bridge-ajustes`)
+
+Rama creada desde `main`. Sin unir, sin push.
+
+- **Limpieza hecha:** se borraron `v2/panel`, `v2/muro`, `v2/entrada-muro`, `v2/logo-normal` y `v2/bridge-404`,
+  `../preview-panel` y los videos sin commitear de `img/reel/`. La alternativa del logo queda en el tag
+  `archivo/logo-normal`. Los videos del showreel salen en un commit de esta rama.
+- **The Bridge:** 5 capturas de escritorio y 3 de celular; las demás, en `_ref/the-bridge/descartadas/`. Sin video:
+  `scroll.mp4` pasó a `_ref/the-bridge/`, hasta que llegue el video motion.
+- **Tira cortada:** las fotos se recortaban en el borde de `.gal`, a (ancho − 1280) / 2 del borde de la ventana. La
+  tira fijada ahora va de borde a borde (`--bleed`, en `js/case.js`). Vale para todas las galerías con pin.
+- **Pendiente:** decidir grilla o tira para las 5 y 3 capturas de The Bridge.
 
 ## 31 de octubre: 404, The Bridge y galerías
 
-Hecho en `v2/bridge-404` y unido en `main`. Esa rama, `v2/logo-normal` y las anteriores esperan la limpieza, con el OK de Tomás.
+Hecho en `v2/bridge-404` y unido en `main`.
 
 - **404:** `404.html` sale de `_ref/404/404-prototipo.html`, con rutas absolutas y las mismas 10 miniaturas de
   `img/muro/`. Toma el idioma de `bg-lang`. Con movimiento reducido no anima nada. El `404` se achica por alto

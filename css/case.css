@@ -193,8 +193,10 @@ h1 > .grad, h2 > .grad, h3 > .grad {
 .gal-block { margin: var(--block) 0; }
 .gal {
   display: flex; align-items: flex-start; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter);
-  margin: 0 calc(var(--gutter) * -1); padding: 14px var(--gutter) 22px;
+  /* --bleed: del margen del contenido al borde de la ventana o del panel (lo mide js/case.js en la tira fijada).
+     Las fotos arrancan en el margen y se van por el borde real, no por el del contenido de 1280 px */
+  scroll-snap-type: x mandatory; scroll-padding-inline: var(--bleed, var(--gutter));
+  margin: 0 calc(var(--bleed, var(--gutter)) * -1); padding: 14px var(--bleed, var(--gutter)) 22px;
   scrollbar-width: thin; scrollbar-color: #333 transparent;
   user-select: none; -webkit-user-select: none;
 }
