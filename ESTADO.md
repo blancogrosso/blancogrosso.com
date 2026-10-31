@@ -13,7 +13,6 @@ Rama `v2/bridge-404`, creada desde `main`. Sin unir, sin push.
   `nido-identidad`, que iba a `/nido` y hubiera vuelto a la misma página. `nido.html` queda sin tocar y sin acceso.
 - **The Bridge:** caso destacado con filtro Web. Portada, tarjeta y OG son provisorias. Capturas crudas y
   scripts en `_ref/the-bridge/`, que bloquean LeadConnector para no sumarle eventos al CRM del cliente.
-  Herramientas de la tarjeta: las que se ven en el código del sitio, a confirmar.
 - **Galerías:** el hover ya no mueve ni escala. La foto activa lleva un contorno de 2 px y los estados de hover
   se apagan durante el scroll hasta 150 ms después (`is-scrolling`, en `js/case.js`). También se sacó el
   `translateY` de la cinta de herramientas.

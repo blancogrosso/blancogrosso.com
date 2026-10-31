@@ -413,6 +413,7 @@ def page(c):
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="{E(m["og_image_alt"])}">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="{SITE}/img/og/{m.get("og_image", slug)}.jpg">
   <!-- /Open Graph -->
   <link rel="icon" type="image/png" href="img/icons/logo-verde.png">
   <link rel="preload" href="fonts/archivo-variable-latin.woff2" as="font" type="font/woff2" crossorigin>

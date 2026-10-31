@@ -34,7 +34,7 @@
       "tools": "GPT, Gemini, Photoshop", "href": "/nido-identidad", "featured": true, "filters": ["branding"] },
     { "slug": "the-bridge", "title": "The Bridge", "cat": "Web Design · Development",
       "desc": { "es": "Que ningún cliente quede del otro lado.", "en": "No customer left on the other side." },
-      "tools": "HTML, CSS, JavaScript, GSAP, Lenis", "href": "/the-bridge", "featured": true, "filters": ["web"] },
+      "tools": "HTML, CSS, JavaScript, GSAP, Lenis, Claude Code", "href": "/the-bridge", "featured": true, "filters": ["web"] },
     { "slug": "navaja-barber", "title": "Navaja Barber", "cat": "Web Design · Development",
       "desc": { "es": "Sitio de una página para una barbería en Uruguay, con reservas online integradas.", "en": "One-page site for a barbershop in Uruguay, with built-in online booking." },
       "tools": "Antigravity, HTML, CSS, JavaScript", "href": "https://www.navajabarber.com", "external": true, "featured": false, "filters": ["web"] },
