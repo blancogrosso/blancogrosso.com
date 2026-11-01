@@ -2067,15 +2067,6 @@
           ]
         },
         {
-          "type": "media",
-          "src": "img/works/the-bridge/scroll.mp4",
-          "poster": "img/works/the-bridge/scroll-poster.avif",
-          "alt": {
-            "es": "Recorrido por la home de The Bridge",
-            "en": "Scroll through The Bridge home"
-          }
-        },
-        {
           "type": "gallery",
           "items": [
             {
@@ -2100,48 +2091,6 @@
               }
             },
             {
-              "src": "img/works/the-bridge/escritorio/paso-1.avif",
-              "alt": {
-                "es": "Paso 1 del recorrido: te encuentran, en escritorio",
-                "en": "Step 1 of the path: they find you, on desktop"
-              }
-            },
-            {
-              "src": "img/works/the-bridge/escritorio/paso-2.avif",
-              "alt": {
-                "es": "Paso 2 del recorrido: cada mensaje recibe respuesta, en escritorio",
-                "en": "Step 2 of the path: every lead gets a reply, on desktop"
-              }
-            },
-            {
-              "src": "img/works/the-bridge/escritorio/paso-3.avif",
-              "alt": {
-                "es": "Paso 3 del recorrido: la visita queda en el calendario, en escritorio",
-                "en": "Step 3 of the path: the visit is on your calendar, on desktop"
-              }
-            },
-            {
-              "src": "img/works/the-bridge/escritorio/paso-4.avif",
-              "alt": {
-                "es": "Paso 4 del recorrido: vuelven y recomiendan, en escritorio",
-                "en": "Step 4 of the path: they come back and tell others, on desktop"
-              }
-            },
-            {
-              "src": "img/works/the-bridge/escritorio/linea-0-00.avif",
-              "alt": {
-                "es": "Línea del primer mensaje a la reserva, en 0:00, en escritorio",
-                "en": "Timeline from first message to booking, at 0:00, on desktop"
-              }
-            },
-            {
-              "src": "img/works/the-bridge/escritorio/linea-0-38.avif",
-              "alt": {
-                "es": "Línea del primer mensaje a la reserva, en 0:38, en escritorio",
-                "en": "Timeline from first message to booking, at 0:38, on desktop"
-              }
-            },
-            {
               "src": "img/works/the-bridge/escritorio/crm.avif",
               "alt": {
                 "es": "Tablero del CRM con clientes por etapa, en escritorio",
@@ -2149,24 +2098,10 @@
               }
             },
             {
-              "src": "img/works/the-bridge/escritorio/calculadora.avif",
-              "alt": {
-                "es": "Calculadora de ROI con lo que se pierde por mes, en escritorio",
-                "en": "ROI calculator showing what is lost per month, on desktop"
-              }
-            },
-            {
               "src": "img/works/the-bridge/escritorio/servicios.avif",
               "alt": {
                 "es": "Tarjetas de servicios: recepción con IA y CRM, en escritorio",
                 "en": "Service cards: AI front desk and CRM, on desktop"
-              }
-            },
-            {
-              "src": "img/works/the-bridge/escritorio/faq.avif",
-              "alt": {
-                "es": "Preguntas frecuentes, con una abierta, en escritorio",
-                "en": "FAQ with one question open, on desktop"
               }
             }
           ]
@@ -2189,80 +2124,10 @@
               }
             },
             {
-              "src": "img/works/the-bridge/celular/problema.avif",
-              "alt": {
-                "es": "Línea de tiempo: sin recepción el cliente se pierde; con The Bridge reserva en 38 segundos, en celular",
-                "en": "Timeline: without a front desk the customer is lost; with The Bridge they book in 38 seconds, on mobile"
-              }
-            },
-            {
-              "src": "img/works/the-bridge/celular/paso-1.avif",
-              "alt": {
-                "es": "Paso 1 del recorrido: te encuentran, en celular",
-                "en": "Step 1 of the path: they find you, on mobile"
-              }
-            },
-            {
-              "src": "img/works/the-bridge/celular/paso-2.avif",
-              "alt": {
-                "es": "Paso 2 del recorrido: cada mensaje recibe respuesta, en celular",
-                "en": "Step 2 of the path: every lead gets a reply, on mobile"
-              }
-            },
-            {
-              "src": "img/works/the-bridge/celular/paso-3.avif",
-              "alt": {
-                "es": "Paso 3 del recorrido: la visita queda en el calendario, en celular",
-                "en": "Step 3 of the path: the visit is on your calendar, on mobile"
-              }
-            },
-            {
-              "src": "img/works/the-bridge/celular/paso-4.avif",
-              "alt": {
-                "es": "Paso 4 del recorrido: vuelven y recomiendan, en celular",
-                "en": "Step 4 of the path: they come back and tell others, on mobile"
-              }
-            },
-            {
-              "src": "img/works/the-bridge/celular/linea-0-00.avif",
-              "alt": {
-                "es": "Línea del primer mensaje a la reserva, en 0:00, en celular",
-                "en": "Timeline from first message to booking, at 0:00, on mobile"
-              }
-            },
-            {
-              "src": "img/works/the-bridge/celular/linea-0-38.avif",
-              "alt": {
-                "es": "Línea del primer mensaje a la reserva, en 0:38, en celular",
-                "en": "Timeline from first message to booking, at 0:38, on mobile"
-              }
-            },
-            {
               "src": "img/works/the-bridge/celular/crm.avif",
               "alt": {
                 "es": "Tablero del CRM con clientes por etapa, en celular",
                 "en": "CRM board with customers by stage, on mobile"
-              }
-            },
-            {
-              "src": "img/works/the-bridge/celular/calculadora.avif",
-              "alt": {
-                "es": "Calculadora de ROI con lo que se pierde por mes, en celular",
-                "en": "ROI calculator showing what is lost per month, on mobile"
-              }
-            },
-            {
-              "src": "img/works/the-bridge/celular/servicios.avif",
-              "alt": {
-                "es": "Tarjetas de servicios: recepción con IA y CRM, en celular",
-                "en": "Service cards: AI front desk and CRM, on mobile"
-              }
-            },
-            {
-              "src": "img/works/the-bridge/celular/faq.avif",
-              "alt": {
-                "es": "Preguntas frecuentes, con una abierta, en celular",
-                "en": "FAQ with one question open, on mobile"
               }
             }
           ]
