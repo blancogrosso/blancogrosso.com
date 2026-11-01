@@ -18,6 +18,13 @@ Rama creada desde `main`, subida a GitHub para la vista previa. Sin unir.
   el total. El error ya estaba en `main`.
 - **Pendiente:** decidir grilla o tira para las 5 y 3 capturas de The Bridge.
 
+## 1 de noviembre: párrafo del hero arriba (rama `v2/hero-arriba`)
+
+Rama creada desde `v2/integracion`, que todavía no está en `main`. Sin unir, sin push.
+
+- **Pie de la apertura:** desde 900 px el párrafo arranca arriba, con el tope de sus mayúsculas a la altura del de
+  "Creative". Usa `text-box: trim-both cap alphabetic`; sin soporte, un `margin-top` de -0,03 em en `.lead`.
+
 ## 1 de noviembre: hero alineado (rama `v2/hero-alineado`)
 
 Rama creada desde `main`. Sin unir, sin push.
