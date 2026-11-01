@@ -18,6 +18,15 @@ Rama creada desde `main`, subida a GitHub para la vista previa. Sin unir.
   el total. El error ya estaba en `main`.
 - **Pendiente:** decidir grilla o tira para las 5 y 3 capturas de The Bridge.
 
+## 1 de noviembre: hero alineado (rama `v2/hero-alineado`)
+
+Rama creada desde `main`. Sin unir, sin push.
+
+- **Logo:** su tamaño vive en `--logo-fs`, en `.intro-inner`, con y sin `.motion`.
+- **Pie de la apertura:** desde 900 px mide y se centra como el logo, y el texto va de la tinta de la B a la de la O.
+  En pantallas muy bajas no baja de `min(68vw, 900px)` y deja de alinearse, para no tapar la fila del muro.
+- **Pruebas:** esta rama no tiene el contador ni la tira de `v2/bridge-ajustes`; hasta unirlas, esas pruebas fallan acá.
+
 ## 31 de octubre: 404, The Bridge y galerías
 
 Hecho en `v2/bridge-404` y unido en `main`.
