@@ -285,7 +285,7 @@ page = f'''<!DOCTYPE html>
       </div>
     </section>
 
-    <!-- muro de trabajos (_ref/muro/): reemplaza al showreel, cuyos videos siguen en img/reel/ -->
+    <!-- muro de trabajos (_ref/muro/): reemplaza al showreel -->
     <section class="muro" id="muro" aria-label="Muro de trabajos de Blanco Grosso" data-en-aria-label="Blanco Grosso work wall">
       <div class="muro-stage">
         <div class="muro-tiles" id="muroTiles" aria-hidden="true">

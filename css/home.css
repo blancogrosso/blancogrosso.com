@@ -258,7 +258,7 @@ html.lenis, html.lenis body { height: auto; }
    Apertura
    ========================================================= */
 .intro { position: relative; }
-.intro-inner { display: flex; flex-direction: column; gap: 40px; padding-top: calc(var(--nav-h) + 40px); padding-bottom: 72px; }
+.intro-inner { --logo-fs: clamp(64px, 17.5vw, 272px); display: flex; flex-direction: column; gap: 40px; padding-top: calc(var(--nav-h) + 40px); padding-bottom: 72px; }
 /* Logo (versión 8 del prototipo, _ref/logo-v8/). Letra por letra: cada una muestra su porción de un
    mismo campo de color (lámpara de lava: manchas de verde, cian y menta que se mueven lento).
    js/home.js mueve las manchas (--x1…--y4), le pasa a cada letra su lugar en el campo (--ox, --oy),
@@ -269,7 +269,7 @@ html.lenis, html.lenis body { height: auto; }
    simétrico, así que su mitad es la mitad de la pantalla. */
 .logo-wrap {
   position: relative; align-self: flex-start;
-  font-size: clamp(64px, 17.5vw, 272px);
+  font-size: var(--logo-fs);
   margin-left: calc(50% - 2.499em);
 }
 .logo {
@@ -330,8 +330,7 @@ html.lenis, html.lenis body { height: auto; }
 .motion .intro { position: absolute; top: 0; left: 0; right: 0; z-index: 2; }
 .motion .intro-inner { min-height: calc(100svh - var(--peek)); justify-content: center; padding-bottom: 28px; }
 @media (min-width: 700px) {
-  .motion .intro-inner { --foot: 245px; }
-  .motion .logo-wrap { font-size: clamp(64px, min(17.5vw, (100svh - var(--peek) - var(--nav-h) - 112px - var(--foot)) / 1.64), 272px); }
+  .motion .intro-inner { --foot: 245px; --logo-fs: clamp(64px, min(17.5vw, (100svh - var(--peek) - var(--nav-h) - 112px - var(--foot)) / 1.64), 272px); }
 }
 @media (min-width: 900px) { .motion .intro-inner { --foot: 137px; } }
 /* halo suave detrás del cursor (solo con mouse). El prototipo lo desenfocaba con filter: blur(28px) y
@@ -346,7 +345,18 @@ html.lenis, html.lenis body { height: auto; }
 .logo-wrap.glowing .halo { opacity: 1; visibility: visible; transition: opacity 0.5s; }
 
 .intro-foot { display: grid; gap: 28px 56px; grid-template-columns: minmax(0, 1fr); }
-@media (min-width: 900px) { .intro-foot { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: end; } }
+@media (min-width: 900px) {
+  .intro-foot {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: end;
+    /* mismo ancho y centro que el logo (puede pasar el ancho de .wrap, como él); el texto empieza y termina
+       en la tinta de la B y de la O, medida a 0,02 y 0,025 em de cada borde. En pantallas muy bajas el logo
+       se achica tanto que el texto sumaría renglones y taparía la fila: ahí el bloque no baja del mínimo */
+    font-size: var(--logo-fs); --ancho: max(4.955em, min(68vw, 900px));
+    width: var(--ancho); margin-left: calc(50% - var(--ancho) / 2);
+    padding-left: 0.02em; padding-right: 0.025em;
+  }
+  .intro-foot > div, .intro-foot .intro-side { font-size: var(--fs-body); }
+}
 .claim { font-weight: 800; font-size: clamp(30px, 3.6vw, 52px); line-height: 1; letter-spacing: -0.025em; text-wrap: balance; }
 .claim-acc {
   background: var(--claim-gradient);

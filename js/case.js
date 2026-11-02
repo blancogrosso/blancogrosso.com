@@ -211,8 +211,14 @@
       // una tira desborda si no entra a lo ancho (los anchos de las fotos ya están reservados por sus medidas)
       var desborda = function (b) { var g = b.querySelector('.gal'); return g.scrollWidth > g.clientWidth + 1; };
       var activas = [], ctx = null;
+      var sangrar = function (b) {
+        var ancho = scroller ? scroller.clientWidth : document.documentElement.clientWidth;
+        b.style.setProperty('--bleed', Math.max(0, (ancho - b.offsetWidth) / 2) + 'px');
+      };
+      var sangrarTodas = function () { activas.forEach(sangrar); };
       function armar(lista) {
         activas = lista;
+        lista.forEach(sangrar);
         ctx = gsap.context(function () {
           lista.forEach(function (block) {
             var g = block.querySelector('.gal');
@@ -243,7 +249,7 @@
       function desarmar() {
         if (ctx) { ctx.revert(); ctx = null; }
         activas.forEach(function (b) {
-          b.classList.remove('hscroll'); b._hs = null;
+          b.classList.remove('hscroll'); b._hs = null; b.style.removeProperty('--bleed');
           if (b._bar) { b._bar.parentNode.remove(); b._bar = null; }
           var g = b.querySelector('.gal'); g.scrollLeft = 0;
           if (b._update) b._update();
@@ -272,6 +278,7 @@
       var remedir = function () { if (lenis) lenis.resize(); };
       ScrollTrigger.addEventListener('refresh', remedir);
       ScrollTrigger.addEventListener('refreshInit', guardarFoco);
+      ScrollTrigger.addEventListener('refreshInit', sangrarTodas);
       ScrollTrigger.addEventListener('refresh', devolverFoco);
       ScrollTrigger.refresh();
       return function () {
@@ -279,6 +286,7 @@
         window.removeEventListener('resize', alCambiar);
         ScrollTrigger.removeEventListener('refresh', remedir);
         ScrollTrigger.removeEventListener('refreshInit', guardarFoco);
+        ScrollTrigger.removeEventListener('refreshInit', sangrarTodas);
         ScrollTrigger.removeEventListener('refresh', devolverFoco);
         desarmar();
         if (tick) { gsap.ticker.remove(tick); lenis.destroy(); lenis = null; }
@@ -305,13 +313,16 @@
     var smooth = reduce ? 'auto' : 'smooth';
     function left(f) { return f.offsetLeft - g.offsetLeft - g.clientLeft; }
 
-    // contador: cuántas fotos ya asomaron hasta la mitad
+    // contador: cada foto suma al pasar su punto del recorrido. La posición de las fotos se comprime a lo que
+    // la tira puede moverse, porque las últimas nunca llegan al margen: arranca en 1 y termina en el total.
+    // Si la tira entra entera no hay recorrido y se ven todas
     function update() {
-      if (block._bar) { var max = g.scrollWidth - g.clientWidth; block._bar.style.transform = 'scaleX(' + (max > 0 ? g.scrollLeft / max : 0) + ')'; }
+      var max = g.scrollWidth - g.clientWidth;
+      if (block._bar) block._bar.style.transform = 'scaleX(' + (max > 0 ? g.scrollLeft / max : 0) + ')';
       if (!count) return; // una sola foto: sin flechas ni contador
-      var seen = 0, edge = g.scrollLeft + g.clientWidth;
-      figs.forEach(function (f) { if (left(f) + f.offsetWidth / 2 <= edge) seen++; });
-      count.textContent = Math.max(1, seen);
+      var first = left(figs[0]), span = left(figs[figs.length - 1]) - first, seen = 0;
+      figs.forEach(function (f) { if ((left(f) - first) * max / span <= g.scrollLeft + 4) seen++; });
+      count.textContent = seen;
       prev.disabled = g.scrollLeft < 4;
       next.disabled = g.scrollLeft + g.clientWidth >= g.scrollWidth - 4;
     }
