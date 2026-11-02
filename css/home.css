@@ -356,10 +356,10 @@ html.lenis, html.lenis body { height: auto; }
     padding-left: 0.02em; padding-right: 0.025em;
   }
   .intro-foot > div, .intro-foot .intro-side { font-size: var(--fs-body); }
-  /* el tope de las mayúsculas del claim y del párrafo coincide: se recorta el aire de cada renglón */
-  .intro-foot .claim, .intro-foot .lead { text-box: trim-both cap alphabetic; }
+  /* el tope de las mayúsculas del claim y del párrafo coincide: se recorta solo el aire de arriba */
+  .intro-foot .claim, .intro-foot .lead { text-box-trim: trim-start; text-box-edge: cap alphabetic; }
   /* sin text-box: el aire sobre las mayúsculas es casi igual en los dos y alcanza con la diferencia */
-  @supports not (text-box: trim-both cap alphabetic) { .intro-foot .lead { margin-top: -0.03em; } }
+  @supports not (text-box-trim: trim-start) { .intro-foot .lead { margin-top: -0.03em; } }
 }
 .claim { font-weight: 800; font-size: clamp(30px, 3.6vw, 52px); line-height: 1; letter-spacing: -0.025em; text-wrap: balance; }
 .claim-acc {
