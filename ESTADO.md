@@ -1,10 +1,10 @@
 # Estado de blancogrosso.com
 
-_Última actualización: 2026-10-31. `main` publicada en `4583a60`. Rama `v2/bridge-ajustes` sin unir ni subir: espera el OK de Tomás._
+_Última actualización: 2026-11-01. `main` incluye `v2/integracion` y `v2/hero-arriba`. Sigue pendiente decidir grilla o tira en The Bridge._
 
 ## 31 de octubre: ajustes de The Bridge (rama `v2/bridge-ajustes`)
 
-Rama creada desde `main`, subida a GitHub para la vista previa. Sin unir.
+Unida en `main`.
 
 - **Limpieza hecha:** se borraron `v2/panel`, `v2/muro`, `v2/entrada-muro`, `v2/logo-normal` y `v2/bridge-404`,
   `../preview-panel` y los videos sin commitear de `img/reel/`. La alternativa del logo queda en el tag
@@ -17,15 +17,24 @@ Rama creada desde `main`, subida a GitHub para la vista previa. Sin unir.
   suma ahora en su punto del recorrido de la tira: empieza en 1 y termina en el total. Si la tira entra entera, indica
   el total. El error ya estaba en `main`.
 - **Pendiente:** decidir grilla o tira para las 5 y 3 capturas de The Bridge.
+- **CLS en celular:** `v3-prueba` falla cada tanto con CLS 0,0001. Es la tipografía moviendo el botón "Ver trabajos"
+  (1 de 25 cargas, también en `main`), no un error nuevo.
+
+## 1 de noviembre: párrafo del hero arriba (rama `v2/hero-arriba`)
+
+Unida en `main`.
+
+- **Pie de la apertura:** desde 900 px el párrafo arranca arriba, con el tope de sus mayúsculas a la altura del de
+  "Creative". Recorta solo arriba (`text-box-trim: trim-start`, `text-box-edge: cap alphabetic`), así el aire de
+  abajo queda igual. Sin soporte, un `margin-top` de -0,03 em en `.lead`.
 
 ## 1 de noviembre: hero alineado (rama `v2/hero-alineado`)
 
-Rama creada desde `main`. Sin unir, sin push.
+Unida en `main`.
 
 - **Logo:** su tamaño vive en `--logo-fs`, en `.intro-inner`, con y sin `.motion`.
 - **Pie de la apertura:** desde 900 px mide y se centra como el logo, y el texto va de la tinta de la B a la de la O.
   En pantallas muy bajas no baja de `min(68vw, 900px)` y deja de alinearse, para no tapar la fila del muro.
-- **Pruebas:** esta rama no tiene el contador ni la tira de `v2/bridge-ajustes`; hasta unirlas, esas pruebas fallan acá.
 
 ## 31 de octubre: 404, The Bridge y galerías
 
