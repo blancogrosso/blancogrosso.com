@@ -1,6 +1,6 @@
 # Estado de blancogrosso.com
 
-_Última actualización: 2026-11-01. `main` incluye `v2/integracion` y `v2/hero-arriba`, publicada en `d5df19f`. `v2/detalles` sin unir ni subir. Sigue pendiente decidir grilla o tira en The Bridge._
+_Última actualización: 2026-11-02. `main` incluye `v2/integracion`, `v2/hero-arriba` y `v2/detalles`. Sigue pendiente decidir grilla o tira en The Bridge._
 
 ## 31 de octubre: ajustes de The Bridge (rama `v2/bridge-ajustes`)
 
@@ -22,8 +22,16 @@ Unida en `main`.
 
 ## 1 de noviembre: detalles (rama `v2/detalles`)
 
-Sin unir, sin push.
+Unida en `main`.
 
+- **WebKit (motor 26.4, 2 de noviembre):** `ancho-pagina` 31 de 31, `degradado` 35 de 35 (contra Chrome, 1 a 2 de
+  diferencia sobre 255), `hero-alineado` 159 de 159, `muro` 121 de 121 y `galerias` 350 de 350. Las copias están en
+  `_ref/pruebas/webkit/` y las capturas en `_ref/pruebas/capturas-webkit-2/`. Es el motor de Safari en Playwright, no
+  Safari real.
+- **Ajustes de las copias WebKit, no del sitio:** `page.close()` se traba en este WebKit en todos los casos, también
+  en `main` y después de ir a `about:blank`, así que `galerias` abre un contexto por caso. `muro` cuenta el fundido
+  desde que la imagen tiene píxeles, porque WebKit expone `currentSrc` antes de cargarla. Con el fundido roto a
+  propósito, esa medición falla.
 - **Ancho de más en la home:** con barra de scroll visible, el degradado de Trabajos sumaba medio ancho de barra (7 u
   8 px) por usar `50vw`. Ahora usa `cqw`, con `main` como contenedor. `_ref/pruebas/ancho-pagina.mjs` lo prueba con
   barras visibles; las demás suites corren sin ellas.
