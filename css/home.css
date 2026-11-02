@@ -442,11 +442,13 @@ html.lenis, html.lenis body { height: auto; }
    termine y el título llega 28vh más abajo (como en el prototipo). El degradado tapa el muro
    (oscurecido) hasta que se va de pantalla y después se vuelve transparente, para que siga viéndose el
    fondo con grilla. Los 28vh van en el degradado y no en la sección: así los links a #trabajos y
-   /#works siguen dejando el título justo debajo del menú. */
+   /#works siguen dejando el título justo debajo del menú.
+   El degradado sale de .wrap hasta los bordes con cqw (main): 50vw contaría la barra de scroll y sumaría ancho. */
+.motion main { container-type: inline-size; }
 .motion .works { position: relative; z-index: 0; margin-top: calc(28vh - 72px - 100svh); }
 .motion .works::before {
   content: ""; position: absolute; z-index: -1; pointer-events: none;
-  top: calc(72px - 28vh); left: calc(50% - 50vw); right: calc(50% - 50vw); height: 120svh;
+  top: calc(72px - 28vh); left: calc(50% - 50cqw); right: calc(50% - 50cqw); height: 120svh;
   background: linear-gradient(to bottom, transparent 0, rgba(5, 5, 5, 0.86) 22vh, var(--bg) 40vh, var(--bg) 100svh, rgba(5, 5, 5, 0) 120svh);
 }
 
