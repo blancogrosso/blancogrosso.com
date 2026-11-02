@@ -1,6 +1,6 @@
 # Estado de blancogrosso.com
 
-_Última actualización: 2026-10-31. `main` publicada en `4583a60`. Rama `v2/bridge-ajustes` sin unir ni subir: espera el OK de Tomás._
+_Última actualización: 2026-11-01. `main` incluye `v2/integracion` y `v2/hero-arriba`. Sigue pendiente decidir grilla o tira en The Bridge._
 
 ## 31 de octubre: ajustes de The Bridge (rama `v2/bridge-ajustes`)
 
