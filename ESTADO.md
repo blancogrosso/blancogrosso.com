@@ -1,6 +1,6 @@
 # Estado de blancogrosso.com
 
-_Última actualización: 2026-11-01. `main` incluye `v2/integracion` y `v2/hero-arriba`. Sigue pendiente decidir grilla o tira en The Bridge._
+_Última actualización: 2026-11-01. `main` incluye `v2/integracion` y `v2/hero-arriba`, publicada en `d5df19f`. `v2/detalles` sin unir ni subir. Sigue pendiente decidir grilla o tira en The Bridge._
 
 ## 31 de octubre: ajustes de The Bridge (rama `v2/bridge-ajustes`)
 
@@ -19,6 +19,17 @@ Unida en `main`.
 - **Pendiente:** decidir grilla o tira para las 5 y 3 capturas de The Bridge.
 - **CLS en celular:** `v3-prueba` falla cada tanto con CLS 0,0001. Es la tipografía moviendo el botón "Ver trabajos"
   (1 de 25 cargas, también en `main`), no un error nuevo.
+
+## 1 de noviembre: detalles (rama `v2/detalles`)
+
+Sin unir, sin push.
+
+- **Ancho de más en la home:** con barra de scroll visible, el degradado de Trabajos sumaba medio ancho de barra (7 u
+  8 px) por usar `50vw`. Ahora usa `cqw`, con `main` como contenedor. `_ref/pruebas/ancho-pagina.mjs` lo prueba con
+  barras visibles; las demás suites corren sin ellas.
+- **404:** carga `view-transitions.css`. Sin ella, cada entrada desde otra página daba `InvalidStateError`.
+- **Pruebas intermitentes, no son errores del sitio:** `entrada` cuenta a veces unos 26 cuadros en vez de 88, con la
+  duración correcta. Se corrige sola al repetir.
 
 ## 1 de noviembre: párrafo del hero arriba (rama `v2/hero-arriba`)
 
