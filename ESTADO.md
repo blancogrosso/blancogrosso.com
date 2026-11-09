@@ -1,6 +1,34 @@
 # Estado de blancogrosso.com
 
-_Última actualización: 2026-11-02. `main` incluye `v2/integracion`, `v2/hero-arriba` y `v2/detalles`. Sigue pendiente decidir grilla o tira en The Bridge._
+_Última actualización: 2026-11-09. `main` incluye `v2/integracion`, `v2/hero-arriba` y `v2/detalles`. `v2/serra-propuesta` espera el OK para unirse. Sigue pendiente decidir grilla o tira en The Bridge._
+
+## 9 de noviembre: propuesta de SERRA (rama `v2/serra-propuesta`)
+
+Sin unir a `main` hasta el OK de Tomás. Página privada (`noindex, nofollow`), sin enlaces desde la home ni desde trabajos, sin Supabase.
+
+- **Archivos:** `serra-propuesta.html` y `/propuesta/` (imágenes, SVG, `descargas/` con los 2 PDF, los 2 videos y sus 2 posters), copiados del zip del diseñador. Cuatro fuentes nuevas en `/fonts/`: Cormorant 600/700 y Host Grotesk 400/700. Rewrite `/serra-propuesta` en `vercel.json`.
+- **Pestañas:** Brief / Identidad / Propuesta en las tres páginas de SERRA. En `/serra` y `/serra-identidad`, el header achica el relleno debajo de 640 px: con tres pestañas, a 375 px se pasaba de ancho.
+- **Ajustes sobre el HTML del diseñador:**
+  - El alto del header sale de `--hdr`, medido: 56 px, 55 en celular, no 49.
+  - Índice sin scroll desde 700 px de alto.
+  - "Aplicaciones" va con el título arriba y el texto debajo.
+  - "Sebastián + Raquel = Serra" en una línea, con `min(88px, 6.85cqi)`: 22,9 px en celular.
+  - Logo del cierre: `min(190px, 40vw)`.
+  - Óvalos de la letra: posición y `data-o` del HTML nuevo del diseñador.
+- **Menú de catering:** las piezas toman el alto disponible en 9:16. El tramo fijo mide lo mismo que el recorrido de la tira (`--menu-recorrido`). Si la tira entra a lo ancho, la escena no se fija y las piezas se reparten de margen a margen.
+- **Video de portada:**
+  - 16:9 y 9:16 de 30 s, con audio, comprimidos a 4,8 y 4,7 MB (H.264 en dos pasadas, SSIM 0,992).
+  - La portada se decide en el `<head>`, antes de pintar: con video, la caja tiene su tamaño final desde el primer cuadro, el fondo `--s-tomate` y el primer cuadro (rojo) como poster. No aparece el logo y el CLS del inicio es 0, también con red lenta.
+  - La portada estática queda como respaldo: con movimiento reducido, con el botón "Ver video", o si el video falla.
+- **Corrección:** el commit `0617835` dice que con movimiento reducido "el video no se carga". No era así: se descargaba el comienzo para saber si existía. Desde el commit siguiente, con movimiento reducido el `src` se asigna recién al tocar "Ver video", y no se descarga nada antes.
+- **Pruebas** (en `_ref/pruebas/`, fuera de git), en Chrome y WebKit:
+  - `serra-propuesta.mjs` (75): página, fuentes, PDF, pestañas y Supabase solo lectura.
+  - `serra-ajustes.mjs` (176): inicio, video entero, menú, títulos, índice y nombres.
+  - `serra-video.mjs` (48): formato, sonido, movimiento reducido, respaldo y óvalos.
+  - `serra-portada.mjs` (12): red lenta, cuadro a cuadro.
+  - Capturas de toda la tanda en `_ref/pruebas/capturas-serra/`.
+- **Batería completa:** no se corre para cambios que solo tocan páginas de SERRA, que no abre. La última completa, el 9 de noviembre con `26e7259`: 1738 de 1738.
+- **Vista previa:** Vercel la protege con login. No se pudo revisar desde acá porque Claude in Chrome no estaba conectado.
 
 ## 31 de octubre: ajustes de The Bridge (rama `v2/bridge-ajustes`)
 

@@ -1,0 +1,1086 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>SERRA — Propuesta creativa</title>
+<meta name="description" content="Propuesta creativa de SERRA: de dónde sale la letra, la baldosa, el color y cómo se arma la marca.">
+<script>
+/* portada: el video existe, así que se decide antes de pintar. Con movimiento reducido queda la portada estática */
+document.documentElement.classList.add(matchMedia('(prefers-reduced-motion: reduce)').matches ? 'portada-estatica' : 'portada-video');
+</script>
+<link rel="preload" href="/fonts/cormorant-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:Archivo;src:url(/fonts/archivo-variable-latin.woff2) format("woff2");font-weight:100 900;font-display:swap}
+@font-face{font-family:Cormorant;src:url(/fonts/cormorant-latin-600-normal.woff2) format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:Cormorant;src:url(/fonts/cormorant-latin-700-normal.woff2) format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"Host Grotesk";src:url(/fonts/host-grotesk-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Host Grotesk";src:url(/fonts/host-grotesk-latin-700-normal.woff2) format("woff2");font-weight:700;font-display:swap}
+
+:root{
+  --rojo:#C1272D; --bordo:#7D1D18; --crema:#FBF4E8; --blanco:#FFFFFF; --carbon:#26120D;
+  --s-tomate:#9E2B24; --s-ladrillo:#74211A; --s-brasa:#4A1D17; --s-masa:#F5EDDF;
+  --tinta:var(--s-tomate); --texto:var(--s-brasa); --papel:var(--s-masa);
+  --side:240px; --pad:clamp(20px,5vw,72px); --hdr:56px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--papel);color:var(--texto);font-family:"Host Grotesk",Archivo,sans-serif;font-size:18px;line-height:1.5;-webkit-font-smoothing:antialiased}
+img,video,svg{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--tinta);outline-offset:3px}
+button{font:inherit;color:inherit}
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* encabezado compartido con /serra y /serra-identidad */
+.site-header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 20px;background:var(--carbon);color:var(--crema);font-family:Archivo,sans-serif}
+.site-header .brand{font-weight:800;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--crema);text-decoration:none}
+.site-header nav{display:flex;gap:6px}
+.site-header .tab{font-family:Archivo,sans-serif;font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:7px 15px;border-radius:99px;color:var(--crema);text-decoration:none;opacity:.6;background:transparent;border:none;display:inline-block;transition:opacity .15s,background .15s}
+.site-header .tab:hover{opacity:.9}
+.site-header .tab.active{opacity:1;background:var(--rojo);color:var(--blanco)}
+.site-header .tab:focus-visible{outline:2px dashed var(--crema);outline-offset:2px}
+
+/* estructura */
+.layout{display:block}
+.side{position:fixed;top:var(--hdr);left:0;bottom:0;width:min(300px,86vw);overflow:auto;background:var(--papel);z-index:90;padding:20px 24px 76px 28px;display:flex;flex-direction:column;gap:14px;border-right:1px solid rgba(158,43,36,.25);box-shadow:20px 0 50px rgba(74,29,23,.12);transform:translateX(-105%);transition:transform .35s cubic-bezier(.2,.7,.2,1);visibility:hidden}
+.side.open{transform:none;visibility:visible}
+.side-logo{width:88px;height:auto}
+.side ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.side ol a{display:flex;align-items:center;min-height:clamp(24px,calc((100svh - 300px) / 17),34px);line-height:1.3;text-decoration:none;color:var(--texto);opacity:.55;font-size:15px;transition:opacity .2s,color .2s}
+.side ol a:hover{opacity:.9}
+.side ol a[aria-current="true"]{opacity:1;color:var(--tinta);font-weight:700}
+.side .side-foot{margin-top:auto;display:flex;flex-direction:column;gap:0}
+.side .side-foot a{display:flex;align-items:center;gap:10px;min-height:32px;line-height:1.3;text-decoration:none;font-size:15px;color:var(--tinta);font-weight:700}
+.side .side-foot a svg{width:18px;height:18px;flex-shrink:0}
+.menu-toggle{display:inline-flex;position:fixed;left:16px;bottom:16px;z-index:95;min-height:48px;padding:0 20px;border-radius:999px;border:0;background:var(--tinta);color:var(--papel);font-weight:700;align-items:center;gap:10px;box-shadow:0 10px 30px rgba(74,29,23,.3);cursor:pointer}
+.menu-toggle svg{width:18px;height:18px}
+
+main{min-width:0}
+section{padding:clamp(72px,10vw,140px) var(--pad);position:relative}
+.wrap{max-width:1180px;margin:0 auto}
+h1,h2{font-family:Cormorant,serif;font-weight:700;text-transform:uppercase;color:var(--tinta);-webkit-text-stroke:1.5px var(--tinta);line-height:.95;margin:0;text-wrap:balance;letter-spacing:.005em}
+h2{font-size:clamp(46px,7vw,104px)}
+h3{font-family:Cormorant,serif;font-weight:700;font-size:clamp(28px,3vw,40px);line-height:1;margin:0;color:var(--tinta);text-transform:uppercase;-webkit-text-stroke:.8px var(--tinta)}
+p{margin:0;text-wrap:pretty;max-width:60ch}
+.lead{font-size:clamp(19px,1.6vw,23px);line-height:1.5}
+.head h2{font-size:clamp(44px,5.6vw,88px)}
+.head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:end;margin-bottom:clamp(40px,6vw,72px)}
+.on-red{background:var(--tinta);color:var(--papel)}
+.on-red h2,.on-red h3{color:var(--papel);-webkit-text-stroke-color:var(--papel)}
+.on-red :focus-visible{outline-color:var(--papel)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 26px;border-radius:999px;background:var(--tinta);color:var(--papel);text-decoration:none;font-weight:700;font-size:17px;border:2px solid var(--tinta);cursor:pointer;transition:background .2s,color .2s}
+.btn:hover{background:transparent;color:var(--tinta)}
+.btn.ghost{background:transparent;color:var(--tinta)}
+.btn.ghost:hover{background:var(--tinta);color:var(--papel)}
+.on-red .btn{background:var(--papel);color:var(--tinta);border-color:var(--papel)}
+.on-red .btn:hover{background:transparent;color:var(--papel)}
+.btn svg{width:20px;height:20px}
+
+/* aparición al hacer scroll */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* INICIO */
+#inicio{padding:0;min-height:calc(100vh - var(--hdr));display:grid;grid-template-rows:1fr auto;overflow:hidden}
+.hero-media{position:relative;overflow:hidden;background:var(--papel);display:grid;place-items:center;min-height:62vh}
+.hero-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-media .orla{position:absolute;left:50%;top:74%;width:min(1700px,150%);transform:translateX(-50%);pointer-events:none}
+.hero-title{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:22px;padding:0 var(--pad);margin-top:-14vh}
+.hero-title img{width:min(600px,72vw)}
+.hero-title span{font-family:Cormorant,serif;font-weight:600;font-size:clamp(18px,2.2vw,30px);letter-spacing:.32em;padding-left:.32em;text-transform:uppercase;color:var(--tinta);-webkit-text-stroke:.7px currentColor}
+.hero-title .h-l{display:inline-block;opacity:0;transform:translateY(40px);animation:up 1s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes up{to{opacity:1;transform:none}}
+.portada-video .hero-media .orla,.portada-video .hero-title{display:none}
+.sound{position:absolute;right:20px;bottom:20px;z-index:3;min-height:44px;min-width:44px;padding:0 18px;border-radius:999px;border:2px solid var(--papel);background:rgba(74,29,23,.55);color:var(--papel);font-weight:700;cursor:pointer;display:none}
+.has-video .sound{display:inline-flex;align-items:center}
+/* ancho fijo en em: no cambia cuando carga la tipografía */
+.sound{width:9.5em;justify-content:center}
+.sound[hidden]{display:none!important}
+/* con video: desde el primer pintado, la caja del video con su tamaño final y el primer cuadro de poster (rojo tomate, igual que el fondo); el título queda debajo */
+.portada-video #inicio{height:auto;min-height:0;grid-template-rows:auto auto}
+.portada-video .hero-media{min-height:0;width:min(100%,calc((100svh - var(--hdr)) * 16 / 9));aspect-ratio:16/9;justify-self:center;background:var(--s-tomate) url(/propuesta/serra-propuesta-16x9-poster.webp) center/contain no-repeat}
+@media (max-aspect-ratio:4/5){
+  .portada-video .hero-media{width:min(100%,calc((100svh - var(--hdr)) * 9 / 16));aspect-ratio:9/16;background-image:url(/propuesta/serra-propuesta-9x16-poster.webp)}
+}
+.portada-video .hero-media video{object-fit:contain}
+/* movimiento reducido (o video que no carga): portada estática; con movimiento reducido, botón Ver video */
+.portada-estatica .sound{display:inline-flex;align-items:center;background:var(--tinta);border-color:var(--tinta);color:var(--papel)}
+.hero-foot{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:end;padding:clamp(40px,5vw,64px) var(--pad);background:var(--papel);position:relative;z-index:2}
+.hero-foot h1{font-size:clamp(40px,5vw,80px)}
+.hero-foot .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+
+@media (min-width:900px){
+  #inicio{height:calc(100svh - var(--hdr));min-height:0;grid-template-rows:minmax(0,1fr) auto}
+  .hero-media{min-height:0}
+  .hero-media .orla{top:calc(100% - clamp(56px,11svh,140px))}
+  .hero-title{margin-top:-6svh;gap:clamp(10px,2svh,22px)}
+  .hero-title img{width:auto;height:clamp(80px,21svh,230px);max-width:72vw}
+  .hero-foot{padding-block:clamp(20px,4svh,64px)}
+  .hero-foot h1{font-size:clamp(40px,min(5vw,8.5svh),80px)}
+  .hero-foot .actions{margin-top:clamp(14px,2.6svh,24px)}
+}
+
+/* HISTORIA */
+#historia{overflow:hidden}
+#historia .mesa{position:absolute;right:-60px;bottom:-40px;width:min(820px,70%);opacity:.28;pointer-events:none}
+.names-wrap{container-type:inline-size}
+/* el renglón mide 14,33em en mayúsculas: entra justo en el ancho del contenedor, con tope de 88px */
+.names{display:flex;align-items:baseline;gap:.3em;white-space:nowrap;font-family:Cormorant,serif;font-weight:700;font-size:clamp(20px,5.6vw,82px);font-size:min(88px,6.85cqi);line-height:1;text-transform:uppercase;margin-top:56px;color:var(--papel)}
+.names b{-webkit-text-stroke:1.5px var(--papel)}
+.names i{font-style:normal;opacity:.45}
+.names .eq{opacity:1;-webkit-text-stroke:1.5px var(--papel)}
+.story{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);position:relative}
+.story p+p{margin-top:18px}
+
+/* escenas fijas que avanzan con el scroll */
+.scene{position:relative;padding:0}
+.scene .sticky{position:sticky;top:var(--hdr);height:calc(100svh - var(--hdr));display:grid;grid-template-rows:auto minmax(0,1fr);gap:clamp(16px,3vh,32px);padding:clamp(28px,5vh,56px) var(--pad);overflow:hidden}
+.scene .sticky h2{font-size:clamp(40px,5.6vw,88px)}
+.scene-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap}
+.scene-head p{max-width:46ch}
+.steps{display:flex;gap:8px}
+.steps span{width:28px;height:4px;border-radius:2px;background:currentColor;opacity:.2;transition:opacity .3s}
+.steps span.on{opacity:1}
+
+/* LETRA */
+#letra{height:420vh}
+.letra-stage{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(20px,4vw,64px);align-items:center;min-height:0}
+.fotos{position:relative;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:var(--s-brasa);max-height:100%;width:100%;justify-self:center}
+.fotos figure{position:absolute;inset:0;margin:0;opacity:0;transition:opacity .5s}
+.fotos figure.on{opacity:1}
+.fotos .zoom{position:absolute;inset:0;will-change:transform}
+.fotos img{width:100%;height:100%;object-fit:cover;display:block}
+.fotos .ring{position:absolute;border:4px solid var(--papel);border-radius:50%;box-shadow:0 0 0 3px rgba(42,20,16,.5);opacity:0;transition:opacity .4s}
+.fotos figure.on .ring{opacity:1}
+.fotos figcaption{position:absolute;left:16px;bottom:14px;color:var(--papel);font-size:15px;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.armado{display:flex;flex-direction:column;gap:24px;position:relative;z-index:3}
+.wordmark{position:relative;width:100%;aspect-ratio:553.5/199}
+.wordmark svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.wordmark .ghost{fill:#9E2B24;opacity:.12}
+.wordmark .lt{fill:#9E2B24;opacity:0;transform-box:view-box;transform-origin:0 0;will-change:transform}
+.armado p{font-size:17px}
+
+/* BALDOSA Y PIZZA */
+.mezcla{position:relative;width:100%;max-width:1100px;margin:0 auto;aspect-ratio:3/2;max-height:100%;border-radius:16px;overflow:hidden;align-self:center}
+.mezcla img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mezcla .pz{opacity:0}
+.mezcla-label{position:absolute;left:16px;bottom:14px;padding:6px 12px;border-radius:8px;background:rgba(74,29,23,.7);color:var(--papel);font-size:15px}
+
+/* CONSTRUCCION */
+#construccion{height:460vh}
+.cons-stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,4vw,64px);align-items:center;min-height:0}
+.cuadro{position:relative;aspect-ratio:1;width:min(100%,62vh);justify-self:center;border-radius:16px;overflow:hidden;background:var(--papel)}
+.cuadro>*{position:absolute;inset:0;width:100%;height:100%}
+.cuadro img{object-fit:cover}
+.tecnico{background:transparent}
+.tecnico .draw{fill:none;stroke:#9E2B24;stroke-width:.8;stroke-dasharray:1;stroke-dashoffset:1;vector-effect:non-scaling-stroke}
+.tecnico .t-grid{opacity:0;stroke:#9E2B24;stroke-width:.35;stroke-dasharray:2 2}
+.tecnico .t-trazo .draw{stroke-width:1.4}
+.tecnico .t-final{opacity:0;fill:#9E2B24}
+.cons-side{display:flex;flex-direction:column;gap:22px}
+.cons-side ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;counter-reset:c}
+.cons-side li{display:flex;gap:14px;align-items:baseline;opacity:.35;transition:opacity .3s;font-size:18px}
+.cons-side li::before{counter-increment:c;content:counter(c);font-family:Cormorant,serif;font-weight:700;font-size:28px;color:var(--tinta);min-width:20px}
+.cons-side li.on{opacity:1}
+
+/* REDUCCION */
+.reduccion{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.red-card{border:2px solid var(--tinta);border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:18px;min-height:340px}
+.red-card .box{flex:1;display:grid;place-items:center;min-height:220px}
+.red-card .box img{transition:width .15s,height .15s}
+.red-card span{font-weight:700}
+.slider{display:flex;align-items:center;gap:18px;margin-top:28px;flex-wrap:wrap}
+.slider input{flex:1;min-width:220px;accent-color:var(--tinta);height:44px}
+.slider output{font-weight:700;min-width:72px}
+
+/* LOGO */
+.logo-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:20px}
+.logo-grid>div{border-radius:16px;display:grid;place-items:center;padding:clamp(28px,4vw,56px);min-height:240px}
+.logo-main{border:2px solid var(--tinta);grid-row:span 2;min-height:520px!important}
+.logo-main .stack{display:flex;flex-direction:column;align-items:center;gap:22px}
+.logo-main .stack span{-webkit-text-stroke:.6px currentColor;font-family:Cormorant,serif;font-weight:600;letter-spacing:.32em;padding-left:.32em;text-transform:uppercase;color:var(--tinta);font-size:clamp(14px,1.4vw,22px)}
+.logo-neg{background:var(--tinta)}
+.logo-neg .row{display:flex;align-items:center;gap:24px}
+.logo-ins{display:grid!important;grid-template-columns:1fr 1fr;gap:20px;padding:0!important;min-height:0!important;place-items:stretch!important}
+.logo-ins>div{border-radius:16px;display:grid;place-items:center;min-height:220px}
+
+/* PATRON */
+#patron{height:300vh}
+.patron-sticky{grid-template-rows:none!important;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);padding:0!important;gap:0!important}
+#patron .txt{padding:clamp(40px,6vw,96px) var(--pad);display:flex;flex-direction:column;justify-content:center;gap:28px}
+.piso{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:1fr;background:var(--s-masa);overflow:hidden;align-content:center}
+.pt{aspect-ratio:1;background-size:100% 100%;opacity:0;transform:scale(.92);transition:opacity .5s,transform .5s}
+.pt.pos{background-image:url(/propuesta/baldosa.svg);background-color:var(--s-masa)}
+.pt.neg{background-image:url(/propuesta/baldosa-hueso.svg);background-color:var(--s-tomate)}
+.pt.on{opacity:1;transform:none}
+
+/* COLOR */
+.colores{display:grid;grid-template-columns:1.5fr 1.15fr 1.15fr 1.35fr;gap:14px}
+.color{position:relative;border-radius:16px;overflow:hidden;min-height:620px;display:flex;flex-direction:column;background:var(--c);color:var(--fg);isolation:isolate}
+.color .foto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1;transition:clip-path .38s cubic-bezier(.4,0,.2,1);clip-path:inset(0 0 0 0)}
+.color.plano .foto{clip-path:inset(0 0 100% 0)}
+.color .info{margin-top:auto;padding:22px;background:var(--c);display:flex;flex-direction:column;gap:12px;transition:background .6s}
+.color h3{color:var(--fg);-webkit-text-stroke-color:var(--fg);font-size:clamp(30px,2.6vw,44px)}
+.color .de{font-size:15px;opacity:.85}
+.color dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:13px}
+.color dd span{white-space:nowrap}
+.color dt{font-weight:700}
+.color dd{margin:0;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.copy{min-width:44px;min-height:44px;margin:-10px -10px -10px 0;border:0;background:transparent;color:inherit;cursor:pointer;border-radius:10px;display:grid;place-items:center}
+.copy svg{width:16px;height:16px}
+.copy:hover{background:rgba(255,255,255,.12)}
+.color-toggle{margin-top:28px}
+.nota{font-size:14px;opacity:.75;margin-top:18px}
+
+/* TIPOGRAFIA */
+.tipos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(28px,5vw,80px)}
+.tipo{display:flex;flex-direction:column;gap:20px;border-top:2px solid var(--tinta);padding-top:28px}
+.tipo .nombre{font-size:clamp(48px,5.4vw,96px);line-height:.9;color:var(--tinta);white-space:nowrap}
+.tipo .abc{font-size:clamp(22px,2.3vw,36px);line-height:1.3;word-break:break-word}
+.tipo .uso{font-size:16px}
+.f-cor{font-family:Cormorant,serif;font-weight:700;-webkit-text-stroke:1px var(--tinta)}
+.f-hg{font-family:"Host Grotesk",sans-serif;font-weight:400}
+.probar{margin-top:clamp(40px,5vw,64px);display:flex;flex-direction:column;gap:10px}
+.probar label{font-size:15px}
+.probar input{width:100%;border:0;border-bottom:2px solid var(--tinta);background:transparent;font-family:Cormorant,serif;font-weight:700;text-transform:uppercase;color:var(--tinta);-webkit-text-stroke:1.2px var(--tinta);font-size:clamp(40px,6vw,96px);padding:8px 0;min-height:44px}
+.probar input:focus{outline:none;border-bottom-width:4px}
+
+/* ILUSTRACIONES */
+.ilus{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(10px,2vw,28px)}
+.ilus figure{margin:0;aspect-ratio:1;display:grid;place-items:center;padding:6%}
+.ilus img{width:100%;height:100%;object-fit:contain}
+
+/* MENU */
+#menu{height:calc(100svh - var(--hdr) + var(--menu-recorrido,0px))}
+.menu-viewport{overflow:hidden;min-height:0;display:flex;align-items:stretch;padding-bottom:24px}
+.menu-track{display:flex;flex:none;gap:clamp(16px,2vw,28px);will-change:transform;height:100%}
+.menu-track img{height:100%;width:auto;aspect-ratio:9/16;border-radius:12px;flex-shrink:0;box-shadow:0 18px 40px rgba(74,29,23,.18)}
+
+/* DESCARGAS */
+.descargas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.desc{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:120px;padding:28px 32px;border-radius:16px;border:2px solid var(--papel);text-decoration:none;color:var(--papel);transition:background .2s,color .2s}
+.desc:hover{background:var(--papel);color:var(--tinta)}
+.desc strong{display:block;font-family:Cormorant,serif;font-size:clamp(28px,3vw,40px);line-height:1;text-transform:uppercase;-webkit-text-stroke:.8px currentColor}
+.desc small{font-size:15px;opacity:.8}
+.desc svg{width:32px;height:32px;flex-shrink:0}
+
+/* CIERRE */
+#cierre{min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(20px,3vw,36px);text-align:center;overflow:hidden}
+#cierre .mesa{width:min(340px,58vw);height:auto;display:block}
+#cierre h2{font-size:clamp(56px,9vw,150px);position:relative}
+#cierre .firma{position:relative;margin-top:clamp(20px,3vw,36px);display:flex;flex-direction:column;align-items:center;gap:10px}
+#cierre .firma img{width:min(190px,40vw)}
+.etapas{display:flex;justify-content:space-between;gap:16px;padding:28px var(--pad);border-top:1px solid rgba(158,43,36,.2);flex-wrap:wrap}
+.etapas a{display:inline-flex;align-items:center;gap:10px;min-height:44px;text-decoration:none;font-weight:700;color:var(--tinta)}
+
+
+/* MARCA */
+#marca{min-height:calc(100vh - 49px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(24px,4vh,40px);text-align:center}
+.marca{display:flex;flex-direction:column;align-items:center;gap:calc(min(720px,70vw,58vh) * .07)}
+.marca .m-sym{width:calc(min(720px,70vw,58vh) * .3595)}
+.marca .m-wm{width:min(720px,70vw,58vh);height:auto}
+.marca .m-sym{height:auto}
+.marca span{margin-top:calc(min(720px,70vw,58vh) * -.03)}
+.marca span{font-family:Cormorant,serif;font-weight:600;font-size:clamp(18px,2.2vw,32px);letter-spacing:.34em;padding-left:.34em;text-transform:uppercase;color:var(--tinta);-webkit-text-stroke:.7px currentColor}
+.marca-txt{max-width:40ch}
+.claims-nota{max-width:46ch;margin:0;font-size:16px;line-height:1.5}
+.claims{display:flex;gap:4px;padding:4px;border-radius:999px;box-shadow:inset 0 0 0 1.5px var(--tinta);flex-wrap:wrap;justify-content:center}
+.claims button{min-height:44px;padding:0 20px;border:0;border-radius:999px;background:transparent;color:var(--tinta);font:inherit;font-size:16px;font-weight:600;cursor:pointer;transition:background .2s,color .2s}
+.claims button[aria-pressed="true"]{background:var(--tinta);color:var(--papel)}
+.claims button:focus-visible{outline:2px solid var(--tinta);outline-offset:3px}
+/* REFERENCIAS */
+.orlas{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:clamp(14px,2vw,24px)}
+.orla-p{margin:0;position:relative;aspect-ratio:4/3;border-radius:14px;overflow:hidden;display:grid;place-items:center}
+.orla-p>img.o{position:absolute;inset:4%;width:92%;height:92%;object-fit:contain}
+.orla-p .in{position:relative;display:flex;flex-direction:column;align-items:center;gap:clamp(8px,1.4vw,16px);text-align:center;width:52%}
+.orla-p .in .s{width:18%;height:auto}
+.orla-p .in .w{width:100%;height:auto}
+.orla-p .claim{font-family:Cormorant,serif;font-weight:600;letter-spacing:.3em;text-transform:uppercase;font-size:clamp(9px,1vw,14px);-webkit-text-stroke:.5px currentColor}
+.orla-p .precio{font-family:Cormorant,serif;font-weight:700;text-transform:uppercase;line-height:.95;font-size:clamp(22px,3.2vw,46px);-webkit-text-stroke:.7px currentColor}
+.orla-p .precio small{display:block;font-family:"Host Grotesk",sans-serif;font-weight:400;text-transform:none;font-size:clamp(11px,.95vw,14px);margin-top:10px;-webkit-text-stroke:0;letter-spacing:0}
+.orla-lado{display:grid;grid-template-rows:1fr 1fr;gap:clamp(14px,2vw,24px)}
+.orla-lado .orla-p{aspect-ratio:auto;min-height:0}
+.apps{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(10px,1.6vw,20px)}
+.apps figure{margin:0;display:flex;flex-direction:column;gap:10px;grid-column:span 4}
+.apps figure.mitad{grid-column:span 6}
+.apps .mitad .ph{aspect-ratio:4/3}
+.apps figure.ancha{grid-column:span 8}
+.apps figure.alta{grid-column:span 4}
+.apps img{width:100%;height:100%;object-fit:cover;border-radius:12px;display:block}
+.apps .ph{aspect-ratio:1;overflow:hidden;border-radius:12px}
+.apps .ancha .ph{aspect-ratio:3/2}
+.apps .alta .ph{flex:1;aspect-ratio:auto}
+.apps figcaption{font-size:15px}
+.ig{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:clamp(32px,6vw,96px);align-items:start}
+.phone{background:#fff;color:#000;border-radius:36px;padding:14px 0 0;box-shadow:0 0 0 10px #2A1410,0 30px 60px rgba(42,20,16,.25);overflow:hidden;font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;font-size:13px;line-height:1.35;width:100%;max-width:400px;margin:10px auto}
+.ph-top{display:flex;justify-content:center;font-weight:700;font-size:15px;padding:8px 16px 12px}
+.ph-perfil{display:flex;align-items:center;gap:18px;padding:4px 16px 10px}
+.avatar{width:84px;height:84px;border-radius:50%;background:#9E2B24;display:grid;place-items:center;flex:none}
+.avatar img{width:56%;height:auto}
+.ph-nombre b{display:block;font-size:14px}
+.ph-nombre span{color:#737373}
+.ph-bio{padding:0 16px;white-space:pre-line}
+.ph-bio a{color:#00376b;font-weight:600;text-decoration:none;display:inline-block;margin-top:2px}
+.ph-btns{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:12px 16px}
+.ph-btns span{background:#efefef;border-radius:8px;text-align:center;padding:7px 0;font-weight:600}
+.ph-hl{display:flex;gap:16px;padding:4px 16px 14px}
+.ph-hl figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px}
+.ph-hl .c{width:68px;height:68px;border-radius:50%;background:#9E2B24;box-shadow:0 0 0 2px #fff,0 0 0 3px #dbdbdb;display:grid;place-items:center;overflow:hidden;position:relative}
+.ph-hl .c::after{content:"";position:absolute;inset:4px;border-radius:50%;border:1px solid rgba(245,237,223,.7)}
+.ph-hl .c img{width:66%;height:66%;object-fit:contain}
+.ph-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;border-top:1px solid #dbdbdb;padding-top:2px}
+.post{aspect-ratio:3/4;position:relative;overflow:hidden;display:grid;place-items:center;text-align:center}
+.post img.o{position:absolute;inset:6%;width:88%;height:88%;object-fit:contain}
+.post .t{position:relative;font-family:Cormorant,serif;font-weight:700;text-transform:uppercase;line-height:.95;font-size:clamp(11px,3.4vw,15px);padding:0 22%;-webkit-text-stroke:.3px currentColor}
+.post .t small{display:block;font-family:"Host Grotesk",sans-serif;font-weight:400;text-transform:none;font-size:9px;margin-top:6px;-webkit-text-stroke:0}
+.post.menu img{width:100%;height:100%;object-fit:cover}
+.post.piso{background:#F5EDDF;color:#9E2B24}
+.post.piso::before{content:"";position:absolute;left:0;right:0;bottom:0;height:28%;background:url(/propuesta/baldosa.svg) 0 0/33.333% auto repeat-x}
+.post.reel{color:#F5EDDF;align-content:end;justify-items:start;text-align:left}
+.post.reel .il{position:absolute;left:12%;top:16%;width:76%;height:52%;object-fit:contain;opacity:.55}
+.post.reel .play{position:absolute;top:6px;right:6px;width:14px;height:14px;color:#F5EDDF}
+.post.reel .t{position:relative;margin:0;padding:0 8px 10px;font-size:clamp(12px,3.6vw,16px)}
+.avs{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.avopt{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:auto auto;align-items:end;justify-content:start;gap:8px;padding:8px;border-radius:12px;min-height:44px}
+.avopt[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--tinta)}
+.avopt:focus-visible{outline:2px solid var(--tinta);outline-offset:2px}
+.avs .av{width:clamp(56px,6vw,76px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center}
+.avs .av img{height:auto}
+.avs .av-s{width:28px}
+.avs .cap{grid-column:1/-1;font-size:13px;line-height:1.3}
+.head-solo{grid-template-columns:1fr}
+.head-apilada{grid-template-columns:1fr;gap:24px;align-items:start}
+.head-apilada p{max-width:46ch}
+.head-orla{align-items:center}
+.head-orla .lead{font-size:clamp(20px,1.9vw,26px);line-height:1.45}
+.ig-notas{display:flex;flex-direction:column;gap:clamp(24px,3vw,36px)}
+.ig-notas h3{font-size:clamp(24px,2.4vw,32px);margin:0 0 8px}
+.ig-notas p{margin:0;max-width:52ch}
+.pilares{margin:12px 0;padding-left:20px;display:flex;flex-direction:column;gap:8px;max-width:52ch}
+.pilares b{color:var(--tinta)}
+#baldosa-pizza{height:280vh}
+.pares{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(8px,1.4vw,18px);width:min(100%,calc((100vh - 330px) * 2.55));justify-self:center;align-self:center;perspective:1400px}
+.par{aspect-ratio:1}
+.par .cara{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.3,.7,.2,1)}
+.par.vuelta .cara{transform:rotateY(180deg)}
+.par img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.par img.b{border-radius:8px}
+.par img.p{transform:rotateY(180deg)}
+.refs{display:grid;grid-template-columns:618fr 788fr;gap:clamp(12px,2vw,24px);align-items:start}
+.refs figure{margin:0;display:flex;flex-direction:column;gap:10px}
+.refs img{width:100%;height:auto;border-radius:12px}
+.refs figcaption{font-size:15px}
+/* LOGO versiones */
+.logo-versiones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.logo-bn{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:calc(50% - 8px)}
+.logo-bn{margin:16px auto 0}
+.lv{margin:0;border-radius:16px;aspect-ratio:4/3;position:relative;display:grid;place-items:center}
+.lv>div{display:flex;align-items:center;gap:clamp(12px,1.6vw,24px)}
+.lv-s{width:calc(clamp(110px,11vw,200px) * .3595)}
+.lv-w{width:clamp(110px,11vw,200px)}
+.lv figcaption{position:absolute;left:18px;bottom:14px;font-size:14px}
+/* TIPO Aa */
+#tipografia{padding:0}
+.tipo-aa{display:grid;grid-template-columns:1fr 1fr}
+.muestra{font-size:clamp(30px,3.6vw,56px);line-height:1.05;margin-top:18px!important;min-height:1.1em;overflow-wrap:anywhere}
+.aa-cor .muestra{text-transform:uppercase;color:var(--tinta)}
+.aa-hg .muestra{color:var(--papel)}
+#tipografia .probar{padding:40px var(--pad) 72px;margin:0 auto}
+#tipografia .probar input{font-family:"Host Grotesk",sans-serif;-webkit-text-stroke:0;text-transform:none;font-size:clamp(22px,2.4vw,32px);font-weight:400;color:var(--texto)}
+.aa{padding:clamp(56px,7vw,110px) var(--pad);display:flex;flex-direction:column;gap:14px;justify-content:center}
+.aa .big{font-size:clamp(160px,20vw,360px);line-height:.9;color:var(--tinta)}
+.aa h3{font-size:clamp(34px,3.4vw,56px)}
+.aa-hg{background:var(--tinta);color:var(--papel)}
+.aa-hg .big{color:var(--papel);font-weight:700}
+.aa-hg h3{font-family:"Host Grotesk",sans-serif;-webkit-text-stroke:0;text-transform:none;color:var(--papel)}
+.aa-hg :focus-visible{outline-color:var(--papel)}
+
+/* responsive */
+@media (max-width:1000px){
+  .head,.story,.hero-foot,.letra-stage,.cons-stage,.patron-sticky{grid-template-columns:1fr!important}
+  .logo-grid{grid-template-columns:1fr}
+  .logo-main{grid-row:auto;min-height:340px!important}
+  .colores{grid-template-columns:1fr 1fr}
+  .logo-versiones{grid-template-columns:1fr 1fr}
+  .lv.bn{order:2}
+  .logo-bn{max-width:none}
+  .tipo-aa{grid-template-columns:1fr}
+  .aa{min-height:0}
+  .ilus{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .letra-stage .armado{order:2}
+  .fotos{width:100%;max-height:none}
+  .cons-stage{align-content:start;gap:16px}
+  .cuadro{width:min(100%,36vh)}
+  .cons-side li{font-size:15px}
+  .hero-media .orla{top:76%;width:240%}
+}
+@media (max-width:640px){
+  :root{--hdr:55px}
+  body{font-size:17px}
+  .site-header{padding:12px 14px}
+  .site-header .tab{padding:7px 10px;font-size:11px}
+  .reduccion,.tipos,.descargas{grid-template-columns:1fr}
+  .colores{grid-template-columns:1fr;gap:14px}
+  .logo-versiones{grid-template-columns:1fr}
+  .refs{grid-template-columns:1fr}
+  .ig{grid-template-columns:1fr}
+  .avs{grid-template-columns:1fr 1fr;gap:18px 12px}
+  .apps figure,.apps figure.ancha,.apps figure.alta{grid-column:span 6}
+  .apps figure.ancha{grid-column:span 12}
+  .apps .alta .ph{flex:none;aspect-ratio:1}
+  .apps .mitad .ph{aspect-ratio:1}
+  .orlas{grid-template-columns:1fr}
+  .orla-lado .orla-p{aspect-ratio:4/3}
+  .color{aspect-ratio:auto;min-height:440px}
+  .ilus{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .logo-ins{grid-template-columns:1fr 1fr}
+  .tipo .nombre{white-space:normal}
+  .scene .sticky{gap:12px}
+  .scene-head p{font-size:16px}
+  .steps{display:none}
+  .pares{grid-template-columns:repeat(3,minmax(0,1fr));width:min(100%,calc(100vh - 380px))}
+  .par.extra{display:none}
+  /* índice dentro del header en celular */
+  .site-header{padding-left:58px}
+  .site-header .brand{display:none}
+  .menu-toggle{top:0;left:4px;bottom:auto;height:49px;min-height:49px;width:48px;padding:0;justify-content:center;background:transparent;box-shadow:none;z-index:101;border-radius:8px}
+  .menu-toggle span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .menu-toggle svg{width:22px;height:22px}
+  .side{padding-bottom:32px}
+  /* logo en dos columnas */
+  .logo-versiones,.logo-bn{grid-template-columns:1fr 1fr;gap:10px}
+  .logo-bn{margin-top:10px}
+  .lv>div{gap:8px}
+  .lv-w{width:84px}
+  .lv-s{width:30px}
+  .lv figcaption{left:10px;bottom:8px;font-size:11px}
+  /* menú: páginas una abajo de la otra */
+  #menu{height:auto}
+  #menu .sticky{position:relative;top:0;height:auto;overflow:visible}
+  .menu-track{flex-direction:column;transform:none!important;padding-right:0;gap:16px}
+  .menu-track{height:auto;flex:0 1 auto}
+  .menu-track img{width:100%;height:auto}
+  .cons-side ol{gap:2px}
+  .hero-media .orla{display:none}
+  .hero-title{margin-top:0}
+  .scene-head{margin-bottom:14px}
+}
+@media (prefers-reduced-motion:reduce) and (min-width:641px){
+  .menu-track{height:auto}
+  .menu-track img{height:min(64svh,620px)}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .reveal{opacity:1;transform:none;transition:none}
+  .hero-title .h-l{animation:none;opacity:1;transform:none}
+  .pt{opacity:1;transform:none;transition:none}
+  #patron{height:auto}
+  #letra,#construccion,#menu,#baldosa-pizza{height:auto}
+  .par .cara{transition:none}
+  .menu-viewport{overflow-x:auto}
+  .scene .sticky{position:relative;height:auto;top:0}
+  .fotos figure,.wordmark img,.color .foto{transition:none}
+  .side{transition:none}
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/serra">SERRA</a>
+  <nav aria-label="Etapas de SERRA">
+    <a class="tab" href="/serra">Brief</a>
+    <a class="tab" href="/serra-identidad">Identidad</a>
+    <span class="tab active" aria-current="page">Propuesta</span>
+  </nav>
+</header>
+
+<div class="layout">
+  <aside class="side" id="indice" aria-label="Secciones">
+    <img class="side-logo" src="/propuesta/serra-logo-rojo.svg" alt="SERRA" width="120" height="43">
+    <ol>
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#historia">La historia</a></li>
+      <li><a href="#marca">La marca</a></li>
+      <li><a href="#letra">La letra</a></li>
+      <li><a href="#baldosa-pizza">Baldosas y pizzas</a></li>
+      <li><a href="#construccion">La construcción</a></li>
+      <li><a href="#reduccion">Por qué esta</a></li>
+      <li><a href="#logo">El logo</a></li>
+      <li><a href="#patron">El patrón</a></li>
+      <li><a href="#orla">La orla</a></li>
+      <li><a href="#color">Color</a></li>
+      <li><a href="#tipografia">Tipografía</a></li>
+      <li><a href="#ilustraciones">Ilustraciones</a></li>
+      <li><a href="#menu">Menú de catering</a></li>
+      <li><a href="#aplicaciones">Aplicaciones</a></li>
+      <li><a href="#instagram">Look &amp; feel</a></li>
+      <li><a href="#descargas">Descargas</a></li>
+    </ol>
+    <div class="side-foot">
+      <a href="/propuesta/descargas/SERRA-propuesta-creativa.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 21h16"/></svg>Propuesta en PDF</a>
+      <a href="/propuesta/descargas/SERRA-menu-catering.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 21h16"/></svg>Menú en PDF</a>
+    </div>
+  </aside>
+  <button class="menu-toggle" type="button" aria-controls="indice" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Índice</span></button>
+
+  <main id="contenido">
+    <!-- INICIO -->
+    <section id="inicio" aria-label="Inicio">
+      <div class="hero-media" id="hero">
+        <img class="orla" src="/propuesta/orla-panel.webp" alt="" width="2400" height="1800">
+        <div class="hero-title">
+          <img class="h-l" src="/propuesta/serra-logo-rojo.svg" alt="SERRA" width="640" height="230">
+          <span class="h-l" style="animation-delay:.35s">Propuesta creativa</span>
+        </div>
+        <button class="sound" type="button" aria-pressed="false">Activar sonido</button>
+      </div>
+      <div class="hero-foot">
+        <h1>La mesa que empezó hace 60 años</h1>
+        <div>
+          <p class="lead">Esta es la propuesta creativa de SERRA. Acá está de dónde sale cada cosa: la letra, la baldosa, los colores y cómo se arma la marca. Al final pueden bajar todo en PDF.</p>
+          <div class="actions">
+            <a class="btn" href="#historia">Empezar</a>
+            <a class="btn ghost" href="#descargas">Ir a descargas</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HISTORIA -->
+    <section id="historia" class="on-red">
+      <img class="mesa" src="/propuesta/ilustracion-mesa-hueso.webp" alt="" width="1400" height="1202" loading="lazy">
+      <div class="wrap story">
+        <h2 class="reveal">Una mesa que ya existía</h2>
+        <div class="reveal">
+          <p class="lead">Los abuelos de Enzo y Mica llegaron de España en los 60. Después vinieron más de 40 años de bares de los de antes, con la pizza y el whisky como protagonistas.</p>
+          <p class="lead">Hoy los hermanos retoman esa mesa: primero con el catering y después con el local.</p>
+        </div>
+      </div>
+      <div class="wrap names-wrap">
+        <p class="names reveal" aria-label="Sebastián más Raquel es igual a SERRA"><span><b>Se</b><i>bastián</i></span> <span>+ <b>Ra</b><i>quel</i></span> <span class="eq">= Serra</span></p>
+      </div>
+    </section>
+
+    <!-- MARCA -->
+    <section id="marca" aria-label="La marca">
+      <div class="marca reveal">
+        <img src="/propuesta/baldosa.svg" alt="" width="200" height="200" class="m-sym">
+        <img src="/propuesta/serra-logo-rojo.svg" alt="SERRA" width="980" height="352" class="m-wm">
+        <span id="claim" aria-live="polite">Bar de encuentro</span>
+      </div>
+      <div class="claims reveal" role="group" aria-label="Probar la bajada del logo">
+        <button type="button" aria-pressed="true" data-claim="Bar de encuentro">Bar de encuentro</button>
+        <button type="button" aria-pressed="false" data-claim="Pizza de barrio">Pizza de barrio</button>
+      </div>
+      <p class="claims-nota reveal">La bajada es una o la otra, no las dos. Bar de encuentro habla del lugar y de la gente; Pizza de barrio, de lo que se sirve.</p>
+    </section>
+
+    <!-- LETRA -->
+    <section id="letra" class="scene" aria-label="De dónde sale la letra">
+      <div class="sticky">
+        <div class="scene-head">
+          <h2>De dónde sale la letra</h2>
+          <p>Cada letra sale de un cartel distinto de los bares y almacenes de antes. Después se redibujaron juntas para que las cinco vivan en la misma familia.</p>
+        </div>
+        <div class="letra-stage">
+          <div class="fotos" id="fotos">
+            <figure data-o="5% 54%"><div class="zoom"><img src="/propuesta/letra-s-sifones.webp" alt="Cartel de azulejos azules que dice SIFONES" width="1200" height="900"><span class="ring" style="left:5%;top:29%;width:19%;height:50%"></span></div><figcaption>La S, de un azulejo de sifones</figcaption></figure>
+            <figure data-o="32% 49%"><div class="zoom"><img src="/propuesta/letra-e-cerveza.webp" alt="Vidriera de bar con la palabra CERVEZA en letras doradas" width="1200" height="900" loading="lazy"><span class="ring" style="left:24.5%;top:28%;width:15%;height:42%"></span></div><figcaption>La E, de una vidriera de cerveza</figcaption></figure>
+            <figure data-o="92% 50%"><div class="zoom"><img src="/propuesta/letra-r-bar.webp" alt="Chapa enlozada verde que dice BAR" width="1200" height="900" loading="lazy"><span class="ring" style="left:58%;top:20%;width:34%;height:56%"></span></div><figcaption>La R, de una chapa de bar</figcaption></figure>
+            <figure data-o="3% 45.5%"><div class="zoom"><img src="/propuesta/letra-a-almacen.webp" alt="Pared naranja pintada a mano que dice ALMACEN" width="1200" height="900" loading="lazy"><span class="ring" style="left:3%;top:24%;width:21%;height:43%"></span></div><figcaption>La A, de la pared de un almacén</figcaption></figure>
+          </div>
+          <div class="armado">
+            <div class="wordmark" id="wordmark" role="img" aria-label="SERRA, armado letra por letra">
+              <svg viewBox="263.25 818.75 553.5 199" aria-hidden="true"><defs><filter id="tosco0" x="-25%" y="-25%" width="150%" height="150%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G" result="d"/><feMorphology in="d" operator="dilate" radius="0"/></filter><filter id="tosco1" x="-25%" y="-25%" width="150%" height="150%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="10" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G" result="d"/><feMorphology in="d" operator="dilate" radius="0"/></filter><filter id="tosco2" x="-25%" y="-25%" width="150%" height="150%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="17" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G" result="d"/><feMorphology in="d" operator="dilate" radius="0"/></filter><filter id="tosco3" x="-25%" y="-25%" width="150%" height="150%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="24" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G" result="d"/><feMorphology in="d" operator="dilate" radius="0"/></filter><filter id="tosco4" x="-25%" y="-25%" width="150%" height="150%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="31" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G" result="d"/><feMorphology in="d" operator="dilate" radius="0"/></filter></defs><g class="ghost"><path d="M 342.332031 860.6875 C 341.894531 861.351562 342.078125 863.9375 342.429688 864.039062 C 344.222656 864.171875 347.304688 864.175781 348.402344 864.949219 C 351.039062 866.792969 349.71875 871.058594 346.894531 872.453125 C 342.367188 874.671875 337.640625 872.164062 335.703125 867.332031 C 331.796875 857.59375 343.589844 846.902344 331.347656 842.4375 C 323.058594 839.421875 314.085938 842.730469 308.808594 850.214844 C 304.785156 855.914062 303.378906 863.417969 304.199219 870.574219 C 305.839844 884.921875 321.460938 892.582031 333.757812 899.503906 C 341.738281 903.992188 348.976562 909.621094 354.253906 917.066406 C 361.65625 927.511719 363.492188 939.789062 360.683594 951.523438 C 359.46875 956.636719 357.375 961.644531 354.464844 966.355469 C 354.453125 966.363281 354.4375 966.367188 354.425781 966.375 C 353.699219 967.617188 352.957031 968.800781 352.207031 969.933594 C 352.199219 970 352.191406 970.070312 352.191406 970.136719 C 348.28125 975.960938 343.554688 981.144531 338.269531 985.417969 C 338.097656 985.5625 337.929688 985.699219 337.757812 985.835938 C 337.628906 985.945312 337.5 986.046875 337.367188 986.148438 C 337.230469 986.257812 337.09375 986.367188 336.964844 986.46875 C 336.925781 986.503906 336.890625 986.53125 336.847656 986.558594 C 336.746094 986.640625 336.644531 986.722656 336.542969 986.796875 C 335.429688 987.652344 334.753906 988.101562 334.699219 988.136719 L 334.691406 988.144531 C 318.734375 999.347656 298.59375 1002.425781 280.542969 990.558594 C 272.894531 985.535156 266.6875 977.996094 265 968.886719 C 262.34375 954.578125 267.957031 938.585938 281.167969 933.234375 C 289.089844 930.023438 298.074219 934.265625 299.746094 942.15625 C 300.527344 945.835938 299.609375 949.222656 297.425781 951.941406 C 295.644531 954.160156 292.074219 955.691406 288.933594 955.21875 C 285.019531 954.632812 283.8125 951.96875 283.605469 948.671875 C 281.429688 947.238281 278.265625 948.800781 277.148438 951.28125 C 274 958.238281 274.949219 965.863281 279.101562 972.398438 C 288.980469 987.929688 313.382812 985.105469 328.457031 969.761719 C 329.960938 968.238281 330.691406 967.175781 331.578125 965.269531 C 336.367188 955.011719 336.957031 944.5 331.019531 934.761719 C 328.675781 930.914062 325.433594 927.703125 322.476562 924.167969 C 321.398438 922.875 320.648438 922.417969 319.109375 921.515625 L 302.71875 911.902344 C 289.101562 903.914062 281.46875 896.324219 279.996094 883.921875 L 279.988281 883.921875 C 279.988281 883.921875 275.824219 863.460938 293.527344 843.265625 C 293.546875 843.238281 293.566406 843.210938 293.59375 843.183594 C 295.84375 840.4375 298.355469 837.910156 301.3125 835.671875 C 308.976562 829.847656 317.511719 825.203125 327.617188 826.652344 C 337.976562 828.132812 344.019531 836.421875 351.992188 834.738281 C 352.207031 833.992188 352.5 831.765625 351.871094 831.464844 L 348.960938 830.085938 C 347.683594 829.480469 347.308594 826.3125 347.882812 824.882812 C 348.574219 823.175781 350.285156 821.222656 352.207031 820.4375 C 355.414062 819.121094 358.582031 820.609375 360.636719 822.605469 C 363.101562 825 363.359375 828.414062 362.472656 831.96875 C 361.011719 837.808594 356.9375 841.917969 352.8125 846.410156 C 349.058594 850.496094 345.296875 856.140625 342.332031 860.6875 "/><path d="M 467.125 954.242188 C 451.742188 997.628906 470.675781 985.25 418.957031 990.039062 C 408.316406 991.011719 396.988281 991.542969 386.660156 993.449219 C 382.652344 994.117188 376.851562 995.875 373.429688 993.570312 C 368.648438 989.675781 384.414062 980.921875 384.390625 972.914062 C 385.46875 967.921875 385.226562 962.914062 385.277344 956.144531 C 385.300781 943.976562 385.371094 929.921875 385.386719 918.074219 C 386.375 911.332031 379.996094 911.882812 378.128906 907.183594 C 377.804688 904.808594 380.335938 903.085938 382.226562 900.738281 C 386.710938 895.589844 385.082031 888.011719 385.429688 881.667969 C 385.320312 869.785156 385.75 859.144531 385.113281 847.542969 C 384.910156 841.976562 379.574219 838.753906 377.261719 834.257812 C 374.789062 827.945312 383.355469 826.894531 387.8125 826.496094 C 400.804688 825.042969 416.804688 823.011719 429.996094 821.640625 C 464.492188 817.335938 452.636719 819.589844 461.207031 847.550781 C 462.617188 851.875 459.597656 855.082031 455.480469 852.339844 C 448.542969 846.859375 446.34375 835.394531 435.949219 834.3125 C 427.390625 833.570312 410.808594 832.3125 410.1875 844.378906 C 409.445312 854.554688 409.746094 865.019531 409.660156 875.726562 C 410.371094 881.28125 407.683594 890.125 412.128906 893.765625 C 416.925781 895.40625 425.449219 891.007812 428.480469 886.636719 C 430.34375 884.1875 431.363281 880.859375 432.910156 878.421875 C 434.894531 874.804688 438.644531 873.425781 439.308594 879.410156 C 439.042969 893.230469 439.957031 909.789062 437.980469 922.144531 C 434.054688 928.90625 429.539062 913.644531 425.503906 912.269531 C 420.457031 908.636719 408.695312 908.101562 409.691406 916.769531 C 410.671875 930.894531 407.667969 961.300781 410.96875 975.742188 C 419.265625 980.15625 441.15625 973.050781 447.496094 966.351562 C 453.050781 961.304688 455.328125 953.199219 461.210938 948.585938 C 466.039062 945.082031 469.355469 948.910156 467.160156 954.128906 Z M 467.125 954.242188 "/><path d="M 521.082031 899.695312 C 515.714844 902.195312 513.191406 901.578125 513.390625 895.488281 C 513.453125 876.71875 513.253906 857.9375 514.46875 839.152344 C 514.855469 833.972656 518.492188 832.078125 523.3125 832.910156 C 530.070312 833.84375 535.058594 837.671875 537.980469 843.359375 C 540.410156 848.003906 540.910156 855.003906 541.136719 860.679688 C 541.835938 875.875 534.894531 892.128906 521.199219 899.636719 Z M 611.023438 1001.378906 C 609.28125 998.894531 605.527344 998.011719 603.238281 1000.023438 C 600.855469 1002.140625 601.480469 1006.761719 598.460938 1008.25 C 587.808594 1011.046875 576.292969 995.425781 571.980469 986.996094 C 568.582031 980.457031 564.507812 973.730469 562.09375 966.8125 C 556.957031 952.207031 553.039062 936.914062 544.902344 923.578125 C 543.28125 920.886719 541.496094 918.300781 539.585938 915.808594 C 536.863281 912.402344 533.613281 907.988281 538.28125 904.617188 C 556.8125 894.863281 569.929688 879.15625 567.578125 856.871094 C 565.546875 822.738281 528.195312 816.210938 500.570312 821.632812 C 494.453125 822.777344 487.550781 823.476562 481.792969 825.542969 C 475.21875 828.292969 478.660156 834.105469 483.738281 836.085938 C 487.847656 837.691406 489.070312 839.328125 488.878906 843.617188 C 488.988281 854.640625 489.117188 875.800781 489.179688 888.179688 C 489.199219 898.515625 489.125 936.558594 489.132812 955.738281 C 488.664062 962.851562 490.1875 971.164062 485.226562 976.976562 C 482.214844 980.214844 474.617188 983.527344 478.535156 988.425781 C 482.816406 991.925781 493.402344 988.417969 499.0625 988.832031 C 503.347656 988.636719 507.410156 988.566406 512.039062 988.527344 C 515.820312 988.269531 522.25 989.378906 524.054688 985.296875 C 525.035156 980.679688 518.457031 978.429688 515.90625 975.375 C 513.292969 972.582031 512.898438 968.957031 512.988281 965.390625 C 512.980469 956.589844 512.964844 930.992188 512.964844 921.457031 C 512.753906 915.324219 516.566406 916.9375 519.175781 921.519531 C 526.570312 938.300781 530.996094 956.503906 539.675781 972.769531 C 550.789062 993.832031 569.414062 1017.566406 595.703125 1016.59375 C 603.492188 1016.609375 615.652344 1010.375 611.085938 1001.46875 Z M 611.023438 1001.378906 "/><path d="M 629.464844 899.65625 C 624.09375 902.15625 621.574219 901.539062 621.773438 895.449219 C 621.835938 876.675781 621.636719 857.898438 622.851562 839.113281 C 623.238281 833.933594 626.875 832.039062 631.695312 832.871094 C 638.453125 833.804688 643.441406 837.632812 646.363281 843.320312 C 648.792969 847.964844 649.292969 854.964844 649.519531 860.640625 C 650.21875 875.835938 643.277344 892.089844 629.582031 899.597656 Z M 719.40625 1001.339844 C 717.664062 998.855469 713.910156 997.976562 711.621094 999.984375 C 709.484375 1001.871094 709.761719 1005.824219 707.671875 1007.648438 C 697.875 1012.894531 684.128906 994.859375 680.363281 986.957031 C 667.898438 967.265625 665.28125 943.410156 653.285156 923.539062 C 650.828125 918.625 645.742188 914.460938 644.261719 909.234375 C 643.792969 903.554688 655.605469 900.242188 659.34375 896.261719 C 679.132812 881.746094 682.84375 847.90625 663.710938 831.128906 C 648.507812 818.839844 627.402344 818.460938 608.953125 821.59375 C 602.835938 822.738281 595.933594 823.4375 590.175781 825.503906 C 583.601562 828.253906 587.042969 834.066406 592.121094 836.046875 C 596.15625 837.578125 597.496094 839.382812 597.261719 843.578125 C 597.371094 854.601562 597.5 875.761719 597.5625 888.144531 C 597.582031 898.476562 597.507812 936.519531 597.515625 955.699219 C 597.046875 962.8125 598.570312 971.125 593.609375 976.9375 C 590.597656 980.175781 583 983.488281 586.917969 988.386719 C 591.277344 991.898438 601.742188 988.375 607.445312 988.792969 C 611.730469 988.597656 615.792969 988.527344 620.421875 988.488281 C 624.203125 988.230469 630.632812 989.339844 632.4375 985.257812 C 633.417969 980.640625 626.839844 978.394531 624.289062 975.335938 C 621.675781 972.542969 621.28125 968.917969 621.371094 965.351562 C 621.363281 956.550781 621.347656 930.953125 621.347656 921.417969 C 621.136719 915.285156 624.949219 916.902344 627.558594 921.484375 C 634.953125 938.261719 639.378906 956.464844 648.058594 972.730469 C 659.171875 993.792969 677.796875 1017.527344 704.085938 1016.554688 C 711.875 1016.570312 724.035156 1010.335938 719.46875 1001.433594 Z M 719.40625 1001.339844 "/><path d="M 729.691406 913.152344 C 727.886719 911.664062 729.589844 907.007812 730.359375 904.378906 C 731.644531 900.285156 733.566406 894.1875 735.003906 889.609375 C 735.589844 887.757812 736.105469 886.101562 736.65625 884.378906 C 738.523438 878.183594 741.625 878.082031 743.433594 882.230469 C 745.5625 888.078125 747.117188 894.933594 748.933594 900.867188 C 749.597656 903.21875 750.214844 905.277344 750.738281 907.578125 C 751.503906 911.101562 752.105469 913.875 749.042969 914.917969 C 746.296875 915.640625 743.289062 915.089844 740.402344 915.070312 C 737.207031 914.945312 731.386719 914.925781 729.746094 913.203125 Z M 813.898438 990.984375 C 810.328125 988.582031 805.210938 987.828125 802.808594 983.855469 C 800.25 979.792969 798.726562 974.925781 796.949219 970.195312 C 795.695312 966.730469 794.535156 963.328125 793.484375 959.792969 C 785.894531 933.472656 776.394531 899.34375 768.71875 872.183594 C 765.90625 861.65625 762.972656 852.753906 759.78125 841.917969 C 758.308594 836.617188 757.5625 830.550781 756.191406 825.136719 C 755.050781 820.496094 753.484375 819.214844 748.761719 820.304688 C 745.878906 820.90625 741.933594 821.726562 738.203125 822.113281 C 731.410156 823.175781 723.429688 821.386719 717.539062 825.105469 C 715.351562 826.5 713.921875 829.917969 716.574219 831.375 C 718.710938 832.585938 721.695312 832.121094 724.09375 832.746094 C 728.347656 833.769531 731.199219 837.714844 732.375 842.488281 C 733.898438 849.3125 731.539062 856.515625 729.6875 862.914062 C 726.128906 873.875 719.132812 895.367188 715.398438 906.777344 C 714.269531 910.835938 712.414062 912.347656 708.304688 912.761719 C 703.308594 913.320312 696.183594 914.46875 693.289062 919.503906 C 691.628906 921.976562 692.0625 926.464844 695.332031 927.015625 C 697.921875 927.597656 702.222656 923.824219 704.890625 925.1875 C 706.328125 925.902344 707.269531 927.832031 707.179688 929.871094 C 707.003906 932.894531 705.765625 935.820312 704.898438 938.757812 C 703.328125 943.628906 700.921875 951.09375 699.339844 955.996094 C 697.941406 960.214844 697.058594 963.195312 695.527344 966.226562 C 694.113281 968.90625 692.160156 971.429688 689.761719 973.324219 C 688.292969 974.476562 686.5625 975.335938 685.3125 976.546875 C 681.832031 979.785156 686.042969 982.121094 689.332031 982.765625 C 691.328125 983.210938 693.46875 983.140625 695.535156 983.09375 C 702.777344 982.859375 709.914062 983.5625 717.109375 984.285156 C 718.636719 984.382812 720.09375 984.335938 721.324219 984.046875 C 724.398438 983.4375 725.921875 980.828125 723.550781 978.472656 C 720.835938 975.625 715.925781 976.089844 713.257812 973.1875 C 711.707031 971.457031 711.636719 968.296875 711.875 965.269531 C 712.488281 959.390625 714.074219 955.707031 716.148438 949.019531 C 717.210938 945.71875 718.316406 942.292969 719.375 939.007812 C 720.527344 935.816406 721.160156 932.140625 723.152344 929.785156 C 725.390625 927.316406 728.257812 927.523438 732.773438 927.660156 C 736.464844 927.800781 740.0625 928.023438 743.835938 928.230469 C 747.679688 928.496094 752.273438 928.417969 755.59375 930.019531 C 758.582031 931.445312 759.5 934.578125 760.367188 937.664062 C 761.292969 940.882812 761.808594 943.992188 762.65625 947.285156 C 764.804688 955.128906 767.609375 962.636719 769.734375 970.546875 C 770.75 975.066406 773.117188 980.757812 769.699219 984.691406 C 767.582031 987.449219 761.761719 990.367188 764.867188 994.140625 C 767.785156 996.472656 771.15625 995.449219 775.277344 995.269531 C 778.972656 994.96875 783.03125 994.949219 786.804688 995.195312 C 797.425781 995.269531 810.804688 1002.035156 814.871094 996.226562 C 816.132812 994.460938 815.847656 992.410156 813.980469 991.042969 Z M 813.898438 990.984375 "/></g><g class="live"><g class="lt" filter="url(#tosco0)"><path d="M 342.332031 860.6875 C 341.894531 861.351562 342.078125 863.9375 342.429688 864.039062 C 344.222656 864.171875 347.304688 864.175781 348.402344 864.949219 C 351.039062 866.792969 349.71875 871.058594 346.894531 872.453125 C 342.367188 874.671875 337.640625 872.164062 335.703125 867.332031 C 331.796875 857.59375 343.589844 846.902344 331.347656 842.4375 C 323.058594 839.421875 314.085938 842.730469 308.808594 850.214844 C 304.785156 855.914062 303.378906 863.417969 304.199219 870.574219 C 305.839844 884.921875 321.460938 892.582031 333.757812 899.503906 C 341.738281 903.992188 348.976562 909.621094 354.253906 917.066406 C 361.65625 927.511719 363.492188 939.789062 360.683594 951.523438 C 359.46875 956.636719 357.375 961.644531 354.464844 966.355469 C 354.453125 966.363281 354.4375 966.367188 354.425781 966.375 C 353.699219 967.617188 352.957031 968.800781 352.207031 969.933594 C 352.199219 970 352.191406 970.070312 352.191406 970.136719 C 348.28125 975.960938 343.554688 981.144531 338.269531 985.417969 C 338.097656 985.5625 337.929688 985.699219 337.757812 985.835938 C 337.628906 985.945312 337.5 986.046875 337.367188 986.148438 C 337.230469 986.257812 337.09375 986.367188 336.964844 986.46875 C 336.925781 986.503906 336.890625 986.53125 336.847656 986.558594 C 336.746094 986.640625 336.644531 986.722656 336.542969 986.796875 C 335.429688 987.652344 334.753906 988.101562 334.699219 988.136719 L 334.691406 988.144531 C 318.734375 999.347656 298.59375 1002.425781 280.542969 990.558594 C 272.894531 985.535156 266.6875 977.996094 265 968.886719 C 262.34375 954.578125 267.957031 938.585938 281.167969 933.234375 C 289.089844 930.023438 298.074219 934.265625 299.746094 942.15625 C 300.527344 945.835938 299.609375 949.222656 297.425781 951.941406 C 295.644531 954.160156 292.074219 955.691406 288.933594 955.21875 C 285.019531 954.632812 283.8125 951.96875 283.605469 948.671875 C 281.429688 947.238281 278.265625 948.800781 277.148438 951.28125 C 274 958.238281 274.949219 965.863281 279.101562 972.398438 C 288.980469 987.929688 313.382812 985.105469 328.457031 969.761719 C 329.960938 968.238281 330.691406 967.175781 331.578125 965.269531 C 336.367188 955.011719 336.957031 944.5 331.019531 934.761719 C 328.675781 930.914062 325.433594 927.703125 322.476562 924.167969 C 321.398438 922.875 320.648438 922.417969 319.109375 921.515625 L 302.71875 911.902344 C 289.101562 903.914062 281.46875 896.324219 279.996094 883.921875 L 279.988281 883.921875 C 279.988281 883.921875 275.824219 863.460938 293.527344 843.265625 C 293.546875 843.238281 293.566406 843.210938 293.59375 843.183594 C 295.84375 840.4375 298.355469 837.910156 301.3125 835.671875 C 308.976562 829.847656 317.511719 825.203125 327.617188 826.652344 C 337.976562 828.132812 344.019531 836.421875 351.992188 834.738281 C 352.207031 833.992188 352.5 831.765625 351.871094 831.464844 L 348.960938 830.085938 C 347.683594 829.480469 347.308594 826.3125 347.882812 824.882812 C 348.574219 823.175781 350.285156 821.222656 352.207031 820.4375 C 355.414062 819.121094 358.582031 820.609375 360.636719 822.605469 C 363.101562 825 363.359375 828.414062 362.472656 831.96875 C 361.011719 837.808594 356.9375 841.917969 352.8125 846.410156 C 349.058594 850.496094 345.296875 856.140625 342.332031 860.6875 "/></g><g class="lt" filter="url(#tosco1)"><path d="M 467.125 954.242188 C 451.742188 997.628906 470.675781 985.25 418.957031 990.039062 C 408.316406 991.011719 396.988281 991.542969 386.660156 993.449219 C 382.652344 994.117188 376.851562 995.875 373.429688 993.570312 C 368.648438 989.675781 384.414062 980.921875 384.390625 972.914062 C 385.46875 967.921875 385.226562 962.914062 385.277344 956.144531 C 385.300781 943.976562 385.371094 929.921875 385.386719 918.074219 C 386.375 911.332031 379.996094 911.882812 378.128906 907.183594 C 377.804688 904.808594 380.335938 903.085938 382.226562 900.738281 C 386.710938 895.589844 385.082031 888.011719 385.429688 881.667969 C 385.320312 869.785156 385.75 859.144531 385.113281 847.542969 C 384.910156 841.976562 379.574219 838.753906 377.261719 834.257812 C 374.789062 827.945312 383.355469 826.894531 387.8125 826.496094 C 400.804688 825.042969 416.804688 823.011719 429.996094 821.640625 C 464.492188 817.335938 452.636719 819.589844 461.207031 847.550781 C 462.617188 851.875 459.597656 855.082031 455.480469 852.339844 C 448.542969 846.859375 446.34375 835.394531 435.949219 834.3125 C 427.390625 833.570312 410.808594 832.3125 410.1875 844.378906 C 409.445312 854.554688 409.746094 865.019531 409.660156 875.726562 C 410.371094 881.28125 407.683594 890.125 412.128906 893.765625 C 416.925781 895.40625 425.449219 891.007812 428.480469 886.636719 C 430.34375 884.1875 431.363281 880.859375 432.910156 878.421875 C 434.894531 874.804688 438.644531 873.425781 439.308594 879.410156 C 439.042969 893.230469 439.957031 909.789062 437.980469 922.144531 C 434.054688 928.90625 429.539062 913.644531 425.503906 912.269531 C 420.457031 908.636719 408.695312 908.101562 409.691406 916.769531 C 410.671875 930.894531 407.667969 961.300781 410.96875 975.742188 C 419.265625 980.15625 441.15625 973.050781 447.496094 966.351562 C 453.050781 961.304688 455.328125 953.199219 461.210938 948.585938 C 466.039062 945.082031 469.355469 948.910156 467.160156 954.128906 Z M 467.125 954.242188 "/></g><g class="lt" filter="url(#tosco2)"><path d="M 521.082031 899.695312 C 515.714844 902.195312 513.191406 901.578125 513.390625 895.488281 C 513.453125 876.71875 513.253906 857.9375 514.46875 839.152344 C 514.855469 833.972656 518.492188 832.078125 523.3125 832.910156 C 530.070312 833.84375 535.058594 837.671875 537.980469 843.359375 C 540.410156 848.003906 540.910156 855.003906 541.136719 860.679688 C 541.835938 875.875 534.894531 892.128906 521.199219 899.636719 Z M 611.023438 1001.378906 C 609.28125 998.894531 605.527344 998.011719 603.238281 1000.023438 C 600.855469 1002.140625 601.480469 1006.761719 598.460938 1008.25 C 587.808594 1011.046875 576.292969 995.425781 571.980469 986.996094 C 568.582031 980.457031 564.507812 973.730469 562.09375 966.8125 C 556.957031 952.207031 553.039062 936.914062 544.902344 923.578125 C 543.28125 920.886719 541.496094 918.300781 539.585938 915.808594 C 536.863281 912.402344 533.613281 907.988281 538.28125 904.617188 C 556.8125 894.863281 569.929688 879.15625 567.578125 856.871094 C 565.546875 822.738281 528.195312 816.210938 500.570312 821.632812 C 494.453125 822.777344 487.550781 823.476562 481.792969 825.542969 C 475.21875 828.292969 478.660156 834.105469 483.738281 836.085938 C 487.847656 837.691406 489.070312 839.328125 488.878906 843.617188 C 488.988281 854.640625 489.117188 875.800781 489.179688 888.179688 C 489.199219 898.515625 489.125 936.558594 489.132812 955.738281 C 488.664062 962.851562 490.1875 971.164062 485.226562 976.976562 C 482.214844 980.214844 474.617188 983.527344 478.535156 988.425781 C 482.816406 991.925781 493.402344 988.417969 499.0625 988.832031 C 503.347656 988.636719 507.410156 988.566406 512.039062 988.527344 C 515.820312 988.269531 522.25 989.378906 524.054688 985.296875 C 525.035156 980.679688 518.457031 978.429688 515.90625 975.375 C 513.292969 972.582031 512.898438 968.957031 512.988281 965.390625 C 512.980469 956.589844 512.964844 930.992188 512.964844 921.457031 C 512.753906 915.324219 516.566406 916.9375 519.175781 921.519531 C 526.570312 938.300781 530.996094 956.503906 539.675781 972.769531 C 550.789062 993.832031 569.414062 1017.566406 595.703125 1016.59375 C 603.492188 1016.609375 615.652344 1010.375 611.085938 1001.46875 Z M 611.023438 1001.378906 "/></g><g class="lt" filter="url(#tosco3)"><path d="M 629.464844 899.65625 C 624.09375 902.15625 621.574219 901.539062 621.773438 895.449219 C 621.835938 876.675781 621.636719 857.898438 622.851562 839.113281 C 623.238281 833.933594 626.875 832.039062 631.695312 832.871094 C 638.453125 833.804688 643.441406 837.632812 646.363281 843.320312 C 648.792969 847.964844 649.292969 854.964844 649.519531 860.640625 C 650.21875 875.835938 643.277344 892.089844 629.582031 899.597656 Z M 719.40625 1001.339844 C 717.664062 998.855469 713.910156 997.976562 711.621094 999.984375 C 709.484375 1001.871094 709.761719 1005.824219 707.671875 1007.648438 C 697.875 1012.894531 684.128906 994.859375 680.363281 986.957031 C 667.898438 967.265625 665.28125 943.410156 653.285156 923.539062 C 650.828125 918.625 645.742188 914.460938 644.261719 909.234375 C 643.792969 903.554688 655.605469 900.242188 659.34375 896.261719 C 679.132812 881.746094 682.84375 847.90625 663.710938 831.128906 C 648.507812 818.839844 627.402344 818.460938 608.953125 821.59375 C 602.835938 822.738281 595.933594 823.4375 590.175781 825.503906 C 583.601562 828.253906 587.042969 834.066406 592.121094 836.046875 C 596.15625 837.578125 597.496094 839.382812 597.261719 843.578125 C 597.371094 854.601562 597.5 875.761719 597.5625 888.144531 C 597.582031 898.476562 597.507812 936.519531 597.515625 955.699219 C 597.046875 962.8125 598.570312 971.125 593.609375 976.9375 C 590.597656 980.175781 583 983.488281 586.917969 988.386719 C 591.277344 991.898438 601.742188 988.375 607.445312 988.792969 C 611.730469 988.597656 615.792969 988.527344 620.421875 988.488281 C 624.203125 988.230469 630.632812 989.339844 632.4375 985.257812 C 633.417969 980.640625 626.839844 978.394531 624.289062 975.335938 C 621.675781 972.542969 621.28125 968.917969 621.371094 965.351562 C 621.363281 956.550781 621.347656 930.953125 621.347656 921.417969 C 621.136719 915.285156 624.949219 916.902344 627.558594 921.484375 C 634.953125 938.261719 639.378906 956.464844 648.058594 972.730469 C 659.171875 993.792969 677.796875 1017.527344 704.085938 1016.554688 C 711.875 1016.570312 724.035156 1010.335938 719.46875 1001.433594 Z M 719.40625 1001.339844 "/></g><g class="lt" filter="url(#tosco4)"><path d="M 729.691406 913.152344 C 727.886719 911.664062 729.589844 907.007812 730.359375 904.378906 C 731.644531 900.285156 733.566406 894.1875 735.003906 889.609375 C 735.589844 887.757812 736.105469 886.101562 736.65625 884.378906 C 738.523438 878.183594 741.625 878.082031 743.433594 882.230469 C 745.5625 888.078125 747.117188 894.933594 748.933594 900.867188 C 749.597656 903.21875 750.214844 905.277344 750.738281 907.578125 C 751.503906 911.101562 752.105469 913.875 749.042969 914.917969 C 746.296875 915.640625 743.289062 915.089844 740.402344 915.070312 C 737.207031 914.945312 731.386719 914.925781 729.746094 913.203125 Z M 813.898438 990.984375 C 810.328125 988.582031 805.210938 987.828125 802.808594 983.855469 C 800.25 979.792969 798.726562 974.925781 796.949219 970.195312 C 795.695312 966.730469 794.535156 963.328125 793.484375 959.792969 C 785.894531 933.472656 776.394531 899.34375 768.71875 872.183594 C 765.90625 861.65625 762.972656 852.753906 759.78125 841.917969 C 758.308594 836.617188 757.5625 830.550781 756.191406 825.136719 C 755.050781 820.496094 753.484375 819.214844 748.761719 820.304688 C 745.878906 820.90625 741.933594 821.726562 738.203125 822.113281 C 731.410156 823.175781 723.429688 821.386719 717.539062 825.105469 C 715.351562 826.5 713.921875 829.917969 716.574219 831.375 C 718.710938 832.585938 721.695312 832.121094 724.09375 832.746094 C 728.347656 833.769531 731.199219 837.714844 732.375 842.488281 C 733.898438 849.3125 731.539062 856.515625 729.6875 862.914062 C 726.128906 873.875 719.132812 895.367188 715.398438 906.777344 C 714.269531 910.835938 712.414062 912.347656 708.304688 912.761719 C 703.308594 913.320312 696.183594 914.46875 693.289062 919.503906 C 691.628906 921.976562 692.0625 926.464844 695.332031 927.015625 C 697.921875 927.597656 702.222656 923.824219 704.890625 925.1875 C 706.328125 925.902344 707.269531 927.832031 707.179688 929.871094 C 707.003906 932.894531 705.765625 935.820312 704.898438 938.757812 C 703.328125 943.628906 700.921875 951.09375 699.339844 955.996094 C 697.941406 960.214844 697.058594 963.195312 695.527344 966.226562 C 694.113281 968.90625 692.160156 971.429688 689.761719 973.324219 C 688.292969 974.476562 686.5625 975.335938 685.3125 976.546875 C 681.832031 979.785156 686.042969 982.121094 689.332031 982.765625 C 691.328125 983.210938 693.46875 983.140625 695.535156 983.09375 C 702.777344 982.859375 709.914062 983.5625 717.109375 984.285156 C 718.636719 984.382812 720.09375 984.335938 721.324219 984.046875 C 724.398438 983.4375 725.921875 980.828125 723.550781 978.472656 C 720.835938 975.625 715.925781 976.089844 713.257812 973.1875 C 711.707031 971.457031 711.636719 968.296875 711.875 965.269531 C 712.488281 959.390625 714.074219 955.707031 716.148438 949.019531 C 717.210938 945.71875 718.316406 942.292969 719.375 939.007812 C 720.527344 935.816406 721.160156 932.140625 723.152344 929.785156 C 725.390625 927.316406 728.257812 927.523438 732.773438 927.660156 C 736.464844 927.800781 740.0625 928.023438 743.835938 928.230469 C 747.679688 928.496094 752.273438 928.417969 755.59375 930.019531 C 758.582031 931.445312 759.5 934.578125 760.367188 937.664062 C 761.292969 940.882812 761.808594 943.992188 762.65625 947.285156 C 764.804688 955.128906 767.609375 962.636719 769.734375 970.546875 C 770.75 975.066406 773.117188 980.757812 769.699219 984.691406 C 767.582031 987.449219 761.761719 990.367188 764.867188 994.140625 C 767.785156 996.472656 771.15625 995.449219 775.277344 995.269531 C 778.972656 994.96875 783.03125 994.949219 786.804688 995.195312 C 797.425781 995.269531 810.804688 1002.035156 814.871094 996.226562 C 816.132812 994.460938 815.847656 992.410156 813.980469 991.042969 Z M 813.898438 990.984375 "/></g></g></svg>
+            </div>
+            <div class="steps" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BALDOSAS Y PIZZAS -->
+    <section id="baldosa-pizza" class="scene" aria-label="Baldosas y pizzas">
+      <div class="sticky">
+        <div class="scene-head">
+          <h2>Baldosas y pizzas</h2>
+          <p>Todo empezó acá: el piso de los bares de antes y lo que va en la mesa. Vistas desde arriba, se parecen.</p>
+        </div>
+        <div class="pares" id="pares" role="img" aria-label="Baldosas hidráulicas que se dan vuelta y se vuelven pizzas vistas desde arriba"><div class="par" data-i="0" data-ck="0"><div class="cara"><img class="b" src="/propuesta/bp-baldosa-01.webp" alt="" width="320" height="320" loading="lazy"><img class="p" src="/propuesta/bp-pizza-01.webp" alt="" width="320" height="320" loading="lazy"></div></div><div class="par" data-i="1" data-ck="1"><div class="cara"><img class="b" src="/propuesta/bp-baldosa-02.webp" alt="" width="320" height="320" loading="lazy"><img class="p" src="/propuesta/bp-pizza-02.webp" alt="" width="320" height="320" loading="lazy"></div></div><div class="par" data-i="2" data-ck="0"><div class="cara"><img class="b" src="/propuesta/bp-baldosa-03.webp" alt="" width="320" height="320" loading="lazy"><img class="p" src="/propuesta/bp-pizza-03.webp" alt="" width="320" height="320" loading="lazy"></div></div><div class="par" data-i="3" data-ck="1"><div class="cara"><img class="b" src="/propuesta/bp-baldosa-04.webp" alt="" width="320" height="320" loading="lazy"><img class="p" src="/propuesta/bp-pizza-04.webp" alt="" width="320" height="320" loading="lazy"></div></div><div class="par" data-i="4" data-ck="0"><div class="cara"><img class="b" src="/propuesta/bp-baldosa-05.webp" alt="" width="320" height="320" loading="lazy"><img class="p" src="/propuesta/bp-pizza-05.webp" alt="" width="320" height="320" loading="lazy"></div></div><div class="par" data-i="5" data-ck="1"><div class="cara"><img class="b" src="/propuesta/bp-baldosa-06.webp" alt="" width="320" height="320" loading="lazy"><img class="p" src="/propuesta/bp-pizza-06.webp" alt="" width="320" height="320" loading="lazy"></div></div><div class="par" data-i="6" data-ck="0"><div class="cara"><img class="b" src="/propuesta/bp-baldosa-07.webp" alt="" width="320" height="320" loading="lazy"><img class="p" src="/propuesta/bp-pizza-07.webp" alt="" width="320" height="320" loading="lazy"></div></div><div class="par" data-i="7" data-ck="1"><div class="cara"><img class="b" src="/propuesta/bp-baldosa-08.webp" alt="" width="320" height="320" loading="lazy"><img class="p" src="/propuesta/bp-pizza-08.webp" alt="" width="320" height="320" loading="lazy"></div></div><div class="par" data-i="8" data-ck="0"><div class="cara"><img class="b" src="/propuesta/bp-baldosa-09.webp" alt="" width="320" height="320" loading="lazy"><img class="p" src="/propuesta/bp-pizza-09.webp" alt="" width="320" height="320" loading="lazy"></div></div><div class="par extra" data-i="9" data-ck="1"><div class="cara"><img class="b" src="/propuesta/bp-baldosa-10.webp" alt="" width="320" height="320" loading="lazy"><img class="p" src="/propuesta/bp-pizza-10.webp" alt="" width="320" height="320" loading="lazy"></div></div></div>
+      </div>
+    </section>
+
+    <!-- CONSTRUCCION -->
+    <section id="construccion" class="scene" aria-label="La construcción">
+      <div class="sticky">
+        <div class="scene-head">
+          <h2>La construcción</h2>
+        </div>
+        <div class="cons-stage">
+          <div class="cuadro" id="cuadro" role="img" aria-label="Una baldosa hidráulica, una pizza vista desde arriba y el trazado técnico que termina en el símbolo de SERRA">
+            <img class="ft" src="/propuesta/construccion-baldosa-1.webp" alt="" width="900" height="900" loading="lazy">
+            <img class="fp" src="/propuesta/construccion-pizza-1.webp" alt="" width="900" height="900" loading="lazy" style="opacity:0">
+            <svg class="tecnico" viewBox="0 0 200 200" aria-hidden="true">
+              <g class="t-grid"><line x1="23.33" y1="8" x2="23.33" y2="192"/><line x1="8" y1="23.33" x2="192" y2="23.33"/><line x1="38.67" y1="8" x2="38.67" y2="192"/><line x1="8" y1="38.67" x2="192" y2="38.67"/><line x1="54.00" y1="8" x2="54.00" y2="192"/><line x1="8" y1="54.00" x2="192" y2="54.00"/><line x1="69.33" y1="8" x2="69.33" y2="192"/><line x1="8" y1="69.33" x2="192" y2="69.33"/><line x1="84.67" y1="8" x2="84.67" y2="192"/><line x1="8" y1="84.67" x2="192" y2="84.67"/><line x1="100.00" y1="8" x2="100.00" y2="192"/><line x1="8" y1="100.00" x2="192" y2="100.00"/><line x1="115.33" y1="8" x2="115.33" y2="192"/><line x1="8" y1="115.33" x2="192" y2="115.33"/><line x1="130.67" y1="8" x2="130.67" y2="192"/><line x1="8" y1="130.67" x2="192" y2="130.67"/><line x1="146.00" y1="8" x2="146.00" y2="192"/><line x1="8" y1="146.00" x2="192" y2="146.00"/><line x1="161.33" y1="8" x2="161.33" y2="192"/><line x1="8" y1="161.33" x2="192" y2="161.33"/><line x1="176.67" y1="8" x2="176.67" y2="192"/><line x1="8" y1="176.67" x2="192" y2="176.67"/></g>
+              <g class="t-guias"><rect class="draw" pathLength="1" x="8" y="8" width="184" height="184"/><line class="draw" pathLength="1" x1="100" y1="2" x2="100" y2="198"/><line class="draw" pathLength="1" x1="2" y1="100" x2="198" y2="100"/><line class="draw" pathLength="1" x1="8" y1="8" x2="192" y2="192"/><line class="draw" pathLength="1" x1="192" y1="8" x2="8" y2="192"/><circle class="draw" pathLength="1" cx="100" cy="100" r="82"/><circle class="draw" pathLength="1" cx="100" cy="100" r="9"/></g>
+              <g class="t-trazo"><g transform="rotate(0 100 100)"><path class="draw" pathLength="1" d="M100 91 Q112.1 80.15 122 60 Q108.36 42.36 100 18 Q91.64 42.36 78 60 Q87.9 80.15 100 91 Z"/><path class="draw" pathLength="1" d="M6 6 L50 6 Q19.2 19.2 6 50 Z"/></g><g transform="rotate(90 100 100)"><path class="draw" pathLength="1" d="M100 91 Q112.1 80.15 122 60 Q108.36 42.36 100 18 Q91.64 42.36 78 60 Q87.9 80.15 100 91 Z"/><path class="draw" pathLength="1" d="M6 6 L50 6 Q19.2 19.2 6 50 Z"/></g><g transform="rotate(180 100 100)"><path class="draw" pathLength="1" d="M100 91 Q112.1 80.15 122 60 Q108.36 42.36 100 18 Q91.64 42.36 78 60 Q87.9 80.15 100 91 Z"/><path class="draw" pathLength="1" d="M6 6 L50 6 Q19.2 19.2 6 50 Z"/></g><g transform="rotate(270 100 100)"><path class="draw" pathLength="1" d="M100 91 Q112.1 80.15 122 60 Q108.36 42.36 100 18 Q91.64 42.36 78 60 Q87.9 80.15 100 91 Z"/><path class="draw" pathLength="1" d="M6 6 L50 6 Q19.2 19.2 6 50 Z"/></g></g>
+              <g class="t-final"><rect x="8" y="8" width="184" height="184" fill="none" stroke="#9E2B24" stroke-width="4"/><g transform="rotate(0 100 100)"><path d="M6 6 L50 6 Q19.2 19.2 6 50 Z"/><path d="M100 91 Q112.1 80.15 122 60 Q108.36 42.36 100 18 Q91.64 42.36 78 60 Q87.9 80.15 100 91 Z"/></g><g transform="rotate(90 100 100)"><path d="M6 6 L50 6 Q19.2 19.2 6 50 Z"/><path d="M100 91 Q112.1 80.15 122 60 Q108.36 42.36 100 18 Q91.64 42.36 78 60 Q87.9 80.15 100 91 Z"/></g><g transform="rotate(180 100 100)"><path d="M6 6 L50 6 Q19.2 19.2 6 50 Z"/><path d="M100 91 Q112.1 80.15 122 60 Q108.36 42.36 100 18 Q91.64 42.36 78 60 Q87.9 80.15 100 91 Z"/></g><g transform="rotate(270 100 100)"><path d="M6 6 L50 6 Q19.2 19.2 6 50 Z"/><path d="M100 91 Q112.1 80.15 122 60 Q108.36 42.36 100 18 Q91.64 42.36 78 60 Q87.9 80.15 100 91 Z"/></g></g>
+            </svg>
+          </div>
+          <div class="cons-side">
+            <ol id="cons-steps">
+              <li>Una baldosa del piso del bar.</li>
+              <li>Una pizza cortada en cuatro, vista desde arriba.</li>
+              <li>Las guías: el cuadrado, los ejes y el círculo de la pizza.</li>
+              <li>La grilla de 12 × 12.</li>
+              <li>Se trazan los pétalos y las esquinas.</li>
+              <li>Queda el símbolo.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REDUCCION -->
+    <section id="reduccion">
+      <div class="wrap">
+        <div class="head">
+          <h2 class="reveal">Por qué esta y no la otra</h2>
+          <p class="lead reveal">Una marca de barrio vive en tamaño chico: la foto de perfil, el sticker de la caja, el bordado de la gorra, el ícono en el celular de quien pide. Ahí se gana o se pierde. Achicalas y mirá cuál sigue siendo SERRA.</p>
+        </div>
+        <div class="reduccion reveal">
+          <div class="red-card"><span>La elegida</span><div class="box"><img id="r1" src="/propuesta/baldosa.svg" alt="Símbolo elegido" width="160" height="160"></div><p>Pocas formas, grandes y bien separadas. A 16 px se sigue reconociendo, y bordada o sellada no pierde nada.</p></div>
+          <div class="red-card"><span>Descartada</span><div class="box"><img id="r2" src="/propuesta/baldosa-radial.svg" alt="Opción descartada, baldosa radial" width="160" height="160"></div><p>Linda en grande, pero tiene demasiado detalle: desde 32 px las porciones se empastan y en un bordado se pierde.</p></div>
+        </div>
+        <div class="slider reveal">
+          <label for="tam">Tamaño</label>
+          <input id="tam" type="range" min="16" max="200" value="160" step="1">
+          <output id="tam-out" for="tam">160 px</output>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOGO -->
+    <section id="logo">
+      <div class="wrap">
+        <div class="head">
+          <h2 class="reveal">El logo</h2>
+          <p class="lead reveal">Una sola tinta por pieza. Funciona sobre todos los colores de la paleta y también en blanco y negro.</p>
+        </div>
+        <div class="logo-versiones reveal"><figure class="lv" style="background:#F5EDDF;color:#9E2B24;box-shadow:inset 0 0 0 2px #9E2B24"><div><img src="/propuesta/baldosa.svg" alt="" width="64" height="64" class="lv-s"><img src="/propuesta/serra-logo-rojo.svg" alt="SERRA" width="280" height="109" class="lv-w"></div><figcaption>Sobre masa</figcaption></figure><figure class="lv" style="background:#9E2B24;color:#F5EDDF"><div><img src="/propuesta/baldosa-hueso.svg" alt="" width="64" height="64" class="lv-s"><img src="/propuesta/serra-logo-hueso.svg" alt="SERRA" width="280" height="109" class="lv-w"></div><figcaption>Sobre tomate</figcaption></figure><figure class="lv bn" style="background:#FFFFFF;color:#000000;box-shadow:inset 0 0 0 2px #000000"><div><img src="/propuesta/baldosa-negro.svg" alt="" width="64" height="64" class="lv-s"><img src="/propuesta/serra-logo-negro.svg" alt="SERRA" width="280" height="109" class="lv-w"></div><figcaption>Negro sobre blanco</figcaption></figure><figure class="lv" style="background:#74211A;color:#F5EDDF"><div><img src="/propuesta/baldosa-hueso.svg" alt="" width="64" height="64" class="lv-s"><img src="/propuesta/serra-logo-hueso.svg" alt="SERRA" width="280" height="109" class="lv-w"></div><figcaption>Sobre ladrillo</figcaption></figure><figure class="lv" style="background:#4A1D17;color:#F5EDDF"><div><img src="/propuesta/baldosa-hueso.svg" alt="" width="64" height="64" class="lv-s"><img src="/propuesta/serra-logo-hueso.svg" alt="SERRA" width="280" height="109" class="lv-w"></div><figcaption>Sobre brasa</figcaption></figure><figure class="lv bn" style="background:#000000;color:#FFFFFF"><div><img src="/propuesta/baldosa-blanco.svg" alt="" width="64" height="64" class="lv-s"><img src="/propuesta/serra-logo-blanco.svg" alt="SERRA" width="280" height="109" class="lv-w"></div><figcaption>Blanco sobre negro</figcaption></figure></div>
+      </div>
+    </section>
+
+    <!-- PATRON -->
+    <section id="patron" class="scene on-red" aria-label="El patrón">
+      <div class="sticky patron-sticky">
+        <div class="txt">
+          <h2>El patrón</h2>
+          <p class="lead">La misma baldosa del logo, repetida como un piso. Va de fondo en cajas, papel manteca, bolsas y cartelería.</p>
+        </div>
+        <div class="piso" id="piso" role="img" aria-label="Patrón de la baldosa SERRA en masa y tomate"><span class="pt pos" data-g="2"></span><span class="pt neg" data-g="1"></span><span class="pt pos" data-g="0"></span><span class="pt neg" data-g="1"></span><span class="pt pos" data-g="2"></span><span class="pt neg" data-g="3"></span><span class="pt neg" data-g="1"></span><span class="pt pos" data-g="0"></span><span class="pt neg" data-g="1"></span><span class="pt pos" data-g="2"></span><span class="pt neg" data-g="3"></span><span class="pt pos" data-g="0"></span><span class="pt pos" data-g="0"></span><span class="pt neg" data-g="1"></span><span class="pt pos" data-g="2"></span><span class="pt neg" data-g="3"></span><span class="pt pos" data-g="0"></span><span class="pt neg" data-g="1"></span><span class="pt neg" data-g="1"></span><span class="pt pos" data-g="2"></span><span class="pt neg" data-g="3"></span><span class="pt pos" data-g="0"></span><span class="pt neg" data-g="1"></span><span class="pt pos" data-g="0"></span><span class="pt pos" data-g="2"></span><span class="pt neg" data-g="3"></span><span class="pt pos" data-g="0"></span><span class="pt neg" data-g="1"></span><span class="pt pos" data-g="0"></span><span class="pt neg" data-g="3"></span></div>
+      </div>
+    </section>
+
+    <!-- ORLA -->
+    <section id="orla" aria-label="La orla">
+      <div class="wrap">
+        <div class="head head-orla">
+          <h2 class="reveal">La orla</h2>
+          <p class="lead reveal">En los bares de antes, lo importante iba enmarcado: el espejo de la barra, la pizarra de precios, el cartel de la puerta. La orla trae ese gesto y dice “esto es de la casa”.</p>
+        </div>
+        <div class="orlas">
+          <figure class="orla-p reveal" style="background:#F5EDDF;box-shadow:inset 0 0 0 2px #9E2B24;color:#9E2B24">
+            <img class="o" src="/propuesta/orla-tomate.webp" alt="" width="1600" height="1200" loading="lazy">
+            <div class="in"><img class="w" src="/propuesta/serra-logo-rojo.svg" alt="SERRA" width="280" height="109"><span class="claim">Bar de encuentro</span></div>
+          </figure>
+          <div class="orla-lado">
+            <figure class="orla-p reveal" style="background:#9E2B24;color:#F5EDDF;transition-delay:.1s">
+              <img class="o" src="/propuesta/orla-masa.webp" alt="" width="1600" height="1200" loading="lazy">
+              <div class="in"><p class="precio" style="margin:0">Pizza libre<small>Fainá de cortesía en todas las opciones.</small></p></div>
+            </figure>
+            <figure class="orla-p reveal" style="background:#4A1D17;color:#F5EDDF;transition-delay:.2s">
+              <img class="o" src="/propuesta/orla-masa.webp" alt="" width="1600" height="1200" loading="lazy">
+              <div class="in"><img class="s" src="/propuesta/baldosa-hueso.svg" alt="" width="64" height="64" style="width:30%"></div>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLOR -->
+    <section id="color">
+      <div class="wrap">
+        <div class="head">
+          <h2 class="reveal">Color</h2>
+          <p class="lead reveal">Cada color sale de algo que está en la mesa o en el horno.</p>
+        </div>
+        <div class="colores" id="colores">
+          <article class="color principal reveal" style="--c:#9E2B24;--fg:#F5EDDF">
+            <img class="foto" src="/propuesta/color-tomate.webp" alt="Salsa de tomate sobre la masa" width="900" height="900" loading="lazy">
+            <div class="info"><h3>Tomate</h3><p class="de">Principal. Logo, títulos y fondos.</p>
+              <dl><dt>HEX</dt><dd><span>#9E2B24</span><button class="copy" type="button" data-v="#9E2B24" aria-label="Copiar HEX de Tomate"></button></dd>
+              <dt>RGB</dt><dd><span>158 43 36</span><button class="copy" type="button" data-v="158, 43, 36" aria-label="Copiar RGB de Tomate"></button></dd>
+              <dt>CMYK</dt><dd><span>20 90 85 25</span><button class="copy" type="button" data-v="20, 90, 85, 25" aria-label="Copiar CMYK de Tomate"></button></dd></dl></div>
+          </article>
+          <article class="color reveal" style="--c:#74211A;--fg:#F5EDDF;transition-delay:.08s">
+            <img class="foto" src="/propuesta/color-ladrillo.webp" alt="Ladrillos del horno a leña" width="900" height="900" loading="lazy">
+            <div class="info"><h3>Ladrillo</h3><p class="de">Secundario. Fondos y detalles.</p>
+              <dl><dt>HEX</dt><dd><span>#74211A</span><button class="copy" type="button" data-v="#74211A" aria-label="Copiar HEX de Ladrillo"></button></dd>
+              <dt>RGB</dt><dd><span>116 33 26</span><button class="copy" type="button" data-v="116, 33, 26" aria-label="Copiar RGB de Ladrillo"></button></dd>
+              <dt>CMYK</dt><dd><span>30 90 85 45</span><button class="copy" type="button" data-v="30, 90, 85, 45" aria-label="Copiar CMYK de Ladrillo"></button></dd></dl></div>
+          </article>
+          <article class="color reveal" style="--c:#4A1D17;--fg:#F5EDDF;transition-delay:.16s">
+            <img class="foto" src="/propuesta/color-brasa.webp" alt="Brasas y leña quemada" width="900" height="900" loading="lazy">
+            <div class="info"><h3>Brasa</h3><p class="de">Secundario. Texto largo.</p>
+              <dl><dt>HEX</dt><dd><span>#4A1D17</span><button class="copy" type="button" data-v="#4A1D17" aria-label="Copiar HEX de Brasa"></button></dd>
+              <dt>RGB</dt><dd><span>74 29 23</span><button class="copy" type="button" data-v="74, 29, 23" aria-label="Copiar RGB de Brasa"></button></dd>
+              <dt>CMYK</dt><dd><span>40 80 80 65</span><button class="copy" type="button" data-v="40, 80, 80, 65" aria-label="Copiar CMYK de Brasa"></button></dd></dl></div>
+          </article>
+          <article class="color principal reveal" style="--c:#F5EDDF;--fg:#9E2B24;transition-delay:.24s">
+            <img class="foto" src="/propuesta/color-masa.webp" alt="Masa cruda con harina" width="900" height="900" loading="lazy">
+            <div class="info"><h3>Masa</h3><p class="de">Principal. El papel, la base de todo.</p>
+              <dl><dt>HEX</dt><dd><span>#F5EDDF</span><button class="copy" type="button" data-v="#F5EDDF" aria-label="Copiar HEX de Masa"></button></dd>
+              <dt>RGB</dt><dd><span>245 237 223</span><button class="copy" type="button" data-v="245, 237, 223" aria-label="Copiar RGB de Masa"></button></dd>
+              <dt>CMYK</dt><dd><span>2 5 12 0</span><button class="copy" type="button" data-v="2, 5, 12, 0" aria-label="Copiar CMYK de Masa"></button></dd></dl></div>
+          </article>
+        </div>
+        <button class="btn ghost color-toggle" type="button" id="color-toggle" aria-pressed="false">Ver solo el color</button>
+        <p class="visually-hidden" aria-live="polite" id="copiado"></p>
+      </div>
+    </section>
+
+    <!-- TIPOGRAFIA -->
+    <section id="tipografia" aria-label="Tipografía">
+      <div class="tipo-aa">
+        <div class="aa aa-cor reveal"><span class="big f-cor" aria-hidden="true">Aa</span><h3>Cormorant</h3><p>Títulos. Bold con un trazo fino para que no se pierdan; SemiBold espaciada para los claims.</p><p class="muestra f-cor" data-muestra>Pizza libre</p></div>
+        <div class="aa aa-hg reveal"><span class="big f-hg" aria-hidden="true">Aa</span><h3>Host Grotesk</h3><p>Todo el texto: menú, precios, condiciones y posteos.</p><p class="muestra f-hg" data-muestra>Pizza libre</p></div>
+      </div>
+      <div class="probar wrap">
+        <label for="probar">Probá con lo que quieras y se ve en las dos</label>
+        <input id="probar" type="text" value="Pizza libre" maxlength="40" autocomplete="off" spellcheck="false">
+      </div>
+    </section>
+
+    <!-- ILUSTRACIONES -->
+    <section id="ilustraciones" style="background:#EFE4D2">
+      <div class="wrap">
+        <div class="head">
+          <h2 class="reveal">Las cosas de la mesa</h2>
+          <p class="lead reveal">Recursos gráficos que acompañan a la marca en el menú, las redes y el packaging.</p>
+        </div>
+        <div class="ilus"><figure class="reveal" style="transition-delay:0ms"><img src="/propuesta/ilustracion-pizza-muzzarella.webp" alt="Muzzarella" width="900" height="608" loading="lazy"></figure><figure class="reveal" style="transition-delay:90ms"><img src="/propuesta/ilustracion-faina.webp" alt="Fainá" width="900" height="595" loading="lazy"></figure><figure class="reveal" style="transition-delay:180ms"><img src="/propuesta/ilustracion-chivito.webp" alt="Chivito" width="900" height="803" loading="lazy"></figure><figure class="reveal" style="transition-delay:270ms"><img src="/propuesta/ilustracion-empanadas.webp" alt="Empanadas" width="900" height="603" loading="lazy"></figure><figure class="reveal" style="transition-delay:360ms"><img src="/propuesta/ilustracion-porcion.webp" alt="Porción" width="900" height="900" loading="lazy"></figure><figure class="reveal" style="transition-delay:0ms"><img src="/propuesta/ilustracion-tomate.webp" alt="Tomate" width="900" height="900" loading="lazy"></figure><figure class="reveal" style="transition-delay:90ms"><img src="/propuesta/ilustracion-tomates-en-rama.webp" alt="Tomates en rama" width="900" height="900" loading="lazy"></figure><figure class="reveal" style="transition-delay:180ms"><img src="/propuesta/ilustracion-queso.webp" alt="Queso" width="900" height="900" loading="lazy"></figure><figure class="reveal" style="transition-delay:270ms"><img src="/propuesta/ilustracion-queso-rallado.webp" alt="Queso rallado" width="900" height="900" loading="lazy"></figure><figure class="reveal" style="transition-delay:360ms"><img src="/propuesta/ilustracion-aceitunas.webp" alt="Aceitunas" width="900" height="900" loading="lazy"></figure><figure class="reveal" style="transition-delay:0ms"><img src="/propuesta/ilustracion-aceitera.webp" alt="Aceitera" width="900" height="900" loading="lazy"></figure><figure class="reveal" style="transition-delay:90ms"><img src="/propuesta/ilustracion-romero.webp" alt="Romero" width="900" height="900" loading="lazy"></figure><figure class="reveal" style="transition-delay:180ms"><img src="/propuesta/ilustracion-manos-amasando.webp" alt="La masa" width="900" height="582" loading="lazy"></figure><figure class="reveal" style="transition-delay:270ms"><img src="/propuesta/ilustracion-pala.webp" alt="La pala" width="900" height="900" loading="lazy"></figure><figure class="reveal" style="transition-delay:360ms"><img src="/propuesta/ilustracion-lena.webp" alt="Leña" width="900" height="819" loading="lazy"></figure><figure class="reveal" style="transition-delay:0ms"><img src="/propuesta/ilustracion-whisky.webp" alt="Whisky" width="900" height="1210" loading="lazy"></figure><figure class="reveal" style="transition-delay:90ms"><img src="/propuesta/ilustracion-mesa.webp" alt="La mesa" width="900" height="773" loading="lazy"></figure><figure class="reveal" style="transition-delay:180ms"><img src="/propuesta/ilustracion-mesa-con-pizza.webp" alt="Mesa con pizza" width="900" height="704" loading="lazy"></figure><figure class="reveal" style="transition-delay:270ms"><img src="/propuesta/ilustracion-mesa-faina-y-whisky.webp" alt="Fainá y whisky" width="900" height="900" loading="lazy"></figure><figure class="reveal" style="transition-delay:360ms"><img src="/propuesta/ilustracion-mesa-desde-arriba.webp" alt="Desde arriba" width="900" height="900" loading="lazy"></figure></div>
+      </div>
+    </section>
+
+    <!-- MENU -->
+    <section id="menu" class="scene" aria-label="El menú de catering">
+      <div class="sticky menu-sticky">
+        <div class="scene-head">
+          <h2>El menú de catering</h2>
+          <div>
+            <p>La primera pieza en la calle. Vertical, para mandar por WhatsApp, con WhatsApp e Instagram a un toque.</p>
+            <p style="margin-top:16px"><a class="btn" href="/propuesta/descargas/SERRA-menu-catering.pdf" download>Bajar el menú</a></p>
+          </div>
+        </div>
+        <div class="menu-viewport">
+          <div class="menu-track" id="menu-track">
+            <img src="/propuesta/menu-1.webp" alt="Menú, portada" width="720" height="1280" loading="lazy">
+            <img src="/propuesta/menu-2.webp" alt="Menú, pizza libre y precios" width="720" height="1280" loading="lazy">
+            <img src="/propuesta/menu-3.webp" alt="Menú, los gustos" width="720" height="1280" loading="lazy">
+            <img src="/propuesta/menu-4.webp" alt="Menú, el servicio" width="720" height="1280" loading="lazy">
+            <img src="/propuesta/menu-5.webp" alt="Menú, contacto" width="720" height="1280" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- APLICACIONES -->
+    <section id="aplicaciones" aria-label="Aplicaciones">
+      <div class="wrap">
+        <div class="head head-apilada">
+          <h2 class="reveal">Aplicaciones</h2>
+          <p class="lead reveal">Así se ve la marca puesta en las cosas. Son simulaciones para imaginarla; las piezas finales se diseñan cuando abra el local.</p>
+        </div>
+        <div class="apps"><figure class="ancha reveal" style="transition-delay:0ms"><div class="ph"><img src="/propuesta/aplicacion-fachada.webp" alt="La esquina del futuro local con el cartel SERRA bar de encuentro y la frase Buenas pizzas, mejores momentos pintada en la pared" width="1536" height="1024" loading="lazy"></div><figcaption>Fachada del local</figcaption></figure><figure class="alta reveal" style="transition-delay:80ms"><div class="ph"><img src="/propuesta/aplicacion-menu.webp" alt="Menú impreso en cartulina con la orla como marco, junto a un whisky y una porción" width="1122" height="1402" loading="lazy"></div><figcaption>Menú impreso</figcaption></figure><figure class="reveal" style="transition-delay:160ms"><div class="ph"><img src="/propuesta/aplicacion-caja-orla.webp" alt="Caja de pizza con la orla enmarcando SERRA en la tapa y el patrón en los costados" width="1254" height="1254" loading="lazy"></div><figcaption>Caja de pizza, con orla</figcaption></figure><figure class="reveal" style="transition-delay:240ms"><div class="ph"><img src="/propuesta/aplicacion-caja.webp" alt="Caja de pizza con SERRA bar de encuentro en la tapa y el patrón en los costados" width="1254" height="1254" loading="lazy"></div><figcaption>Caja de pizza</figcaption></figure><figure class="reveal" style="transition-delay:240ms"><div class="ph"><img src="/propuesta/aplicacion-papel.webp" alt="Papel manteca con el patrón bajo porciones de pizza y fainá" width="1254" height="1254" loading="lazy"></div><figcaption>Papel manteca</figcaption></figure><figure class="mitad reveal" style="transition-delay:0ms"><div class="ph"><img src="/propuesta/aplicacion-ropa.webp" alt="Delantal bordó con SERRA, gorra y remera con la marca" width="1254" height="1254" loading="lazy"></div><figcaption>Ropa</figcaption></figure><figure class="mitad reveal" style="transition-delay:80ms"><div class="ph"><img src="/propuesta/aplicacion-servilletas.webp" alt="Servilletas de papel con la orla y el símbolo" width="1254" height="1254" loading="lazy"></div><figcaption>Servilletas</figcaption></figure></div>
+      </div>
+    </section>
+
+    <!-- LOOK & FEEL -->
+    <section id="instagram" aria-label="Look and feel">
+      <div class="wrap">
+        <div class="head head-solo">
+          <h2 class="reveal">Look &amp; feel</h2>
+        </div>
+        <div class="ig">
+          <div class="phone reveal" role="img" aria-label="Simulación del perfil de Instagram de SERRA en un celular">
+            <div class="ph-top">serra_uy</div>
+            <div class="ph-perfil">
+              <div class="avatar" id="avatar"><img src="/propuesta/serra-logo-hueso.svg" alt="" width="64" height="64" style="width:74%"></div>
+              <div class="ph-nombre"><b>SERRA</b><span>Servicio de catering</span></div>
+            </div>
+            <div class="ph-bio">Buenas pizzas, mejores momentos.
+Pizza libre para tu evento en Montevideo.
+<a href="https://wa.me/59895894273" tabindex="-1">wa.me/59895894273</a></div>
+            <div class="ph-btns"><span>Mensaje</span><span>WhatsApp</span></div>
+            <div class="ph-hl">
+              <figure><span class="c"><img src="/propuesta/ig-porcion-hueso.webp" alt="" width="990" height="990"></span>Menú</figure>
+              <figure><span class="c"><img src="/propuesta/ig-mesa-con-pizza-hueso.webp" alt="" width="709" height="709"></span>Eventos</figure>
+            </div>
+            <div class="ph-grid"><div class="post reel" style="background:#9E2B24"><img class="il" src="/propuesta/ig-mesa-con-pizza-hueso.webp" alt="" width="709" height="709"><svg class="play" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 8.5v7l6-3.5z" fill="currentColor"/></svg><p class="t">Evento</p></div><div class="post reel" style="background:#74211A"><img class="il" src="/propuesta/ig-manos-amasando-hueso.webp" alt="" width="900" height="582"><svg class="play" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 8.5v7l6-3.5z" fill="currentColor"/></svg><p class="t">La previa</p></div><div class="post reel" style="background:#4A1D17"><img class="il" src="/propuesta/ig-porcion-hueso.webp" alt="" width="990" height="990"><svg class="play" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 8.5v7l6-3.5z" fill="currentColor"/></svg><p class="t">El servicio</p></div><div class="post reel" style="background:#74211A"><img class="il" src="/propuesta/ig-lena-hueso.webp" alt="" width="900" height="819"><svg class="play" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 8.5v7l6-3.5z" fill="currentColor"/></svg><p class="t">La previa</p></div><div class="post reel" style="background:#4A1D17"><img class="il" src="/propuesta/ig-faina-hueso.webp" alt="" width="900" height="595"><svg class="play" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 8.5v7l6-3.5z" fill="currentColor"/></svg><p class="t">El servicio</p></div><div class="post reel" style="background:#9E2B24"><img class="il" src="/propuesta/ig-mesa-hueso.webp" alt="" width="900" height="773"><svg class="play" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 8.5v7l6-3.5z" fill="currentColor"/></svg><p class="t">Evento</p></div></div>
+          </div>
+          <div class="ig-notas">
+            <div class="reveal"><h3>Foto de perfil</h3><p>Intercambiable.</p>
+              <div class="avs" role="group" aria-label="Opciones de foto de perfil"><button type="button" class="avopt" aria-label="SERRA, masa sobre tomate" aria-pressed="true" data-bg="#9E2B24" data-src="/propuesta/serra-logo-hueso.svg" data-w="74" data-bd="0"><span class="av" style="background:#9E2B24"><img src="/propuesta/serra-logo-hueso.svg" alt="" style="width:74%"></span><span class="av av-s" style="background:#9E2B24"><img src="/propuesta/serra-logo-hueso.svg" alt="" style="width:74%"></span></button><button type="button" class="avopt" aria-label="SERRA, tomate sobre masa" aria-pressed="false" data-bg="#F5EDDF" data-src="/propuesta/serra-logo-rojo.svg" data-w="74" data-bd="1"><span class="av" style="background:#F5EDDF;box-shadow:inset 0 0 0 1.5px #9E2B24"><img src="/propuesta/serra-logo-rojo.svg" alt="" style="width:74%"></span><span class="av av-s" style="background:#F5EDDF;box-shadow:inset 0 0 0 1.5px #9E2B24"><img src="/propuesta/serra-logo-rojo.svg" alt="" style="width:74%"></span></button><button type="button" class="avopt" aria-label="Baldosa, masa sobre tomate" aria-pressed="false" data-bg="#9E2B24" data-src="/propuesta/baldosa-hueso.svg" data-w="56" data-bd="0"><span class="av" style="background:#9E2B24"><img src="/propuesta/baldosa-hueso.svg" alt="" style="width:56%"></span><span class="av av-s" style="background:#9E2B24"><img src="/propuesta/baldosa-hueso.svg" alt="" style="width:56%"></span></button><button type="button" class="avopt" aria-label="Baldosa, tomate sobre masa" aria-pressed="false" data-bg="#F5EDDF" data-src="/propuesta/baldosa.svg" data-w="56" data-bd="1"><span class="av" style="background:#F5EDDF;box-shadow:inset 0 0 0 1.5px #9E2B24"><img src="/propuesta/baldosa.svg" alt="" style="width:56%"></span><span class="av av-s" style="background:#F5EDDF;box-shadow:inset 0 0 0 1.5px #9E2B24"><img src="/propuesta/baldosa.svg" alt="" style="width:56%"></span></button></div></div>
+            <div class="reveal"><h3>Destacadas</h3><p>Menú y Eventos.</p></div>
+            <div class="reveal"><h3>Pilares de contenido</h3>
+              <ul class="pilares">
+                <li><b>Eventos.</b> El catering funcionando: el horno prendido, las pizzas saliendo, la gente alrededor de la mesa.</li>
+                <li><b>La previa.</b> La preparación de cada evento: la masa, el armado, la carga, el montaje.</li>
+                <li><b>El servicio.</b> Fotos reales de lo que se sirve, en el lugar.</li>
+              </ul>
+              <p>Formato: sobre todo reels.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESCARGAS -->
+    <section id="descargas" class="on-red">
+      <div class="wrap">
+        <div class="head">
+          <h2 class="reveal">Descargas</h2>
+          <p class="lead reveal">Todo lo que vieron acá, para tenerlo a mano.</p>
+        </div>
+        <div class="descargas reveal">
+          <a class="desc" href="/propuesta/descargas/SERRA-propuesta-creativa.pdf" download><span><strong>Propuesta creativa</strong><small>PDF</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 21h16"/></svg></a>
+          <a class="desc" href="/propuesta/descargas/SERRA-menu-catering.pdf" download><span><strong>Menú de catering</strong><small>PDF</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 21h16"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CIERRE -->
+    <section id="cierre" class="on-red" aria-label="Cierre" style="background:var(--s-ladrillo)">
+      <img class="mesa reveal" src="/propuesta/ilustracion-mesa-con-pizza-hueso.webp" alt="Una mesa de bar con una pizza y dos vasos de whisky" width="1072" height="838" loading="lazy">
+      <div>
+        <h2 class="reveal">La mesa está servida</h2>
+        <div class="firma reveal"><img src="/propuesta/serra-logo-hueso.svg" alt="SERRA" width="320" height="125"></div>
+      </div>
+    </section>
+
+    <nav class="etapas" aria-label="Etapas">
+      <a href="/serra-identidad"><span aria-hidden="true">←</span> Identidad</a>
+      <a href="/serra">Volver al brief</a>
+    </nav>
+  </main>
+</div>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const hdr = $('.site-header');
+  const setHdr = () => document.documentElement.style.setProperty('--hdr', hdr.offsetHeight + 'px');
+  setHdr(); if (window.ResizeObserver) new ResizeObserver(setHdr).observe(hdr);
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  /* PATRÓN: aparecen las baldosas por tandas: masa, tomate, masa, tomate */
+  const pts = $$('#piso .pt');
+  function patron(p) { const k = Math.floor(clamp((p + .22) / .8) * 4 + .001); pts.forEach(t => t.classList.toggle('on', reduce || +t.dataset.g < k)); }
+
+  /* BALDOSAS Y PIZZAS: se dan vuelta en ola; al final quedan intercaladas */
+  const pares = $$('#pares .par');
+  function parFlip(p) {
+    pares.forEach((c, k) => {
+      const t1 = .06 + .36 * k / 9, t2 = .56 + .3 * k / 9;
+      const pizza = p > t1 && !(+c.dataset.ck === 0 && p > t2);
+      c.classList.toggle('vuelta', reduce ? +c.dataset.ck === 1 : pizza);
+    });
+  }
+  /* bajada del logo: bar de encuentro / pizza de barrio */
+  $$('.claims button').forEach(b => b.addEventListener('click', () => {
+    $$('.claims button').forEach(x => x.setAttribute('aria-pressed', x === b));
+    $('#claim').textContent = b.dataset.claim;
+  }));
+  /* foto de perfil intercambiable */
+  $$('.avopt').forEach(b => b.addEventListener('click', () => {
+    $$('.avopt').forEach(x => x.setAttribute('aria-pressed', x === b));
+    const av = $('#avatar'), im = $('img', av);
+    av.style.background = b.dataset.bg; av.style.boxShadow = b.dataset.bd === '1' ? 'inset 0 0 0 1.5px #9E2B24' : 'none';
+    im.src = b.dataset.src; im.style.width = b.dataset.w + '%';
+  }));
+  /* MENÚ: avanza de costado mientras se baja */
+  const track = $('#menu-track'), menuSec = $('#menu');
+  // menú: si la tira entra a lo ancho, la escena no se fija; si no, el tramo fijo mide lo mismo que el recorrido
+  let menuRec = -1;
+  function menuH() {
+    const imgs = [...track.children], n = imgs.length, vw = track.parentElement.clientWidth;
+    const base = Math.min(28, Math.max(16, innerWidth * .02)), ancho = imgs.reduce((a, i) => a + i.getBoundingClientRect().width, 0);
+    const libre = vw - ancho - base * (n - 1);
+    const gap = libre > 0 && n > 1 ? (vw - ancho) / (n - 1) : base;
+    if (Math.abs(parseFloat(track.style.columnGap || 0) - gap) > .5) track.style.columnGap = gap + 'px';
+    const rec = Math.max(0, -libre);
+    if (Math.abs(rec - menuRec) > .5) { menuRec = rec; menuSec.style.setProperty('--menu-recorrido', rec + 'px'); }
+    const d = Math.min(rec, Math.max(0, hdr.offsetHeight - menuSec.getBoundingClientRect().top));
+    track.style.transform = `translateX(${-d}px)`;
+  }
+
+
+  /* video del inicio: la portada ya se decidió en el <head> (portada-video o portada-estatica) */
+  const hero = $('#hero'), sound = $('.sound'), raiz = document.documentElement;
+  const nombre = matchMedia('(max-aspect-ratio: 4/5)').matches ? 'serra-propuesta-9x16' : 'serra-propuesta-16x9';
+  const vid = document.createElement('video');
+  vid.muted = true; vid.loop = true; vid.playsInline = true; vid.setAttribute('playsinline', '');
+  vid.setAttribute('aria-label', 'Video: cómo se construyó la marca SERRA');
+  vid.poster = `/propuesta/${nombre}-poster.webp`;
+  // si el video falla, queda la portada estática, sin botón
+  vid.addEventListener('error', () => { vid.remove(); hero.classList.remove('has-video'); raiz.classList.replace('portada-video', 'portada-estatica'); sound.hidden = true; });
+  // el archivo se pide recién acá: con movimiento reducido, solo al tocar Ver video
+  const cargar = () => { vid.preload = 'auto'; vid.src = `/propuesta/${nombre}.mp4`; hero.prepend(vid); hero.classList.add('has-video'); };
+  const etiqueta = () => { sound.textContent = vid.muted ? 'Activar sonido' : 'Silenciar'; sound.setAttribute('aria-pressed', String(!vid.muted)); };
+  if (raiz.classList.contains('portada-video')) { cargar(); vid.play().catch(() => {}); }
+  else { sound.textContent = 'Ver video'; sound.removeAttribute('aria-pressed'); }
+  sound.addEventListener('click', () => {
+    if (!hero.classList.contains('has-video')) { raiz.classList.replace('portada-estatica', 'portada-video'); cargar(); vid.muted = false; }
+    else vid.muted = !vid.muted;
+    if (!vid.muted) vid.play().catch(() => {});
+    etiqueta();
+  });
+
+  /* índice desplegable */
+  const side = $('#indice'), tog = $('.menu-toggle'), togTxt = $('span', tog);
+  const setNav = o => { side.classList.toggle('open', o); tog.setAttribute('aria-expanded', String(o)); togTxt.textContent = o ? 'Cerrar' : 'Índice'; };
+  tog.addEventListener('click', () => setNav(!side.classList.contains('open')));
+  $$('a', side).forEach(a => a.addEventListener('click', () => setNav(false)));
+  addEventListener('keydown', e => { if (e.key === 'Escape' && side.classList.contains('open')) { setNav(false); tog.focus(); } });
+
+  /* sección activa en el índice */
+  const links = $$('.side ol a');
+  const secs = links.map(a => $(a.getAttribute('href')));
+  const spy = new IntersectionObserver(es => {
+    es.forEach(e => {
+      if (e.isIntersecting) links.forEach(a => a.setAttribute('aria-current', String(a.getAttribute('href') === '#' + e.target.id)));
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  secs.forEach(s => s && spy.observe(s));
+
+  /* aparición */
+  const rv = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rv.unobserve(e.target); } }), { threshold: .15 });
+  $$('.reveal').forEach(el => reduce ? el.classList.add('in') : rv.observe(el));
+
+  /* progreso de una escena fija */
+  const prog = el => { const r = el.getBoundingClientRect(); const h = el.offsetHeight - innerHeight; return h > 0 ? clamp(-r.top / h) : 0; };
+
+  /* LETRA */
+  const figs = $$('#fotos figure'), steps = $$('#letra .steps span');
+  const wmSvg = $('#wordmark svg'), lts = $$('#wordmark .lt'), ltPaths = lts.map(g => $('path', g));
+  const turb = $$('#wordmark feDisplacementMap'), morph = $$('#wordmark feMorphology');
+  const letterOf = [[0], [1], [2, 3], [4]];
+  /* color del cartel de origen de cada letra: azulejo azul, dorado, chapa verde, pintura negra */
+  const origen = [[30, 63, 160], [201, 150, 46], [47, 93, 58], [47, 93, 58], [30, 26, 23]], tomate = [158, 43, 36];
+  const mix = (a, b, t) => `rgb(${a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(',')})`;
+  const ease = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  let boxes = null;
+  function letterState(l, fly, fine, ring) {
+    const g = lts[l];
+    if (fly <= 0) { g.style.opacity = 0; return; }
+    if (!boxes) boxes = ltPaths.map(p => p.getBBox());
+    const bb = boxes[l], sv = wmSvg.getBoundingClientRect(), k = sv.width / 553.5;
+    let tx = 0, ty = 0, sc = 1;
+    if (fly < 1 && ring) {
+      const r = ring.getBoundingClientRect();
+      const cx = (r.left + r.width / 2 - sv.left) / k + 263.25, cy = (r.top + r.height / 2 - sv.top) / k + 818.75;
+      const s0 = Math.min(3, (r.height / k) * .85 / bb.height);
+      const e = ease(fly), s = s0 + (1 - s0) * e;
+      const fx = bb.x + bb.width / 2, fy = bb.y + bb.height / 2;
+      const px = cx + (fx - cx) * e, py = cy + (fy - cy) * e - Math.sin(Math.PI * e) * 40;
+      sc = s; tx = px - fx * s; ty = py - fy * s;
+    }
+    g.style.opacity = Math.min(1, fly * 6);
+    g.style.transform = `translate(${tx}px,${ty}px) scale(${sc})`;
+    const rough = 1 - fine;
+    g.style.fill = mix(origen[l], tomate, fine);
+    turb[l].setAttribute('scale', (14 * rough).toFixed(2));
+    morph[l].setAttribute('radius', (2.4 * rough).toFixed(2));
+  }
+  function letra(p) {
+    const n = figs.length, x = p * n, i = Math.min(n - 1, Math.floor(x)), local = p >= 1 ? 1 : x - i;
+    figs.forEach((f, k) => {
+      f.classList.toggle('on', k === i);
+      const z = f.querySelector('.zoom'), ring = f.querySelector('.ring');
+      const sc = k === i && !reduce ? 1 + .75 * clamp(local / .35) : 1;
+      z.style.transformOrigin = f.dataset.o;
+      z.style.transform = `scale(${sc})`;
+      ring.style.borderWidth = (4 / sc) + 'px';
+      ring.style.boxShadow = `0 0 0 ${3 / sc}px rgba(42,20,16,.5)`;
+    });
+    letterOf.forEach((ls, k) => ls.forEach((l, j) => {
+      if (reduce || k < i || p >= .999) return letterState(l, 1, 1);
+      if (k > i) return letterState(l, 0, 0);
+      const d = j * .08;
+      const fly = clamp((local - .35 - d) / .35), fine = clamp((local - .62 - d) / .3);
+      letterState(l, fly, fine, figs[k].querySelector('.ring'));
+    }));
+    steps.forEach((s, k) => s.classList.toggle('on', k <= i));
+  }
+  addEventListener('resize', () => { boxes = null; });
+
+  /* CONSTRUCCION: baldosa, pizza y trazado técnico */
+  const cuadro = $('#cuadro'), ft = $('.ft', cuadro), fp = $('.fp', cuadro), cs = $$('#cons-steps li');
+  const tg = $('.t-grid', cuadro), tgu = $$('.t-guias .draw', cuadro), ttr = $$('.t-trazo .draw', cuadro), tfin = $('.t-final', cuadro), tguias = $('.t-guias', cuadro), ttrazo = $('.t-trazo', cuadro);
+  function cons(p) {
+    const a = clamp((p - .14) / .12), b = clamp((p - .3) / .14), c = clamp((p - .46) / .1), d = clamp((p - .58) / .18), e = clamp((p - .8) / .12);
+    ft.style.opacity = 1 - .9 * b;
+    fp.style.opacity = a * (1 - .9 * b);
+    tgu.forEach((l, i) => l.style.strokeDashoffset = 1 - clamp(b * tgu.length - i * .6));
+    tg.style.opacity = c * (1 - e * .7);
+    ttr.forEach((l, i) => l.style.strokeDashoffset = 1 - clamp(d * 1.6 - (i % 2) * .4));
+    tguias.style.opacity = 1 - e * .8; ttrazo.style.opacity = 1 - e;
+    tfin.style.opacity = e;
+    const st = p < .14 ? 0 : p < .3 ? 1 : p < .46 ? 2 : p < .58 ? 3 : p < .8 ? 4 : 5;
+    cs.forEach((li, k) => li.classList.toggle('on', k <= st));
+  }
+
+  if (reduce) { letra(1); cons(1); patron(1); parFlip(1); }
+  else {
+    const L = $('#letra'), C = $('#construccion'), M = $('#menu'), PT = $('#patron'), BP = $('#baldosa-pizza');
+    let tick = false;
+    const run2 = () => { tick = false; letra(prog(L)); cons(prog(C)); menuH(); patron(prog(PT)); parFlip(prog(BP)); };
+    addEventListener('scroll', () => { if (!tick) { tick = true; requestAnimationFrame(run2); } }, { passive: true });
+    addEventListener('resize', run2); run2();
+  }
+
+  /* TIPOGRAFIA: el texto se escribe en las dos */
+  const prb = $('#probar'), mu = $$('[data-muestra]');
+  prb.addEventListener('input', () => mu.forEach(m => m.textContent = prb.value || ' '));
+
+  /* REDUCCION */
+  const tam = $('#tam'), out = $('#tam-out'), r1 = $('#r1'), r2 = $('#r2');
+  const setT = () => { const v = tam.value + 'px'; r1.style.width = r1.style.height = r2.style.width = r2.style.height = v; out.textContent = tam.value + ' px'; };
+  tam.addEventListener('input', setT); setT();
+
+  /* COLOR: la foto se va y queda el color */
+  const colores = $$('.color'), ctog = $('#color-toggle');
+  const setPlano = on => { colores.forEach(c => c.classList.toggle('plano', on)); ctog.setAttribute('aria-pressed', String(on)); ctog.textContent = on ? 'Ver de dónde sale' : 'Ver solo el color'; };
+  ctog.addEventListener('click', () => setPlano(ctog.getAttribute('aria-pressed') !== 'true'));
+  colores.forEach(c => {
+    c.addEventListener('mouseenter', () => c.classList.add('plano'));
+    c.addEventListener('mouseleave', () => { if (ctog.getAttribute('aria-pressed') !== 'true') c.classList.remove('plano'); });
+  });
+  const ico = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>';
+  const live = $('#copiado');
+  $$('.copy').forEach(b => {
+    b.innerHTML = ico;
+    b.addEventListener('click', async e => {
+      e.stopPropagation();
+      try { await navigator.clipboard.writeText(b.dataset.v); live.textContent = 'Copiado: ' + b.dataset.v; b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>'; setTimeout(() => b.innerHTML = ico, 1400); }
+      catch { live.textContent = 'No se pudo copiar'; }
+    });
+  });
+})();
+</script>
+</body>
+</html>
