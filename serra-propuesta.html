@@ -92,6 +92,13 @@ p{margin:0;text-wrap:pretty;max-width:60ch}
 .hero-media.has-video .orla,.hero-media.has-video .hero-title{display:none}
 .sound{position:absolute;right:20px;bottom:20px;z-index:3;min-height:44px;min-width:44px;padding:0 18px;border-radius:999px;border:2px solid var(--papel);background:rgba(74,29,23,.55);color:var(--papel);font-weight:700;cursor:pointer;display:none}
 .has-video .sound{display:inline-flex;align-items:center}
+/* con video: el video es la portada, entero y sin recorte; el título queda debajo */
+#inicio.con-video{height:auto;min-height:0;grid-template-rows:auto auto}
+.hero-media.has-video{min-height:0;width:min(100%,calc((100svh - var(--hdr)) * 16 / 9));aspect-ratio:16/9;justify-self:center}
+.hero-media.has-video.vertical{width:min(100%,calc((100svh - var(--hdr)) * 9 / 16));aspect-ratio:9/16}
+.hero-media.has-video video{object-fit:contain}
+/* movimiento reducido: portada estática con el botón Ver video */
+.hero-media.video-listo .sound{display:inline-flex;align-items:center;background:var(--tinta);border-color:var(--tinta);color:var(--papel)}
 .hero-foot{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:end;padding:clamp(40px,5vw,64px) var(--pad);background:var(--papel);position:relative;z-index:2}
 .hero-foot h1{font-size:clamp(40px,5vw,80px)}
 .hero-foot .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
@@ -915,14 +922,18 @@ Pizza libre para tu evento en Montevideo.
   vid.poster = '/propuesta/video-poster.webp';
   const vertical = matchMedia('(max-aspect-ratio: 4/5)').matches;
   vid.src = vertical ? '/propuesta/serra-propuesta-9x16.mp4' : '/propuesta/serra-propuesta-16x9.mp4';
+  hero.classList.toggle('vertical', vertical);
+  const sound = $('.sound'), inicio = $('#inicio');
+  const mostrarVideo = () => { hero.prepend(vid); hero.classList.remove('video-listo'); hero.classList.add('has-video'); inicio.classList.add('con-video'); };
   vid.addEventListener('loadeddata', () => {
-    hero.prepend(vid); hero.classList.add('has-video');
-    if (!reduce) vid.play().catch(() => {});
+    // con movimiento reducido queda la portada estática y el video arranca solo si lo piden
+    if (reduce) { hero.classList.add('video-listo'); sound.textContent = 'Ver video'; sound.removeAttribute('aria-pressed'); return; }
+    mostrarVideo(); vid.play().catch(() => {});
   }, { once: true });
   vid.load();
-  const sound = $('.sound');
   sound.addEventListener('click', () => {
-    vid.muted = !vid.muted;
+    if (!hero.classList.contains('has-video')) { mostrarVideo(); vid.muted = false; }
+    else vid.muted = !vid.muted;
     if (!vid.muted) vid.play().catch(() => {});
     sound.textContent = vid.muted ? 'Activar sonido' : 'Silenciar';
     sound.setAttribute('aria-pressed', String(!vid.muted));
