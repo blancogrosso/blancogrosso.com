@@ -6,6 +6,10 @@
 <meta name="robots" content="noindex, nofollow">
 <title>SERRA — Propuesta creativa</title>
 <meta name="description" content="Propuesta creativa de SERRA: de dónde sale la letra, la baldosa, el color y cómo se arma la marca.">
+<script>
+/* portada: el video existe, así que se decide antes de pintar. Con movimiento reducido queda la portada estática */
+document.documentElement.classList.add(matchMedia('(prefers-reduced-motion: reduce)').matches ? 'portada-estatica' : 'portada-video');
+</script>
 <link rel="preload" href="/fonts/cormorant-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 @font-face{font-family:Archivo;src:url(/fonts/archivo-variable-latin.woff2) format("woff2");font-weight:100 900;font-display:swap}
@@ -89,16 +93,21 @@ p{margin:0;text-wrap:pretty;max-width:60ch}
 .hero-title span{font-family:Cormorant,serif;font-weight:600;font-size:clamp(18px,2.2vw,30px);letter-spacing:.32em;padding-left:.32em;text-transform:uppercase;color:var(--tinta);-webkit-text-stroke:.7px currentColor}
 .hero-title .h-l{display:inline-block;opacity:0;transform:translateY(40px);animation:up 1s cubic-bezier(.2,.7,.2,1) forwards}
 @keyframes up{to{opacity:1;transform:none}}
-.hero-media.has-video .orla,.hero-media.has-video .hero-title{display:none}
+.portada-video .hero-media .orla,.portada-video .hero-title{display:none}
 .sound{position:absolute;right:20px;bottom:20px;z-index:3;min-height:44px;min-width:44px;padding:0 18px;border-radius:999px;border:2px solid var(--papel);background:rgba(74,29,23,.55);color:var(--papel);font-weight:700;cursor:pointer;display:none}
 .has-video .sound{display:inline-flex;align-items:center}
-/* con video: el video es la portada, entero y sin recorte; el título queda debajo */
-#inicio.con-video{height:auto;min-height:0;grid-template-rows:auto auto}
-.hero-media.has-video{min-height:0;width:min(100%,calc((100svh - var(--hdr)) * 16 / 9));aspect-ratio:16/9;justify-self:center}
-.hero-media.has-video.vertical{width:min(100%,calc((100svh - var(--hdr)) * 9 / 16));aspect-ratio:9/16}
-.hero-media.has-video video{object-fit:contain}
-/* movimiento reducido: portada estática con el botón Ver video */
-.hero-media.video-listo .sound{display:inline-flex;align-items:center;background:var(--tinta);border-color:var(--tinta);color:var(--papel)}
+/* ancho fijo en em: no cambia cuando carga la tipografía */
+.sound{width:9.5em;justify-content:center}
+.sound[hidden]{display:none!important}
+/* con video: desde el primer pintado, la caja del video con su tamaño final y el primer cuadro de poster (rojo tomate, igual que el fondo); el título queda debajo */
+.portada-video #inicio{height:auto;min-height:0;grid-template-rows:auto auto}
+.portada-video .hero-media{min-height:0;width:min(100%,calc((100svh - var(--hdr)) * 16 / 9));aspect-ratio:16/9;justify-self:center;background:var(--s-tomate) url(/propuesta/serra-propuesta-16x9-poster.webp) center/contain no-repeat}
+@media (max-aspect-ratio:4/5){
+  .portada-video .hero-media{width:min(100%,calc((100svh - var(--hdr)) * 9 / 16));aspect-ratio:9/16;background-image:url(/propuesta/serra-propuesta-9x16-poster.webp)}
+}
+.portada-video .hero-media video{object-fit:contain}
+/* movimiento reducido (o video que no carga): portada estática; con movimiento reducido, botón Ver video */
+.portada-estatica .sound{display:inline-flex;align-items:center;background:var(--tinta);border-color:var(--tinta);color:var(--papel)}
 .hero-foot{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:end;padding:clamp(40px,5vw,64px) var(--pad);background:var(--papel);position:relative;z-index:2}
 .hero-foot h1{font-size:clamp(40px,5vw,80px)}
 .hero-foot .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
@@ -409,6 +418,7 @@ p{margin:0;text-wrap:pretty;max-width:60ch}
   .hero-media .orla{top:76%;width:240%}
 }
 @media (max-width:640px){
+  :root{--hdr:55px}
   body{font-size:17px}
   .site-header{padding:12px 14px}
   .site-header .tab{padding:7px 10px;font-size:11px}
@@ -919,30 +929,25 @@ Pizza libre para tu evento en Montevideo.
   }
 
 
-  /* video del inicio: se activa solo si el archivo existe */
-  const hero = $('#hero');
+  /* video del inicio: la portada ya se decidió en el <head> (portada-video o portada-estatica) */
+  const hero = $('#hero'), sound = $('.sound'), raiz = document.documentElement;
+  const nombre = matchMedia('(max-aspect-ratio: 4/5)').matches ? 'serra-propuesta-9x16' : 'serra-propuesta-16x9';
   const vid = document.createElement('video');
   vid.muted = true; vid.loop = true; vid.playsInline = true; vid.setAttribute('playsinline', '');
   vid.setAttribute('aria-label', 'Video: cómo se construyó la marca SERRA');
-  vid.preload = 'metadata';
-  vid.poster = '/propuesta/video-poster.webp';
-  const vertical = matchMedia('(max-aspect-ratio: 4/5)').matches;
-  vid.src = vertical ? '/propuesta/serra-propuesta-9x16.mp4' : '/propuesta/serra-propuesta-16x9.mp4';
-  hero.classList.toggle('vertical', vertical);
-  const sound = $('.sound'), inicio = $('#inicio');
-  const mostrarVideo = () => { hero.prepend(vid); hero.classList.remove('video-listo'); hero.classList.add('has-video'); inicio.classList.add('con-video'); };
-  vid.addEventListener('loadeddata', () => {
-    // con movimiento reducido queda la portada estática y el video arranca solo si lo piden
-    if (reduce) { hero.classList.add('video-listo'); sound.textContent = 'Ver video'; sound.removeAttribute('aria-pressed'); return; }
-    mostrarVideo(); vid.play().catch(() => {});
-  }, { once: true });
-  vid.load();
+  vid.poster = `/propuesta/${nombre}-poster.webp`;
+  // si el video falla, queda la portada estática, sin botón
+  vid.addEventListener('error', () => { vid.remove(); hero.classList.remove('has-video'); raiz.classList.replace('portada-video', 'portada-estatica'); sound.hidden = true; });
+  // el archivo se pide recién acá: con movimiento reducido, solo al tocar Ver video
+  const cargar = () => { vid.preload = 'auto'; vid.src = `/propuesta/${nombre}.mp4`; hero.prepend(vid); hero.classList.add('has-video'); };
+  const etiqueta = () => { sound.textContent = vid.muted ? 'Activar sonido' : 'Silenciar'; sound.setAttribute('aria-pressed', String(!vid.muted)); };
+  if (raiz.classList.contains('portada-video')) { cargar(); vid.play().catch(() => {}); }
+  else { sound.textContent = 'Ver video'; sound.removeAttribute('aria-pressed'); }
   sound.addEventListener('click', () => {
-    if (!hero.classList.contains('has-video')) { mostrarVideo(); vid.muted = false; }
+    if (!hero.classList.contains('has-video')) { raiz.classList.replace('portada-estatica', 'portada-video'); cargar(); vid.muted = false; }
     else vid.muted = !vid.muted;
     if (!vid.muted) vid.play().catch(() => {});
-    sound.textContent = vid.muted ? 'Activar sonido' : 'Silenciar';
-    sound.setAttribute('aria-pressed', String(!vid.muted));
+    etiqueta();
   });
 
   /* índice desplegable */
