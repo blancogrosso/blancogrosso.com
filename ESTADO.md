@@ -1,10 +1,19 @@
 # Estado de blancogrosso.com
 
-_Última actualización: 2026-11-09. `main` incluye `v2/integracion`, `v2/hero-arriba` y `v2/detalles`. `v2/serra-propuesta` espera el OK para unirse. Sigue pendiente decidir grilla o tira en The Bridge._
+_Última actualización: 2026-11-09. `main` incluye `v2/integracion`, `v2/hero-arriba`, `v2/detalles`, `v2/serra-propuesta` y `v2/serra-historias`. Sigue pendiente decidir grilla o tira en The Bridge._
+
+## 9 de noviembre: menú para historias de Instagram (rama `v2/serra-historias`)
+
+Unida en `main`.
+
+- **Zip:** `propuesta/descargas/SERRA-menu-historias.zip` (1,7 MB) con `SERRA-menu-historia-01.jpg` a `05.jpg`. Cada JPG mide 1080×1920, con calidad 90 y sRGB. Salen de las 5 páginas del PDF del menú, que miden 1080×1920 pt (9:16): renderizadas con Ghostscript a 72 dpi y convertidas con `sips`, porque `pdftoppm` no está instalado.
+- **Dónde se baja:** en Descargas (tarjeta a todo el ancho), en el menú de catering (botón secundario "Bajar para historias") y en el índice ("Menú para historias").
+- **Índice:** el logo del panel pasa de 88 a 80 px y se achican los espacios y el alto de las descargas (28 px), para que con el tercer enlace siga entrando sin scroll desde 700 px de alto. La letra sigue en 15 px.
+- **Pruebas:** `_ref/pruebas/serra-historias.mjs` (12 por motor) y las demás de SERRA, todo en verde en Chrome y WebKit. Capturas en `_ref/pruebas/capturas-serra/7-menu-historias/`.
 
 ## 9 de noviembre: propuesta de SERRA (rama `v2/serra-propuesta`)
 
-Sin unir a `main` hasta el OK de Tomás. Página privada (`noindex, nofollow`), sin enlaces desde la home ni desde trabajos, sin Supabase.
+Unida en `main` (`73c5c97`) y verificada en producción con curl. Página privada (`noindex, nofollow`), sin enlaces desde la home ni desde trabajos, sin Supabase.
 
 - **Archivos:** `serra-propuesta.html` y `/propuesta/` (imágenes, SVG, `descargas/` con los 2 PDF, los 2 videos y sus 2 posters), copiados del zip del diseñador. Cuatro fuentes nuevas en `/fonts/`: Cormorant 600/700 y Host Grotesk 400/700. Rewrite `/serra-propuesta` en `vercel.json`.
 - **Pestañas:** Brief / Identidad / Propuesta en las tres páginas de SERRA. En `/serra` y `/serra-identidad`, el header achica el relleno debajo de 640 px: con tres pestañas, a 375 px se pasaba de ancho.
@@ -26,7 +35,7 @@ Sin unir a `main` hasta el OK de Tomás. Página privada (`noindex, nofollow`), 
   - `serra-ajustes.mjs` (176): inicio, video entero, menú, títulos, índice y nombres.
   - `serra-video.mjs` (48): formato, sonido, movimiento reducido, respaldo y óvalos.
   - `serra-portada.mjs` (12): red lenta, cuadro a cuadro.
-  - Capturas de toda la tanda en `_ref/pruebas/capturas-serra/`.
+  - Capturas de toda la tanda en `_ref/pruebas/capturas-serra/`, en JPG con calidad 85; los PNG se borraron con el OK de Tomás.
 - **Batería completa:** no se corre para cambios que solo tocan páginas de SERRA, que no abre. La última completa, el 9 de noviembre con `26e7259`: 1738 de 1738.
 - **Vista previa:** Vercel la protege con login. No se pudo revisar desde acá porque Claude in Chrome no estaba conectado.
 
